@@ -32,6 +32,7 @@ void ChangeScene(SCENE_TYPE _eNext)
 	changeEvn.eEven = EVENT_TYPE::SCENE_CHANGE;
 	changeEvn.lParam = (DWORD_PTR)_eNext;
 
+	int a = 0;
 
 	CEventMgr::GetInstance()->AddEvent(changeEvn);
 }
