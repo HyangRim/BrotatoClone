@@ -83,6 +83,7 @@ public:
 	void init();
 	void update();
 	void render(HDC _dc);
+	void render(Gdiplus::Graphics* _pDGraphics);
 
 private:
 	void CalDiff();

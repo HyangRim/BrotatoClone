@@ -39,6 +39,13 @@ using std::wstring;
 #include "fmod_errors.h"
 #pragma comment(lib, "fmod_vc.lib")
 
+#include <gdiplus.h>
+#include <gdiplusheaders.h>
+#include <gdiplusflat.h>
+#pragma comment(lib, "gdiplus")
+using namespace Gdiplus;
+
+
 #include "define.h"
 #include "struct.h"
 

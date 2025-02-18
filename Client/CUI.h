@@ -34,6 +34,7 @@ public:
     virtual void update();
     virtual void finalupdate();
     virtual void render(HDC _dc);
+    virtual void render(Gdiplus::Graphics* _pDGraphics);
 
 private:
     void update_child();

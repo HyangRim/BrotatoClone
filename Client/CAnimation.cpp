@@ -72,7 +72,6 @@ void CAnimation::render(HDC _dc)
 			(int)(m_vecFrm[m_iCurFrm].vSlice.y),
 			RGB(255,0,255)
 		);
-	int a = 0;
 }
 
 void CAnimation::Create(CTexture* _pTex, Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vStep, float _fDuration, UINT iFrameCount)

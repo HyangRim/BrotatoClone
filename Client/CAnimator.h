@@ -30,6 +30,7 @@ public:
 	void update();
 	void finalupdate();
 	void render(HDC _dc);
+	void render(Gdiplus::Graphics* _pDGraphics);
 
 public:
 	CAnimator();

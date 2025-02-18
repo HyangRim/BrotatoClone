@@ -11,6 +11,7 @@ private:
 public:
     virtual void update();
     virtual void render(HDC _dc);
+    virtual void render(Gdiplus::Graphics* _pDGraphics);
 
     void SetDir(float _fTheta) { m_fTheta = _fTheta; }
     void SetDir(Vec2 _vDir) 

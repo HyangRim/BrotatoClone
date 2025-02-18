@@ -14,6 +14,7 @@ private:
 	HDC			m_hDC;				//메인 윈도우에 Draw 할 DC
 
 
+
 	CTexture*	m_pMemTex;			//백버퍼 텍스쳐. 
 
 
@@ -23,6 +24,19 @@ private:
 
 	//메뉴바.
 	HMENU		m_hMenu;	//Tool Scene에서만 사용. 
+
+
+private:
+	//GDI Plus 관련. 
+	ULONG_PTR			gdiplusToken;
+	GdiplusStartupInput gdiplusStartupInput;
+
+	//이중 그래픽 용도의 Graphics
+	//render함수에서는 여기다가 그림. 
+	Gdiplus::Graphics*	m_pDGraphics;
+
+	//본 그래픽 용도의 Graphics(m_pDGraphics에 있는 것을 옮김)
+	Gdiplus::Graphics*	m_pGraphics;
 
 private:
 	void Clear();
@@ -39,7 +53,8 @@ public:
 public:
 	HWND GetMainHwnd() { return m_hWnd; }
 	HDC GetMainDC() { return m_hDC; }
-	
+	Gdiplus::Graphics* GetDGraphics() { return m_pDGraphics; }
+	Gdiplus::Graphics* GetGraphics() { return m_pGraphics; }
 
 	POINT GetResolution() { return m_ptResolution; }
 

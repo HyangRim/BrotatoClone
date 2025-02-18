@@ -14,6 +14,7 @@ public:
 
 	void update();
 	void render(HDC _dc);
+	void render(Gdiplus::Graphics* _pDGraphics);
 
 public:
 	CScene* GetCurScene() { return m_pCurScene; }

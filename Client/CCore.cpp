@@ -25,6 +25,7 @@
 CCore::CCore() 
 	: m_hWnd(0), m_ptResolution{}, m_hDC(0)
 	, m_arrBrush{}, m_arrPen{}
+	, m_pGraphics(nullptr), m_pDGraphics(nullptr)
 {
 }
 
@@ -40,12 +41,16 @@ CCore::~CCore() {
 	}
 
 	DestroyMenu(m_hMenu);
+	delete m_pGraphics;
+	delete m_pDGraphics;
 }
 
 
 int CCore::init(HWND _hWnd, POINT _ptResolution) {
 	m_hWnd = _hWnd;
 	m_ptResolution = _ptResolution;
+
+	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 
 	//해상도에 맞게 윈도우 크기 조정. 
 	ChangeWindowSize(Vec2((float)_ptResolution.x, (float)_ptResolution.y), false);
@@ -54,10 +59,13 @@ int CCore::init(HWND _hWnd, POINT _ptResolution) {
 	m_hMenu = LoadMenu(nullptr, MAKEINTRESOURCEW(IDC_CLIENT));
 	//어디다가 그려요? m_hWnd에다가 그려요. 
 	m_hDC = GetDC(m_hWnd);
+	m_pGraphics = new Gdiplus::Graphics(m_hDC);
+
 
 
 	//이중 버퍼링 용도의 텍스쳐 한 장을 만든다. 
 	m_pMemTex = CResMgr::GetInstance()->CreateTexture(L"BackBuffer", (UINT)(m_ptResolution.x), (UINT)(m_ptResolution.y));
+	m_pDGraphics = new Gdiplus::Graphics(m_pMemTex->GetDC());
 
 	//자주 사용 할 펜 및 브러쉬 생성. 
 	CreateBrushPen();
@@ -104,13 +112,14 @@ void CCore::progress() {
 	
 
 	//화면 초기화(흰 사각형으로 덧 씌움)
-
 	Clear();
 
 	//어디다가 그려야하는지 알려주기. 
 	CSceneMgr::GetInstance()->render(m_pMemTex->GetDC());
 	CCamera::GetInstance()->render(m_pMemTex->GetDC());
 
+	
+	//m_pGraphics->DrawImage(0, 0, m_ptResolution.x, m_ptResolution.y, )
 	BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y, m_pMemTex->GetDC(), 0, 0, SRCCOPY);
 	
 	CTimeMgr::GetInstance()->render();
@@ -149,8 +158,16 @@ void CCore::ChangeWindowSize(Vec2 _vResolution, bool _bMenu)
 
 void CCore::Clear()
 {
-	SelectGDI gdi(m_pMemTex->GetDC(), BRUSH_TYPE::BLACK);
-	Rectangle(m_pMemTex->GetDC(), -1, -1, m_ptResolution.x + 1, m_ptResolution.y + 1);
+	//SelectGDI gdi(m_pMemTex->GetDC(), BRUSH_TYPE::BLACK);
+	//Rectangle(m_pMemTex->GetDC(), -1, -1, m_ptResolution.x + 1, m_ptResolution.y + 1);
+	
+	/*
+	Gdiplus::Graphics graphics(m_pMemTex->GetDC());
+	Color backgroundColor(0, 0, 0, 255);
+
+	graphics.Clear(backgroundColor);
+	*/
+	m_pDGraphics->Clear(Color(0, 0, 0, 255));
 }
 
 void CCore::CreateBrushPen()

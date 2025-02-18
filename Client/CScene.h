@@ -35,10 +35,14 @@ public:
 	virtual void update();
 	virtual void finalupdate();
 	virtual void render(HDC _dc);
+	virtual void render(Gdiplus::Graphics* _pDGraphics);
 
 
 	void render_tile(HDC _dc);
+	void render_tile(Gdiplus::Graphics* _pDGraphics);
+
 	void render_monster(HDC _dc);
+	void render_monster(Gdiplus::Graphics* _pDGraphics);
 	
 	virtual void Enter() = 0;		//해당 Scene에 진입 시 호출.
 	virtual void Exit() = 0;		//해당 Scene에 탈출 시 호출.

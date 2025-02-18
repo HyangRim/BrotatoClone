@@ -44,6 +44,7 @@ public:
 
 	void finalupdate();
 	void render(HDC _dc);
+	void render(Gdiplus::Graphics* _pDGraphics);
 
 
 public:

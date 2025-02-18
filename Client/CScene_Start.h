@@ -17,6 +17,8 @@ public:
     //virtual을 안적어도 가상함수이긴 함... 그래도 명시적으로. 
 
     virtual void render(HDC _dc);
+    virtual void render(Gdiplus::Graphics* _pDGraphics);
+
     virtual void Enter();
     virtual void Exit();
 

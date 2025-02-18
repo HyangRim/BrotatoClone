@@ -6,8 +6,9 @@
 
 CTexture::CTexture()
 	: m_hBit(0)
-	, m_dc(0)
+	, m_dc(nullptr)
 	, m_bitInfo{}
+	, m_pBitmap(nullptr)
 {
 }
 
@@ -15,6 +16,11 @@ CTexture::~CTexture()
 {
 	DeleteDC(m_dc);
 	DeleteObject(m_hBit);
+
+	if (m_pBitmap) {
+		delete m_pBitmap;
+		m_pBitmap = nullptr;
+	}
 }
 
 
@@ -25,6 +31,11 @@ CTexture::~CTexture()
 //bin -> content안에 있는 거 쓰면 되는데?
 void CTexture::Load(const wstring& _strFilePath)
 {
+	//Image* pImage = Image::FromFile(_strFilePath.c_str());
+	//assert(pImage && pImage->GetLastStatus() == Ok);
+
+
+	
 	//파일로부터 로딩한 데이터를 비트맵으로 생성. 
 	m_hBit = (HBITMAP)LoadImageW(nullptr, _strFilePath.c_str(), IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_LOADFROMFILE);
 
@@ -40,12 +51,13 @@ void CTexture::Load(const wstring& _strFilePath)
 	//비트맵 정보 알아오기. 
 	GetObject(m_hBit, sizeof(BITMAP), &m_bitInfo);
 
+	
+
 }
 
 void CTexture::Create(UINT _iWidth, UINT _iHeight)
 {
 	HDC maindc = CCore::GetInstance()->GetMainDC();
-
 	m_hBit = CreateCompatibleBitmap(maindc, _iWidth, _iHeight);
 	m_dc = CreateCompatibleDC(maindc);
 

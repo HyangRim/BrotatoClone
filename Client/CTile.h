@@ -23,6 +23,7 @@ public:
 private:
     virtual void update();
     virtual void render(HDC _dc);
+    virtual void render(Gdiplus::Graphics* _pDGraphics);
 
 public:
     virtual void Save(FILE* _pFile);

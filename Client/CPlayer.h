@@ -25,6 +25,7 @@ private:
 public:
     virtual void update();
     virtual void render(HDC _dc);
+    virtual void render(Gdiplus::Graphics* _pDGraphics);
 
 private:
     void CreateMissile();
