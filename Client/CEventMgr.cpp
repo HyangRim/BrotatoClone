@@ -5,7 +5,8 @@
 #include "CSceneMgr.h"
 #include "CUIMgr.h"
 #include "CScene.h"
-
+#include "AI.h"
+#include "CState.h"
 
 CEventMgr::CEventMgr() 
 	: m_vecEvent{}
@@ -75,6 +76,16 @@ void CEventMgr::Excute(const tEvent& _eve)
 
 		//이전 Scene에 대한 UI를 가리키고 있었기에 그거 해제. 
 		CUIMgr::GetInstance()->SetFocusedUI(nullptr);
+	}
+		break;
+
+	case EVENT_TYPE::CHANGE_AI_STATE:
+	{
+		// lParam : AI PTR
+		// wParam : Next Type
+		AI* pAI = (AI*)_eve.lParam;
+		MON_STATE eNextState = (MON_STATE)_eve.wParam;
+		pAI->ChangeState(eNextState);
 	}
 		break;
 	}

@@ -104,6 +104,42 @@
     <Filter Include="Engine\04. Object\UI\BtnUI">
       <UniqueIdentifier>{571e8c81-7429-4d0a-915c-2084e17ffe54}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\08. Module\AI">
+      <UniqueIdentifier>{f39a0a45-6c6b-4c8a-9593-26f28c647f98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\08. Module\AI\State">
+      <UniqueIdentifier>{9caa8db3-18ba-42e2-b26b-272b2e529dbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\08. Module\AI\State\IDLE">
+      <UniqueIdentifier>{c3413061-f4bb-4690-8484-f2a191a56486}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\08. Module\AI\State\TRACE">
+      <UniqueIdentifier>{eb212c0c-b635-443b-b713-6f3fc13af2aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\08. Module\AI\State\ATTACK">
+      <UniqueIdentifier>{8783d210-3888-4a56-b4c4-fc1d992977c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\08. Module\AI\State\DEAD">
+      <UniqueIdentifier>{2dcdd8b0-e5c1-4af1-9488-cf9656bbf9bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\09. Factory">
+      <UniqueIdentifier>{ae38df79-4f86-40d2-9480-303d3ea4e3ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\09. Factory\MonFactory">
+      <UniqueIdentifier>{81152f5f-5f44-4f7d-9314-0eb3776eeacd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\07. Component\RigidBody">
+      <UniqueIdentifier>{eb6e2b57-5088-4b8c-a634-910d86816a20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\07. Component\Gravity">
+      <UniqueIdentifier>{8837be9f-0602-4758-89e0-bd4b1d7c68b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Object\Ground">
+      <UniqueIdentifier>{1f9df588-77ef-466a-9c69-a23f4fdbaa75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. Manager\SoundMgr">
+      <UniqueIdentifier>{b9a3f4bb-3c1b-49f5-a4b2-6ef948e44ef9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h">
@@ -215,6 +251,33 @@
     <ClInclude Include="CBtnUI.h">
       <Filter>Engine\04. Object\UI\BtnUI</Filter>
     </ClInclude>
+    <ClInclude Include="AI.h">
+      <Filter>Engine\08. Module\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="CState.h">
+      <Filter>Engine\08. Module\AI\State</Filter>
+    </ClInclude>
+    <ClInclude Include="CIdleState.h">
+      <Filter>Engine\08. Module\AI\State\IDLE</Filter>
+    </ClInclude>
+    <ClInclude Include="CTraceState.h">
+      <Filter>Engine\08. Module\AI\State\TRACE</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonFactory.h">
+      <Filter>Engine\09. Factory\MonFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="CRigidbody.h">
+      <Filter>Engine\07. Component\RigidBody</Filter>
+    </ClInclude>
+    <ClInclude Include="CGravity.h">
+      <Filter>Engine\07. Component\Gravity</Filter>
+    </ClInclude>
+    <ClInclude Include="CGround.h">
+      <Filter>Engine\04. Object\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="CSoundMgr.h">
+      <Filter>Engine\03. Manager\SoundMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -317,6 +380,33 @@
     </ClCompile>
     <ClCompile Include="CBtnUI.cpp">
       <Filter>Engine\04. Object\UI\BtnUI</Filter>
+    </ClCompile>
+    <ClCompile Include="AI.cpp">
+      <Filter>Engine\08. Module\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="CState.cpp">
+      <Filter>Engine\08. Module\AI\State</Filter>
+    </ClCompile>
+    <ClCompile Include="CIdleState.cpp">
+      <Filter>Engine\08. Module\AI\State\IDLE</Filter>
+    </ClCompile>
+    <ClCompile Include="CTraceState.cpp">
+      <Filter>Engine\08. Module\AI\State\TRACE</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonFactory.cpp">
+      <Filter>Engine\09. Factory\MonFactory</Filter>
+    </ClCompile>
+    <ClCompile Include="CRigidbody.cpp">
+      <Filter>Engine\07. Component\RigidBody</Filter>
+    </ClCompile>
+    <ClCompile Include="CGravity.cpp">
+      <Filter>Engine\07. Component\Gravity</Filter>
+    </ClCompile>
+    <ClCompile Include="CGround.cpp">
+      <Filter>Engine\04. Object\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="CSoundMgr.cpp">
+      <Filter>Engine\03. Manager\SoundMgr</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

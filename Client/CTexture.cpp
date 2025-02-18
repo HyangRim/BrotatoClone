@@ -26,14 +26,8 @@ CTexture::~CTexture()
 void CTexture::Load(const wstring& _strFilePath)
 {
 	//파일로부터 로딩한 데이터를 비트맵으로 생성. 
-	m_hBit = (HBITMAP)LoadImage(nullptr, _strFilePath.c_str(), 
-		IMAGE_BITMAP,
-		0, 0, 
-		LR_CREATEDIBSECTION | LR_LOADFROMFILE);
+	m_hBit = (HBITMAP)LoadImageW(nullptr, _strFilePath.c_str(), IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_LOADFROMFILE);
 
-	if (!m_hBit) {
-		m_hBit = LoadBitmap(GetModuleHandle(nullptr), _strFilePath.c_str());
-	}
 	assert(m_hBit);
 	//비트맵과 연결할 DC
 	m_dc = CreateCompatibleDC(CCore::GetInstance()->GetMainDC());
@@ -46,5 +40,18 @@ void CTexture::Load(const wstring& _strFilePath)
 	//비트맵 정보 알아오기. 
 	GetObject(m_hBit, sizeof(BITMAP), &m_bitInfo);
 
+}
 
+void CTexture::Create(UINT _iWidth, UINT _iHeight)
+{
+	HDC maindc = CCore::GetInstance()->GetMainDC();
+
+	m_hBit = CreateCompatibleBitmap(maindc, _iWidth, _iHeight);
+	m_dc = CreateCompatibleDC(maindc);
+
+	HBITMAP holdBit = (HBITMAP)SelectObject(m_dc, m_hBit);
+	DeleteObject(holdBit);
+
+	//비트맵 정보 알아오기. 
+	GetObject(m_hBit, sizeof(BITMAP), &m_bitInfo);
 }

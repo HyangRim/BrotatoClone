@@ -32,6 +32,13 @@ using std::wstring;
 
 #pragma comment(lib, "Msimg32.lib")
 
+#include <codecvt>
+#include <locale>
+
+#include "fmod.hpp"
+#include "fmod_errors.h"
+#pragma comment(lib, "fmod_vc.lib")
+
 #include "define.h"
 #include "struct.h"
 

@@ -2,6 +2,7 @@
 
 
 class CObject;
+class AI;
 
 void CreateObject(CObject* _pObj, GROUP_TYPE _eGroup);
 void DeleteObject(CObject* _pObj);
@@ -10,6 +11,7 @@ void DeleteObject(CObject* _pObj);
 //한 프레임은 작업을 마무리하고, Scene을 업데이트 해야만 함. 
 //여기서 해줄 건 이벤트 등록. 다음 프레임부터 다음 씬으로 가도록 이벤트를 넣어준다. 
 void ChangeScene(SCENE_TYPE _eNext);
+void ChangeAIState(AI* _pAI, MON_STATE _eNextState);
 
 
 
@@ -56,3 +58,8 @@ void Safe_Delete_UnordedMap(unordered_map<T1, T2>& _map) {
 	}
 	_map.clear();
 }
+
+void Fscanf(char* _pOutBuff, FILE* _pFile);
+
+void SaveWstring(const wstring& _str, FILE* _pFile);
+void LoadWstring(wstring& _str, FILE* _pFile);

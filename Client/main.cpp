@@ -133,7 +133,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
     //처음 생성되는 메뉴바 null 값을 넣으면 메뉴바 사라짐. 
-    wcex.lpszMenuName = MAKEINTRESOURCEW(IDC_CLIENT);
+    wcex.lpszMenuName = nullptr;//MAKEINTRESOURCEW(IDC_CLIENT);
 
     //이거의 Key값을 szWindowClass로 사용함. 이 MyRegisterClass의 Key값임. 
     wcex.lpszClassName = szWindowClass;
@@ -270,3 +270,6 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     }
     return (INT_PTR)FALSE;
 }
+
+
+//싱글톤 패턴, 팩토리 패턴, 스테이트 패턴. 

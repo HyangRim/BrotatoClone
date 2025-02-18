@@ -1,37 +1,47 @@
 #pragma once
 #include "CObject.h"
 
+
+struct tMonInfo {
+    float       m_fSpeed;           //속도. 
+    int         m_iHP;              //체력
+    float       m_fRecogRange;      //인지 범위
+    float       m_fAttRange;        //공격 범위
+    int         m_fAtt;             //공격력
+};
+
+class AI;
 class CMonster :
     public CObject
 {
 private:
-    float       m_fSpeed;
-    Vec2        m_vCenterPos;
-    float       m_fMaxMoveDistance;
-    int         m_iDir; // 1, -1 (1 : Right, -1 : Left);
-
-    int         m_iHP;
+    tMonInfo    m_tInfo;
+    AI*         m_pAI;
 
 public:
-    virtual void update();
-    float GetSpeed() { return m_fSpeed; }
-    void SetSpeed(float _f) { m_fSpeed = _f; }
-
-    void SetCenterPos(Vec2 _vPos) { m_vCenterPos = _vPos; }
-    void SetMaxMoveDistance(float _f) { m_fMaxMoveDistance = _f; }
-
-
-public:
-    virtual void OnCollision(CCollider* _pOther);
-    virtual void OnCollisionEnter(CCollider* _pOther);
-    virtual void OnCollisionExit(CCollider* _pOther);
+    float GetSpeed() { return m_tInfo.m_fSpeed; }
+    void SetSpeed(float _f) { m_tInfo.m_fSpeed = _f; }
+    void SetAI(AI* _AI);
+    const tMonInfo& Getinfo() { return m_tInfo; }
 
 
 private:
+    void SetMonInfo(const tMonInfo& _info) {
+        m_tInfo = _info;
+    }
+
+public:
+    virtual void OnCollisionEnter(CCollider* _pOther);
+
+
+private:
+    virtual void update();
     CLONE(CMonster)
 
 
 public:
     CMonster();
     ~CMonster();
+
+    friend class CMonFactory;
 };

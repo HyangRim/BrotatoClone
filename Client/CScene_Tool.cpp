@@ -30,6 +30,9 @@ CScene_Tool::~CScene_Tool()
 
 void CScene_Tool::Enter()
 {
+	//툴 Scene에서 사용할 메뉴를 붙인다. 
+	CCore::GetInstance()->DockMenu();
+
 	CreateTile(5, 5);
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
 
@@ -82,6 +85,7 @@ void CScene_Tool::Enter()
 //값을 세팅하거나, 그런 게 있는데 윈도우에서 어느정도 기능을 제공하는 것이 있음. 
 void CScene_Tool::Exit()
 {
+	CCore::GetInstance()->DivideMenu();
 	//이전 씬에서 포커싱되었던 것을 UIMgr이 기억하고 있는데...
 	//그래서 씬 바꿀때는 그런 거 다 해제 해야함. 
 
@@ -270,3 +274,8 @@ INT_PTR __stdcall TileCountProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM l
 
 
 //저장해놔야 작업하던 거 다시 로딩 가능. 
+
+
+//BMP파일은 alpha값이 없는데...
+// 우리가 할 일을 alpha값을 넣어주기. 여러 색이 겹치면?
+

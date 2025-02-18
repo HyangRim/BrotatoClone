@@ -2,6 +2,7 @@
 
 
 #include "global.h"
+#include "CMonFactory.h"
 //전방선언하는 이유는 컴파일 속도에 영향을 주지 않기 위해. 
 class CObject;
 
@@ -18,6 +19,8 @@ private:
 	UINT			m_iTileX;		//타일 가로 개수
 	UINT			m_iTileY;		//타일 세로 개수. 
 
+	CObject*		m_pPlayer;		//Player
+
 public:
 	void SetName(const wstring& _strName) { m_strName = _strName; }
 	const wstring& GetName() { return m_strName; }
@@ -25,13 +28,22 @@ public:
 	UINT GetTileX() { return m_iTileX; }
 	UINT GetTileY() { return m_iTileY; }
 
+	CObject* GetPlayer() { return m_pPlayer; }
+
+
+	virtual void start();
 	virtual void update();
 	virtual void finalupdate();
 	virtual void render(HDC _dc);
+
+
+	void render_tile(HDC _dc);
+	void render_monster(HDC _dc);
 	
 	virtual void Enter() = 0;		//해당 Scene에 진입 시 호출.
 	virtual void Exit() = 0;		//해당 Scene에 탈출 시 호출.
 
+	
 
 
 public:
@@ -41,6 +53,8 @@ public:
 	{
 		m_arrObj[(UINT)_eType].push_back(_pObj);
 	}
+
+	void RegisterPlayer(CObject* _pPlayer) { m_pPlayer = _pPlayer; }
 
 	const vector<CObject*>& GetGroupObject(GROUP_TYPE _eType) 
 	{

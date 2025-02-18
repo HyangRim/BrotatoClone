@@ -6,6 +6,8 @@
 #include "CTimeMgr.h"
 #include "CResMgr.h"
 #include "CPathMgr.h"
+#include "CCamera.h"
+#include "CCore.h"
 
 
 
@@ -13,6 +15,7 @@
 CScene::CScene()
 	: m_iTileX(0)
 	, m_iTileY(0)
+	, m_pPlayer(nullptr)
 {
 }
 
@@ -26,6 +29,15 @@ CScene::~CScene()
 		
 		//씬이 사라지면, 그 씬의 벡터들도 다 사라짐. 
 		//STL의 RAII가 알아서 삭제하기 때문. 
+	}
+}
+
+void CScene::start()
+{
+	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; typeIDX++) {
+		for (size_t objIDX = 0; objIDX < m_arrObj[typeIDX].size(); objIDX++) {
+			m_arrObj[typeIDX][objIDX]->start();
+		}
 	}
 }
 
@@ -55,6 +67,17 @@ void CScene::finalupdate()
 void CScene::render(HDC _dc)
 {
 	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; typeIDX++) {
+		if ((UINT)GROUP_TYPE::TILE == typeIDX) {
+			render_tile(_dc);
+			continue;
+		}
+		/*
+		if ((UINT)GROUP_TYPE::MONSTER == typeIDX) {
+			render_monster(_dc);
+			continue;
+		}
+		*/
+
 		auto ObjVecIter = m_arrObj[typeIDX].begin();
 
 		for (; ObjVecIter != m_arrObj[typeIDX].end();) {
@@ -69,6 +92,47 @@ void CScene::render(HDC _dc)
 
 		}
 	}
+}
+
+void CScene::render_tile(HDC _dc)
+{
+
+	const vector<CObject*> vecTile = GetGroupObject(GROUP_TYPE::TILE);
+	//화면 안에 들어오는 애들의 범위를 잡아내어, 들어오는 애들만 렌더링 해준다. 
+	Vec2 vCamLook = CCamera::GetInstance()->GetLookAt();
+	Vec2 vResolution = CCore::GetInstance()->GetResolution();
+
+	Vec2 vLeftTop = vCamLook - vResolution / 2.f;
+	Vec2 vRightDown = vCamLook + vResolution / 2.f;
+
+	int iTileSize = TILE_SIZE;
+
+	//Width, HEIGHT로 대체 가능할지도?
+	int iLTCol = (int)vLeftTop.x / iTileSize;
+	int iLTRow = (int)vLeftTop.y / iTileSize;
+
+	int iLTIdx = (m_iTileX * iLTRow) + iLTCol;
+
+	int iClientWidth = (int)vResolution.x / iTileSize + 1;
+	int iClientHeight = (int)vResolution.y / iTileSize + 1;
+
+	for (int iCurRow = iLTRow; iCurRow < (iLTRow + iClientHeight); iCurRow++) {
+
+		for (int iCurcol = iLTCol; iCurcol < (iLTCol + iClientWidth); iCurcol++) {
+			if (iCurcol < 0 || m_iTileX <= iCurcol ||
+				iCurRow < 0 || m_iTileY <= iCurRow) continue;
+
+			int iIdx = (m_iTileX * iCurRow) + iCurcol;
+
+			vecTile[iIdx]->render(_dc);
+		}
+
+	}
+}
+
+//추가적인 최적화 방법 -> 커다란 이미지 하나를 두고 그 부분의 일부분만 잘라서 오면 되지 않나?
+void CScene::render_monster(HDC _dc)
+{
 }
 
 void CScene::DeleteGroup(GROUP_TYPE _eGroup)

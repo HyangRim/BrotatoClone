@@ -15,6 +15,7 @@ CCollider::CCollider()
 	: m_pOwner(nullptr)
 	, m_iID(g_iNextID++)
 	, m_iCol(0)
+	, m_bActive(true)
 {
 }
 
@@ -23,6 +24,7 @@ CCollider::CCollider(const CCollider& _origin)
 	, m_vOffsetPos(_origin.m_vOffsetPos)
 	, m_vScale(_origin.m_vScale)
 	, m_iID(g_iNextID++)
+	, m_bActive(_origin.m_bActive)
 {
 }
 
