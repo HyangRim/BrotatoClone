@@ -53,6 +53,11 @@ void CSceneMgr::render(HDC _dc)
 	m_pCurScene->render(_dc);
 }
 
+void CSceneMgr::render(Gdiplus::Graphics* _pDGraphics)
+{
+	m_pCurScene->render(_pDGraphics);
+}
+
 
 //씬을 바꿀 때, 기존 씬에 있던 포인터나 그런 거. 
 //한 프레임은 작업을 마무리하고, Scene을 업데이트 해야만 함. 

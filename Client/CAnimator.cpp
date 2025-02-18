@@ -42,6 +42,13 @@ void CAnimator::render(HDC _dc)
 	}
 }
 
+void CAnimator::render(Gdiplus::Graphics* _pDGraphics)
+{
+	if (nullptr != m_pCurAnim) {
+		m_pCurAnim->render(_pDGraphics);
+	}
+}
+
 void CAnimator::CreateAnimation(const wstring& _strName, CTexture* _pTex, Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vStep, float _fDuration, UINT _iFrameCount)
 {
 	CAnimation* pAnim = FindAnimation(_strName);

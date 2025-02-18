@@ -94,6 +94,36 @@ void CScene::render(HDC _dc)
 	}
 }
 
+void CScene::render(Gdiplus::Graphics* _pDGraphics)
+{
+	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; typeIDX++) {
+		if ((UINT)GROUP_TYPE::TILE == typeIDX) {
+			//render_tile(_pDGraphics);
+			continue;
+		}
+		/*
+		if ((UINT)GROUP_TYPE::MONSTER == typeIDX) {
+			render_monster(_dc);
+			continue;
+		}
+		*/
+
+		auto ObjVecIter = m_arrObj[typeIDX].begin();
+
+		for (; ObjVecIter != m_arrObj[typeIDX].end();) {
+			if (!(*ObjVecIter)->IsDead()) {
+				(*ObjVecIter)->render(_pDGraphics);
+				ObjVecIter++;
+			}
+			else {
+				//Dead상태일 경우엔 렌더링에서 삭제하기. 
+				ObjVecIter = m_arrObj[typeIDX].erase(ObjVecIter);
+			}
+
+		}
+	}
+}
+
 void CScene::render_tile(HDC _dc)
 {
 
@@ -125,6 +155,42 @@ void CScene::render_tile(HDC _dc)
 			int iIdx = (m_iTileX * iCurRow) + iCurcol;
 
 			vecTile[iIdx]->render(_dc);
+		}
+
+	}
+}
+
+void CScene::render_tile(Gdiplus::Graphics* _pDGraphics)
+{
+
+	const vector<CObject*> vecTile = GetGroupObject(GROUP_TYPE::TILE);
+	//화면 안에 들어오는 애들의 범위를 잡아내어, 들어오는 애들만 렌더링 해준다. 
+	Vec2 vCamLook = CCamera::GetInstance()->GetLookAt();
+	Vec2 vResolution = CCore::GetInstance()->GetResolution();
+
+	Vec2 vLeftTop = vCamLook - vResolution / 2.f;
+	Vec2 vRightDown = vCamLook + vResolution / 2.f;
+
+	int iTileSize = TILE_SIZE;
+
+	//Width, HEIGHT로 대체 가능할지도?
+	int iLTCol = (int)vLeftTop.x / iTileSize;
+	int iLTRow = (int)vLeftTop.y / iTileSize;
+
+	int iLTIdx = (m_iTileX * iLTRow) + iLTCol;
+
+	int iClientWidth = (int)vResolution.x / iTileSize + 1;
+	int iClientHeight = (int)vResolution.y / iTileSize + 1;
+
+	for (int iCurRow = iLTRow; iCurRow < (iLTRow + iClientHeight); iCurRow++) {
+
+		for (int iCurcol = iLTCol; iCurcol < (iLTCol + iClientWidth); iCurcol++) {
+			if (iCurcol < 0 || m_iTileX <= iCurcol ||
+				iCurRow < 0 || m_iTileY <= iCurRow) continue;
+
+			int iIdx = (m_iTileX * iCurRow) + iCurcol;
+
+			vecTile[iIdx]->render(_pDGraphics);
 		}
 
 	}

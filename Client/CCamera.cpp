@@ -106,6 +106,10 @@ void CCamera::render(HDC _dc)
 	}
 }
 
+void CCamera::render(Gdiplus::Graphics* _pDGraphics)
+{
+}
+
 
 void CCamera::CalDiff()
 {

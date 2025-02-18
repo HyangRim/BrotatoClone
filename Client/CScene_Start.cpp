@@ -107,6 +107,28 @@ void CScene_Start::render(HDC _dc)
 	);
 }
 
+void CScene_Start::render(Gdiplus::Graphics* _pDGraphics)
+{
+	CScene::render(_pDGraphics);
+
+	if (!m_bUseForce) return;
+
+	m_fCurRadius += m_fForceRadius * 3.f * fDT;
+
+	if (m_fCurRadius > m_fForceRadius) {
+		m_fCurRadius = 0.f;
+	}
+	Vec2 vRenderPos = CCamera::GetInstance()->GetRenderPos(m_vForcePos);
+
+	Gdiplus::Pen pen(Gdiplus::Color(255, 0, 255, 0), 1.0f);
+	_pDGraphics->DrawEllipse(&pen,
+		vRenderPos.x - m_fCurRadius,
+		vRenderPos.y - m_fCurRadius,
+		m_fCurRadius * 2,
+		m_fCurRadius * 2);
+}
+
+
 void CScene_Start::Enter()
 {
 

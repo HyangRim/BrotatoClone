@@ -10,6 +10,7 @@ CUI::CUI(bool _bCamAff)
 	: m_pParentUI(nullptr)
 	, m_bCamAffected(_bCamAff)
 	, m_bMouseOn(false)
+	, m_bLbtnDown(false)
 {
 }
 
@@ -78,6 +79,38 @@ void CUI::render(HDC _dc)
 	render_child(_dc);
 }
 
+void CUI::render(Gdiplus::Graphics* _pDGraphics)
+{
+	Vec2 vPos = GetFinalPos();
+	Vec2 vScale = GetScale();
+
+	if (m_bCamAffected) {
+		vPos = CCamera::GetInstance()->GetRenderPos(vPos);
+	}
+	if (m_bLbtnDown) {
+		Gdiplus::Pen pen(Gdiplus::Color(255, 0, 255, 0), 1.0f);
+		
+		Gdiplus::Rect rect(
+			(int)(vPos.x - vScale.x / 2.f),
+			(int)(vPos.y - vScale.x / 2.f),
+			(int)(vScale.x),
+			(int)(vScale.y)
+		);
+		_pDGraphics->DrawRectangle(&pen, rect);
+	}
+	else {
+		Gdiplus::Pen pen(Gdiplus::Color(255, 0, 0, 0), 1.0f);
+		Gdiplus::Rect rect(
+			(int)(vPos.x - vScale.x / 2.f),
+			(int)(vPos.y - vScale.y / 2.f),
+			(int)(vScale.x),
+			(int)(vScale.y)
+		);
+		_pDGraphics->DrawRectangle(&pen, rect);
+	}
+	render_child(_pDGraphics);
+}
+
 void CUI::update_child()
 {
 	for (auto& child : m_vecChildUI) {
@@ -96,6 +129,13 @@ void CUI::render_child(HDC _dc)
 {
 	for (auto& child : m_vecChildUI) {
 		child->render(_dc);
+	}
+}
+
+void CUI::render_child(Gdiplus::Graphics* _pDGraphics)
+{
+	for (auto& child : m_vecChildUI) {
+		child->render(_pDGraphics);
 	}
 }
 

@@ -58,6 +58,30 @@ void CTile::render(HDC _dc)
 		SRCCOPY);
 }
 
+void CTile::render(Gdiplus::Graphics* _pDGraphics)
+{
+	if (m_pTileTex == nullptr || -1 == m_iImgIdx) {
+		return;
+	}
+
+	UINT iWidth = m_pTileTex->Width();
+	UINT iHeight = m_pTileTex->Height();
+
+	UINT IMaxCol = iWidth / TILE_SIZE;
+	UINT IMaxRow = iHeight / TILE_SIZE;
+
+	UINT iCurRow = (UINT)(m_iImgIdx / IMaxCol);
+	UINT iCurCol = (UINT)(m_iImgIdx % IMaxCol);
+
+	Vec2 vRenderPos = CCamera::GetInstance()->GetRenderPos(GetPos());
+	Vec2 vScale = GetScale();
+
+	if (IMaxRow <= iCurRow) {
+		assert(nullptr);
+	}
+
+}
+
 void CTile::Save(FILE* _pFile)
 {
 	fwrite(&m_iImgIdx, sizeof(int), 1, _pFile);

@@ -115,8 +115,14 @@ void CCore::progress() {
 	Clear();
 
 	//어디다가 그려야하는지 알려주기. 
-	CSceneMgr::GetInstance()->render(m_pMemTex->GetDC());
-	CCamera::GetInstance()->render(m_pMemTex->GetDC());
+	
+	// GDI버전.
+	//CSceneMgr::GetInstance()->render(m_pMemTex->GetDC());
+	//CCamera::GetInstance()->render(m_pMemTex->GetDC());
+
+	// GDI+버전 렌더링. 
+	CSceneMgr::GetInstance()->render(m_pDGraphics);
+	CCamera::GetInstance()->render(m_pDGraphics);
 
 	
 	//m_pGraphics->DrawImage(0, 0, m_ptResolution.x, m_ptResolution.y, )

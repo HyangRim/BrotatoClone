@@ -85,11 +85,34 @@ void CObject::render(HDC _dc)
 
 }
 
+void CObject::render(Gdiplus::Graphics* _pDGraphics)
+{
+	//ÁøÂ¥ ÁÂÇ¥.
+	Vec2 vRenderPos = CCamera::GetInstance()->GetRenderPos(m_vPos);
+	Gdiplus::Pen pen(Gdiplus::Color(255, 0, 0, 0), 1.0f);
+	Gdiplus::Rect rect(
+		(int)(vRenderPos.x - m_vScale.x / 2.f),
+		(int)(vRenderPos.y - m_vScale.y / 2.f),
+		(int)m_vScale.x,
+		(int)m_vScale.y
+	);
+
+	_pDGraphics->DrawRectangle(&pen, rect);
+	component_render(_pDGraphics);
+}
+
 void CObject::component_render(HDC _dc)
 {
 	if (m_pAnimator != nullptr) m_pAnimator->render(_dc);
 
 	if (m_pCollider != nullptr)	m_pCollider->render(_dc);
+}
+
+void CObject::component_render(Gdiplus::Graphics* _pDGraphics)
+{
+	if (m_pAnimator != nullptr) m_pAnimator->render(_pDGraphics);
+
+	if (m_pCollider != nullptr)	m_pCollider->render(_pDGraphics);
 }
 
 void CObject::CreateCollider()

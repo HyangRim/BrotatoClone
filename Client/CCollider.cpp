@@ -68,6 +68,34 @@ void CCollider::render(HDC _dc)
 
 }
 
+void CCollider::render(Gdiplus::Graphics* _pDGraphics)
+{
+	Gdiplus::Pen* pPen;
+	// 컬러 변경: 상태에 따라 빨간색 또는 초록색 펜 사용
+	if (m_iCol) {
+		pPen = new Gdiplus::Pen(Gdiplus::Color(255, 255, 0, 0), 1.0f);  // 빨간색, 두께 2
+	}
+	else {
+		pPen = new Gdiplus::Pen(Gdiplus::Color(255, 0, 255, 0), 1.0f);  // 초록색, 두께 2
+	}
+
+	// 빈 브러시 (Hollow Brush)
+	Gdiplus::SolidBrush hollowBrush(Gdiplus::Color(0, 0, 0, 0));
+	Vec2 vRenderPos = CCamera::GetInstance()->GetRenderPos(m_vFinalPos);
+
+	// 사각형 그리기
+	Gdiplus::RectF rect(
+		(float)(vRenderPos.x - m_vScale.x / 2.f),
+		(float)(vRenderPos.y - m_vScale.y / 2.f),
+		(float)(m_vScale.x),
+		(float)(m_vScale.y)
+	);
+
+	_pDGraphics->DrawRectangle(pPen, rect);
+
+	delete pPen;
+}
+
 void CCollider::OnCollision(CCollider* _pOther)
 {
 	m_pOwner->OnCollision(_pOther);

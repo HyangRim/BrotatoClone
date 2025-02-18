@@ -39,7 +39,9 @@ public:
 private:
     void update_child();
     void finalupdate_child();
+
     void render_child(HDC _dc);
+    void render_child(Gdiplus::Graphics* _pDGraphics);
 
 
     void MouseOnCheck();

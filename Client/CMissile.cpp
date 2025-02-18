@@ -36,10 +36,26 @@ void CMissile::render(HDC _dc)
 
 	//부모 클래스 만들기. 
 	//CObject::render(_dc);
+
 	Ellipse(_dc, (int)(vPos.x - vScale.x / 2.f), (int)(vPos.y - vScale.y / 2.f),
 		(int)(vPos.x + vScale.x / 2.f), (int)(vPos.y + vScale.y / 2.f));
 
 	component_render(_dc);
+}
+
+void CMissile::render(Gdiplus::Graphics* _pDGraphics)
+{
+	Vec2 vPos = GetPos();
+	Vec2 vRenderPos = CCamera::GetInstance()->GetRenderPos(vPos);
+	Vec2 vScale = GetScale();
+	Pen pen(Color(255, 0, 0, 0), 1.0f);
+	_pDGraphics->DrawEllipse(&pen,
+		vRenderPos.x - vScale.x / 2.f,
+		vRenderPos.y - vScale.y / 2.f,
+		vScale.x,
+		vScale.y);
+
+	component_render(_pDGraphics);
 }
 
 void CMissile::OnCollisionEnter(CCollider* _pOther)

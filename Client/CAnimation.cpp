@@ -74,6 +74,10 @@ void CAnimation::render(HDC _dc)
 		);
 }
 
+void CAnimation::render(Gdiplus::Graphics* _pDGraphics)
+{
+}
+
 void CAnimation::Create(CTexture* _pTex, Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vStep, float _fDuration, UINT iFrameCount)
 {
 	m_pTex = _pTex;

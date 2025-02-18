@@ -120,6 +120,11 @@ void CPlayer::render(HDC _dc)
 	component_render(_dc);
 }
 
+void CPlayer::render(Gdiplus::Graphics* _pDGraphics)
+{
+	component_render(_pDGraphics);
+}
+
 void CPlayer::CreateMissile()
 {
 	Vec2 vMissilePos = GetPos();
