@@ -75,11 +75,11 @@ void CScene_Start::update()
 			}
 		}
 	}
-	/*
+	
 	if (KEY_TAP(KEY::ENTER)  ) {
 		ChangeScene(SCENE_TYPE::TOOL);
 	}
-	*/
+	
 
 }
 

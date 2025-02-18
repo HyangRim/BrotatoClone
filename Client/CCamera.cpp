@@ -108,6 +108,35 @@ void CCamera::render(HDC _dc)
 
 void CCamera::render(Gdiplus::Graphics* _pDGraphics)
 {
+	if (m_listCamEffect.empty()) return;
+
+
+	//시간 누적값을 체크해서.
+	tCamEffect& effect = m_listCamEffect.front();
+	effect.fCurTime += fDT;
+
+
+	float fRatio = 0.f;
+	fRatio = effect.fCurTime / effect.fDuration;
+
+	if (fRatio < 0.f)
+		fRatio = 0.f;
+	if (fRatio > 1.f)
+		fRatio = 1.f;
+
+	int iAlpha = 0;
+	if (CAM_EFFECT::FADE_OUT == effect.eEffect) {
+		iAlpha = (int)(255.f * fRatio);
+	}
+	else if (CAM_EFFECT::FADE_IN == effect.eEffect) {
+		iAlpha = (int)(255.f * (1.f - fRatio));
+	}
+
+
+	//이펙트 진행 비율. 
+	if (effect.fDuration < effect.fCurTime) {
+		m_listCamEffect.pop_front();
+	}
 }
 
 

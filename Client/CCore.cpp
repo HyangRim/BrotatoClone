@@ -43,6 +43,8 @@ CCore::~CCore() {
 	DestroyMenu(m_hMenu);
 	delete m_pGraphics;
 	delete m_pDGraphics;
+
+	Gdiplus::GdiplusShutdown(gdiplusToken);
 }
 
 
@@ -124,10 +126,11 @@ void CCore::progress() {
 	CSceneMgr::GetInstance()->render(m_pDGraphics);
 	CCamera::GetInstance()->render(m_pDGraphics);
 
-	
-	//m_pGraphics->DrawImage(0, 0, m_ptResolution.x, m_ptResolution.y, )
+	//m_DGraphics
+	//m_pGraphics->DrawImage(m_pMemTex->GetBitmap(), 0, 0, m_ptResolution.x, m_ptResolution.y);
+	//GDI(Legacy ¹æ½Ä)
 	BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y, m_pMemTex->GetDC(), 0, 0, SRCCOPY);
-	
+	//m_pDGraphics->DrawImage(m_pMemTex->GetBitmap(), 0, 0);
 	CTimeMgr::GetInstance()->render();
 
 

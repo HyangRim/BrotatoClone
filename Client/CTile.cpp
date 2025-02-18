@@ -79,7 +79,15 @@ void CTile::render(Gdiplus::Graphics* _pDGraphics)
 	if (IMaxRow <= iCurRow) {
 		assert(nullptr);
 	}
+	Gdiplus::Rect srcRect(iCurCol * TILE_SIZE, iCurRow * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+	Gdiplus::Rect destRect(vRenderPos.x, vRenderPos.y, vScale.x, vScale.y);
 
+	_pDGraphics->DrawImage(
+		m_pTileTex->GetBitmap(),
+		destRect,
+		srcRect.X, srcRect.Y, srcRect.Width, srcRect.Height,
+		Gdiplus::UnitPixel
+	);
 }
 
 void CTile::Save(FILE* _pFile)
