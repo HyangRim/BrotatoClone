@@ -14,7 +14,6 @@
 #define IDR_MAINFRAME                   128
 #define IDD_DIALOG1                     130
 #define IDD_TILE_COUNT                  130
-#define IDCANCEL                        1000
 #define IDC_EDIT1                       1001
 #define IDC_EDIT2                       1002
 #define ID_32771                        32771

@@ -5,6 +5,7 @@
 
 #include "CScene_Start.h"
 #include "CScene_Tool.h"
+#include "CScene_Test.h"
 #include "CEventMgr.h"
 
 CSceneMgr::CSceneMgr()
@@ -31,6 +32,11 @@ void CSceneMgr::init()
 
 	m_arrScene[(UINT)SCENE_TYPE::TOOL] = new CScene_Tool;
 	m_arrScene[(UINT)SCENE_TYPE::TOOL]->SetName(L"Tool Scene");
+
+	m_arrScene[(UINT)SCENE_TYPE::TEST] = new CScene_Test;
+	m_arrScene[(UINT)SCENE_TYPE::TEST]->SetName(L"Test Scene");
+
+
 	//m_arrScene[(UINT)SCENE_TYPE::STAGE_01] = new CScene_Stage01;
 	//m_arrScene[(UINT)SCENE_TYPE::STAGE_02] = new CScene_Stage02;
 

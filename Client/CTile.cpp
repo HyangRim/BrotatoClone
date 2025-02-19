@@ -80,7 +80,7 @@ void CTile::render(Gdiplus::Graphics* _pDGraphics)
 		assert(nullptr);
 	}
 	Gdiplus::Rect srcRect(iCurCol * TILE_SIZE, iCurRow * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-	Gdiplus::Rect destRect(vRenderPos.x, vRenderPos.y, vScale.x, vScale.y);
+	Gdiplus::Rect destRect((int)vRenderPos.x, (int)vRenderPos.y, (int)vScale.x, (int)vScale.y);
 
 	_pDGraphics->DrawImage(
 		m_pTileTex->GetBitmap(),
