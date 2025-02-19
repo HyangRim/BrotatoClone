@@ -181,7 +181,7 @@ void CCore::ChangeWindowSize(Vec2 _vResolution, bool _bMenu)
 
 void CCore::Clear()
 {
-	m_pDGraphics->Clear(Color(255, 0, 0, 0));
+	m_pDGraphics->Clear(Color(255, 255, 255, 255));
 }
 
 void CCore::CreateBrushPen()

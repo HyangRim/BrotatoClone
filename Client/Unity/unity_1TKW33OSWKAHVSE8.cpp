@@ -1,7 +1,4 @@
 
-#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CDropItem.cpp"
-
-
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CEventMgr.cpp"
 
 
@@ -21,4 +18,10 @@
 
 
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CMonFactory.cpp"
+
+
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CMonster.cpp"
+
+
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CObject.cpp"
 

@@ -149,6 +149,9 @@
     <Filter Include="Engine\05. Scene\Scene_Test">
       <UniqueIdentifier>{de922b2e-8e45-4368-94fe-9cc29164bd2f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\04. Object\UI\TextUI">
+      <UniqueIdentifier>{6cdc0fa9-a9d6-4d36-84cf-9c41d15c4940}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h">
@@ -296,6 +299,9 @@
     <ClInclude Include="CScene_Test.h">
       <Filter>Engine\05. Scene\Scene_Test</Filter>
     </ClInclude>
+    <ClInclude Include="CTextUI.h">
+      <Filter>Engine\04. Object\UI\TextUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -434,6 +440,9 @@
     </ClCompile>
     <ClCompile Include="CScene_Test.cpp">
       <Filter>Engine\05. Scene\Scene_Test</Filter>
+    </ClCompile>
+    <ClCompile Include="CTextUI.cpp">
+      <Filter>Engine\04. Object\UI\TextUI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -21,10 +21,8 @@ class CAnimator;
 class CRigidbody;
 class CGravity;
 
-
 class CObject
 {
-
 private:
 	wstring			m_ObjName;
 	Vec2			m_vPos;
@@ -46,16 +44,13 @@ public:
 	Vec2 GetPos() { return m_vPos; }
 	Vec2 GetScale() { return m_vScale; }
 
-
 	void SetName(const wstring& _strName) { m_ObjName = _strName; }
 	const wstring& GetName() { return m_ObjName; }
-
 
 	CCollider* GetCollider() { return m_pCollider; }
 	CAnimator* GetAnimator() { return m_pAnimator; }
 	CRigidbody* GetRigidbody() { return m_pRigidBody; }
 	CGravity* GetGravity() { return m_pGravity; }
-
 
 	void CreateCollider();
 	void CreateAnimator();
@@ -65,7 +60,6 @@ public:
 	virtual void OnCollision(CCollider* _pOther) {};
 	virtual void OnCollisionEnter(CCollider* _pOther) {};
 	virtual void OnCollisionExit(CCollider* _pOther) {};
-
 
 	bool IsDead() {
 		return !m_bAlive;

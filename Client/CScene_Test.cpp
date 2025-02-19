@@ -6,6 +6,7 @@
 #include "CScene.h"
 #include "CCamera.h"
 #include "CFontMgr.h"
+#include "CTextUI.h"
 
 CScene_Test::CScene_Test()
 	: m_fAcc(0.f)
@@ -101,12 +102,21 @@ void CScene_Test::Enter()
 {
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
 
+	/*
 	CUI* pPanelUI = new CPanelUI;
 	pPanelUI->SetName(L"ParentUI2");
 	pPanelUI->SetScale(Vec2(500.f, 300.f));
 	pPanelUI->SetPos(Vec2(vResolution.x - pPanelUI->GetScale().x, 0.f));
-
 	AddObject(pPanelUI, GROUP_TYPE::UI);
+	*/
+
+	CTextUI* textUI = new CTextUI();
+	textUI->SetPos(Vec2(vResolution.x / 2.f, 400.0f));       // 위치 설정
+	textUI->SetScale(Vec2(300.0f, 100.0f));   // 크기 설정 (텍스트 영역)
+	textUI->SetText(L"Hello World!");         // 출력할 텍스트 설정
+	textUI->SetFontSize(24);                  // 폰트 크기 설정
+	textUI->SetGdiPlusTextColor(Gdiplus::Color(255, 255, 0, 0)); // GDI+용 빨간색 설정
+	AddObject(textUI, GROUP_TYPE::UI);
 
 	CCamera::GetInstance()->SetLookAt(vResolution / 2.f);
 }

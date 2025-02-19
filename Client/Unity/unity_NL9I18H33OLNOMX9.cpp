@@ -22,3 +22,6 @@
 
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CCore.cpp"
 
+
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CDropItem.cpp"
+
