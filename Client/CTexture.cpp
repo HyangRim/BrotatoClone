@@ -20,8 +20,8 @@ CTexture::~CTexture()
 	DeleteDC(m_dc);
 	DeleteObject(m_hBit);
 
-	if (nullptr != m_pBitmap) delete m_pBitmap;
-	if (nullptr != m_pGraphics) delete m_pGraphics;
+	//if (nullptr != m_pBitmap) delete m_pBitmap;
+	//if (nullptr != m_pGraphics) delete m_pGraphics;
 
 }
 
@@ -68,7 +68,7 @@ void CTexture::Load(const wstring& _strFilePath)
 
 void CTexture::Create(UINT _iWidth, UINT _iHeight)
 {
-	
+	/*
 	HDC maindc = CCore::GetInstance()->GetMainDC();
 	m_hBit = CreateCompatibleBitmap(maindc, _iWidth, _iHeight);
 	m_dc = CreateCompatibleDC(maindc);
@@ -78,8 +78,8 @@ void CTexture::Create(UINT _iWidth, UINT _iHeight)
 
 	//비트맵 정보 알아오기. 
 	GetObject(m_hBit, sizeof(BITMAP), &m_bitInfo);
+	*/
 	
-	/*
 	m_pBitmap = new Gdiplus::Bitmap(_iWidth, _iHeight);
 	assert(nullptr != m_pBitmap);
 
@@ -88,5 +88,5 @@ void CTexture::Create(UINT _iWidth, UINT _iHeight)
 
 	m_pGraphics = new Gdiplus::Graphics(m_pBitmap);
 	assert(m_pGraphics != nullptr);
-	*/
+	
 }

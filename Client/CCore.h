@@ -31,6 +31,8 @@ private:
 	ULONG_PTR			gdiplusToken;
 	GdiplusStartupInput gdiplusStartupInput;
 
+	Gdiplus::Bitmap*	m_buffer;
+
 	//이중 그래픽 용도의 Graphics
 	//render함수에서는 여기다가 그림. 
 	Gdiplus::Graphics*	m_pDGraphics;

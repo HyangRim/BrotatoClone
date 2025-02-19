@@ -43,7 +43,7 @@ CCore::~CCore() {
 	DestroyMenu(m_hMenu);
 	delete m_pGraphics;
 	delete m_pDGraphics;
-
+	delete m_buffer;
 	Gdiplus::GdiplusShutdown(gdiplusToken);
 }
 
@@ -67,7 +67,14 @@ int CCore::init(HWND _hWnd, POINT _ptResolution) {
 
 	//이중 버퍼링 용도의 텍스쳐 한 장을 만든다. 
 	m_pMemTex = CResMgr::GetInstance()->CreateTexture(L"BackBuffer", (UINT)(m_ptResolution.x), (UINT)(m_ptResolution.y));
-	m_pDGraphics = new Gdiplus::Graphics(m_pMemTex->GetDC());
+	//m_pDGraphics = new Gdiplus::Graphics(m_pMemTex->GetDC());
+	RECT psRect;
+	
+	GetClientRect(m_hWnd, &psRect);
+	m_buffer = new Bitmap(psRect.right - psRect.left, psRect.bottom - psRect.top);
+
+	//m_pDGraphics는 메모리 비트맵. (임시로 그리는 곳.)
+	m_pDGraphics = new Gdiplus::Graphics(m_buffer);
 
 	//자주 사용 할 펜 및 브러쉬 생성. 
 	CreateBrushPen();
@@ -123,14 +130,19 @@ void CCore::progress() {
 	//CCamera::GetInstance()->render(m_pMemTex->GetDC());
 
 	// GDI+버전 렌더링. 
+	// 여기서 화면에 PNG던 뭐던 그림. 
 	CSceneMgr::GetInstance()->render(m_pDGraphics);
-	CCamera::GetInstance()->render(m_pDGraphics);
+	//CCamera::GetInstance()->render(m_pDGraphics);
 
 	//m_DGraphics
 	//m_pGraphics->DrawImage(m_pMemTex->GetBitmap(), 0, 0, m_ptResolution.x, m_ptResolution.y);
 	//GDI(Legacy 방식)
-	BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y, m_pMemTex->GetDC(), 0, 0, SRCCOPY);
-	//m_pDGraphics->DrawImage(m_pMemTex->GetBitmap(), 0, 0);
+	//BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y, m_pMemTex->GetDC(), 0, 0, SRCCOPY);
+	
+	//GDI+ 방식
+	m_pGraphics->DrawImage(m_buffer, 0, 0);
+
+
 	CTimeMgr::GetInstance()->render();
 
 
@@ -177,6 +189,7 @@ void CCore::Clear()
 	graphics.Clear(backgroundColor);
 	*/
 	m_pDGraphics->Clear(Color(0, 0, 0, 255));
+	m_pGraphics->Clear(Color(0, 0, 0, 255));
 }
 
 void CCore::CreateBrushPen()
