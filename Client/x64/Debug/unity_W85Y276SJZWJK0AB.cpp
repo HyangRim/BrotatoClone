@@ -29,9 +29,6 @@
 #include "C:\Users\HyangRim\source\repos\BrotatoClone\Client\CEventMgr.cpp"
 
 
-#include "C:\Users\HyangRim\source\repos\BrotatoClone\Client\CFontMgr.cpp"
-
-
 #include "C:\Users\HyangRim\source\repos\BrotatoClone\Client\CGravity.cpp"
 
 

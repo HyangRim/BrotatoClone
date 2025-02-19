@@ -45,7 +45,6 @@ enum class GROUP_TYPE {
 	GROUND,
 	MONSTER,
 	PLAYER,
-	WEAPON,
 	DROP_ITEM,
 	PROJ_PLAYER,
 	PROJ_MONSTER,
@@ -96,11 +95,6 @@ enum class MON_STATE {
 	ATTACK,
 	RUNAWAY,
 	DEAD,
-	END,
-};
-
-enum class WEAPON_TYPE {
-	PISTOL,
 	END,
 };
 

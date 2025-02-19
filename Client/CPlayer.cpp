@@ -23,7 +23,7 @@ CPlayer::CPlayer()
 	, m_iPrevDir(1)
 {
 	//m_pTex = CResMgr::GetInstance()->LoadTexture(L"PlayerTex", L"texture\\Tenshi.bmp");
-	m_vecWeapon.resize(6);
+
 
 	CreateCollider();
 	GetCollider()->SetOffsetPos(Vec2(0.f, 15.f));
@@ -123,14 +123,6 @@ void CPlayer::render(HDC _dc)
 void CPlayer::render(Gdiplus::Graphics* _pDGraphics)
 {
 	component_render(_pDGraphics);
-}
-
-void CPlayer::AddWeapon(CWeapon* _pWeapon)
-{
-
-	m_vecWeapon.push_back(_pWeapon);
-
-	CreateObject((CObject*)_pWeapon, GROUP_TYPE::WEAPON);
 }
 
 void CPlayer::CreateMissile()
