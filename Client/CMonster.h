@@ -3,6 +3,7 @@
 
 
 struct tMonInfo {
+    MON_TYPE    m_eMonType;
     float       m_fSpeed;           //속도. 
     int         m_iHP;              //체력
     float       m_fRecogRange;      //인지 범위
@@ -34,14 +35,14 @@ public:
     virtual void OnCollisionEnter(CCollider* _pOther);
 
 
-private:
+protected:
     virtual void update();
     CLONE(CMonster)
 
 
 public:
     CMonster();
-    ~CMonster();
+    virtual ~CMonster();
 
     friend class CMonFactory;
 };

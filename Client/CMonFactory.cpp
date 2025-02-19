@@ -4,6 +4,7 @@
 #include "CRigidbody.h"
 
 #include "CMonster.h"
+#include "CDropItem.h"
 #include "AI.h"
 #include "CIdleState.h"
 #include "CTraceState.h"
@@ -20,10 +21,11 @@ CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
 		pMon->SetPos(_vPos);
 
 		tMonInfo info = {};
+		info.m_eMonType = _eType;
 		info.m_fAtt = 1;
 		info.m_fAttRange = 50.f;
 		info.m_fRecogRange = 300.f;
-		info.m_iHP = 100;
+		info.m_iHP = 3;
 		info.m_fSpeed = 150.f;
 
 		pMon->SetMonInfo(info);
@@ -42,6 +44,28 @@ CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
 	case MON_TYPE::RANGE:
 
 		break;
+
+	case MON_TYPE::DROP_ITEM:
+		pMon = new CDropItem;
+		pMon->SetPos(_vPos);
+		pMon->SetScale(Vec2(15.f, 15.f));
+
+		tMonInfo info = {};
+		info.m_eMonType = _eType;
+		info.m_fAtt = 1;
+		info.m_fAttRange = 1.f;
+		info.m_fRecogRange = 300.f;
+		info.m_iHP = 9999999;
+		info.m_fSpeed = 250.f;
+
+		pMon->SetMonInfo(info);
+
+		AI* pAI = new AI;
+		pAI->AddState(new CIdleState);
+		pAI->AddState(new CTraceState);
+		pAI->SetCurState(MON_STATE::IDLE);
+
+		pMon->SetAI(pAI);
 	}
 
 

@@ -168,8 +168,8 @@ void CUI::MouseOnCheck()
 	}
 	
 
-	if (m_vFinalPos.x <= vMousePos.x && vMousePos.x <=m_vFinalPos.x + vScale.x
-		&& m_vFinalPos.y <= vMousePos.y && vMousePos.y <= m_vFinalPos.y + vScale.y) 
+	if (m_vFinalPos.x - vScale.x / 2.f <= vMousePos.x && vMousePos.x <=m_vFinalPos.x + vScale.x / 2.f
+		&& m_vFinalPos.y - vScale.y / 2.f <= vMousePos.y && vMousePos.y <= m_vFinalPos.y + vScale.y / 2.f) 
 	{
 		m_bMouseOn = true;
 	}

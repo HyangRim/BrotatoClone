@@ -171,6 +171,7 @@
     <ClInclude Include="CCollider.h" />
     <ClInclude Include="CCollisionMgr.h" />
     <ClInclude Include="CCore.h" />
+    <ClInclude Include="CDropItem.h" />
     <ClInclude Include="CEventMgr.h" />
     <ClInclude Include="CGravity.h" />
     <ClInclude Include="CGround.h" />
@@ -220,6 +221,7 @@
     <ClCompile Include="CCollider.cpp" />
     <ClCompile Include="CCollisionMgr.cpp" />
     <ClCompile Include="CCore.cpp" />
+    <ClCompile Include="CDropItem.cpp" />
     <ClCompile Include="CEventMgr.cpp" />
     <ClCompile Include="CGravity.cpp" />
     <ClCompile Include="CGround.cpp" />
