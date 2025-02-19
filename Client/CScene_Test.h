@@ -4,6 +4,9 @@ class CScene_Test :
     public CScene
 {
 private:
+    float           m_fAcc; //≈∏¿Ã∏”
+    int            m_iTest;
+
 
 public:
     virtual void update();

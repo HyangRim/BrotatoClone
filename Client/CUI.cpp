@@ -92,18 +92,20 @@ void CUI::render(Gdiplus::Graphics* _pDGraphics)
 		Gdiplus::Pen pen(Gdiplus::Color(255, 0, 255, 0), 1.0f);
 		
 		Gdiplus::Rect rect(
-			(int)(vPos.x - vScale.x / 2.f),
-			(int)(vPos.y - vScale.y / 2.f),
+			(int)(vPos.x - (vScale.x / 2.f)),
+			(int)(vPos.y - (vScale.y / 2.f)),
 			(int)(vScale.x),
 			(int)(vScale.y)
 		);
+	
 		_pDGraphics->DrawRectangle(&pen, rect);
 	}
 	else {
 		Gdiplus::Pen pen(Gdiplus::Color(255, 255, 255, 255), 1.0f);
+
 		Gdiplus::Rect rect(
-			(int)(vPos.x - vScale.x / 2.f),
-			(int)(vPos.y - vScale.y / 2.f),
+			(int)(vPos.x - (vScale.x / 2.f)),
+			(int)(vPos.y - (vScale.y / 2.f)),
 			(int)(vScale.x),
 			(int)(vScale.y)
 		);
@@ -167,9 +169,8 @@ void CUI::MouseOnCheck()
 		vMousePos = CCamera::GetInstance()->GetRealPos(vMousePos);
 	}
 	
-
-	if (m_vFinalPos.x <= vMousePos.x && vMousePos.x <=m_vFinalPos.x + vScale.x
-		&& m_vFinalPos.y <= vMousePos.y && vMousePos.y <= m_vFinalPos.y + vScale.y) 
+	if (m_vFinalPos.x - vScale.x / 2.f <= vMousePos.x && vMousePos.x <= m_vFinalPos.x + vScale.x / 2.f
+		&& m_vFinalPos.y - vScale.y / 2.f <= vMousePos.y && vMousePos.y <= m_vFinalPos.y + vScale.y / 2.f)
 	{
 		m_bMouseOn = true;
 	}

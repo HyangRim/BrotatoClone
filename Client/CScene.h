@@ -30,13 +30,11 @@ public:
 
 	CObject* GetPlayer() { return m_pPlayer; }
 
-
 	virtual void start();
 	virtual void update();
 	virtual void finalupdate();
 	virtual void render(HDC _dc);
 	virtual void render(Gdiplus::Graphics* _pDGraphics);
-
 
 	void render_tile(HDC _dc);
 	void render_tile(Gdiplus::Graphics* _pDGraphics);
@@ -46,9 +44,6 @@ public:
 	
 	virtual void Enter() = 0;		//해당 Scene에 진입 시 호출.
 	virtual void Exit() = 0;		//해당 Scene에 탈출 시 호출.
-
-	
-
 
 public:
 	//클래스는 헤더에 구현하면 인라인 처리가 됨. 

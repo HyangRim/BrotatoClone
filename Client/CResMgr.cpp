@@ -22,7 +22,6 @@ CTexture* CResMgr::LoadTexture(const wstring& _strKey, const wstring& _strRelati
 	//이미 있다면 그냥 리턴해주기. 
 	if (pTex != nullptr) return pTex;
 
-
 	wstring strFilePath = CPathMgr::GetInstance()->GetContentPath();
 	strFilePath += _strRelativePath;
 

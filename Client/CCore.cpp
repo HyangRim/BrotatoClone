@@ -14,6 +14,7 @@
 #include "CTexture.h"
 #include "CResMgr.h"
 #include "CSoundMgr.h"
+#include "CFontMgr.h"
 
 #include "SelectGDI.h"
 #include "Resource.h"
@@ -86,6 +87,7 @@ int CCore::init(HWND _hWnd, POINT _ptResolution) {
 	CSoundMgr::GetInstance()->init();
 	CCamera::GetInstance()->init();
 	CSceneMgr::GetInstance()->init();
+	CFontMgr::GetInstance()->init();
 
 
 	return S_OK;

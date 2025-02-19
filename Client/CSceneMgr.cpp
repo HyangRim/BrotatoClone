@@ -36,12 +36,12 @@ void CSceneMgr::init()
 	m_arrScene[(UINT)SCENE_TYPE::TEST] = new CScene_Test;
 	m_arrScene[(UINT)SCENE_TYPE::TEST]->SetName(L"Test Scene");
 
-
 	//m_arrScene[(UINT)SCENE_TYPE::STAGE_01] = new CScene_Stage01;
 	//m_arrScene[(UINT)SCENE_TYPE::STAGE_02] = new CScene_Stage02;
 
 	//현재 씬 설정
-	m_pCurScene = m_arrScene[(UINT)SCENE_TYPE::START];
+	m_pCurScene = m_arrScene[(UINT)SCENE_TYPE::TEST];
+
 	m_pCurScene->Enter();
 
 	//부모 포인터라 Start()를 호출할 수가 없음. 

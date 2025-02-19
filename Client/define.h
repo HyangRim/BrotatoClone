@@ -75,8 +75,6 @@ enum class PEN_TYPE {
 	END,
 };
 
-
-
 enum class EVENT_TYPE {
 	CREATE_OBJECT,
 	DELETE_OBJECT,
@@ -89,7 +87,6 @@ enum class EVENT_TYPE {
 	END,
 };
 
-
 enum class MON_STATE {
 	IDLE,
 	PATROL,
@@ -98,4 +95,10 @@ enum class MON_STATE {
 	RUNAWAY,
 	DEAD,
 	END,
+};
+
+enum class FONT_TYPE
+{
+	DEFALUT,
+	KR,
 };
