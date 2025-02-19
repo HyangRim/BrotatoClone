@@ -39,6 +39,7 @@ void CTexture::Load(const wstring& _strFilePath)
 	
 	
 	//파일로부터 로딩한 데이터를 비트맵으로 생성. 
+	/*
 	m_hBit = (HBITMAP)LoadImageW(nullptr, _strFilePath.c_str(), IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION | LR_LOADFROMFILE);
 
 	assert(m_hBit);
@@ -52,9 +53,9 @@ void CTexture::Load(const wstring& _strFilePath)
 
 	//비트맵 정보 알아오기. 
 	GetObject(m_hBit, sizeof(BITMAP), &m_bitInfo);
-
+	*/
 	
-	/*
+	
 	m_pBitmap = new Gdiplus::Bitmap(_strFilePath.c_str());
 	assert(nullptr != m_pBitmap);
 
@@ -63,7 +64,7 @@ void CTexture::Load(const wstring& _strFilePath)
 
 	m_pGraphics = new Gdiplus::Graphics(m_pBitmap);
 	assert(m_pGraphics != nullptr);
-	*/
+	
 }
 
 void CTexture::Create(UINT _iWidth, UINT _iHeight)

@@ -66,7 +66,7 @@ int CCore::init(HWND _hWnd, POINT _ptResolution) {
 
 
 	//이중 버퍼링 용도의 텍스쳐 한 장을 만든다. 
-	m_pMemTex = CResMgr::GetInstance()->CreateTexture(L"BackBuffer", (UINT)(m_ptResolution.x), (UINT)(m_ptResolution.y));
+	//m_pMemTex = CResMgr::GetInstance()->CreateTexture(L"BackBuffer", (UINT)(m_ptResolution.x), (UINT)(m_ptResolution.y));
 	//m_pDGraphics = new Gdiplus::Graphics(m_pMemTex->GetDC());
 	RECT psRect;
 	
@@ -179,17 +179,7 @@ void CCore::ChangeWindowSize(Vec2 _vResolution, bool _bMenu)
 
 void CCore::Clear()
 {
-	//SelectGDI gdi(m_pMemTex->GetDC(), BRUSH_TYPE::BLACK);
-	//Rectangle(m_pMemTex->GetDC(), -1, -1, m_ptResolution.x + 1, m_ptResolution.y + 1);
-	
-	/*
-	Gdiplus::Graphics graphics(m_pMemTex->GetDC());
-	Color backgroundColor(0, 0, 0, 255);
-
-	graphics.Clear(backgroundColor);
-	*/
-	m_pDGraphics->Clear(Color(0, 0, 0, 255));
-	m_pGraphics->Clear(Color(0, 0, 0, 255));
+	m_pDGraphics->Clear(Color(255, 0, 0, 0));
 }
 
 void CCore::CreateBrushPen()

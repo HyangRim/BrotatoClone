@@ -87,19 +87,20 @@ void CUI::render(Gdiplus::Graphics* _pDGraphics)
 	if (m_bCamAffected) {
 		vPos = CCamera::GetInstance()->GetRenderPos(vPos);
 	}
+
 	if (m_bLbtnDown) {
 		Gdiplus::Pen pen(Gdiplus::Color(255, 0, 255, 0), 1.0f);
 		
 		Gdiplus::Rect rect(
 			(int)(vPos.x - vScale.x / 2.f),
-			(int)(vPos.y - vScale.x / 2.f),
+			(int)(vPos.y - vScale.y / 2.f),
 			(int)(vScale.x),
 			(int)(vScale.y)
 		);
 		_pDGraphics->DrawRectangle(&pen, rect);
 	}
 	else {
-		Gdiplus::Pen pen(Gdiplus::Color(255, 0, 0, 0), 1.0f);
+		Gdiplus::Pen pen(Gdiplus::Color(255, 255, 255, 255), 1.0f);
 		Gdiplus::Rect rect(
 			(int)(vPos.x - vScale.x / 2.f),
 			(int)(vPos.y - vScale.y / 2.f),

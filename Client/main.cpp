@@ -65,7 +65,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     //CCore 초기화
     //이게 메인 윈도우 입니다. 이게 해상도입니다. 
-    if (FAILED(CCore::GetInstance()->init(g_hWnd, POINT{1280, 768}))) {
+    if (FAILED(CCore::GetInstance()->init(g_hWnd, POINT{960, 540}))) {
         MessageBox(nullptr, L"Core 객체 초기화 실패", L"ERROR", MB_OK);
         return FALSE;
     }

@@ -76,7 +76,34 @@ void CAnimation::render(HDC _dc)
 
 void CAnimation::render(Gdiplus::Graphics* _pDGraphics)
 {
+	if (m_bFinish) return;
+	CObject* pObj = m_pAnimator->GetObj();
+	Vec2 vPos = pObj->GetPos();
 
+	vPos += m_vecFrm[m_iCurFrm].vOffset;			// Object Position에 Offset만큼 추가 이동 위치. 
+	vPos = CCamera::GetInstance()->GetRenderPos(vPos);
+
+	// 대상(화면)에 그릴 사각형: 원래 TransparentBlt의 대상 좌표와 크기와 동일하게 계산
+	int destX = (int)(vPos.x - m_vecFrm[m_iCurFrm].vSlice.x / 2.f);
+	int destY = (int)(vPos.y - m_vecFrm[m_iCurFrm].vSlice.x / 2.f);  // 원본 코드에서는 vSlice.x가 y 좌표에도 사용됨
+	int destW = (int)(m_vecFrm[m_iCurFrm].vSlice.x);
+	int destH = (int)(m_vecFrm[m_iCurFrm].vSlice.y);
+	Gdiplus::Rect destRect(destX, destY, destW, destH);
+
+
+	// 원본 이미지에서 가져올 영역 (소스 사각형)
+	int srcX = (int)(m_vecFrm[m_iCurFrm].vLT.x);
+	int srcY = (int)(m_vecFrm[m_iCurFrm].vLT.y);
+	int srcW = destW; // 투명 블리팅 시 width와 height는 동일
+	int srcH = destH;
+	Gdiplus::Rect srcRect(srcX, srcY, srcW, srcH);
+
+	_pDGraphics->DrawImage(
+		m_pTex->GetBitmap(),
+		destRect,
+		srcRect.X, srcRect.Y,
+		srcRect.Width, srcRect.Height,
+		Gdiplus::UnitPixel);
 }
 
 void CAnimation::Create(CTexture* _pTex, Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vStep, float _fDuration, UINT iFrameCount)

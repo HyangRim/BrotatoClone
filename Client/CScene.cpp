@@ -97,8 +97,8 @@ void CScene::render(HDC _dc)
 void CScene::render(Gdiplus::Graphics* _pDGraphics)
 {
 	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; typeIDX++) {
-		if ((UINT)GROUP_TYPE::TILE == typeIDX) {
-			//render_tile(_pDGraphics);
+		if ((UINT)GROUP_TYPE::TILE == typeIDX && (GetGroupObject(GROUP_TYPE::TILE).size() > 0)) {
+			render_tile(_pDGraphics);
 			continue;
 		}
 		/*
