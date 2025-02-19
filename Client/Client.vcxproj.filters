@@ -152,6 +152,12 @@
     <Filter Include="Engine\04. Object\UI\TextUI">
       <UniqueIdentifier>{6cdc0fa9-a9d6-4d36-84cf-9c41d15c4940}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\03. Manager\FontMgr">
+      <UniqueIdentifier>{fd0f17a6-70ed-4a46-bc47-1d4fb29bf34f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\05. Scene\Scene_Test">
+      <UniqueIdentifier>{a9e2ddd9-a5d6-49cc-84cb-848bcfe34e29}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h">
@@ -290,11 +296,9 @@
     <ClInclude Include="CSoundMgr.h">
       <Filter>Engine\03. Manager\SoundMgr</Filter>
     </ClInclude>
-    <ClInclude Include="CScene_Test.h" />
     <ClInclude Include="CDropItem.h">
       <Filter>Engine\04. Object\Monster\DropItem</Filter>
     </ClInclude>
-    <ClInclude Include="CFontMgr.h" />
     <ClInclude Include="CWeapon.h">
       <Filter>Engine\04. Object\Weapon</Filter>
     </ClInclude>
@@ -306,6 +310,12 @@
     </ClInclude>
     <ClInclude Include="CFontMgr.h">
       <Filter>Engine\03. Manager\FontMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CFontMgr.h">
+      <Filter>Engine\03. Manager\FontMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CScene_Test.h">
+      <Filter>Engine\05. Scene\Scene_Test</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -437,11 +447,9 @@
     <ClCompile Include="CSoundMgr.cpp">
       <Filter>Engine\03. Manager\SoundMgr</Filter>
     </ClCompile>
-    <ClCompile Include="CScene_Test.cpp" />
     <ClCompile Include="CDropItem.cpp">
       <Filter>Engine\04. Object\Monster\DropItem</Filter>
     </ClCompile>
-    <ClCompile Include="CFontMgr.cpp" />
     <ClCompile Include="CWeapon.cpp">
       <Filter>Engine\04. Object\Weapon</Filter>
     </ClCompile>
@@ -453,6 +461,12 @@
     </ClCompile>
     <ClCompile Include="CFontMgr.cpp">
       <Filter>Engine\03. Manager\FontMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CFontMgr.cpp">
+      <Filter>Engine\03. Manager\FontMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene_Test.cpp">
+      <Filter>Engine\05. Scene\Scene_Test</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
