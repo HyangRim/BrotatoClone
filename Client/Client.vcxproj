@@ -173,6 +173,7 @@
     <ClInclude Include="CCore.h" />
     <ClInclude Include="CDropItem.h" />
     <ClInclude Include="CEventMgr.h" />
+    <ClInclude Include="CFontMgr.h" />
     <ClInclude Include="CGravity.h" />
     <ClInclude Include="CGround.h" />
     <ClInclude Include="CIdleState.h" />
@@ -223,6 +224,7 @@
     <ClCompile Include="CCore.cpp" />
     <ClCompile Include="CDropItem.cpp" />
     <ClCompile Include="CEventMgr.cpp" />
+    <ClCompile Include="CFontMgr.cpp" />
     <ClCompile Include="CGravity.cpp" />
     <ClCompile Include="CGround.cpp" />
     <ClCompile Include="CIdleState.cpp" />

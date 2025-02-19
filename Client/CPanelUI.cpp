@@ -3,7 +3,6 @@
 #include "CkeyMgr.h"
 
 
-
 CPanelUI::CPanelUI()
 	: CUI(false)
 {
