@@ -13,3 +13,13 @@ CWeapon::~CWeapon()
 
 }
 
+void CWeapon::update()
+{
+
+}
+
+void CWeapon::render(Gdiplus::Graphics* _pDGraphics)
+{
+
+}
+

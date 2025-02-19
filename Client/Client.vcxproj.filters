@@ -304,6 +304,9 @@
     <ClInclude Include="CTextUI.h">
       <Filter>Engine\04. Object\UI\TextUI</Filter>
     </ClInclude>
+    <ClInclude Include="CFontMgr.h">
+      <Filter>Engine\03. Manager\FontMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -447,6 +450,9 @@
     </ClCompile>
     <ClCompile Include="CTextUI.cpp">
       <Filter>Engine\04. Object\UI\TextUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CFontMgr.cpp">
+      <Filter>Engine\03. Manager\FontMgr</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
