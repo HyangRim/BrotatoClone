@@ -1,4 +1,7 @@
 
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CMonster.cpp"
+
+
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CObject.cpp"
 
 
@@ -18,7 +21,4 @@
 
 
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CRigidbody.cpp"
-
-
-#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CScene.cpp"
 

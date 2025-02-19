@@ -1,4 +1,7 @@
 
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CTexture.cpp"
+
+
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CTile.cpp"
 
 
@@ -18,7 +21,4 @@
 
 
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\main.cpp"
-
-
-#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CMissile.cpp"
 

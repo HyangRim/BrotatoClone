@@ -1,6 +1,6 @@
 #pragma once
 #include "CObject.h"
-
+#include "CMonFactory.h"
 
 struct tMonInfo {
     MON_TYPE    m_eMonType;

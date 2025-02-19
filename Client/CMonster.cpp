@@ -7,8 +7,6 @@
 #include "CMonFactory.h"
 
 
-
-
 CMonster::CMonster()
 	: m_tInfo{}
 	, m_pAI(nullptr)
