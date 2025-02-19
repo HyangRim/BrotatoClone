@@ -2,7 +2,6 @@
 #include "CSceneMgr.h"
 #include "CScene.h"
 
-
 #include "CScene_Start.h"
 #include "CScene_Tool.h"
 #include "CScene_Test.h"
@@ -40,7 +39,7 @@ void CSceneMgr::init()
 	//m_arrScene[(UINT)SCENE_TYPE::STAGE_02] = new CScene_Stage02;
 
 	//ÇöÀç ¾À ¼³Á¤
-	m_pCurScene = m_arrScene[(UINT)SCENE_TYPE::TEST];
+	m_pCurScene = m_arrScene[(UINT)SCENE_TYPE::START];
 
 	m_pCurScene->Enter();
 
