@@ -1,4 +1,7 @@
 
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CTimeMgr.cpp"
+
+
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CTraceState.cpp"
 
 
@@ -6,6 +9,9 @@
 
 
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CUIMgr.cpp"
+
+
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CWeapon.cpp"
 
 
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\func.cpp"

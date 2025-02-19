@@ -1,4 +1,7 @@
 
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CScene_Start.cpp"
+
+
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CScene_Test.cpp"
 
 
@@ -21,7 +24,4 @@
 
 
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CTile.cpp"
-
-
-#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CTimeMgr.cpp"
 
