@@ -1,7 +1,6 @@
 #pragma once
 #include "CObject.h"
 
-
 struct tWeaponInfo {
     wstring         m_sName;
     WEAPON_TYPE     m_eType;
@@ -34,7 +33,6 @@ public:
     virtual void update();
     virtual void render(Gdiplus::Graphics* _pDGraphics);
     
-
 
 public:
     CWeapon();
