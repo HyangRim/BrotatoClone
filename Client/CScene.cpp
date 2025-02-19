@@ -149,8 +149,8 @@ void CScene::render_tile(HDC _dc)
 	for (int iCurRow = iLTRow; iCurRow < (iLTRow + iClientHeight); iCurRow++) {
 
 		for (int iCurcol = iLTCol; iCurcol < (iLTCol + iClientWidth); iCurcol++) {
-			if (iCurcol < 0 || m_iTileX <= iCurcol ||
-				iCurRow < 0 || m_iTileY <= iCurRow) continue;
+			if (iCurcol < 0 || m_iTileX <= (UINT)iCurcol ||
+				iCurRow < 0 || m_iTileY <= (UINT)iCurRow) continue;
 
 			int iIdx = (m_iTileX * iCurRow) + iCurcol;
 
@@ -185,8 +185,8 @@ void CScene::render_tile(Gdiplus::Graphics* _pDGraphics)
 	for (int iCurRow = iLTRow; iCurRow < (iLTRow + iClientHeight); iCurRow++) {
 
 		for (int iCurcol = iLTCol; iCurcol < (iLTCol + iClientWidth); iCurcol++) {
-			if (iCurcol < 0 || m_iTileX <= iCurcol ||
-				iCurRow < 0 || m_iTileY <= iCurRow) continue;
+			if (iCurcol < 0 || m_iTileX <= (UINT)iCurcol ||
+				iCurRow < 0 || m_iTileY <= (UINT)iCurRow) continue;
 
 			int iIdx = (m_iTileX * iCurRow) + iCurcol;
 
