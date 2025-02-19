@@ -85,7 +85,7 @@ void CCamera::render(HDC _dc)
 	else if (CAM_EFFECT::FADE_IN == effect.eEffect) {
 		iAlpha = (int)(255.f * (1.f - fRatio));
 	}
-
+	
 	BLENDFUNCTION bf = {};
 
 	bf.BlendOp = AC_SRC_OVER;
@@ -97,8 +97,8 @@ void CCamera::render(HDC _dc)
 		, (int)m_pVeilTex->Width(), (int)m_pVeilTex->Height(),
 		m_pVeilTex->GetDC(),
 		0, 0
-		, (int)m_pVeilTex->Width(), (int)m_pVeilTex->Height(), bf);
-
+		,(int)m_pVeilTex->Width(), (int)m_pVeilTex->Height(), bf);
+	
 
 	//이펙트 진행 비율. 
 	if (effect.fDuration < effect.fCurTime) {
@@ -124,44 +124,17 @@ void CCamera::render(Gdiplus::Graphics* _pDGraphics)
 	if (fRatio > 1.f)
 		fRatio = 1.f;
 
-	float iAlpha = 1.0f;
+	int iAlpha = 0;
 	if (CAM_EFFECT::FADE_OUT == effect.eEffect) {
-		iAlpha = fRatio;
+		iAlpha = (int)(255.f * fRatio);
 	}
 	else if (CAM_EFFECT::FADE_IN == effect.eEffect) {
-		iAlpha = 1.0f - fRatio;
+		iAlpha = (int)(255.f * (1.f - fRatio));
 	}
 
-	Gdiplus::ColorMatrix colorMatrix = {
-		{
-			{ 1.0f, 0.0f, 0.0f, 0.0f, 0.0f },
-			{ 0.0f, 1.0f, 0.0f, 0.0f, 0.0f },
-			{ 0.0f, 0.0f, 1.0f, 0.0f, 0.0f },
-			{ 0.0f, 0.0f, 0.0f, iAlpha, 0.0f },
-			{ 0.0f, 0.0f, 0.0f, 0.0f, 1.0f }
-		}
-	};
 
-	Gdiplus::ImageAttributes imgAttr;
-	imgAttr.SetColorMatrix(&colorMatrix, Gdiplus::ColorMatrixFlagsDefault, Gdiplus::ColorAdjustTypeBitmap);
-
-	int width = m_pVeilTex->Width();
-	int height = m_pVeilTex->Height();
-
-	Gdiplus::Rect destRect(0, 0, width, height);
-	Gdiplus::Rect srcRect(0, 0, width, height);
-
-	_pDGraphics->DrawImage(
-		m_pVeilTex->GetBitmap(),
-		destRect,
-		srcRect.X, srcRect.Y,
-		srcRect.Width, srcRect.Height,
-		Gdiplus::UnitPixel,
-		&imgAttr
-	);
-
-	// 효과 진행 비율이 끝났으면 제거
-	if (effect.fCurTime >= effect.fDuration) {
+	//이펙트 진행 비율. 
+	if (effect.fDuration < effect.fCurTime) {
 		m_listCamEffect.pop_front();
 	}
 }
