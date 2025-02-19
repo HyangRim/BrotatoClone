@@ -5,7 +5,6 @@
 
 CFontMgr::CFontMgr()
     :m_iFontCount(0)
-    ,m_fontFamilies(nullptr)
 {
 
 }
