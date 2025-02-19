@@ -143,6 +143,12 @@
     <Filter Include="Engine\04. Object\Monster\DropItem">
       <UniqueIdentifier>{dbab57ff-9a8f-4fee-9acc-27c79e0bb4d6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\04. Object\Weapon">
+      <UniqueIdentifier>{d9f1f723-3240-4f3e-9a0a-329e66809976}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Object\Weapon\Pistol">
+      <UniqueIdentifier>{8abd6e44-a5ae-46a8-9cab-e9bc3fdf2cd8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h">
@@ -285,6 +291,13 @@
     <ClInclude Include="CDropItem.h">
       <Filter>Engine\04. Object\Monster\DropItem</Filter>
     </ClInclude>
+    <ClInclude Include="CFontMgr.h" />
+    <ClInclude Include="CWeapon.h">
+      <Filter>Engine\04. Object\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="CPistol.h">
+      <Filter>Engine\04. Object\Weapon\Pistol</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -418,6 +431,13 @@
     <ClCompile Include="CScene_Test.cpp" />
     <ClCompile Include="CDropItem.cpp">
       <Filter>Engine\04. Object\Monster\DropItem</Filter>
+    </ClCompile>
+    <ClCompile Include="CFontMgr.cpp" />
+    <ClCompile Include="CWeapon.cpp">
+      <Filter>Engine\04. Object\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="CPistol.cpp">
+      <Filter>Engine\04. Object\Weapon\Pistol</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -184,6 +184,7 @@
     <ClInclude Include="CObject.h" />
     <ClInclude Include="CPanelUI.h" />
     <ClInclude Include="CPathMgr.h" />
+    <ClInclude Include="CPistol.h" />
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CRes.h" />
     <ClInclude Include="CResMgr.h" />
@@ -202,6 +203,7 @@
     <ClInclude Include="CTraceState.h" />
     <ClInclude Include="CUI.h" />
     <ClInclude Include="CUIMgr.h" />
+    <ClInclude Include="CWeapon.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="CMissile.h" />
@@ -234,6 +236,7 @@
     <ClCompile Include="CObject.cpp" />
     <ClCompile Include="CPanelUI.cpp" />
     <ClCompile Include="CPathMgr.cpp" />
+    <ClCompile Include="CPistol.cpp" />
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CRes.cpp" />
     <ClCompile Include="CResMgr.cpp" />
@@ -252,6 +255,7 @@
     <ClCompile Include="CTraceState.cpp" />
     <ClCompile Include="CUI.cpp" />
     <ClCompile Include="CUIMgr.cpp" />
+    <ClCompile Include="CWeapon.cpp" />
     <ClCompile Include="func.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="CMissile.cpp" />
