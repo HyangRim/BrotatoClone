@@ -20,17 +20,9 @@ CScene_Test::~CScene_Test()
 
 }
 
-
 void CScene_Test::update()
 {
 	CScene::update();
-
-	m_fAcc += fDT;
-	if (m_fAcc >= 1.f)
-	{
-		m_iTest += (int)(m_fAcc / 1.f);
-		m_fAcc = 0.f;
-	}
 }
 
 void CScene_Test::finalupdate()
@@ -46,77 +38,35 @@ void CScene_Test::render(HDC _dc)
 void CScene_Test::render(Gdiplus::Graphics* _pDGraphics)
 {
 	CScene::render(_pDGraphics);
-
-	/*
-	_pDGraphics->SetSmoothingMode(SmoothingModeAntiAlias);
-	FontFamily* defaultFont = CFontMgr::GetInstance()->GetFont(FONT_TYPE::KR);
-
-	assert(defaultFont);
-
-	//Font font(defaultFont, 48, FontStyleRegular, UnitPixel);
-
-	SolidBrush brush(Color(255, 0, 0));
-	// 텍스트 정렬 설정
-
-	StringFormat format;
-	format.SetAlignment(StringAlignmentCenter);   // 가로 중앙 정렬
-	format.SetLineAlignment(StringAlignmentCenter); // 세로 중앙 정렬
-
-	WCHAR text[10];
-	swprintf_s(text, L"%d", m_iTest);
-
-	// GraphicsPath로 텍스트 경로 생성
-	GraphicsPath path;
-	path.AddString(
-		text,
-		(int)wcslen(text),
-		defaultFont,
-		FontStyleBold,
-		48,
-		PointF(300.0f, 100.0f),
-		&format
-	);
-
-	// 외곽선 그리기 (검은색)
-	Pen outlinePen(Color(255, 255, 255, 255), 4); // 검은색 외곽선, 두께 4px
-	_pDGraphics->DrawPath(&outlinePen, &path);
-
-	// 텍스트 내부 채우기 (빨간색)
-	SolidBrush fillBrush(Color(255, 255, 0, 0)); // 빨간색 채우기
-	_pDGraphics->FillPath(&fillBrush, &path);
-
-	/*
-	// 텍스트 그릴 영역 설정 (윈도우 중앙에 표시)
-	RectF rect(50.0f, 50.0f, 300.0f, 200.0f);
-
-	// 현재 숫자를 문자열로 변환하여 출력
-	WCHAR text[10];
-	swprintf_s(text, L"%d", m_iTest);
-	_pDGraphics->DrawString(text, -1, &font, rect, &format, &brush);
-	*/
-
-	
 }
 
 void CScene_Test::Enter()
 {
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
 
-	/*
-	CUI* pPanelUI = new CPanelUI;
-	pPanelUI->SetName(L"ParentUI2");
-	pPanelUI->SetScale(Vec2(500.f, 300.f));
-	pPanelUI->SetPos(Vec2(vResolution.x - pPanelUI->GetScale().x, 0.f));
-	AddObject(pPanelUI, GROUP_TYPE::UI);
-	*/
-
 	CTextUI* textUI = new CTextUI();
-	textUI->SetPos(Vec2(vResolution.x / 2.f, 400.0f));       // 위치 설정
+	textUI->SetPos(Vec2(0.f, 0.f));			  // 위치 설정(좌상단)
 	textUI->SetScale(Vec2(300.0f, 100.0f));   // 크기 설정 (텍스트 영역)
-	textUI->SetText(L"Hello World!");         // 출력할 텍스트 설정
+	textUI->SetMode(TextUIMode::NUMBER);
+	textUI->SetText(L"");					  // 출력할 텍스트 설정
 	textUI->SetFontSize(24);                  // 폰트 크기 설정
-	textUI->SetGdiPlusTextColor(Gdiplus::Color(255, 255, 0, 0)); // GDI+용 빨간색 설정
+	textUI->SetGdiPlusTextColor(Gdiplus::Color(255, 255, 0, 255)); // GDI+용 빨간색 설정
+	textUI->SetDrawOutline(true);             // 외곽선 활성화
+	textUI->SetOutlineThickness(4.0f);        // 외곽선 두께 설정
+	textUI->SetGdiPlusOutlineColor(Gdiplus::Color(0, 0, 0)); // 외곽선 색상(GDI+)
 	AddObject(textUI, GROUP_TYPE::UI);
+
+	CTextUI* textUI2 = new CTextUI();
+	textUI2->SetPos(Vec2(100.f, 200.0f));      // 위치 설정(좌상단)
+	textUI2->SetScale(Vec2(300.0f, 100.0f));   // 크기 설정 (텍스트 영역)
+	textUI2->SetMode(TextUIMode::TEXT);
+	textUI2->SetText(L"Hello World!");         // 출력할 텍스트 설정
+	textUI2->SetFontSize(24);                  // 폰트 크기 설정
+	textUI2->SetGdiPlusTextColor(Gdiplus::Color(255, 255, 0, 255)); // GDI+용 빨간색 설정
+	textUI2->SetDrawOutline(true);             // 외곽선 활성화
+	textUI2->SetOutlineThickness(4.0f);        // 외곽선 두께 설정
+	textUI2->SetGdiPlusOutlineColor(Gdiplus::Color(0, 0, 0)); // 외곽선 색상(GDI+)
+	AddObject(textUI2, GROUP_TYPE::UI);
 
 	CCamera::GetInstance()->SetLookAt(vResolution / 2.f);
 }

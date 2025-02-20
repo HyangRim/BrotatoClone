@@ -48,7 +48,6 @@ void CTimeMgr::update()
 	}
 #endif // _DEBUG
 	*/
-
 }
 
 void CTimeMgr::render()
