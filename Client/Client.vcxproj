@@ -198,6 +198,7 @@
     <ClInclude Include="CScene_Tool.h" />
     <ClInclude Include="CSound.h" />
     <ClInclude Include="CSoundMgr.h" />
+    <ClInclude Include="CSpriteUI.h" />
     <ClInclude Include="CState.h" />
     <ClInclude Include="CTextUI.h" />
     <ClInclude Include="CTexture.h" />
@@ -253,6 +254,7 @@
     <ClCompile Include="CScene_Tool.cpp" />
     <ClCompile Include="CSound.cpp" />
     <ClCompile Include="CSoundMgr.cpp" />
+    <ClCompile Include="CSpriteUI.cpp" />
     <ClCompile Include="CState.cpp" />
     <ClCompile Include="CTextUI.cpp" />
     <ClCompile Include="CTexture.cpp" />

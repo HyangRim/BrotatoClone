@@ -64,7 +64,6 @@ void CTexture::Load(const wstring& _strFilePath)
 
 	m_pGraphics = new Gdiplus::Graphics(m_pBitmap);
 	assert(m_pGraphics != nullptr);
-	
 }
 
 void CTexture::Create(UINT _iWidth, UINT _iHeight)

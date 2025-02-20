@@ -101,6 +101,9 @@
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CSoundMgr.cpp"
 
 
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CSpriteUI.cpp"
+
+
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CState.cpp"
 
 

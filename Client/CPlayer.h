@@ -15,7 +15,6 @@ class CWeapon;
 class CPlayer :
     public CObject
 {
-
 private:
     vector<CObject*>        m_vecColObj;
     vector<CWeapon*>        m_vecWeapon;        //플레이어가 가지고 있는 Weapon벡터. 
@@ -23,8 +22,6 @@ private:
     PLAYER_STATE            m_ePrevState;
     int                     m_iDir;
     int                     m_iPrevDir;
-
-
 
 public:
     virtual void update();
