@@ -178,6 +178,8 @@
     <ClInclude Include="CGround.h" />
     <ClInclude Include="CIdleState.h" />
     <ClInclude Include="CkeyMgr.h" />
+    <ClInclude Include="CKnife.h" />
+    <ClInclude Include="CKnifeAI.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="CMonFactory.h" />
     <ClInclude Include="CMonster.h" />
@@ -232,6 +234,8 @@
     <ClCompile Include="CGround.cpp" />
     <ClCompile Include="CIdleState.cpp" />
     <ClCompile Include="CkeyMgr.cpp" />
+    <ClCompile Include="CKnife.cpp" />
+    <ClCompile Include="CKnifeAI.cpp" />
     <ClCompile Include="CMonFactory.cpp" />
     <ClCompile Include="CMonster.cpp" />
     <ClCompile Include="CObject.cpp" />

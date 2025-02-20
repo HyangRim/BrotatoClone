@@ -86,3 +86,12 @@ void LoadWstring(wstring& _str, FILE* _pFile)
 
 	_str = szBuffer;
 }
+
+Vec2 lerp(const Vec2& a, const Vec2& b, float t)
+{
+	Vec2 result;
+	result.x = a.x + t * (b.x - a.x);
+	result.y = a.y + t * (b.y - a.y);
+
+	return result;
+}

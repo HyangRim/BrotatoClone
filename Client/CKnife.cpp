@@ -1,0 +1,113 @@
+#include "pch.h"
+#include "CScene.h"
+#include "CSceneMgr.h"
+#include "CObject.h"
+#include "CPlayer.h"
+#include "CCollider.h"
+#include "CKnife.h"
+#include "CKnifeAI.h"
+
+#include "CTimeMgr.h"
+
+CKnife::CKnife()
+	: m_fCoolTime(0.f)
+	, m_Speed(800.f)
+	, m_fwieldDuration(0.15f)
+	, m_fwieldElapsed(0.f)
+	, m_pAI(nullptr)
+{
+	tWeaponInfo	tInfo = {};
+
+	tInfo.m_sName = L"Knife";
+	tInfo.m_eType = WEAPON_TYPE::KNIFE;
+	tInfo.m_fCooldown = 1.01f;
+	tInfo.m_fCritialDMG = 2.5f;
+	tInfo.m_fCritialAcc = 20;
+	tInfo.m_fRecogRange = 150;
+	tInfo.m_iPenet = 1;
+	tInfo.m_iDMG = 12;
+
+	SetInfo(tInfo);
+	SetScale(Vec2(10.f, 10.f));
+	CreateCollider();
+	GetCollider()->SetScale(GetScale());
+	m_pPlayer = (CPlayer*)CSceneMgr::GetInstance()->GetCurScene()->GetPlayer();
+}
+
+CKnife::~CKnife()
+{
+}
+
+void CKnife::update()
+{
+	if (nullptr == m_pAI) {
+		//타겟 몬스터 선정하기.
+		CWeapon::update();
+
+		//무기는 임시로 플레이어 옆에 있어요. 
+		Vec2 vPlayerPos = m_pPlayer->GetPos();
+		SetPos(Vec2(vPlayerPos.x + 30.f, vPlayerPos.y - 15.f));
+
+		m_fCoolTime += fDT;
+
+		if (nullptr != GetTarget() && (Getinfo().m_fCooldown < m_fCoolTime)) {
+			Vec2 targetPos = GetTarget()->GetPos();
+			Vec2 direction = targetPos - GetPos();
+
+			//또한 사거리 안에 있을 때. 
+			if (direction.Length() <= Getinfo().m_fRecogRange) {
+				direction.Normalize();
+				ShotMissile(direction);
+
+				m_fCoolTime = 0.f;
+			}
+		}
+	}
+	else {
+		m_fwieldElapsed += fDT;
+
+		// 0 ~ 2까지.
+		// 0 ~ 1은 타겟지점까지 가는 것.
+		// 1 ~ 2는 타겟지점에서 돌아오는 것. 
+		float fProgress = (m_fwieldElapsed / (m_fwieldDuration * 0.5f));
+
+		if (fProgress <= 1) {
+			// 0 ~ 1 
+			m_pAI->update(fProgress);
+		}
+		else {
+			// 1 ~ 2
+			m_pAI->update(1.f - (fProgress - 1.f));
+		}
+
+
+		if (m_fwieldElapsed > m_fwieldDuration) {
+			delete m_pAI;
+			m_pAI = nullptr;
+			m_fwieldElapsed = 0.f;
+		}
+	}
+}
+
+void CKnife::ShotMissile(Vec2 _vDir)
+{
+	m_pAI = new CKnifeAI;
+	m_pAI->SetOriginPos(GetPos());
+	Vec2 vTargetPos = _vDir * Getinfo().m_fRecogRange;
+	m_pAI->SetTargetPos(vTargetPos);
+}
+
+
+void CKnife::render(Gdiplus::Graphics* _pDGraphics)
+{
+	Vec2 vPos = GetPos();
+	Vec2 vRenderPos = CCamera::GetInstance()->GetRenderPos(vPos);
+	Vec2 vScale = GetScale();
+	Pen pen(Color(255, 255, 0, 0), 2.0f);
+	_pDGraphics->DrawEllipse(&pen,
+		vRenderPos.x - vScale.x / 2.f,
+		vRenderPos.y - vScale.y / 2.f,
+		vScale.x,
+		vScale.y);
+}
+

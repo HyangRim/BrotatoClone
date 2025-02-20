@@ -63,3 +63,5 @@ void Fscanf(char* _pOutBuff, FILE* _pFile);
 
 void SaveWstring(const wstring& _str, FILE* _pFile);
 void LoadWstring(wstring& _str, FILE* _pFile);
+
+Vec2 lerp(const Vec2& a, const Vec2& b, float t);

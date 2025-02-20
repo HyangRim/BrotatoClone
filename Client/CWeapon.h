@@ -13,6 +13,8 @@ struct tWeaponInfo {
 };
 
 class CTexture;
+class CPlayer;
+class CScene;
 
 class CWeapon :
     public CObject
@@ -21,6 +23,13 @@ class CWeapon :
 private:
     Vec2            m_vRotation;
     tWeaponInfo     m_tWeaponInfo;
+    CTexture*       m_pTexture;
+    CObject*        m_pTarget;
+    CScene*         m_pCurScene;
+
+
+protected:
+    CPlayer*        m_pPlayer;
 
 
 public:
@@ -28,12 +37,19 @@ public:
     void SetInfo(const tWeaponInfo& _info) {
         m_tWeaponInfo = _info;
     }
+
+    virtual void ShotMissile(Vec2 _vDir);
+
+    CObject* GetTarget() { return m_pTarget; }
+
+private:
+    CObject* SpecTarget();
+    
     
 public:
     virtual void update();
     virtual void render(Gdiplus::Graphics* _pDGraphics);
     
-
 public:
     CWeapon();
     virtual ~CWeapon();

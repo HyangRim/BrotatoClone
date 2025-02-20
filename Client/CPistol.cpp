@@ -1,2 +1,86 @@
 #include "pch.h"
+#include "CObject.h"
+#include "CCollider.h"
+#include "CPlayer.h"
+#include "CMissile.h"
 #include "CPistol.h"
+#include "CScene.h"
+#include "CTimeMgr.h"
+#include "CSceneMgr.h"
+
+CPistol::CPistol()
+	: m_fCoolTime(0.f)
+{
+	tWeaponInfo	tInfo = {};
+
+	tInfo.m_sName = L"Pistol";
+	tInfo.m_eType = WEAPON_TYPE::PISTOL;
+	tInfo.m_fCooldown = 1.2f;
+	tInfo.m_fCritialDMG = 2.f;
+	tInfo.m_fCritialAcc = 5;
+	tInfo.m_fRecogRange = 400;
+	tInfo.m_iPenet = 1;
+	tInfo.m_iDMG = 12;
+
+	SetInfo(tInfo);
+	SetScale(Vec2(10.f, 10.f));
+	m_pPlayer = (CPlayer*)CSceneMgr::GetInstance()->GetCurScene()->GetPlayer();
+}
+
+CPistol::~CPistol()
+{
+}
+void CPistol::update()
+{
+	//타겟 몬스터 선정하기.
+	CWeapon::update();
+
+	//무기는 임시로 플레이어 옆에 있어요. 
+	Vec2 vPlayerPos = m_pPlayer->GetPos();
+	SetPos(Vec2(vPlayerPos.x - 30.f, vPlayerPos.y - 15.f));
+
+	m_fCoolTime += fDT;
+
+	//쿨타임 주기마다 AND 타겟이 있을 때 타겟을 향해 총을 쏜다. 
+	if (nullptr != GetTarget() && (Getinfo().m_fCooldown < m_fCoolTime)) {
+		Vec2 targetPos = GetTarget()->GetPos();
+		Vec2 direction = targetPos - GetPos();
+
+		//또한 사거리 안에 있을 때. 
+		if (direction.Length() <= Getinfo().m_fRecogRange) {
+			direction.Normalize();
+			ShotMissile(direction);
+
+			m_fCoolTime = 0.f;
+		}
+	}
+
+
+}
+
+void CPistol::render(Gdiplus::Graphics* _pDGraphics)
+{
+	Vec2 vPos = GetPos();
+	Vec2 vRenderPos = CCamera::GetInstance()->GetRenderPos(vPos);
+	Vec2 vScale = GetScale();
+	Pen pen(Color(255, 0, 0, 255), 2.0f);
+	_pDGraphics->DrawEllipse(&pen,
+		vRenderPos.x - vScale.x / 2.f,
+		vRenderPos.y - vScale.y / 2.f,
+		vScale.x,
+		vScale.y);
+}
+
+void CPistol::ShotMissile(Vec2 _vDir)
+{
+	CMissile* pMissile = new CMissile;
+
+	pMissile->SetName(L"Missile_Player");
+	pMissile->SetPos(GetPos());
+	pMissile->SetScale(Vec2(5.f, 5.f));
+	pMissile->SetDir(_vDir);
+	
+	CreateObject(pMissile, GROUP_TYPE::PROJ_PLAYER);
+}
+
+
