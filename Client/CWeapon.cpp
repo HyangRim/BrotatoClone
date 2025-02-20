@@ -38,6 +38,7 @@ CObject* CWeapon::SpecTarget()
 	const vector<CObject*>& vecMonObj = m_pCurScene->GetGroupObject(GROUP_TYPE::MONSTER);
 
 	for (const auto MonObj : vecMonObj) {
+		if (MonObj->IsDead()) continue;
 		Vec2 vPos = GetPos();
 		Vec2 vMonPos = MonObj->GetPos();
 

@@ -19,6 +19,7 @@ CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
 	{
 		pMon = new CMonster;
 		pMon->SetPos(_vPos);
+		pMon->SetName(L"Monster");
 
 		tMonInfo info = {};
 		info.m_eMonType = _eType;

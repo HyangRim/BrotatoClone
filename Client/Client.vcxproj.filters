@@ -158,6 +158,15 @@
     <Filter Include="Engine\05. Scene\Scene_Test">
       <UniqueIdentifier>{a9e2ddd9-a5d6-49cc-84cb-848bcfe34e29}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\04. Object\Weapon\Knife">
+      <UniqueIdentifier>{66989b37-3b88-4bc5-8721-593aa7e40e8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Object\Weapon\Slingshot">
+      <UniqueIdentifier>{f500a74b-a121-414f-8e05-a57abead31c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Object\Missile\SlingShot_Missile">
+      <UniqueIdentifier>{c5059d81-c365-407c-a2d0-6731a1e4e890}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h">
@@ -317,6 +326,18 @@
     <ClInclude Include="CScene_Test.h">
       <Filter>Engine\05. Scene\Scene_Test</Filter>
     </ClInclude>
+    <ClInclude Include="CKnife.h">
+      <Filter>Engine\04. Object\Weapon\Knife</Filter>
+    </ClInclude>
+    <ClInclude Include="CKnifeAI.h">
+      <Filter>Engine\04. Object\Weapon\Knife</Filter>
+    </ClInclude>
+    <ClInclude Include="CSlingshot.h">
+      <Filter>Engine\04. Object\Weapon\Slingshot</Filter>
+    </ClInclude>
+    <ClInclude Include="CSlingShot_Missile.h">
+      <Filter>Engine\04. Object\Missile\SlingShot_Missile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -467,6 +488,18 @@
     </ClCompile>
     <ClCompile Include="CScene_Test.cpp">
       <Filter>Engine\05. Scene\Scene_Test</Filter>
+    </ClCompile>
+    <ClCompile Include="CKnife.cpp">
+      <Filter>Engine\04. Object\Weapon\Knife</Filter>
+    </ClCompile>
+    <ClCompile Include="CKnifeAI.cpp">
+      <Filter>Engine\04. Object\Weapon\Knife</Filter>
+    </ClCompile>
+    <ClCompile Include="CSlingshot.cpp">
+      <Filter>Engine\04. Object\Weapon\Slingshot</Filter>
+    </ClCompile>
+    <ClCompile Include="CSlingShot_Missile.cpp">
+      <Filter>Engine\04. Object\Missile\SlingShot_Missile</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
