@@ -7,6 +7,9 @@ class CMissile :
 private:
     float    m_fTheta;
     Vec2     m_vDir;//미사일 방향
+    int      m_iDamage;
+    float    m_fLifeTime;
+    float    m_fLifeElapsedTime;
 
 public:
     virtual void update();
@@ -18,6 +21,9 @@ public:
     { 
         m_vDir = _vDir; 
         m_vDir.Normalize();
+    }
+    void SetDamage(int _iDamage) {
+        m_iDamage = _iDamage;
     }
 
 public:

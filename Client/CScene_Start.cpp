@@ -10,6 +10,10 @@
 #include "CPathMgr.h"
 #include "CSoundMgr.h"
 
+
+#include "CWeapon.h"
+#include "CPistol.h"
+
 #include "CkeyMgr.h"
 #include "CSceneMgr.h"
 #include "CCamera.h"
@@ -143,6 +147,10 @@ void CScene_Start::Enter()
 
 	AddObject(pObj, GROUP_TYPE::PLAYER);
 	RegisterPlayer(pObj);
+
+	//무기 추가.
+	CWeapon* pWeapon = new CPistol;
+	((CPlayer*)GetPlayer())->AddWeapon(pWeapon);
 
 	CMonster* pMon = CMonFactory::CreateMonster(MON_TYPE::NORMAL, vResolution / 2.f - Vec2(0.f, 300.f));
 	AddObject(pMon, GROUP_TYPE::MONSTER);
