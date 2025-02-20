@@ -25,8 +25,8 @@ void CMissile::update()
 {
 	Vec2 vPos = GetPos();
 	//일시정지, 중단점 걸었을 때 정상적으로 가기. 
-	vPos.x += 400.f * fDT * m_vDir.x;
-	vPos.y += 400.f * fDT * m_vDir.y;
+	vPos.x += 500.f * fDT * m_vDir.x;
+	vPos.y += 500.f * fDT * m_vDir.y;
 
 	m_fLifeElapsedTime += fDT;
 

@@ -13,6 +13,8 @@
 
 #include "CWeapon.h"
 #include "CPistol.h"
+#include "CKnife.h"
+#include "CSlingshot.h"
 
 #include "CkeyMgr.h"
 #include "CSceneMgr.h"
@@ -148,13 +150,27 @@ void CScene_Start::Enter()
 	AddObject(pObj, GROUP_TYPE::PLAYER);
 	RegisterPlayer(pObj);
 
-	//무기 추가.
-	CWeapon* pWeapon = new CPistol;
-	((CPlayer*)GetPlayer())->AddWeapon(pWeapon);
+	CWeapon* pWeapon = nullptr;
+	//무기 권총 추가. 
+	//pWeapon = new CPistol;
+	//((CPlayer*)GetPlayer())->AddWeapon(pWeapon);
+
+	//무기 단검 추가. 
+	//pWeapon = new CKnife;
+	//((CPlayer*)GetPlayer())->AddWeapon(pWeapon);
+
+	//무기 새총 추가.
+	//pWeapon = new CSlingshot;
+	//((CPlayer*)GetPlayer())->AddWeapon(pWeapon);
 
 	CMonster* pMon = CMonFactory::CreateMonster(MON_TYPE::NORMAL, vResolution / 2.f - Vec2(0.f, 300.f));
 	AddObject(pMon, GROUP_TYPE::MONSTER);
+
+	pMon = CMonFactory::CreateMonster(MON_TYPE::NORMAL, vResolution / 2.f - Vec2(-200.f, 300.f));
+	AddObject(pMon, GROUP_TYPE::MONSTER);
 	
+
+
 	//Enter은 몰라고 update에서는 CreateObject로 해야함...
 	//CreateObject(pMon, Object_type::MONSTER):
 
@@ -175,6 +191,7 @@ void CScene_Start::Enter()
 
 	//이제 새로운 충돌이 발생할수도 있음. 
 	CCollisionMgr::GetInstance()->CheckGroup(GROUP_TYPE::PLAYER, GROUP_TYPE::MONSTER);
+	CCollisionMgr::GetInstance()->CheckGroup(GROUP_TYPE::WEAPON, GROUP_TYPE::MONSTER);
 	CCollisionMgr::GetInstance()->CheckGroup(GROUP_TYPE::PROJ_PLAYER, GROUP_TYPE::MONSTER);
 	CCollisionMgr::GetInstance()->CheckGroup(GROUP_TYPE::GROUND, GROUP_TYPE::PLAYER);
 	CCollisionMgr::GetInstance()->CheckGroup(GROUP_TYPE::DROP_ITEM, GROUP_TYPE::PLAYER);

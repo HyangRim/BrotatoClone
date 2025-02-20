@@ -27,7 +27,7 @@ CPlayer::CPlayer()
 
 	CreateCollider();
 	GetCollider()->SetOffsetPos(Vec2(0.f, 15.f));
-	GetCollider()->SetScale(Vec2(25.f, 25.f));
+	GetCollider()->SetScale(Vec2(15.f, 15.f));
 
 	CreateRigidBody();
 
@@ -85,7 +85,9 @@ CPlayer::CPlayer()
 
 CPlayer::~CPlayer()
 {
-
+	for (auto weapon : m_vecWeapon) {
+		delete weapon;
+	}
 }
 
 void CPlayer::update()

@@ -196,6 +196,8 @@
     <ClInclude Include="CScene_Start.h" />
     <ClInclude Include="CScene_Test.h" />
     <ClInclude Include="CScene_Tool.h" />
+    <ClInclude Include="CSlingshot.h" />
+    <ClInclude Include="CSlingShot_Missile.h" />
     <ClInclude Include="CSound.h" />
     <ClInclude Include="CSoundMgr.h" />
     <ClInclude Include="CSpriteUI.h" />
@@ -252,6 +254,8 @@
     <ClCompile Include="CScene_Start.cpp" />
     <ClCompile Include="CScene_Test.cpp" />
     <ClCompile Include="CScene_Tool.cpp" />
+    <ClCompile Include="CSlingshot.cpp" />
+    <ClCompile Include="CSlingShot_Missile.cpp" />
     <ClCompile Include="CSound.cpp" />
     <ClCompile Include="CSoundMgr.cpp" />
     <ClCompile Include="CSpriteUI.cpp" />

@@ -48,7 +48,7 @@ void CMonster::OnCollisionEnter(CCollider* _pOther)
 	CObject* pOtherObj = _pOther->GetObj();
 
 	
-	if (pOtherObj->GetName() == L"Missile_Player") {
+	if (pOtherObj->GetName() == L"Missile_Player" || pOtherObj->GetName() == L"Knife") {
 		m_tInfo.m_iHP -= 1;
 
 		if (m_tInfo.m_iHP <= 0) {

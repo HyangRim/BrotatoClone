@@ -102,6 +102,7 @@ enum class MON_STATE {
 enum class WEAPON_TYPE {
 	PISTOL,
 	KNIFE,
+	SLINGSHOT,
 	END,
 };
 

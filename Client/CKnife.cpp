@@ -12,12 +12,12 @@
 CKnife::CKnife()
 	: m_fCoolTime(0.f)
 	, m_Speed(800.f)
-	, m_fwieldDuration(0.15f)
+	, m_fwieldDuration(0.25f)
 	, m_fwieldElapsed(0.f)
 	, m_pAI(nullptr)
 {
 	tWeaponInfo	tInfo = {};
-
+	SetName(L"Knife");
 	tInfo.m_sName = L"Knife";
 	tInfo.m_eType = WEAPON_TYPE::KNIFE;
 	tInfo.m_fCooldown = 1.01f;
@@ -53,11 +53,14 @@ void CKnife::update()
 		if (nullptr != GetTarget() && (Getinfo().m_fCooldown < m_fCoolTime)) {
 			Vec2 targetPos = GetTarget()->GetPos();
 			Vec2 direction = targetPos - GetPos();
+			Vec2 thisPos = GetPos();
 
 			//또한 사거리 안에 있을 때. 
 			if (direction.Length() <= Getinfo().m_fRecogRange) {
 				direction.Normalize();
-				ShotMissile(direction);
+				targetPos.x = GetPos().x + direction.x * Getinfo().m_fRecogRange;
+				targetPos.y = GetPos().y + direction.y * Getinfo().m_fRecogRange;
+				ShotMissile(targetPos);
 
 				m_fCoolTime = 0.f;
 			}
@@ -93,8 +96,9 @@ void CKnife::ShotMissile(Vec2 _vDir)
 {
 	m_pAI = new CKnifeAI;
 	m_pAI->SetOriginPos(GetPos());
-	Vec2 vTargetPos = _vDir * Getinfo().m_fRecogRange;
-	m_pAI->SetTargetPos(vTargetPos);
+	//Vec2 vTargetPos = _vDir * Getinfo().m_fRecogRange;
+	m_pAI->SetTargetPos(_vDir);
+	m_pAI->SetOwner(this);
 }
 
 
