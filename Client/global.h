@@ -10,6 +10,12 @@
 #include <Windows.h>
 #include <ctime>
 #include <iostream>
+#include <d2d1.h>
+#include <wincodec.h>
+
+
+#pragma comment(lib, "d2d1.lib")
+#pragma comment(lib, "windowscodecs.lib")
 
 #include <vector>
 using std::vector;

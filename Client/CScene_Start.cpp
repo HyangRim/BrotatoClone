@@ -28,7 +28,7 @@
 #include "CTimeMgr.h"
 #include "CGround.h"
 
-
+#include "Direct2DMgr.h"
 
 
 CScene_Start::CScene_Start()
@@ -137,8 +137,6 @@ void CScene_Start::render(Gdiplus::Graphics* _pDGraphics)
 
 void CScene_Start::Enter()
 {
-	CreateTile(18, 18);
-
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
 	//Object 추가.
 	//실제 생성된 객체는 플레이어, 주소를 받은 건 부모 클래스. 
@@ -185,7 +183,6 @@ void CScene_Start::Enter()
 	//Player 그룹과 Monster그룹간의 충돌 체크 
 	//update에서 로직, finalupdate에서 최종 움직임 완료
 
-
 	//사운드 추가
 	CSoundMgr::GetInstance()->AddSound(L"Extend", L"sound\\extend.wav", false, false);
 
@@ -202,7 +199,7 @@ void CScene_Start::Enter()
 	//Camera 효과 지점. 
 	CCamera::GetInstance()->FadeOut(1.f);
 	CCamera::GetInstance()->FadeIn(1.f);
-
+	
 	start();
 }
 

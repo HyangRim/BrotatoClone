@@ -137,6 +137,9 @@
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CWeapon.cpp"
 
 
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\Direct2DMgr.cpp"
+
+
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\func.cpp"
 
 

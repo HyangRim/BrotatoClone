@@ -170,6 +170,9 @@
     <Filter Include="Engine\04. Object\UI\SpriteUI">
       <UniqueIdentifier>{eddfd97b-f7a9-4c49-be53-087f84da7388}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\03. Manager\Direct2DMgr">
+      <UniqueIdentifier>{a69ebb5c-b8ec-456f-9b5c-6c6eb5c9d06c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h">
@@ -344,6 +347,9 @@
     <ClInclude Include="CSpriteUI.h">
       <Filter>Engine\04. Object\UI\SpriteUI</Filter>
     </ClInclude>
+    <ClInclude Include="Direct2DMgr.h">
+      <Filter>Engine\03. Manager\Direct2DMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -509,6 +515,9 @@
     </ClCompile>
     <ClCompile Include="CSpriteUI.cpp">
       <Filter>Engine\04. Object\UI\SpriteUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Direct2DMgr.cpp">
+      <Filter>Engine\03. Manager\Direct2DMgr</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

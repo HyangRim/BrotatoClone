@@ -5,6 +5,7 @@ class CScene_Start :
 {
 
 private:
+    ID2D1Bitmap* g_pBitmap; // 전역 또는 멤버 변수로 선언
     Vec2    m_vForcePos;
     float   m_fForceRadius;
     float   m_fCurRadius;

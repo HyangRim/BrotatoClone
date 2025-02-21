@@ -14,6 +14,7 @@
 #include "CTexture.h"
 #include "CResMgr.h"
 #include "CSoundMgr.h"
+#include "Direct2DMgr.h"
 #include "CFontMgr.h"
 
 #include "SelectGDI.h"
@@ -35,8 +36,6 @@ CCore::~CCore() {
 	//m_hWnd에 엮여있던 m_hDC를 해제해준다. 
 	ReleaseDC(m_hWnd, m_hDC);
 
-
-	
 	for (auto penIDX = 0; penIDX < (UINT)PEN_TYPE::END; penIDX++) {
 		DeleteObject(m_arrPen[penIDX]);
 	}
@@ -64,11 +63,9 @@ int CCore::init(HWND _hWnd, POINT _ptResolution) {
 	m_hDC = GetDC(m_hWnd);
 	m_pGraphics = new Gdiplus::Graphics(m_hDC);
 
-
-
 	//이중 버퍼링 용도의 텍스쳐 한 장을 만든다. 
-	//m_pMemTex = CResMgr::GetInstance()->CreateTexture(L"BackBuffer", (UINT)(m_ptResolution.x), (UINT)(m_ptResolution.y));
-	//m_pDGraphics = new Gdiplus::Graphics(m_pMemTex->GetDC());
+	m_pMemTex = CResMgr::GetInstance()->CreateTexture(L"BackBuffer", (UINT)(m_ptResolution.x), (UINT)(m_ptResolution.y));
+	m_pDGraphics = new Gdiplus::Graphics(m_pMemTex->GetDC());
 	RECT psRect;
 	
 	GetClientRect(m_hWnd, &psRect);
@@ -82,13 +79,19 @@ int CCore::init(HWND _hWnd, POINT _ptResolution) {
 
 	//Manager initialize
 	CPathMgr::GetInstance()->init();
-	CTimeMgr::GetInstance()->init();
-	CkeyMgr::GetInstance()->init();
-	CSoundMgr::GetInstance()->init();
-	CCamera::GetInstance()->init();
-	CSceneMgr::GetInstance()->init();
-	CFontMgr::GetInstance()->init();
 
+	CTimeMgr::GetInstance()->init();
+
+	CkeyMgr::GetInstance()->init();
+
+	CSoundMgr::GetInstance()->init();
+
+	CCamera::GetInstance()->init();
+	Direct2DMgr::GetInstance()->init(m_hWnd);
+	CSceneMgr::GetInstance()->init();
+
+
+	CFontMgr::GetInstance()->init();
 
 	return S_OK;
 }
@@ -137,7 +140,7 @@ void CCore::progress() {
 	//CCamera::GetInstance()->render(m_pDGraphics);
 
 	//m_DGraphics
-	//m_pGraphics->DrawImage(m_pMemTex->GetBitmap(), 0, 0, m_ptResolution.x, m_ptResolution.y);
+	m_pGraphics->DrawImage(m_pMemTex->GetBitmap(), 0, 0, m_ptResolution.x, m_ptResolution.y);
 	//GDI(Legacy 방식)
 	//BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y, m_pMemTex->GetDC(), 0, 0, SRCCOPY);
 	
@@ -174,7 +177,6 @@ void CCore::ChangeWindowSize(Vec2 _vResolution, bool _bMenu)
 	RECT rt = { 0,0,(long)_vResolution.x, (long)_vResolution.y };
 	AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, _bMenu);
 	SetWindowPos(m_hWnd, nullptr, 100, 100, rt.right - rt.left, rt.bottom - rt.top, 0);
-
 }
 
 
@@ -182,6 +184,8 @@ void CCore::ChangeWindowSize(Vec2 _vResolution, bool _bMenu)
 void CCore::Clear()
 {
 	m_pDGraphics->Clear(Color(255, 120, 120, 120));
+	//SelectGDI gdi(m_pMemTex->GetDC(), BRUSH_TYPE::BLACK);
+	//Rectangle(m_pMemTex->GetDC(), -1, -1, m_ptResolution.x + 1, m_ptResolution.y + 1);
 }
 
 void CCore::CreateBrushPen()

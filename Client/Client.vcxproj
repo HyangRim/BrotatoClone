@@ -211,6 +211,7 @@
     <ClInclude Include="CUIMgr.h" />
     <ClInclude Include="CWeapon.h" />
     <ClInclude Include="define.h" />
+    <ClInclude Include="Direct2DMgr.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="CMissile.h" />
     <ClInclude Include="func.h" />
@@ -268,6 +269,7 @@
     <ClCompile Include="CUI.cpp" />
     <ClCompile Include="CUIMgr.cpp" />
     <ClCompile Include="CWeapon.cpp" />
+    <ClCompile Include="Direct2DMgr.cpp" />
     <ClCompile Include="func.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="CMissile.cpp" />

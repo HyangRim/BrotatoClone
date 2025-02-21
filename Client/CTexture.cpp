@@ -77,8 +77,8 @@ void CTexture::Create(UINT _iWidth, UINT _iHeight)
 	DeleteObject(holdBit);
 
 	//비트맵 정보 알아오기. 
-	GetObject(m_hBit, sizeof(BITMAP), &m_bitInfo);
-	*/
+	GetObject(m_hBit, sizeof(BITMAP), &m_bitInfo);*/
+	
 	
 	m_pBitmap = new Gdiplus::Bitmap(_iWidth, _iHeight);
 	assert(nullptr != m_pBitmap);
@@ -88,5 +88,4 @@ void CTexture::Create(UINT _iWidth, UINT _iHeight)
 
 	m_pGraphics = new Gdiplus::Graphics(m_pBitmap);
 	assert(m_pGraphics != nullptr);
-	
 }

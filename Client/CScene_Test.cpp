@@ -8,6 +8,7 @@
 #include "CFontMgr.h"
 #include "CTextUI.h"
 #include "CSpriteUI.h"
+#include "Direct2DMgr.h"
 
 CScene_Test::CScene_Test()
 	: m_fAcc(0.f)
@@ -33,11 +34,33 @@ void CScene_Test::finalupdate()
 
 void CScene_Test::render(HDC _dc)
 {
-	//CScene::render(_dc);
+	CScene::render(_dc);
+
+	// Direct2DMgr 인스턴스 가져오기
+	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+
+	if (pD2DMgr) {
+		ID2D1HwndRenderTarget* pRenderTarget = pD2DMgr->GetRenderTarget();
+		if (pRenderTarget) {
+			D2D1_SIZE_F renderTargetSize = pRenderTarget->GetSize();
+
+			// 출력 위치 및 크기 설정
+			D2D1_RECT_F destRect = D2D1::RectF(
+				0.0f,
+				0.0f,
+				512,
+				512
+			);
+
+			// 저장된 비트맵 렌더링 호출
+			pD2DMgr->RenderStoredBitmap(destRect);
+		}
+	}
 }
 
 void CScene_Test::render(Gdiplus::Graphics* _pDGraphics)
 {
+	// 부모 클래스의 render 호출
 	CScene::render(_pDGraphics);
 }
 
@@ -94,6 +117,22 @@ void ShutdownGDIPlus(ULONG_PTR token) {
 
 void CScene_Test::Enter()
 {
+	// Direct2DMgr 인스턴스 가져오기
+	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+
+
+	if (pD2DMgr) {
+		// PNG 파일 경로 설정
+		std::wstring filePath = L"C:\\Users\\c\\source\\repos\\HyangRim\\BrotatoClone\\Output\\bin\\content\\texture\\result1.png";
+
+		// 비트맵 로드 및 저장
+		HRESULT hr = pD2DMgr->LoadAndStoreBitmap(filePath);
+		if (FAILED(hr)) {
+			MessageBox(nullptr, L"PNG 파일 로드 실패!", L"오류", MB_OK);
+		}
+	}
+
+
 
 	/*
 	// GDI+ 초기화
