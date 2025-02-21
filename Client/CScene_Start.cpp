@@ -137,6 +137,7 @@ void CScene_Start::render(Gdiplus::Graphics* _pDGraphics)
 
 void CScene_Start::Enter()
 {
+	CreateTile(18, 18);
 
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
 	//Object Ãß°¡.
