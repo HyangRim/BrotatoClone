@@ -8,8 +8,7 @@
 #include "CPathMgr.h"
 #include "CCamera.h"
 #include "CCore.h"
-
-
+#include "CTexture.h"
 
 
 CScene::CScene()
@@ -97,11 +96,13 @@ void CScene::render(HDC _dc)
 
 void CScene::render(Gdiplus::Graphics* _pDGraphics)
 {
+	
 	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; typeIDX++) {
+		/*
 		if ((UINT)GROUP_TYPE::TILE == typeIDX && (GetGroupObject(GROUP_TYPE::TILE).size() > 0)) {
 			render_tile(_pDGraphics);
 			continue;
-		}
+		}*/
 		/*
 		if ((UINT)GROUP_TYPE::MONSTER == typeIDX) {
 			render_monster(_dc);
@@ -163,7 +164,6 @@ void CScene::render_tile(HDC _dc)
 
 void CScene::render_tile(Gdiplus::Graphics* _pDGraphics)
 {
-
 	const vector<CObject*> vecTile = GetGroupObject(GROUP_TYPE::TILE);
 	//화면 안에 들어오는 애들의 범위를 잡아내어, 들어오는 애들만 렌더링 해준다. 
 	Vec2 vCamLook = CCamera::GetInstance()->GetLookAt();
@@ -193,7 +193,6 @@ void CScene::render_tile(Gdiplus::Graphics* _pDGraphics)
 
 			vecTile[iIdx]->render(_pDGraphics);
 		}
-
 	}
 }
 
@@ -223,8 +222,8 @@ void CScene::CreateTile(UINT _IXCount, UINT _IYCount)
 	m_iTileY = _IYCount;
 
 	//타일 생성
-	CTexture* pTileTex = CResMgr::GetInstance()->LoadTexture(L"Tile", L"texture\\tera2.bmp");
-	
+	//CTexture* pTileTex = CResMgr::GetInstance()->LoadTexture(L"Tile", L"texture\\tera2.bmp");
+	CTexture* pTileTex = CResMgr::GetInstance()->LoadTexture(L"Tile Outline", L"texture\\result2.png");
 	for (UINT tileIDX = 0; tileIDX < _IYCount; tileIDX++) {
 		for (UINT tileJDX = 0; tileJDX < _IXCount; tileJDX++) {
 			CTile* pTile = new CTile();
@@ -232,7 +231,86 @@ void CScene::CreateTile(UINT _IXCount, UINT _IYCount)
 			pTile->SetPos(Vec2((float)(tileJDX * TILE_SIZE), (float)(tileIDX * TILE_SIZE)));
 			pTile->SetTexture(pTileTex);
 
+			if (tileIDX > 0 && tileIDX < m_iTileX - 1 && tileJDX > 0 && tileJDX < m_iTileY - 1)
+			{
+				int tmp = rand() % 64;
+				int col = tmp / 8;
+				int row = tmp % 8;
 
+				while (col == 0 || col == 7 || 
+					row == 0 || row == 7)
+				{
+					tmp = rand() % 64;
+					col = tmp / 8;
+					row = tmp % 8;
+				}
+
+				pTile->SetImgIdx(tmp);
+			}
+
+			if (tileIDX == 0 && tileJDX == 0) pTile->SetImgIdx(0);
+			if (tileIDX == 0 && tileJDX == 17) pTile->SetImgIdx(7);
+			if (tileIDX == 17 && tileJDX == 0) pTile->SetImgIdx(56);
+			if (tileIDX == 17 && tileJDX == 17) pTile->SetImgIdx(63);
+
+			if (tileIDX == 0 && tileJDX != 0 && tileJDX != 17)
+			{
+				int tmp = tileJDX % 7;
+				if (tmp == 0) tmp++;
+				pTile->SetImgIdx(tmp);
+			}
+			if (tileJDX == 0 && tileIDX != 0 && tileIDX != 17)
+			{
+				int tmp = tileIDX % 7;
+				if (tmp == 0) tmp++;
+				pTile->SetImgIdx(tmp * 8);
+			}
+			if (tileIDX == 17 && tileJDX != 0 && tileJDX != 17)
+			{
+				int tmp = tileJDX % 7;
+				if (tmp == 0) tmp++;
+				pTile->SetImgIdx(tmp + 56);
+			}
+			if (tileJDX == 17 && tileIDX != 0 && tileIDX != 17)
+			{
+				int tmp = tileIDX % 7;
+				if (tmp == 0) tmp++;
+				pTile->SetImgIdx(tmp * 8 + 7 );
+			}
+
+			AddObject(pTile, GROUP_TYPE::TILE);
+		}
+	}
+}
+
+void CScene::MakeTile()
+{
+	DeleteGroup(GROUP_TYPE::TILE);
+	//타일 생성
+	CTexture* pTileTex = CResMgr::GetInstance()->LoadTexture(L"Tile Outline", L"texture\\tiles_outline.png");
+
+	m_iTileX = pTileTex->Width() / TILE_SIZE;
+	m_iTileY = pTileTex->Height() / TILE_SIZE;
+
+	for (UINT y = 0; y < m_iTileY; ++y)
+	{
+		for (UINT x = 0; x < m_iTileX; ++x)
+		{
+			CTile* pTile = new CTile();
+			
+			pTile->SetTexture(pTileTex);
+
+			// 이미지 인덱스 설정 (필요 시 활용 가능)
+			int imgIdx = y * m_iTileX + x;
+			pTile->AddImgIdx(); // imgIdx를 증가시키는 로직은 필요에 따라 수정 가능
+
+			// 타일의 위치 설정 (예: 월드 좌표계에서의 위치)
+			pTile->SetPos(Vec2((float)(x * TILE_SIZE), (float)(y * TILE_SIZE)));
+			pTile->SetTexture(pTileTex);
+
+
+
+			// 그룹에 타일 추가
 			AddObject(pTile, GROUP_TYPE::TILE);
 		}
 	}

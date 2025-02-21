@@ -33,7 +33,7 @@ void CScene_Tool::Enter()
 	//툴 Scene에서 사용할 메뉴를 붙인다. 
 	CCore::GetInstance()->DockMenu();
 
-	CreateTile(5, 5);
+	CreateTile(18, 18);
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
 
 
@@ -108,8 +108,6 @@ void CScene_Tool::update()
 	}
 }
 
-
-
 void CScene_Tool::SetTileIdx()
 {
 	if (KEY_TAP(KEY::LBTN)) {
@@ -167,7 +165,6 @@ void CScene_Tool::SaveTileData()
 
 void CScene_Tool::SaveTile(const wstring& _strFilePath)
 {
-
 	//커널 오브젝트
 	FILE* pFile = nullptr;
 	_wfopen_s(&pFile, _strFilePath.c_str(), L"wb");

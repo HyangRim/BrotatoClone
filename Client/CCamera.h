@@ -28,7 +28,8 @@ private:
 	Vec2				m_vCurLookAt;		//이전 위치와 현재 위치 보간. 
 	Vec2				m_prevLookAt;		//카메라가 보는 이전 프레임 위치. 
 	
-
+	Vec2				m_vMinBounds;		//최소범위
+	Vec2				m_vMaxBounds;		//최대범위
 	CObject*			m_pTargetObj;		//카메라 타켓 오브젝트 <- 카메라가 해당 타겟을 쫒아다님. 
 
 	Vec2				m_vDiff;			//해상도 중심위치와, 카메라 LootAt간의 차이 값. 

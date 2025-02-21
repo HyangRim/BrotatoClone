@@ -8,6 +8,7 @@
 //그리고 클래스를 만들때 선언해둔 미리 컴파일된 헤더 생김. 
 
 #include <Windows.h>
+#include <ctime>
 #include <iostream>
 
 #include <vector>

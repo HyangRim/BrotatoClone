@@ -26,7 +26,6 @@ void CTile::update()
 
 void CTile::render(HDC _dc)
 {
-
 	if (m_pTileTex == nullptr || -1 == m_iImgIdx) {
 		return;
 	}

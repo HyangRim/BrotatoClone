@@ -146,9 +146,10 @@ void CScene_Start::Enter()
 	pObj->SetPos(Vec2(640.f, 384.f));
 	pObj->SetScale(Vec2(100.f, 100.f));
 	pObj->SetName(L"Player");
-
 	AddObject(pObj, GROUP_TYPE::PLAYER);
 	RegisterPlayer(pObj);
+
+	CCamera::GetInstance()->SetTarget(pObj);
 
 	CWeapon* pWeapon = nullptr;
 	//무기 권총 추가. 
@@ -168,8 +169,6 @@ void CScene_Start::Enter()
 
 	pMon = CMonFactory::CreateMonster(MON_TYPE::NORMAL, vResolution / 2.f - Vec2(-200.f, 300.f));
 	AddObject(pMon, GROUP_TYPE::MONSTER);
-	
-
 
 	//Enter은 몰라고 update에서는 CreateObject로 해야함...
 	//CreateObject(pMon, Object_type::MONSTER):

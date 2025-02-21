@@ -3,7 +3,6 @@
 #include "CCore.h"
 
 
-
 CTexture::CTexture()
 	: m_hBit(0)
 	, m_dc(nullptr)
@@ -13,6 +12,7 @@ CTexture::CTexture()
 	, m_width(0)
 	, m_height(0)
 {
+
 }
 
 CTexture::~CTexture()

@@ -167,6 +167,9 @@
     <Filter Include="Engine\04. Object\Missile\SlingShot_Missile">
       <UniqueIdentifier>{c5059d81-c365-407c-a2d0-6731a1e4e890}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\04. Object\UI\SpriteUI">
+      <UniqueIdentifier>{eddfd97b-f7a9-4c49-be53-087f84da7388}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h">
@@ -338,6 +341,9 @@
     <ClInclude Include="CSlingShot_Missile.h">
       <Filter>Engine\04. Object\Missile\SlingShot_Missile</Filter>
     </ClInclude>
+    <ClInclude Include="CSpriteUI.h">
+      <Filter>Engine\04. Object\UI\SpriteUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -500,6 +506,9 @@
     </ClCompile>
     <ClCompile Include="CSlingShot_Missile.cpp">
       <Filter>Engine\04. Object\Missile\SlingShot_Missile</Filter>
+    </ClCompile>
+    <ClCompile Include="CSpriteUI.cpp">
+      <Filter>Engine\04. Object\UI\SpriteUI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

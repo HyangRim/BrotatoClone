@@ -41,8 +41,119 @@ void CScene_Test::render(Gdiplus::Graphics* _pDGraphics)
 	CScene::render(_pDGraphics);
 }
 
+// 흰색 픽셀인지 확인하는 함수
+bool IsWhitePixel(Color color) {
+	return color.GetR() == 255 && color.GetG() == 255 && color.GetB() == 255;
+}
+
+// 검정색이 아닌 픽셀인지 확인하는 함수
+bool IsNonBlackPixel(Color color) {
+	// 검정색에 가까운 픽셀을 제외 (임계값 설정)
+	int brightnessThreshold = 50; // 밝기 임계값 (0~255)
+	int brightness = (color.GetR() + color.GetG() + color.GetB()) / 3;
+	return brightness > brightnessThreshold;
+}
+
+// CLSID 가져오기 함수
+int GetEncoderClsid(const WCHAR* format, CLSID* pClsid) {
+	UINT num = 0;          // Image encoders 수량
+	UINT size = 0;         // Image encoders 크기
+
+	GetImageEncodersSize(&num, &size);
+	if (size == 0)
+		return -1;         // 실패
+
+	ImageCodecInfo* pImageCodecInfo = (ImageCodecInfo*)(malloc(size));
+	if (pImageCodecInfo == NULL)
+		return -1;         // 메모리 부족
+
+	GetImageEncoders(num, size, pImageCodecInfo);
+
+	for (UINT j = 0; j < num; ++j) {
+		if (wcscmp(pImageCodecInfo[j].MimeType, format) == 0) {
+			*pClsid = pImageCodecInfo[j].Clsid;
+			free(pImageCodecInfo);
+			return j;      // 성공
+		}
+	}
+
+	free(pImageCodecInfo);
+	return -1;             // 실패
+}
+
+// GDI+ 초기화
+void InitializeGDIPlus(ULONG_PTR& token) {
+	GdiplusStartupInput gdiplusStartupInput;
+	GdiplusStartup(&token, &gdiplusStartupInput, NULL);
+}
+
+// GDI+ 종료
+void ShutdownGDIPlus(ULONG_PTR token) {
+	GdiplusShutdown(token);
+}
+
 void CScene_Test::Enter()
 {
+
+	/*
+	// GDI+ 초기화
+	ULONG_PTR gdiplusToken;
+	InitializeGDIPlus(gdiplusToken);
+
+	Bitmap tileOutline(L"C:\\Users\\c\\source\\repos\\HyangRim\\BrotatoClone\\Output\\bin\\content\\texture\\tiles_outline.png");
+	if (tileOutline.GetLastStatus() != Ok) {
+		std::cerr << "Failed to load tile_outline.png" << std::endl;
+		return ;
+	}
+	Bitmap tiles(L"C:\\Users\\c\\source\\repos\\HyangRim\\BrotatoClone\\Output\\bin\\content\\texture\\tiles_6.png");
+	if (tiles.GetLastStatus() != Ok) {
+		std::cerr << "Failed to load tiles_1.png" << std::endl;
+		return ;
+	}
+	// Graphics 객체 생성
+	Graphics graphics(&tileOutline);
+
+	// 타일 크기 정의
+	const int tileWidth = 64;
+	const int tileHeight = 64;
+
+	// 배경 이미지 크기 가져오기
+	int outlineWidth = tileOutline.GetWidth();
+	int outlineHeight = tileOutline.GetHeight();
+
+	// 타일 이미지 크기 가져오기
+	int tilesWidth = tiles.GetWidth();
+	int tilesHeight = tiles.GetHeight();
+
+	// 타일 이미지를 순회하며 흰색 부분에 픽셀 채우기
+	for (int y = 0; y < outlineHeight; ++y) {
+		for (int x = 0; x < outlineWidth; ++x) {
+			Color pixelColor;
+			tileOutline.GetPixel(x, y, &pixelColor);
+
+			if (IsNonBlackPixel(pixelColor)) {
+				// 타일 이미지에서 랜덤 또는 반복적으로 픽셀 가져오기
+				int srcX = x % tilesWidth;
+				int srcY = y % tilesHeight;
+
+				Color tileColor;
+				tiles.GetPixel(srcX, srcY, &tileColor);
+
+				// 흰색 부분에 타일 픽셀 설정
+				tileOutline.SetPixel(x, y, tileColor);
+			}
+		}
+	}
+
+	// 결과 저장
+	CLSID pngClsid;
+	GetEncoderClsid(L"image/png", &pngClsid);
+	tileOutline.Save(L"C:\\Users\\c\\source\\repos\\HyangRim\\BrotatoClone\\Output\\bin\\content\\texture\\result6.png", &pngClsid, NULL);
+
+	// GDI+ 종료
+	ShutdownGDIPlus(gdiplusToken);
+	
+	*/
 	/*
 	CSpriteUI* pSpriteUI = new CSpriteUI();
 	pSpriteUI->SetTexture(L"MySprite", L"texture\\ui_lifebar_bg.png");
@@ -62,6 +173,7 @@ void CScene_Test::Enter()
 	pSpriteUI3->SetScale(Vec2(320.f, 48.f) * 0.5f);
 	AddObject(pSpriteUI3, GROUP_TYPE::UI);*/
 
+	/*
 	CSpriteUI* hpBar = new CSpriteUI();
 	
 	hpBar->SetTexture(
@@ -75,7 +187,7 @@ void CScene_Test::Enter()
 
 	// 4. HP 비율 설정 (50%로 설정)
 	hpBar->SetHpRatio(0.9f);
-	AddObject(hpBar, GROUP_TYPE::UI);
+	AddObject(hpBar, GROUP_TYPE::UI);*/
 	
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
 /*

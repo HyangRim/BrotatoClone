@@ -155,18 +155,23 @@ void CPlayer::CreateMissile()
 void CPlayer::update_move()
 {
 	CRigidbody* pRigid = GetRigidbody();
+	Vec2 vPos = GetPos();
 
 	if (KEY_HOLD(KEY::W)) {
-		pRigid->AddForce(Vec2(0.f, -200.f));
+		vPos.y -= 200.f * fDT;
+		//pRigid->AddForce(Vec2(0.f, -200.f));
 	}
 	if (KEY_HOLD(KEY::S)) {
-		pRigid->AddForce(Vec2(0.f, 200.f));
+		vPos.y += 200.f * fDT;
+		//pRigid->AddForce(Vec2(0.f, 200.f));
 	}
 	if (KEY_HOLD(KEY::A)) {
-		pRigid->AddForce(Vec2(-200.f, 0.f));
+		vPos.x -= 200.f * fDT;
+		//pRigid->AddForce(Vec2(-200.f, 0.f));
 	}
 	if (KEY_HOLD(KEY::D)) {
-		pRigid->AddForce(Vec2(200.f, 0.f));
+		vPos.x += 200.f * fDT;
+		//pRigid->AddForce(Vec2(200.f, 0.f));
 	}
 
 	if (KEY_TAP(KEY::W)) {
@@ -182,6 +187,7 @@ void CPlayer::update_move()
 		pRigid->AddVelocity(Vec2(100.f, pRigid->GetVelocity().y));
 	}
 
+	SetPos(vPos);
 }
 
 void CPlayer::update_state()

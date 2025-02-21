@@ -3,6 +3,7 @@
 
 
 class CTexture;
+
 class CTile :
     public CObject
 {
@@ -19,6 +20,8 @@ public:
     void AddImgIdx() {
         ++m_iImgIdx;
     }
+
+    void SetImgIdx(int _index) { m_iImgIdx = _index; }
 
 private:
     virtual void update();

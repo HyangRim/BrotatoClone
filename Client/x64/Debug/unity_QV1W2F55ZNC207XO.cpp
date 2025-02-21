@@ -95,6 +95,12 @@
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CScene_Tool.cpp"
 
 
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CSlingshot.cpp"
+
+
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CSlingShot_Missile.cpp"
+
+
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CSound.cpp"
 
 

@@ -65,6 +65,9 @@ public:
 	void DeleteGroup(GROUP_TYPE _eGroup);
 	void DeleteAll();
 	void CreateTile(UINT _IXCount, UINT _IYCount);
+
+	void MakeTile();
+
 	void LoadTile(const wstring& _strRelativePath);
 
 public:

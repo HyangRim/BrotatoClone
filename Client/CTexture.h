@@ -15,8 +15,6 @@ private:
     //별도의 픽셀 데이터를 보유하고 있을 것. 그리고 그걸 연결지을 DC가 필요. 
     //비트맵 + dc가 텍스쳐. 
     BITMAP      m_bitInfo;
-
-
 private:
     //GDI+ 용도 변수.
 
@@ -28,8 +26,6 @@ private:
 public:
     void Load(const wstring& _strFilePath);
     void Create(UINT _iWidth, UINT _iHeight);
-
-
 
     UINT Width() { return m_width; }
     UINT Height() { return m_height; }

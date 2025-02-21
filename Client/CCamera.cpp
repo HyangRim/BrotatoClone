@@ -32,6 +32,11 @@ void CCamera::init()
 {
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
 	m_pVeilTex = CResMgr::GetInstance()->CreateTexture(L"cameraVeil", (UINT)vResolution.x, (UINT)vResolution.y);
+
+	m_vMinBounds = Vec2(vResolution.x / 2.f, vResolution.y / 2.f);
+	m_vMaxBounds = Vec2(18.f * TILE_SIZE  - vResolution.x / 2.f, 18.f * TILE_SIZE - vResolution.y / 2.f);
+
+	m_pTargetObj = nullptr;
 }
 
 void CCamera::update()
@@ -54,10 +59,11 @@ void CCamera::update()
 		m_vLookAt.x -= 500.f * fDT;
 	}
 
+	m_vLookAt.x = max(m_vMinBounds.x, min(m_vLookAt.x, m_vMaxBounds.x));
+	m_vLookAt.y = max(m_vMinBounds.y, min(m_vLookAt.y, m_vMaxBounds.y));
+
 	//화면 중앙좌표와 카메라 LootAt 좌표간의 차이 값. 
 	CalDiff();
-
-
 }
 
 void CCamera::render(HDC _dc)
