@@ -23,7 +23,7 @@ public:
     int GetEXP() { return m_iExp; }
     int GetCoin() { return m_iCoin; }
 
-    CLONE(CDropItem);
+    CLONE(CDropItem)
 
 public:
     CDropItem();

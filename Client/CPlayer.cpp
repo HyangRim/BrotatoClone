@@ -6,6 +6,7 @@
 #include "CkeyMgr.h"
 #include "CTimeMgr.h"
 #include "CResMgr.h"
+#include "CWeapon.h"
 
 #include "CMissile.h"
 #include "CTexture.h"
@@ -21,12 +22,20 @@ CPlayer::CPlayer()
 	, m_ePrevState(PLAYER_STATE::IDLE)
 	, m_iDir(1)
 	, m_iPrevDir(1)
+	, m_tPlayerInfo{}
 {
 	//m_pTex = CResMgr::GetInstance()->LoadTexture(L"PlayerTex", L"texture\\Tenshi.bmp");
-	m_vecWeapon.resize(6);
+
+	//플레이어 Info초기화
+	m_tPlayerInfo.m_iCoin = 0;
+	m_tPlayerInfo.m_iLevel = 1;
+	m_tPlayerInfo.m_iMaxHP = 10;
+	m_tPlayerInfo.m_iMaxEXP = 20;
+	m_tPlayerInfo.m_iCurEXP = 0;
+	m_tPlayerInfo.m_iCurHP = m_tPlayerInfo.m_iMaxHP;
 
 	CreateCollider();
-	GetCollider()->SetOffsetPos(Vec2(0.f, 15.f));
+	GetCollider()->SetOffsetPos(Vec2(0.f, 0.f));
 	GetCollider()->SetScale(Vec2(15.f, 15.f));
 
 	CreateRigidBody();
@@ -85,7 +94,7 @@ CPlayer::CPlayer()
 
 CPlayer::~CPlayer()
 {
-	for (auto weapon : m_vecWeapon) {
+	for (auto weapon : m_listWeapon) {
 		delete weapon;
 	}
 }
@@ -127,13 +136,40 @@ void CPlayer::render(Gdiplus::Graphics* _pDGraphics)
 	component_render(_pDGraphics);
 }
 
-void CPlayer::AddWeapon(CWeapon* _pWeapon)
+bool CPlayer::AddWeapon(CWeapon* _pWeapon)
 {
+	if (m_listWeapon.size() >= 6) return false;
+	m_listWeapon.push_back(_pWeapon);
 
-	m_vecWeapon.push_back(_pWeapon);
-
+	int weaponOffsetPosIdx = 0;
+	// 무기 추가 되면서 Offset Pos 조정. 
+	for (auto weaponIter : m_listWeapon) {
+		weaponIter->SetWeaponOffset(weaponOffsetPos[weaponOffsetPosIdx]);
+		weaponOffsetPosIdx++;
+	}
 	CreateObject((CObject*)_pWeapon, GROUP_TYPE::WEAPON);
+
+	return true;
 }
+
+bool CPlayer::DeleteWeapon(CWeapon* _pWeapon)
+{
+	if (m_listWeapon.size() <= 1) return false;
+	list<CWeapon*>::iterator targetWeaponIter;
+
+	//무기 리스트에서 동일한 포인터값을 찾는 이터레이터 찾기.
+	for (list<CWeapon*>::iterator weaponIter = m_listWeapon.begin(); weaponIter != m_listWeapon.end(); weaponIter++) {
+		if (*weaponIter == _pWeapon) {
+			//찾아서 그 이터레이터를 지우면서, 그 주소값 반환.
+			targetWeaponIter = m_listWeapon.erase(weaponIter);
+			break;
+		}
+	}
+	//동적 할당한 무기 해제. 
+	delete *targetWeaponIter;
+	return true;
+}
+
 
 void CPlayer::CreateMissile()
 {
@@ -271,5 +307,26 @@ void CPlayer::OnCollisionEnter(CCollider* _pOther)
 
 		}
 	}
+}
+
+void CPlayer::AddExp(int _iExp)
+{
+	m_tPlayerInfo.m_iCurEXP += _iExp;
+
+	if (m_tPlayerInfo.m_iCurEXP >= m_tPlayerInfo.m_iMaxEXP) {
+		PlayerLevelUp();
+	}
+}
+
+void CPlayer::AddCoin(int _iCoin)
+{
+	m_tPlayerInfo.m_iCoin += _iCoin;
+}
+
+void CPlayer::PlayerLevelUp()
+{
+	m_tPlayerInfo.m_iCurEXP -= m_tPlayerInfo.m_iMaxEXP;
+	m_tPlayerInfo.m_iMaxHP += 1;
+	m_tPlayerInfo.m_iCurHP += 1;
 }
 

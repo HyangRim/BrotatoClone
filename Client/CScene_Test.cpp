@@ -123,7 +123,7 @@ void CScene_Test::Enter()
 
 	if (pD2DMgr) {
 		// PNG 파일 경로 설정
-		std::wstring filePath = L"C:\\Users\\c\\source\\repos\\HyangRim\\BrotatoClone\\Output\\bin\\content\\texture\\result1.png";
+		std::wstring filePath = L"F:\\git\\repos\\Output\\bin\\content\\texture\\result1.png";
 
 		// 비트맵 로드 및 저장
 		HRESULT hr = pD2DMgr->LoadAndStoreBitmap(filePath);

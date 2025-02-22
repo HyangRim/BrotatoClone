@@ -44,9 +44,6 @@ void CKnife::update()
 		//타겟 몬스터 선정하기.
 		CWeapon::update();
 
-		//무기는 임시로 플레이어 옆에 있어요. 
-		Vec2 vPlayerPos = m_pPlayer->GetPos();
-		SetPos(Vec2(vPlayerPos.x + 30.f, vPlayerPos.y - 15.f));
 
 		m_fCoolTime += fDT;
 
@@ -90,6 +87,17 @@ void CKnife::update()
 			m_fwieldElapsed = 0.f;
 		}
 	}
+}
+
+int CKnife::GetDamage()
+{
+	int default_damage = Getinfo().m_iDMG;
+
+	if (random_distribution(random_generator) < Getinfo().m_fCritialAcc) {
+		default_damage = static_cast<int>(static_cast<float>(default_damage) * Getinfo().m_fCritialDMG);
+	}
+
+	return default_damage;
 }
 
 void CKnife::ShotMissile(Vec2 _vDir)

@@ -2,7 +2,7 @@
 
 class Direct2DMgr
 {
-	SINGLE(Direct2DMgr);
+	SINGLE(Direct2DMgr)
 
 private:
 	ID2D1Factory* pD2DFactory;

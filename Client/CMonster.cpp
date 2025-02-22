@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "CMonster.h"
+#include "CWeapon.h"
+#include "CMissile.h"
+#include "CKnife.h"
 
 #include "AI.h"
 #include "CTimeMgr.h"
@@ -42,14 +45,26 @@ void CMonster::SetAI(AI* _AI)
 	m_pAI->m_pOwner = this;
 }
 
+void CMonster::TakeDamaged(int _iDamage)
+{
+}
+
 
 void CMonster::OnCollisionEnter(CCollider* _pOther)
 {
 	CObject* pOtherObj = _pOther->GetObj();
 
 	
-	if (pOtherObj->GetName() == L"Missile_Player" || pOtherObj->GetName() == L"Knife") {
-		m_tInfo.m_iHP -= 1;
+	if (pOtherObj->GetName() == L"Missile_Player") {
+
+		m_tInfo.m_iHP -= ((CMissile*)pOtherObj)->GetDamage();
+
+		if (m_tInfo.m_iHP <= 0) {
+			DeleteObject(this);
+		}
+	}
+	if (pOtherObj->GetName() == L"Knife") {
+		m_tInfo.m_iHP -= ((CKnife*)pOtherObj)->GetDamage();
 
 		if (m_tInfo.m_iHP <= 0) {
 			DeleteObject(this);

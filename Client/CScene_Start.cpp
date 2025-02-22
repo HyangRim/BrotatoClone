@@ -151,22 +151,27 @@ void CScene_Start::Enter()
 	CCamera::GetInstance()->SetTarget(pObj);
 
 	CWeapon* pWeapon = nullptr;
+	CMonster* pMon = nullptr;
+	/*
 	//무기 권총 추가. 
-	//pWeapon = new CPistol;
-	//((CPlayer*)GetPlayer())->AddWeapon(pWeapon);
+	pWeapon = new CPistol;
+	((CPlayer*)GetPlayer())->AddWeapon(pWeapon);
 
 	//무기 단검 추가. 
-	//pWeapon = new CKnife;
-	//((CPlayer*)GetPlayer())->AddWeapon(pWeapon);
+	pWeapon = new CKnife;
+	((CPlayer*)GetPlayer())->AddWeapon(pWeapon);
 
 	//무기 새총 추가.
-	//pWeapon = new CSlingshot;
-	//((CPlayer*)GetPlayer())->AddWeapon(pWeapon);
+	pWeapon = new CSlingshot;
+	((CPlayer*)GetPlayer())->AddWeapon(pWeapon);
 
-	CMonster* pMon = CMonFactory::CreateMonster(MON_TYPE::NORMAL, vResolution / 2.f - Vec2(0.f, 300.f));
+	pMon = CMonFactory::CreateMonster(MON_TYPE::NORMAL, vResolution / 2.f - Vec2(0.f, 300.f));
 	AddObject(pMon, GROUP_TYPE::MONSTER);
 
-	pMon = CMonFactory::CreateMonster(MON_TYPE::NORMAL, vResolution / 2.f - Vec2(-200.f, 300.f));
+	//pMon = CMonFactory::CreateMonster(MON_TYPE::NORMAL, vResolution / 2.f - Vec2(-200.f, 300.f));
+	//AddObject(pMon, GROUP_TYPE::MONSTER);
+	*/
+	pMon = CMonFactory::CreateMonster(MON_TYPE::RANGE, vResolution / 2.f - Vec2(-400.f, 300.f));
 	AddObject(pMon, GROUP_TYPE::MONSTER);
 
 	//Enter은 몰라고 update에서는 CreateObject로 해야함...

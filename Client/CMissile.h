@@ -26,6 +26,8 @@ public:
         m_iDamage = _iDamage;
     }
 
+    int GetDamage() { return m_iDamage; }
+
 public:
     virtual void OnCollision(CCollider* _pOther) {};
     virtual void OnCollisionEnter(CCollider* _pOther);

@@ -40,10 +40,6 @@ void CSlingshot::update()
 	//타겟 몬스터 선정하기.
 	CWeapon::update();
 
-	//무기는 임시로 플레이어 옆에 있어요. 
-	Vec2 vPlayerPos = m_pPlayer->GetPos();
-	SetPos(Vec2(vPlayerPos.x - 30.f, vPlayerPos.y));
-
 	m_fCoolTime += fDT;
 
 	//쿨타임 주기마다 AND 타겟이 있을 때 타겟을 향해 총을 쏜다. 
@@ -83,6 +79,13 @@ void CSlingshot::ShotMissile(Vec2 _vDir)
 	pMissile->SetScale(Vec2(5.f, 5.f));
 	pMissile->SetDir(_vDir);
 	pMissile->SetBounce(1);
+
+	//무기 데미지 값 넘겨주기
+	int default_damage = Getinfo().m_iDMG;
+	if (random_distribution(random_generator) < Getinfo().m_fCritialAcc) {
+		default_damage = static_cast<int>(static_cast<float>(default_damage) * Getinfo().m_fCritialDMG);
+	}
+	pMissile->SetDamage(default_damage);
 
 	CreateObject(pMissile, GROUP_TYPE::PROJ_PLAYER);
 }

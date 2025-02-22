@@ -137,10 +137,10 @@ void CCore::progress() {
 	// GDI+버전 렌더링. 
 	// 여기서 화면에 PNG던 뭐던 그림. 
 	CSceneMgr::GetInstance()->render(m_pDGraphics);
-	//CCamera::GetInstance()->render(m_pDGraphics);
+	CCamera::GetInstance()->render(m_pDGraphics);
 
 	//m_DGraphics
-	m_pGraphics->DrawImage(m_pMemTex->GetBitmap(), 0, 0, m_ptResolution.x, m_ptResolution.y);
+	//m_pGraphics->DrawImage(m_pMemTex->GetBitmap(), 0, 0, m_ptResolution.x, m_ptResolution.y);
 	//GDI(Legacy 방식)
 	//BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y, m_pMemTex->GetDC(), 0, 0, SRCCOPY);
 	

@@ -14,6 +14,9 @@ private:
     float       m_fwieldElapsed;    //현재 휘두르는게 얼마만큼의 시간이 걸렸는지.
 
 public:
+    int GetDamage();
+
+private:
     virtual void ShotMissile(Vec2 _vDir);
 public:
     virtual void update();
