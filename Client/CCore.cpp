@@ -131,21 +131,21 @@ void CCore::progress() {
 	//어디다가 그려야하는지 알려주기. 
 	
 	// GDI버전.
-	//CSceneMgr::GetInstance()->render(m_pMemTex->GetDC());
-	//CCamera::GetInstance()->render(m_pMemTex->GetDC());
+	CSceneMgr::GetInstance()->render(m_pMemTex->GetDC());
+	CCamera::GetInstance()->render(m_pMemTex->GetDC());
 
 	// GDI+버전 렌더링. 
 	// 여기서 화면에 PNG던 뭐던 그림. 
-	CSceneMgr::GetInstance()->render(m_pDGraphics);
-	CCamera::GetInstance()->render(m_pDGraphics);
+	//CSceneMgr::GetInstance()->render(m_pDGraphics);
+	//CCamera::GetInstance()->render(m_pDGraphics);
 
 	//m_DGraphics
 	//m_pGraphics->DrawImage(m_pMemTex->GetBitmap(), 0, 0, m_ptResolution.x, m_ptResolution.y);
 	//GDI(Legacy 방식)
-	//BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y, m_pMemTex->GetDC(), 0, 0, SRCCOPY);
+	BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y, m_pMemTex->GetDC(), 0, 0, SRCCOPY);
 	
 	//GDI+ 방식
-	m_pGraphics->DrawImage(m_buffer, 0, 0);
+	//m_pGraphics->DrawImage(m_buffer, 0, 0);
 
 
 	CTimeMgr::GetInstance()->render();
@@ -183,9 +183,9 @@ void CCore::ChangeWindowSize(Vec2 _vResolution, bool _bMenu)
 
 void CCore::Clear()
 {
-	m_pDGraphics->Clear(Color(255, 120, 120, 120));
-	//SelectGDI gdi(m_pMemTex->GetDC(), BRUSH_TYPE::BLACK);
-	//Rectangle(m_pMemTex->GetDC(), -1, -1, m_ptResolution.x + 1, m_ptResolution.y + 1);
+	//m_pDGraphics->Clear(Color(255, 120, 120, 120));
+	SelectGDI gdi(m_pMemTex->GetDC(), BRUSH_TYPE::BLACK);
+	Rectangle(m_pMemTex->GetDC(), -1, -1, m_ptResolution.x + 1, m_ptResolution.y + 1);
 }
 
 void CCore::CreateBrushPen()

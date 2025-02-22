@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "Direct2DMgr.h"
+#include "CPathMgr.h"
 
 Direct2DMgr::Direct2DMgr()
 {
 
 }
-
 
 Direct2DMgr::~Direct2DMgr()
 {
@@ -49,32 +49,101 @@ HRESULT Direct2DMgr::init(HWND hwnd)
         return hr;
     }
 
+    hr = pRenderTarget->CreateCompatibleRenderTarget(&pBitmapRenderTarget);
+    if (FAILED(hr)) return hr;
+
     return S_OK;
 }
 
-// Direct2DMgr.cpp
-HRESULT Direct2DMgr::LoadAndStoreBitmap(const std::wstring& filePath) {
-    if (m_pStoredBitmap) {
-        m_pStoredBitmap->Release();
-        m_pStoredBitmap = nullptr;
+HRESULT Direct2DMgr::LoadAndStoreBitmap(const std::wstring& filePath, const std::wstring& tag) {
+    // 이미 로드된 비트맵이 있는지 확인
+    if (bitmapMap.find(tag) != bitmapMap.end()) {
+        return S_OK; // 이미 로드됨
     }
 
-    return LoadBitmap(filePath, &m_pStoredBitmap); // 기존 LoadBitmap 메서드 재사용
+    ID2D1Bitmap* newBitmap = nullptr;
+
+    const wstring strFinalPath = CPathMgr::GetInstance()->GetContentPath() + filePath;
+
+    HRESULT hr = LoadBitmap(strFinalPath, &newBitmap);
+    
+    if (SUCCEEDED(hr)) {
+        bitmapMap[tag] = newBitmap; // 맵에 저장
+    }
+
+    return hr;
 }
 
-void Direct2DMgr::RenderStoredBitmap(const D2D1_RECT_F& destRect) {
-    if (!pRenderTarget || !m_pStoredBitmap) return;
+ID2D1Bitmap* Direct2DMgr::GetStoredBitmap(const std::wstring& tag) {
+    auto it = bitmapMap.find(tag);
 
+    if (it != bitmapMap.end()) {
+        return it->second; // 저장된 비트맵bitmapMap 반환
+    }
+
+    return nullptr; // 없음
+}
+
+void Direct2DMgr::RenderBitmap(const D2D1_RECT_F& destRect, const std::wstring& baseTag) {
+    if (!pBitmapRenderTarget) return;
+
+    // 백 버퍼에 그리기 시작
+    pBitmapRenderTarget->BeginDraw();
+    pBitmapRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
+
+    // 태그가 baseTag로 시작하는 비트맵만 렌더링
+    for (const auto& pair : bitmapMap) {
+        if (pair.first.find(baseTag) == 0) {
+            pBitmapRenderTarget->DrawBitmap(pair.second, destRect);
+        }
+    }
+
+    HRESULT hr = pBitmapRenderTarget->EndDraw();
+    if (FAILED(hr)) {
+        MessageBox(nullptr, L"백 버퍼 렌더링 실패!", L"오류", MB_OK);
+        return;
+    }
+
+    // 백 버퍼 내용을 메인 렌더 타겟으로 복사
     pRenderTarget->BeginDraw();
+    ID2D1Bitmap* backBufferBitmap = nullptr;
+    pBitmapRenderTarget->GetBitmap(&backBufferBitmap);
+    pRenderTarget->DrawBitmap(backBufferBitmap);
+    backBufferBitmap->Release();
+
+    hr = pRenderTarget->EndDraw();
+    if (FAILED(hr)) {
+        MessageBox(nullptr, L"화면 렌더링 실패!", L"오류", MB_OK);
+    }
+}
+
+void Direct2DMgr::RenderAllBitmaps(const std::vector<std::pair<D2D1_RECT_F, std::wstring>>& bitmapsToRender) {
+    if (!pRenderTarget) return;
+
+    // 렌더링 시작
+    pRenderTarget->BeginDraw();
+
+    // 백버퍼 초기화
     pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
 
-    pRenderTarget->DrawBitmap(m_pStoredBitmap, destRect);
+    // 전달받은 모든 비트맵을 순회하며 렌더링
+    for (const auto& bitmapInfo : bitmapsToRender) {
+        const D2D1_RECT_F& destRect = bitmapInfo.first;
+        const std::wstring& tag = bitmapInfo.second;
 
+        ID2D1Bitmap* bitmap = GetStoredBitmap(tag);
+        if (bitmap) {
+            pRenderTarget->DrawBitmap(bitmap, destRect);
+        }
+    }
+
+    // 렌더링 종료
     HRESULT hr = pRenderTarget->EndDraw();
     if (FAILED(hr)) {
         MessageBox(nullptr, L"렌더링 실패!", L"오류", MB_OK);
     }
 }
+
 
 HRESULT Direct2DMgr::LoadBitmap(const std::wstring& filePath, ID2D1Bitmap** ppBitmap) {
     // 파일 존재 여부 확인
@@ -149,34 +218,27 @@ HRESULT Direct2DMgr::LoadBitmap(const std::wstring& filePath, ID2D1Bitmap** ppBi
     return hr;
 }
 
-void Direct2DMgr::Render()
-{
-    if (!pRenderTarget || !pBitmap) return;
-
-    pRenderTarget->BeginDraw();
-    pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
-
-    // 비트맵 크기 가져오기
-    D2D1_SIZE_F size = pBitmap->GetSize();
-
-    // 비트맵 그리기
-    pRenderTarget->DrawBitmap(
-        pBitmap,
-        D2D1::RectF(0.0f, 0.0f, size.width, size.height)
-    );
-
-    HRESULT hr = pRenderTarget->EndDraw();
-    if (FAILED(hr)) {
-        MessageBox(nullptr, L"렌더링 실패!", L"오류", MB_OK);
+void Direct2DMgr::Cleanup() {
+    for (auto& pair : bitmapMap) {
+        if (pair.second) pair.second->Release();
     }
-}
 
-void Direct2DMgr::Cleanup()
-{
-    if (pBitmap) { pBitmap->Release(); pBitmap = nullptr; }
-    if (pRenderTarget) { pRenderTarget->Release(); pRenderTarget = nullptr; }
-    if (pWICFactory) { pWICFactory->Release(); pWICFactory = nullptr; }
-    if (pD2DFactory) { pD2DFactory->Release(); pD2DFactory = nullptr; }
+    bitmapMap.clear();
+
+    if (pRenderTarget) {
+        pRenderTarget->Release();
+        pRenderTarget = nullptr;
+    }
+
+    if (pWICFactory) {
+        pWICFactory->Release();
+        pWICFactory = nullptr;
+    }
+
+    if (pD2DFactory) {
+        pD2DFactory->Release();
+        pD2DFactory = nullptr;
+    }
 
     CoUninitialize();
 }

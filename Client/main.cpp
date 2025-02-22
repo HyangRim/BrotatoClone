@@ -191,6 +191,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
+    case WM_ERASEBKGND:
+        return 1; // 배경 지우기 방지
+
     case WM_COMMAND://왠만한 메시지(단축키)는 이렇게 여기에서 처리함. 
     {
         int wmId = LOWORD(wParam);

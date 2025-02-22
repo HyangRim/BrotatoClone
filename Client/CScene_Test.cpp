@@ -39,24 +39,15 @@ void CScene_Test::render(HDC _dc)
 	// Direct2DMgr 인스턴스 가져오기
 	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
 
-	if (pD2DMgr) {
-		ID2D1HwndRenderTarget* pRenderTarget = pD2DMgr->GetRenderTarget();
-		if (pRenderTarget) {
-			D2D1_SIZE_F renderTargetSize = pRenderTarget->GetSize();
+	//////////////////////////////////////////////////////
+	vector<std::pair<D2D1_RECT_F, wstring>> bitmapsToRender = {
+	{ D2D1::RectF(0, 0, 512, 512), L"BaseMap1" },
+	{ D2D1::RectF(200, 200, 300, 300), L"BaseMap2" }
+	};
 
-			//이미지 크기 설정
-			// 출력 위치 및 크기 설정
-			D2D1_RECT_F destRect = D2D1::RectF(
-				0.0f,
-				0.0f,
-				512,
-				512
-			);
-
-			// 저장된 비트맵 렌더링 호출
-			pD2DMgr->RenderStoredBitmap(destRect);
-		}
-	}
+	// 모든 비트맵 렌더링
+	pD2DMgr->RenderAllBitmaps(bitmapsToRender);
+	//////////////////////////////////////////////////////
 }
 
 void CScene_Test::render(Gdiplus::Graphics* _pDGraphics)
@@ -120,20 +111,8 @@ void CScene_Test::Enter()
 {
 	// Direct2DMgr 인스턴스 가져오기
 	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
-
-
-	if (pD2DMgr) {
-		// PNG 파일 경로 설정
-		std::wstring filePath = L"F:\\git\\repos\\Output\\bin\\content\\texture\\result1.png";
-
-		// 비트맵 로드 및 저장
-		HRESULT hr = pD2DMgr->LoadAndStoreBitmap(filePath);
-		if (FAILED(hr)) {
-			MessageBox(nullptr, L"PNG 파일 로드 실패!", L"오류", MB_OK);
-		}
-	}
-
-
+	pD2DMgr->LoadAndStoreBitmap(L"texture\\result1.png", L"BaseMap1");
+	pD2DMgr->LoadAndStoreBitmap(L"texture\\result2.png", L"BaseMap2");
 
 	/*
 	// GDI+ 초기화
