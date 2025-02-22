@@ -56,6 +56,9 @@
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CMonster.cpp"
 
 
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CNormal_Monster.cpp"
+
+
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CObject.cpp"
 
 
@@ -69,6 +72,15 @@
 
 
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CPlayer.cpp"
+
+
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CRange_AttackState.cpp"
+
+
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CRange_Monster.cpp"
+
+
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CRange_TraceState.cpp"
 
 
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CRes.cpp"
