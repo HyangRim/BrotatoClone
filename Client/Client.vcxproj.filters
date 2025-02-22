@@ -173,6 +173,18 @@
     <Filter Include="Engine\03. Manager\Direct2DMgr">
       <UniqueIdentifier>{a69ebb5c-b8ec-456f-9b5c-6c6eb5c9d06c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\04. Object\Monster\NORMAL">
+      <UniqueIdentifier>{fead886a-2087-4d59-ba69-bd619361a967}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Object\Monster\RANGE">
+      <UniqueIdentifier>{6ab063d3-2070-480c-b118-d39e51066c78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\08. Module\AI\State\TRACE\Range">
+      <UniqueIdentifier>{b7bf4a9e-05bb-4caf-825c-b03826d8fda7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\08. Module\AI\State\TRACE\Normal">
+      <UniqueIdentifier>{0c990571-9e72-463c-bd25-0389c0412a43}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h">
@@ -293,9 +305,6 @@
     <ClInclude Include="CIdleState.h">
       <Filter>Engine\08. Module\AI\State\IDLE</Filter>
     </ClInclude>
-    <ClInclude Include="CTraceState.h">
-      <Filter>Engine\08. Module\AI\State\TRACE</Filter>
-    </ClInclude>
     <ClInclude Include="CMonFactory.h">
       <Filter>Engine\09. Factory\MonFactory</Filter>
     </ClInclude>
@@ -349,6 +358,21 @@
     </ClInclude>
     <ClInclude Include="Direct2DMgr.h">
       <Filter>Engine\03. Manager\Direct2DMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CNormal_Monster.h">
+      <Filter>Engine\04. Object\Monster\NORMAL</Filter>
+    </ClInclude>
+    <ClInclude Include="CRange_Monster.h">
+      <Filter>Engine\04. Object\Monster\RANGE</Filter>
+    </ClInclude>
+    <ClInclude Include="CRange_TraceState.h">
+      <Filter>Engine\08. Module\AI\State\TRACE\Range</Filter>
+    </ClInclude>
+    <ClInclude Include="CTraceState.h">
+      <Filter>Engine\08. Module\AI\State\TRACE\Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="CRange_AttackState.h">
+      <Filter>Engine\08. Module\AI\State\ATTACK</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -462,9 +486,6 @@
     <ClCompile Include="CIdleState.cpp">
       <Filter>Engine\08. Module\AI\State\IDLE</Filter>
     </ClCompile>
-    <ClCompile Include="CTraceState.cpp">
-      <Filter>Engine\08. Module\AI\State\TRACE</Filter>
-    </ClCompile>
     <ClCompile Include="CMonFactory.cpp">
       <Filter>Engine\09. Factory\MonFactory</Filter>
     </ClCompile>
@@ -518,6 +539,21 @@
     </ClCompile>
     <ClCompile Include="Direct2DMgr.cpp">
       <Filter>Engine\03. Manager\Direct2DMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CNormal_Monster.cpp">
+      <Filter>Engine\04. Object\Monster\NORMAL</Filter>
+    </ClCompile>
+    <ClCompile Include="CRange_Monster.cpp">
+      <Filter>Engine\04. Object\Monster\RANGE</Filter>
+    </ClCompile>
+    <ClCompile Include="CRange_TraceState.cpp">
+      <Filter>Engine\08. Module\AI\State\TRACE\Range</Filter>
+    </ClCompile>
+    <ClCompile Include="CTraceState.cpp">
+      <Filter>Engine\08. Module\AI\State\TRACE\Normal</Filter>
+    </ClCompile>
+    <ClCompile Include="CRange_AttackState.cpp">
+      <Filter>Engine\08. Module\AI\State\ATTACK</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

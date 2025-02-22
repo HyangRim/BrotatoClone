@@ -4,10 +4,14 @@
 #include "CRigidbody.h"
 
 #include "CMonster.h"
+#include "CNormal_Monster.h"
+#include "CRange_Monster.h"
 #include "CDropItem.h"
 #include "AI.h"
 #include "CIdleState.h"
 #include "CTraceState.h"
+#include "CRange_TraceState.h"
+#include "CRange_AttackState.h"
 
 
 CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
@@ -17,7 +21,7 @@ CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
 	switch (_eType) {
 	case MON_TYPE::NORMAL:
 	{
-		pMon = new CMonster;
+		pMon = new CNormal_Monster;
 		pMon->SetPos(_vPos);
 		pMon->SetName(L"Monster");
 
@@ -26,12 +30,12 @@ CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
 		info.m_fAtt = 1;
 		info.m_fAttRange = 50.f;
 		info.m_fRecogRange = 300.f;
-		info.m_iHP = 3;
+		info.m_iHP = 100;
 		info.m_fSpeed = 150.f;
 
 		pMon->SetMonInfo(info);
-		pMon->CreateRigidBody();
-		pMon->GetRigidbody()->SetMass(1.f);
+		//pMon->CreateRigidBody();
+		//pMon->GetRigidbody()->SetMass(1.f);
 
 		AI* pAI = new AI;
 		pAI->AddState(new CIdleState);
@@ -43,7 +47,31 @@ CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
 		break;
 
 	case MON_TYPE::RANGE:
+	{
+		pMon = new CRange_Monster;
+		pMon->SetPos(_vPos);
+		pMon->SetName(L"Monster");
 
+		tMonInfo info = {};
+		info.m_eMonType = _eType;
+		info.m_fAtt = 1;
+		info.m_fAttRange = 250.f;
+		info.m_fRecogRange = 500.f;
+		info.m_iHP = 100;
+		info.m_fSpeed = 100.f;
+
+		pMon->SetMonInfo(info);
+		//pMon->CreateRigidBody();
+		//pMon->GetRigidbody()->SetMass(1.f);
+
+		AI* pAI = new AI;
+		pAI->AddState(new CIdleState);
+		pAI->AddState(new CRange_TraceState);
+		pAI->AddState(new CRange_AttackState);
+		pAI->SetCurState(MON_STATE::IDLE);
+
+		pMon->SetAI(pAI);
+	}
 		break;
 
 	case MON_TYPE::DROP_ITEM:
@@ -55,7 +83,7 @@ CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
 		info.m_eMonType = _eType;
 		info.m_fAtt = 1;
 		info.m_fAttRange = 1.f;
-		info.m_fRecogRange = 300.f;
+		info.m_fRecogRange = 400.f;
 		info.m_iHP = 9999999;
 		info.m_fSpeed = 250.f;
 

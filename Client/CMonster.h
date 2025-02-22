@@ -25,6 +25,8 @@ public:
     void SetAI(AI* _AI);
     const tMonInfo& Getinfo() { return m_tInfo; }
 
+    void TakeDamaged(int _iDamage);
+
 
 private:
     void SetMonInfo(const tMonInfo& _info) {

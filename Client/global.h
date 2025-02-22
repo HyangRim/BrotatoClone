@@ -12,7 +12,7 @@
 #include <iostream>
 #include <d2d1.h>
 #include <wincodec.h>
-
+ 
 
 #pragma comment(lib, "d2d1.lib")
 #pragma comment(lib, "windowscodecs.lib")
@@ -33,6 +33,10 @@ using std::unordered_map;
 #include <string>
 using std::string;
 using std::wstring;
+
+#include <random>
+std::random_device random_generator;
+std::uniform_int_distribution<int> random_distribution(0, 100);
 
 #include <math.h>
 #include <assert.h>

@@ -21,6 +21,7 @@ class CWeapon :
 {
     
 private:
+    Vec2            m_vWeaponOffset;        //무기 위치 오프셋(플레이어 주변 부유 Offset)
     Vec2            m_vRotation;
     tWeaponInfo     m_tWeaponInfo;
     CTexture*       m_pTexture;
@@ -29,6 +30,7 @@ private:
 
 
 protected:
+
     CPlayer*        m_pPlayer;
 
 
@@ -41,6 +43,8 @@ public:
     virtual void ShotMissile(Vec2 _vDir);
 
     CObject* GetTarget() { return m_pTarget; }
+
+    void SetWeaponOffset(Vec2 _vWeaponOffset) { m_vWeaponOffset = _vWeaponOffset; }
 
 private:
     CObject* SpecTarget();
