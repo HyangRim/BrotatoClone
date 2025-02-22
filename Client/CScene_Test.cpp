@@ -44,6 +44,7 @@ void CScene_Test::render(HDC _dc)
 		if (pRenderTarget) {
 			D2D1_SIZE_F renderTargetSize = pRenderTarget->GetSize();
 
+			//이미지 크기 설정
 			// 출력 위치 및 크기 설정
 			D2D1_RECT_F destRect = D2D1::RectF(
 				0.0f,
