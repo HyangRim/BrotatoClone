@@ -123,3 +123,32 @@ void CKnife::render(Gdiplus::Graphics* _pDGraphics)
 		vScale.y);
 }
 
+void CKnife::render(ID2D1HwndRenderTarget* _pRender)
+{
+	// 실제 좌표 계산
+	Vec2 vPos = GetPos();
+	Vec2 vRenderPos = CCamera::GetInstance()->GetRenderPos(vPos);
+	Vec2 vScale = GetScale();
+
+	// Direct2D에서는 DrawEllipse 함수를 사용합니다.
+	// 원의 중심은 vRenderPos, 가로/세로 반지름은 각각 vScale.x/2, vScale.y/2 로 설정합니다.
+	D2D1_ELLIPSE ellipse = D2D1::Ellipse(
+		D2D1::Point2F(vRenderPos.x, vRenderPos.y),
+		vScale.x / 2.f,
+		vScale.y / 2.f
+	);
+
+	// 파란색 브러시 생성
+	ID2D1SolidColorBrush* pBrush = nullptr;
+	HRESULT hr = _pRender->CreateSolidColorBrush(
+		D2D1::ColorF(D2D1::ColorF::Red),
+		&pBrush
+	);
+	if (SUCCEEDED(hr))
+	{
+		// 선 두께 2.0f로 타원 그리기
+		_pRender->DrawEllipse(ellipse, pBrush, 2.0f);
+		pBrush->Release();
+	}
+}
+

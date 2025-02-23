@@ -6,6 +6,7 @@
 #include "CkeyMgr.h"
 #include "CTimeMgr.h"
 #include "CResMgr.h"
+#include "Direct2DMgr.h"
 #include "CWeapon.h"
 
 #include "CMissile.h"
@@ -41,6 +42,10 @@ CPlayer::CPlayer()
 	CreateRigidBody();
 
 	CTexture* m_pTex = CResMgr::GetInstance()->LoadTexture(L"PlayerTex", L"texture\\link_0.bmp");
+	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\link_0.bmp",L"PlayerTex");
+
+	ID2D1Bitmap* m_pBit = Direct2DMgr::GetInstance()->GetStoredBitmap(L"PlayerTex");
+
 
 	//우리 텍스쳐가 완벽하게 편집이 되어 있어서 저렇게 수월하게 할 수 있었음...
 	//근데 그렇지 않은 경우가 정말 많음. 
@@ -49,31 +54,31 @@ CPlayer::CPlayer()
 	CreateAnimator();
 
 	
-	GetAnimator()->LoadAnimation(L"animation\\player_idle_down.anim");
-	GetAnimator()->LoadAnimation(L"animation\\player_idle_left.anim");
-	GetAnimator()->LoadAnimation(L"animation\\player_idle_up.anim");
-	GetAnimator()->LoadAnimation(L"animation\\player_idle_right.anim");
+	//GetAnimator()->LoadAnimation(L"animation\\player_idle_down.anim");
+	//GetAnimator()->LoadAnimation(L"animation\\player_idle_left.anim");
+	//GetAnimator()->LoadAnimation(L"animation\\player_idle_up.anim");
+	//GetAnimator()->LoadAnimation(L"animation\\player_idle_right.anim");
 
-	GetAnimator()->LoadAnimation(L"animation\\player_walk_down.anim");
-	GetAnimator()->LoadAnimation(L"animation\\player_walk_left.anim");
-	GetAnimator()->LoadAnimation(L"animation\\player_walk_up.anim");
-	GetAnimator()->LoadAnimation(L"animation\\player_walk_right.anim");
+	//GetAnimator()->LoadAnimation(L"animation\\player_walk_down.anim");
+	//GetAnimator()->LoadAnimation(L"animation\\player_walk_left.anim");
+	//GetAnimator()->LoadAnimation(L"animation\\player_walk_up.anim");
+	//GetAnimator()->LoadAnimation(L"animation\\player_walk_right.anim");
 	
 
 	//IDLE 애니메이션 추가
 	
-	/*
-	GetAnimator()->CreateAnimation(L"IDLE_DOWN", m_pTex, Vec2(0.f, 0.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 3);
-	GetAnimator()->CreateAnimation(L"IDLE_LEFT", m_pTex, Vec2(0.f, 65.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 3);
-	GetAnimator()->CreateAnimation(L"IDLE_UP", m_pTex, Vec2(0.f, 130.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 1);
-	GetAnimator()->CreateAnimation(L"IDLE_RIGHT", m_pTex, Vec2(0.f, 195.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 3);
+	
+	GetAnimator()->CreateAnimation(L"IDLE_DOWN", m_pTex, m_pBit,Vec2(0.f, 0.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 3);
+	GetAnimator()->CreateAnimation(L"IDLE_LEFT", m_pTex, m_pBit,Vec2(0.f, 65.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 3);
+	GetAnimator()->CreateAnimation(L"IDLE_UP", m_pTex, m_pBit,Vec2(0.f, 130.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 1);
+	GetAnimator()->CreateAnimation(L"IDLE_RIGHT", m_pTex, m_pBit, Vec2(0.f, 195.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 3);
 	
 	//걷기 애니메이션 추가
-	GetAnimator()->CreateAnimation(L"WALK_DOWN", m_pTex, Vec2(0.f, 260.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 10);
-	GetAnimator()->CreateAnimation(L"WALK_LEFT", m_pTex, Vec2(0.f, 325.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 10);
-	GetAnimator()->CreateAnimation(L"WALK_UP", m_pTex, Vec2(0.f, 390.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 10);
-	GetAnimator()->CreateAnimation(L"WALK_RIGHT", m_pTex, Vec2(0.f, 455.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 10);
-	*/
+	GetAnimator()->CreateAnimation(L"WALK_DOWN", m_pTex, m_pBit, Vec2(0.f, 260.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 10);
+	GetAnimator()->CreateAnimation(L"WALK_LEFT", m_pTex, m_pBit, Vec2(0.f, 325.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 10);
+	GetAnimator()->CreateAnimation(L"WALK_UP", m_pTex, m_pBit, Vec2(0.f, 390.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 10);
+	GetAnimator()->CreateAnimation(L"WALK_RIGHT", m_pTex, m_pBit, Vec2(0.f, 455.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 10);
+	
 	
 	//Animation 저장해보기
 	GetAnimator()->Play(L"IDLE_DOWN", true);
@@ -101,6 +106,8 @@ CPlayer::~CPlayer()
 
 void CPlayer::update()
 {
+	CObject::update();
+
 	update_move();
 	update_state();
 	update_animation();
@@ -134,6 +141,11 @@ void CPlayer::render(HDC _dc)
 void CPlayer::render(Gdiplus::Graphics* _pDGraphics)
 {
 	component_render(_pDGraphics);
+}
+
+void CPlayer::render(ID2D1HwndRenderTarget* _pRender)
+{
+	component_render(_pRender);
 }
 
 bool CPlayer::AddWeapon(CWeapon* _pWeapon)

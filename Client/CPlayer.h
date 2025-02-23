@@ -51,6 +51,7 @@ public:
     virtual void update();
     virtual void render(HDC _dc);
     virtual void render(Gdiplus::Graphics* _pDGraphics);
+    virtual void render(ID2D1HwndRenderTarget* _pRender);
 
 public:
     bool AddWeapon(CWeapon* _pWeapon);  //무기 리스트에 무기 넣는 함수. 

@@ -20,6 +20,7 @@ class CCollider;
 class CAnimator;
 class CRigidbody;
 class CGravity;
+class CImage;
 
 class CObject
 {
@@ -35,6 +36,7 @@ private:
 	CAnimator*		m_pAnimator;
 	CRigidbody*		m_pRigidBody;
 	CGravity*		m_pGravity;
+	CImage*			m_pImage;
 
 	bool			m_bAlive;			//자기 자신이 활성화 or 비활성화. (삭제 전용)
 	bool			m_bEnable;			//일시적인 활성화 or 비활성화. 
@@ -63,11 +65,13 @@ public:
 	CAnimator* GetAnimator() { return m_pAnimator; }
 	CRigidbody* GetRigidbody() { return m_pRigidBody; }
 	CGravity* GetGravity() { return m_pGravity; }
+	CImage* GetImage() { return m_pImage; }
 
 	void CreateCollider();
 	void CreateAnimator();
 	void CreateRigidBody();
 	void CreateGravity();
+	void CreateImage();
 
 	virtual void OnCollision(CCollider* _pOther) {};
 	virtual void OnCollisionEnter(CCollider* _pOther) {};
@@ -93,9 +97,11 @@ public:
 	virtual void finalupdate();
 	virtual void render(HDC _dc);
 	virtual void render(Gdiplus::Graphics* _pDGraphics);
+	virtual void render(ID2D1HwndRenderTarget* _pRender);
 
 	void component_render(HDC _dc);
 	void component_render(Gdiplus::Graphics* _pDGraphics);
+	void component_render(ID2D1HwndRenderTarget* _pRender);
 
 	virtual CObject* Clone() = 0;
 

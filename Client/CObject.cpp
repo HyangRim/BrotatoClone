@@ -9,6 +9,7 @@
 #include "CTexture.h"
 #include "CRigidbody.h"
 #include "CGravity.h"
+#include "CImage.h"
 
 
 CObject::CObject()
@@ -18,9 +19,10 @@ CObject::CObject()
 	, m_pAnimator(nullptr)
 	, m_pRigidBody(nullptr)
 	, m_pGravity(nullptr)
+	, m_pImage(nullptr)
 	, m_bAlive(true)
 	, m_bEnable(true)
-	, m_fWaveDuration(0.f)
+	, m_fWaveDuration(1.f)
 	, m_fWaveElapsed(0.f)
 {
 	m_vRenderScale = m_vScale;
@@ -36,6 +38,7 @@ CObject::CObject(const CObject& _origin)
 	, m_pAnimator(nullptr)
 	, m_pRigidBody(nullptr)
 	, m_pGravity(nullptr)
+	, m_pImage(nullptr)
 	, m_fWaveDuration(_origin.m_fWaveDuration)
 	, m_fWaveElapsed(0.f)
 {
@@ -60,6 +63,11 @@ CObject::CObject(const CObject& _origin)
 		m_pRigidBody->m_pOwner = this;
 	}
 
+	if (_origin.m_pImage != nullptr) {
+		m_pImage = new CImage(*_origin.m_pImage);
+		m_pImage->m_pOwner = this;
+	}
+
 }
 
 CObject::~CObject() {
@@ -67,6 +75,7 @@ CObject::~CObject() {
 	if (m_pAnimator != nullptr) delete m_pAnimator;
 	if (m_pGravity != nullptr)  delete m_pGravity;
 	if (m_pRigidBody != nullptr)delete m_pRigidBody;
+	if (m_pImage != nullptr) delete m_pImage;
 }
 
 
@@ -83,6 +92,8 @@ void CObject::finalupdate()
 	if (m_pGravity)  m_pGravity->finalupdate();
 	if (m_pRigidBody)m_pRigidBody->finalupdate();
 	if (m_pCollider) m_pCollider->finalupdate();
+	//if( m_pImage) m_pImage->finalupdate();
+
 }
 
 void CObject::render(HDC _dc)
@@ -115,18 +126,51 @@ void CObject::render(Gdiplus::Graphics* _pDGraphics)
 	component_render(_pDGraphics);
 }
 
+void CObject::render(ID2D1HwndRenderTarget* _pRender)
+{
+	//ÁøÂ¥ ÁÂÇ¥.
+	Vec2 vRenderPos = CCamera::GetInstance()->GetRenderPos(m_vPos);
+
+	float left = vRenderPos.x - m_vRenderScale.x / 2.f;
+	float top = vRenderPos.y - m_vRenderScale.y / 2.f;
+	float right = vRenderPos.x + m_vRenderScale.x / 2.f;
+	float bottom = vRenderPos.y + m_vRenderScale.y / 2.f;
+
+	D2D1_RECT_F rect = D2D1::RectF(left, top, right, bottom);
+	ID2D1SolidColorBrush* pBrush = nullptr;
+	HRESULT hr = _pRender->CreateSolidColorBrush(
+		D2D1::ColorF(D2D1::ColorF::Black), &pBrush);
+
+	if (SUCCEEDED(hr))
+	{
+		_pRender->DrawRectangle(rect, pBrush);
+		pBrush->Release();
+	}
+
+	component_render(_pRender);
+}
+
 void CObject::component_render(HDC _dc)
 {
 	if (m_pAnimator != nullptr) m_pAnimator->render(_dc);
 
 	if (m_pCollider != nullptr)	m_pCollider->render(_dc);
+	if (m_pImage != nullptr)	m_pImage->render(_dc);
 }
 
 void CObject::component_render(Gdiplus::Graphics* _pDGraphics)
 {
 	if (m_pAnimator != nullptr) m_pAnimator->render(_pDGraphics);
 
-	//if (m_pCollider != nullptr)	m_pCollider->render(_pDGraphics);
+	if (m_pCollider != nullptr)	m_pCollider->render(_pDGraphics);
+}
+
+void CObject::component_render(ID2D1HwndRenderTarget* _pRender)
+{
+	if (m_pAnimator != nullptr) m_pAnimator->render(_pRender);
+
+	if (m_pCollider != nullptr)	m_pCollider->render(_pRender);
+	if (m_pImage != nullptr)	m_pImage->render(_pRender);
 }
 
 void CObject::CreateCollider()
@@ -152,6 +196,12 @@ void CObject::CreateGravity()
 {
 	m_pGravity = new CGravity;
 	m_pGravity->m_pOwner = this;
+}
+
+void CObject::CreateImage()
+{
+	m_pImage = new CImage;
+	m_pImage->m_pOwner = this;
 }
 
 

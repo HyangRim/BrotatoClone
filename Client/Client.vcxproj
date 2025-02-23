@@ -177,6 +177,7 @@
     <ClInclude Include="CGravity.h" />
     <ClInclude Include="CGround.h" />
     <ClInclude Include="CIdleState.h" />
+    <ClInclude Include="CImage.h" />
     <ClInclude Include="CkeyMgr.h" />
     <ClInclude Include="CKnife.h" />
     <ClInclude Include="CKnifeAI.h" />
@@ -242,6 +243,7 @@
     <ClCompile Include="CGravity.cpp" />
     <ClCompile Include="CGround.cpp" />
     <ClCompile Include="CIdleState.cpp" />
+    <ClCompile Include="CImage.cpp" />
     <ClCompile Include="CkeyMgr.cpp" />
     <ClCompile Include="CKnife.cpp" />
     <ClCompile Include="CKnifeAI.cpp" />

@@ -188,6 +188,9 @@
     <Filter Include="Engine\05. Scene\Scene_Main">
       <UniqueIdentifier>{423007de-820b-497f-838f-c80ce36342ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\07. Component\Image">
+      <UniqueIdentifier>{f56d297b-969b-43ca-a03f-51ca5e5b5836}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h">
@@ -380,6 +383,9 @@
     <ClInclude Include="CScene_Main.h">
       <Filter>Engine\05. Scene\Scene_Main</Filter>
     </ClInclude>
+    <ClInclude Include="CImage.h">
+      <Filter>Engine\07. Component\Image</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -563,6 +569,9 @@
     </ClCompile>
     <ClCompile Include="CScene_Main.cpp">
       <Filter>Engine\05. Scene\Scene_Main</Filter>
+    </ClCompile>
+    <ClCompile Include="CImage.cpp">
+      <Filter>Engine\07. Component\Image</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -82,6 +82,10 @@ void CTextUI::render(Gdiplus::Graphics* _pDGraphics)
     _pDGraphics->FillPath(&fillBrush, &path);
 }
 
+void CTextUI::render(ID2D1HwndRenderTarget* _pRender)
+{
+}
+
 void CTextUI::update()
 {
     UpdateNumber();

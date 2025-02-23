@@ -69,6 +69,7 @@ public:
 public:
     void UpdateNumber();
     virtual void render(Gdiplus::Graphics* _pDGraphics);
+    virtual void render(ID2D1HwndRenderTarget* _pRender);
     virtual void update();
 
 public:

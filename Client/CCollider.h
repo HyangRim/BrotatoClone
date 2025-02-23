@@ -45,6 +45,7 @@ public:
 	void finalupdate();
 	void render(HDC _dc);
 	void render(Gdiplus::Graphics* _pDGraphics);
+	void render(ID2D1HwndRenderTarget* _pRender);
 
 
 public:

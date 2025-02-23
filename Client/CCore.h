@@ -55,6 +55,7 @@ public:
 public:
 	HWND GetMainHwnd() { return m_hWnd; }
 	HDC GetMainDC() { return m_hDC; }
+
 	Gdiplus::Graphics* GetDGraphics() { return m_pDGraphics; }
 	Gdiplus::Graphics* GetGraphics() { return m_pGraphics; }
 

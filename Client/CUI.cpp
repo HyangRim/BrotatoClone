@@ -114,6 +114,39 @@ void CUI::render(Gdiplus::Graphics* _pDGraphics)
 	render_child(_pDGraphics);
 }
 
+void CUI::render(ID2D1HwndRenderTarget* _pRender)
+{
+	Vec2 vPos = GetFinalPos();
+	Vec2 vScale = GetScale();
+
+	if (m_bCamAffected) {
+		vPos = CCamera::GetInstance()->GetRenderPos(vPos);
+	}
+
+	// vPos와 vScale은 이미 계산된 좌표와 스케일 값입니다.
+	D2D1_RECT_F rect = D2D1::RectF(
+		vPos.x - vScale.x / 2.f,
+		vPos.y - vScale.y / 2.f,
+		vPos.x + vScale.x / 2.f,
+		vPos.y + vScale.y / 2.f
+	);
+
+	ID2D1SolidColorBrush* pBrush = nullptr;
+	HRESULT hr = _pRender->CreateSolidColorBrush(
+		m_bLbtnDown ? D2D1::ColorF(D2D1::ColorF::Green)   // 마우스 왼쪽 버튼이 눌렸다면 녹색
+		: D2D1::ColorF(D2D1::ColorF::White),  // 아니면 흰색
+		&pBrush
+	);
+
+	if (SUCCEEDED(hr))
+	{
+		_pRender->DrawRectangle(rect, pBrush, 1.0f);
+		pBrush->Release();
+	}
+
+	render_child(_pRender);
+}
+
 void CUI::update_child()
 {
 	for (auto& child : m_vecChildUI) {
@@ -139,6 +172,13 @@ void CUI::render_child(Gdiplus::Graphics* _pDGraphics)
 {
 	for (auto& child : m_vecChildUI) {
 		child->render(_pDGraphics);
+	}
+}
+
+void CUI::render_child(ID2D1HwndRenderTarget* _pRender)
+{
+	for (auto& child : m_vecChildUI) {
+		child->render(_pRender);
 	}
 }
 

@@ -21,7 +21,7 @@ public:
 
 
 public:
-	void CreateAnimation(const wstring& _strName, CTexture* _pTex, Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vStep, float _fDuration, UINT _iFrameCount);
+	void CreateAnimation(const wstring& _strName, CTexture* _pTex, ID2D1Bitmap* _pBit,Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vStep, float _fDuration, UINT _iFrameCount);
 	void LoadAnimation(const wstring& _strRelativePath);
 	
 	CAnimation* FindAnimation(const wstring& _strName);
@@ -31,6 +31,7 @@ public:
 	void finalupdate();
 	void render(HDC _dc);
 	void render(Gdiplus::Graphics* _pDGraphics);
+	void render(ID2D1HwndRenderTarget* _pRender);
 
 public:
 	CAnimator();

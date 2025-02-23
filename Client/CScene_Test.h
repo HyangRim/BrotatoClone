@@ -11,8 +11,10 @@ private:
 public:
     virtual void update();
     virtual void finalupdate();
+
     virtual void render(HDC _dc);
     virtual void render(Gdiplus::Graphics* _pDGraphics);
+    virtual void render(ID2D1HwndRenderTarget* _pRender);
 
 public:
     virtual void Enter();		//해당 Scene에 진입 시 호출.
