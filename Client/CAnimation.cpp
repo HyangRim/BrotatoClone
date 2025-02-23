@@ -106,9 +106,52 @@ void CAnimation::render(Gdiplus::Graphics* _pDGraphics)
 		Gdiplus::UnitPixel);
 }
 
-void CAnimation::Create(CTexture* _pTex, Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vStep, float _fDuration, UINT iFrameCount)
+void CAnimation::render(ID2D1HwndRenderTarget* _pRender)
+{
+
+	if (m_bFinish) return;
+	CObject* pObj = m_pAnimator->GetObj();
+	Vec2 vPos = pObj->GetPos();
+
+
+	Vec2 vScale = pObj->GetScale();
+	Vec2 vWaveScale = pObj->GetRenderScale();
+	Vec2 vFinalScale = vWaveScale / vScale;
+
+
+	vPos += m_vecFrm[m_iCurFrm].vOffset;			// Object Position에 Offset만큼 추가 이동 위치. 
+	vPos = CCamera::GetInstance()->GetRenderPos(vPos);
+
+
+
+	// 목적지 사각형 계산
+	float destLeft = vPos.x - (m_vecFrm[m_iCurFrm].vSlice.x / 2.f) * vFinalScale.x;
+	float destTop = vPos.y - (m_vecFrm[m_iCurFrm].vSlice.y / 2.f) * vFinalScale.y;
+	float destRight = vPos.x + (m_vecFrm[m_iCurFrm].vSlice.x / 2.f) * vFinalScale.x;
+	float destBottom = vPos.y + (m_vecFrm[m_iCurFrm].vSlice.y / 2.f) * vFinalScale.y;
+	
+	//float destRight = destLeft + m_vecFrm[m_iCurFrm].vSlice.x;
+	//float destBottom = destTop + m_vecFrm[m_iCurFrm].vSlice.y;
+	D2D1_RECT_F destRect = D2D1::RectF(destLeft, destTop, destRight, destBottom);
+	int a = 1213;
+
+	// 소스 사각형 계산 (이미지 내에서 잘라낼 영역)
+	float srcLeft = m_vecFrm[m_iCurFrm].vLT.x;
+	float srcTop = m_vecFrm[m_iCurFrm].vLT.y;
+	float srcRight = srcLeft + m_vecFrm[m_iCurFrm].vSlice.x;
+	float srcBottom = srcTop + m_vecFrm[m_iCurFrm].vSlice.y;
+	D2D1_RECT_F srcRect = D2D1::RectF(srcLeft, srcTop, srcRight, srcBottom);
+
+
+	_pRender->DrawBitmap(m_pBitTex, destRect, 1.0f,
+		D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, srcRect);
+}
+
+void CAnimation::Create(CTexture* _pTex, ID2D1Bitmap* _pBit, Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vStep, float _fDuration, UINT iFrameCount)
 {
 	m_pTex = _pTex;
+	m_pBitTex = _pBit;
+
 	tAnimFrm frm = {};
 	for (UINT frameIDX = 0; frameIDX < iFrameCount; frameIDX++) {
 		frm.fDuration = _fDuration;
@@ -119,6 +162,8 @@ void CAnimation::Create(CTexture* _pTex, Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vSte
 	}
 
 }
+
+
 
 void CAnimation::Save(const wstring& _strRelativePath)
 {

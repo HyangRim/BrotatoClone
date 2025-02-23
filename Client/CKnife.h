@@ -21,6 +21,7 @@ private:
 public:
     virtual void update();
     virtual void render(Gdiplus::Graphics* _pDGraphics);
+    virtual void render(ID2D1HwndRenderTarget* _pRender);
 
 public:
     CLONE(CKnife)

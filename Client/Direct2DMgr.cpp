@@ -32,7 +32,7 @@ HRESULT Direct2DMgr::init(HWND hwnd)
 
     hr = pD2DFactory->CreateHwndRenderTarget(
         D2D1::RenderTargetProperties(),
-        D2D1::HwndRenderTargetProperties(hwnd, size),
+        D2D1::HwndRenderTargetProperties(hwnd, size, D2D1_PRESENT_OPTIONS_IMMEDIATELY),
         &pRenderTarget
     );
     if (FAILED(hr)) return hr;

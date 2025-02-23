@@ -66,6 +66,37 @@ void CMissile::render(Gdiplus::Graphics* _pDGraphics)
 	component_render(_pDGraphics);
 }
 
+void CMissile::render(ID2D1HwndRenderTarget* _pRender)
+{
+	// 실제 좌표 및 스케일 값
+	Vec2 vPos = GetPos();
+	Vec2 vRenderPos = CCamera::GetInstance()->GetRenderPos(vPos);
+	Vec2 vScale = GetScale();
+
+	// 중심이 vPos, x축 반지름은 vScale.x/2, y축 반지름은 vScale.y/2인 타원 생성
+	D2D1_ELLIPSE ellipse = D2D1::Ellipse(
+		D2D1::Point2F(vRenderPos.x, vRenderPos.y),
+		vScale.x / 2.f,
+		vScale.y / 2.f
+	);
+
+	// 브러시 생성 (예: 검은색)
+	ID2D1SolidColorBrush* pBrush = nullptr;
+	HRESULT hr = _pRender->CreateSolidColorBrush(
+		D2D1::ColorF(D2D1::ColorF::Black),
+		&pBrush
+	);
+	if (SUCCEEDED(hr))
+	{
+		// 선 두께 1.0f로 타원 외곽선 그리기
+		_pRender->DrawEllipse(ellipse, pBrush, 1.0f);
+		pBrush->Release();
+	}
+
+	// 컴포넌트 렌더링 (component_render 함수도 Direct2D로 업데이트되어 있어야 함)
+	component_render(_pRender);
+}
+
 void CMissile::OnCollisionEnter(CCollider* _pOther)
 {
 	CObject* pOtherObj = _pOther->GetObj();

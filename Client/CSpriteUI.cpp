@@ -55,6 +55,10 @@ void CSpriteUI::render(Graphics* _pDGraphics)
     _pDGraphics->DrawImage(m_pFrameTexture->GetBitmap(), destRect);
 }
 
+void CSpriteUI::render(ID2D1HwndRenderTarget* _pRender)
+{
+}
+
 void CSpriteUI::SetHpRatio(float _ratio)
 {
     m_fHpRatio = max(0.0f, min(1.0f, _ratio)); // Clamp between 0 and 1

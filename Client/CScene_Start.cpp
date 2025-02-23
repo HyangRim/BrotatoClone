@@ -134,6 +134,39 @@ void CScene_Start::render(Gdiplus::Graphics* _pDGraphics)
 		m_fCurRadius * 2);
 }
 
+void CScene_Start::render(ID2D1HwndRenderTarget* _pRender)
+{
+	CScene::render(_pRender);
+
+	if (!m_bUseForce) return;
+
+	m_fCurRadius += m_fForceRadius * 3.f * fDT;
+
+	if (m_fCurRadius > m_fForceRadius) {
+		m_fCurRadius = 0.f;
+	}
+	Vec2 vRenderPos = CCamera::GetInstance()->GetRenderPos(m_vForcePos);
+
+	// vRenderPos와 m_fCurRadius는 이미 계산되어 있다고 가정합니다.
+	D2D1_ELLIPSE ellipse = D2D1::Ellipse(
+		D2D1::Point2F(vRenderPos.x, vRenderPos.y),
+		m_fCurRadius,    // x축 반지름
+		m_fCurRadius     // y축 반지름
+	);
+
+	// 녹색 브러시 생성 (ARGB: 255, 0, 255, 0 => 녹색)
+	ID2D1SolidColorBrush* pBrush = nullptr;
+	HRESULT hr = _pRender->CreateSolidColorBrush(
+		D2D1::ColorF(D2D1::ColorF::Green),
+		&pBrush
+	);
+	if (SUCCEEDED(hr))
+	{
+		_pRender->DrawEllipse(ellipse, pBrush, 1.0f);
+		pBrush->Release();
+	}
+}
+
 
 void CScene_Start::Enter()
 {

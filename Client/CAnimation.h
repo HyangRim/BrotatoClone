@@ -4,6 +4,8 @@
 #include "global.h"
 class CAnimator;
 class CTexture;
+struct ID2D1Bitmap;
+
 
 //프레임마다 가지고 있을 정보.
 
@@ -23,6 +25,8 @@ private:
 	CAnimator*				m_pAnimator;
 
 	CTexture*				m_pTex;			//Animation이 사용하는 텍스쳐
+	ID2D1Bitmap*			m_pBitTex;		//Animation에서 사용하는 Direct2D 텍스쳐.
+
 	vector<tAnimFrm>		m_vecFrm;		//모든 프레임 정보
 	int						m_iCurFrm;		//현재 프레임. 
 	float					m_fAccTime;		//시간 누적
@@ -38,8 +42,9 @@ public:
 
 	void render(HDC _dc);
 	void render(Gdiplus::Graphics* _pDGraphics);
+	void render(ID2D1HwndRenderTarget* _pRender);
 
-	void Create(CTexture* _pTex, Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vStep, float _fDuration, UINT iFrameCount);
+	void Create(CTexture* _pTex, ID2D1Bitmap* _pBit, Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vStep, float _fDuration, UINT iFrameCount);
 
 public:
 	void Save(const wstring& _strRelativePath);

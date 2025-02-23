@@ -36,6 +36,11 @@ void CWeapon::render(Gdiplus::Graphics* _pDGraphics)
 
 }
 
+void CWeapon::render(ID2D1HwndRenderTarget* _pRender)
+{
+
+}
+
 void CWeapon::ShotMissile(Vec2 _vDir)
 {
 }

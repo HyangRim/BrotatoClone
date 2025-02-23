@@ -3,6 +3,7 @@
 
 
 class CTexture;
+struct ID2D1Bitmap;
 
 class CTile :
     public CObject
@@ -10,6 +11,7 @@ class CTile :
 
 private:
     CTexture*       m_pTileTex;
+    ID2D1Bitmap*    m_pTileBit;
     int             m_iImgIdx;
 
 public:
@@ -27,6 +29,7 @@ private:
     virtual void update();
     virtual void render(HDC _dc);
     virtual void render(Gdiplus::Graphics* _pDGraphics);
+    virtual void render(ID2D1HwndRenderTarget* _pRender);
 
 public:
     virtual void Save(FILE* _pFile);

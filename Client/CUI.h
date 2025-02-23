@@ -35,6 +35,7 @@ public:
     virtual void finalupdate();
     virtual void render(HDC _dc);
     virtual void render(Gdiplus::Graphics* _pDGraphics);
+    virtual void render(ID2D1HwndRenderTarget* _pRender);
 
 private:
     void update_child();
@@ -42,6 +43,7 @@ private:
 
     void render_child(HDC _dc);
     void render_child(Gdiplus::Graphics* _pDGraphics);
+    void render_child(ID2D1HwndRenderTarget* _pRender);
 
 
     void MouseOnCheck();

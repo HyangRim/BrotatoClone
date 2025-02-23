@@ -60,6 +60,28 @@ void CScene_Test::render(Gdiplus::Graphics* _pDGraphics)
 	CScene::render(_pDGraphics);
 }
 
+void CScene_Test::render(ID2D1HwndRenderTarget* _pRender)
+{
+	CScene::render(_pRender);
+
+	// Direct2DMgr 인스턴스 가져오기
+	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+
+	//////////////////////////////////////////////////////
+	vector<std::pair<D2D1_RECT_F, wstring>> bitmapsToRender = {
+	{ D2D1::RectF(0, 0, 512, 512), L"BaseMap1" },
+	{ D2D1::RectF(200, 200, 300, 300), L"BaseMap2" }
+	};
+
+	// 모든 비트맵 렌더링
+	//pD2DMgr->RenderAllBitmaps(bitmapsToRender);
+	//////////////////////////////////////////////////////
+
+	for (int idx = 0; idx < bitmapsToRender.size(); idx++) {
+		pD2DMgr->RenderBitmap(bitmapsToRender[idx].first, bitmapsToRender[idx].second);
+	}
+}
+
 // 흰색 픽셀인지 확인하는 함수
 bool IsWhitePixel(Color color) {
 	return color.GetR() == 255 && color.GetG() == 255 && color.GetB() == 255;

@@ -15,6 +15,7 @@ public:
 
     virtual void render(HDC _dc);
     virtual void render(Gdiplus::Graphics* _pDGraphics);
+    virtual void render(ID2D1HwndRenderTarget* _pRender);
 
     virtual void Enter();
     virtual void Exit();
