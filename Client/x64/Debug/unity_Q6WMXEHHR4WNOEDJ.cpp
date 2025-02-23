@@ -98,6 +98,9 @@
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CSceneMgr.cpp"
 
 
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CScene_Main.cpp"
+
+
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CScene_Start.cpp"
 
 
