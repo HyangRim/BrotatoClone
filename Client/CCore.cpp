@@ -126,14 +126,28 @@ void CCore::progress() {
 	
 
 	//화면 초기화(흰 사각형으로 덧 씌움)
-	Clear();
+	//Clear();
 
 	//어디다가 그려야하는지 알려주기. 
 	
 	// GDI버전.
+	// Draw시작.
+	ID2D1HwndRenderTarget* pRenderTarget = Direct2DMgr::GetInstance()->GetRenderTarget();
+	//한 프레임당 그림 그리기 시작. 
+	pRenderTarget->BeginDraw();
+	Clear();
+
+
 	CSceneMgr::GetInstance()->render(m_pMemTex->GetDC());
 	CCamera::GetInstance()->render(m_pMemTex->GetDC());
+	
+	//한 프레임 렌더링 끝. 
+	HRESULT hr = pRenderTarget->EndDraw();
+	if (FAILED(hr)) {
+		MessageBox(nullptr, L"렌더링 실패!", L"오류", MB_OK);
+	}
 
+	// Draw 끝. 
 	// GDI+버전 렌더링. 
 	// 여기서 화면에 PNG던 뭐던 그림. 
 	//CSceneMgr::GetInstance()->render(m_pDGraphics);
@@ -142,7 +156,7 @@ void CCore::progress() {
 	//m_DGraphics
 	//m_pGraphics->DrawImage(m_pMemTex->GetBitmap(), 0, 0, m_ptResolution.x, m_ptResolution.y);
 	//GDI(Legacy 방식)
-	BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y, m_pMemTex->GetDC(), 0, 0, SRCCOPY);
+	//BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y, m_pMemTex->GetDC(), 0, 0, SRCCOPY);
 	
 	//GDI+ 방식
 	//m_pGraphics->DrawImage(m_buffer, 0, 0);
@@ -183,9 +197,18 @@ void CCore::ChangeWindowSize(Vec2 _vResolution, bool _bMenu)
 
 void CCore::Clear()
 {
+	//GDI+ 방식
 	//m_pDGraphics->Clear(Color(255, 120, 120, 120));
-	SelectGDI gdi(m_pMemTex->GetDC(), BRUSH_TYPE::BLACK);
-	Rectangle(m_pMemTex->GetDC(), -1, -1, m_ptResolution.x + 1, m_ptResolution.y + 1);
+	
+	//GDI LEGACY방식
+	//SelectGDI gdi(m_pMemTex->GetDC(), BRUSH_TYPE::BLACK);
+	//Rectangle(m_pMemTex->GetDC(), -1, -1, m_ptResolution.x + 1, m_ptResolution.y + 1);
+
+	//Direct2D방식
+	ID2D1HwndRenderTarget* pRenderTarget = Direct2DMgr::GetInstance()->GetRenderTarget();
+
+	pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
+
 }
 
 void CCore::CreateBrushPen()

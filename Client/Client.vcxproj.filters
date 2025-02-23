@@ -185,6 +185,9 @@
     <Filter Include="Engine\08. Module\AI\State\TRACE\Normal">
       <UniqueIdentifier>{0c990571-9e72-463c-bd25-0389c0412a43}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\05. Scene\Scene_Main">
+      <UniqueIdentifier>{423007de-820b-497f-838f-c80ce36342ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h">
@@ -374,6 +377,9 @@
     <ClInclude Include="CRange_AttackState.h">
       <Filter>Engine\08. Module\AI\State\ATTACK</Filter>
     </ClInclude>
+    <ClInclude Include="CScene_Main.h">
+      <Filter>Engine\05. Scene\Scene_Main</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -554,6 +560,9 @@
     </ClCompile>
     <ClCompile Include="CRange_AttackState.cpp">
       <Filter>Engine\08. Module\AI\State\ATTACK</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene_Main.cpp">
+      <Filter>Engine\05. Scene\Scene_Main</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

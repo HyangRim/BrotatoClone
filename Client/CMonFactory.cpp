@@ -56,7 +56,7 @@ CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
 		info.m_eMonType = _eType;
 		info.m_fAtt = 1;
 		info.m_fAttRange = 250.f;
-		info.m_fRecogRange = 500.f;
+		info.m_fRecogRange = 450.f;
 		info.m_iHP = 100;
 		info.m_fSpeed = 100.f;
 
@@ -83,7 +83,7 @@ CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
 		info.m_eMonType = _eType;
 		info.m_fAtt = 1;
 		info.m_fAttRange = 1.f;
-		info.m_fRecogRange = 400.f;
+		info.m_fRecogRange = 250.f;
 		info.m_iHP = 9999999;
 		info.m_fSpeed = 250.f;
 

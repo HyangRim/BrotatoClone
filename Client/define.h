@@ -55,6 +55,7 @@ enum class GROUP_TYPE {
 };
 
 enum class SCENE_TYPE {
+	MAIN,
 	TOOL,
 	START,
 	TEST,

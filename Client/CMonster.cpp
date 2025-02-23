@@ -35,6 +35,7 @@ CMonster::~CMonster()
 
 void CMonster::update()
 {
+	CObject::update();
 	if(nullptr != m_pAI) m_pAI->update();
 }
 

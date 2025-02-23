@@ -85,46 +85,34 @@ ID2D1Bitmap* Direct2DMgr::GetStoredBitmap(const std::wstring& tag) {
 }
 
 void Direct2DMgr::RenderBitmap(const D2D1_RECT_F& destRect, const std::wstring& baseTag) {
-    if (!pBitmapRenderTarget) return;
-
-    // 백 버퍼에 그리기 시작
-    pBitmapRenderTarget->BeginDraw();
-    pBitmapRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
+    if (!pRenderTarget) return;
 
     // 태그가 baseTag로 시작하는 비트맵만 렌더링
-    for (const auto& pair : bitmapMap) {
-        if (pair.first.find(baseTag) == 0) {
-            pBitmapRenderTarget->DrawBitmap(pair.second, destRect);
-        }
-    }
+    auto searched_bitmap = GetStoredBitmap(baseTag);
 
-    HRESULT hr = pBitmapRenderTarget->EndDraw();
-    if (FAILED(hr)) {
-        MessageBox(nullptr, L"백 버퍼 렌더링 실패!", L"오류", MB_OK);
-        return;
+    if (nullptr == searched_bitmap) {
+        assert(nullptr);
     }
+    pRenderTarget->DrawBitmap(searched_bitmap, destRect);
 
     // 백 버퍼 내용을 메인 렌더 타겟으로 복사
+    /*
     pRenderTarget->BeginDraw();
     ID2D1Bitmap* backBufferBitmap = nullptr;
     pBitmapRenderTarget->GetBitmap(&backBufferBitmap);
     pRenderTarget->DrawBitmap(backBufferBitmap);
     backBufferBitmap->Release();
+    
 
     hr = pRenderTarget->EndDraw();
     if (FAILED(hr)) {
         MessageBox(nullptr, L"화면 렌더링 실패!", L"오류", MB_OK);
     }
+    */
 }
 
 void Direct2DMgr::RenderAllBitmaps(const std::vector<std::pair<D2D1_RECT_F, std::wstring>>& bitmapsToRender) {
     if (!pRenderTarget) return;
-
-    // 렌더링 시작
-    pRenderTarget->BeginDraw();
-
-    // 백버퍼 초기화
-    pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
 
     // 전달받은 모든 비트맵을 순회하며 렌더링
     for (const auto& bitmapInfo : bitmapsToRender) {
@@ -137,11 +125,6 @@ void Direct2DMgr::RenderAllBitmaps(const std::vector<std::pair<D2D1_RECT_F, std:
         }
     }
 
-    // 렌더링 종료
-    HRESULT hr = pRenderTarget->EndDraw();
-    if (FAILED(hr)) {
-        MessageBox(nullptr, L"렌더링 실패!", L"오류", MB_OK);
-    }
 }
 
 

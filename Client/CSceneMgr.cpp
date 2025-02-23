@@ -2,6 +2,7 @@
 #include "CSceneMgr.h"
 #include "CScene.h"
 
+#include "CScene_Main.h"
 #include "CScene_Start.h"
 #include "CScene_Tool.h"
 #include "CScene_Test.h"
@@ -26,6 +27,10 @@ CSceneMgr::~CSceneMgr() {
 void CSceneMgr::init()
 {
 	//Scene »ý¼º
+
+	m_arrScene[(UINT)SCENE_TYPE::MAIN] = new CScene_Main;
+	m_arrScene[(UINT)SCENE_TYPE::MAIN]->SetName(L"Main Title Scene");
+
 	m_arrScene[(UINT)SCENE_TYPE::START] = new CScene_Start;
 	m_arrScene[(UINT)SCENE_TYPE::START]->SetName(L"Start Scene");
 

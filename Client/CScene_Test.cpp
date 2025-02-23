@@ -46,8 +46,12 @@ void CScene_Test::render(HDC _dc)
 	};
 
 	// ¸ðµç ºñÆ®¸Ê ·»´õ¸µ
-	pD2DMgr->RenderAllBitmaps(bitmapsToRender);
+	//pD2DMgr->RenderAllBitmaps(bitmapsToRender);
 	//////////////////////////////////////////////////////
+
+	for (int idx = 0; idx < bitmapsToRender.size(); idx++) {
+		pD2DMgr->RenderBitmap(bitmapsToRender[idx].first, bitmapsToRender[idx].second);
+	}
 }
 
 void CScene_Test::render(Gdiplus::Graphics* _pDGraphics)
