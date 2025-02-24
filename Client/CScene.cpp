@@ -9,6 +9,9 @@
 #include "CCamera.h"
 #include "CCore.h"
 #include "CTexture.h"
+#include "Direct2DMgr.h"
+#include "CGround.h"
+#include "CImage.h"
 
 
 CScene::CScene()
@@ -356,35 +359,74 @@ void CScene::CreateTile(UINT _IXCount, UINT _IYCount)
 	}
 }
 
-void CScene::MakeTile()
+void CScene::MakeTile(const wstring& _strRelativePath, const wstring &tag)
 {
-	DeleteGroup(GROUP_TYPE::TILE);
-	//타일 생성
-	CTexture* pTileTex = CResMgr::GetInstance()->LoadTexture(L"Tile Outline", L"texture\\tiles_outline.png");
+	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+	pD2DMgr->LoadAndStoreBitmap(_strRelativePath, tag, true);
 
-	m_iTileX = pTileTex->Width() / TILE_SIZE;
-	m_iTileY = pTileTex->Height() / TILE_SIZE;
+	auto splitBitmaps = Direct2DMgr::GetInstance()->GetSplitBitmaps(tag);
 
-	for (UINT y = 0; y < m_iTileY; ++y)
+	int tileIdx = 0;
+	int rest = 0;
+	for (int tileY = 0; tileY < 18; tileY++)
 	{
-		for (UINT x = 0; x < m_iTileX; ++x)
+		for (int tileX = 0; tileX < 18; tileX++)
 		{
-			CTile* pTile = new CTile();
-			
-			pTile->SetTexture(pTileTex);
+			CObject* pObj = new CGround;
+			pObj->SetPos(Vec2(32.f + (64.f * (float)(tileX)), 32.f + (64.f * (float)(tileY))));
+			pObj->SetScale(Vec2(64.f, 64.f));
+			pObj->SetName(L"TILE");
+			pObj->CreateImage();
 
-			// 이미지 인덱스 설정 (필요 시 활용 가능)
-			int imgIdx = y * m_iTileX + x;
-			pTile->AddImgIdx(); // imgIdx를 증가시키는 로직은 필요에 따라 수정 가능
+			if (tileY == 0 && tileX == 0) tileIdx = 0;
+			else if (tileY == 0 && tileX == 17) tileIdx = 7;
+			else if (tileY == 17 && tileX == 0) tileIdx = 56;
+			else if (tileY == 17 && tileX == 17) tileIdx = 63;
 
-			// 타일의 위치 설정 (예: 월드 좌표계에서의 위치)
-			pTile->SetPos(Vec2((float)(x * TILE_SIZE), (float)(y * TILE_SIZE)));
-			pTile->SetTexture(pTileTex);
+			//맨윗줄
+			else if (tileY == 0 && (tileX >= 1 && tileX <= 16))
+			{
+				rest = tileX % 7;
+				if (rest == 0) rest++;
+				tileIdx = rest;
+			}
 
+			//맨아랫줄
+			else if (tileY == 17 && (tileX >= 1 && tileX <= 16))
+			{
+				rest = tileX % 7;
+				if (rest == 0) rest++;
+				tileIdx = rest + 56;
+			}
 
+			//맨왼쪽줄
+			else if (tileX == 0 && (tileY >= 1 && tileY <= 16))
+			{
+				rest = tileY % 7;
+				if (rest == 0) rest++;
+				tileIdx = rest * 8;
+			}
 
-			// 그룹에 타일 추가
-			AddObject(pTile, GROUP_TYPE::TILE);
+			//맨 오른쪽
+			else if (tileX == 17 && (tileY >= 1 && tileY <= 16))
+			{
+				rest = tileY % 7;
+				if (rest == 0) rest++;
+				tileIdx = rest * 8 + 7;
+			}
+
+			else
+			{
+				int randX = rand() % 7;
+				if (randX == 0) randX = 1;
+				int randY = rand() % 7;
+				if (randY == 0) randY = 1;
+
+				tileIdx = randY * 8 + randX;
+			}
+
+			pObj->GetImage()->SetBitmap(splitBitmaps[tileIdx]);
+			AddObject(pObj, GROUP_TYPE::TILE);
 		}
 	}
 }

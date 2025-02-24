@@ -223,6 +223,8 @@ void CScene_Start::Enter()
 	//Player 그룹과 Monster그룹간의 충돌 체크 
 	//update에서 로직, finalupdate에서 최종 움직임 완료
 
+
+
 	//사운드 추가
 	CSoundMgr::GetInstance()->AddSound(L"Extend", L"sound\\extend.wav", false, false);
 

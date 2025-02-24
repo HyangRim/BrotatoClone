@@ -143,7 +143,7 @@ void CObject::render(ID2D1HwndRenderTarget* _pRender)
 
 	if (SUCCEEDED(hr))
 	{
-		_pRender->DrawRectangle(rect, pBrush);
+		//_pRender->DrawRectangle(rect, pBrush);
 		pBrush->Release();
 	}
 
@@ -207,8 +207,6 @@ void CObject::CreateImage()
 
 void CObject::ShakeScale()
 {
-	
-
 	Vec2 OriginalScale = GetScale();
 	Vec2 ScaleWave = OriginalScale * 0.3f;
 	float waveScale = 1.f;

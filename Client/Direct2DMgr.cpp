@@ -55,7 +55,7 @@ HRESULT Direct2DMgr::init(HWND hwnd)
     return S_OK;
 }
 
-HRESULT Direct2DMgr::LoadAndStoreBitmap(const std::wstring& filePath, const std::wstring& tag) {
+HRESULT Direct2DMgr::LoadAndStoreBitmap(const std::wstring& filePath, const std::wstring& tag, bool split) {
     // 이미 로드된 비트맵이 있는지 확인
     if (bitmapMap.find(tag) != bitmapMap.end()) {
         return S_OK; // 이미 로드됨
@@ -69,6 +69,15 @@ HRESULT Direct2DMgr::LoadAndStoreBitmap(const std::wstring& filePath, const std:
     
     if (SUCCEEDED(hr)) {
         bitmapMap[tag] = newBitmap; // 맵에 저장
+
+        // split이 true인 경우 비트맵을 쪼갬
+        if (split) {
+            hr = SplitBitmap(newBitmap, tag);
+            if (FAILED(hr)) {
+                MessageBox(nullptr, L"비트맵 분할 실패!", L"오류", MB_OK);
+                return hr;
+            }
+        }
     }
 
     return hr;
@@ -82,6 +91,16 @@ ID2D1Bitmap* Direct2DMgr::GetStoredBitmap(const std::wstring& tag) {
     }
 
     return nullptr; // 없음
+}
+
+vector<ID2D1Bitmap*> Direct2DMgr::GetSplitBitmaps(const wstring& tag) {
+    auto it = splitBitmapMap.find(tag);
+
+    if (it != splitBitmapMap.end()) {
+        return it->second; // 저장된 비트맵 반환
+    }
+
+    return {}; // 없음
 }
 
 void Direct2DMgr::RenderBitmap(const D2D1_RECT_F& destRect, const std::wstring& baseTag) {
@@ -199,6 +218,63 @@ HRESULT Direct2DMgr::LoadBitmap(const std::wstring& filePath, ID2D1Bitmap** ppBi
     if (pDecoder) pDecoder->Release();
 
     return hr;
+}
+
+HRESULT Direct2DMgr::SplitBitmap(ID2D1Bitmap* bitmap, const wstring& tag) {
+    if (!bitmap || !pRenderTarget) return E_FAIL;
+
+    D2D1_SIZE_F bitmapSize = bitmap->GetSize();
+    UINT rows = static_cast<UINT>(bitmapSize.height / 64);
+    UINT cols = static_cast<UINT>(bitmapSize.width / 64);
+
+    vector<ID2D1Bitmap*> splitBitmaps;
+
+    for (UINT row = 0; row < rows; ++row) {
+        for (UINT col = 0; col < cols; ++col) {
+            // 각 64x64 영역 정의
+            D2D1_RECT_F srcRect = D2D1::RectF(
+                col * 64.0f,
+                row * 64.0f,
+                (col + 1) * 64.0f,
+                (row + 1) * 64.0f
+            );
+
+            // 호환 렌더 타겟 생성
+            ID2D1BitmapRenderTarget* compatibleRenderTarget = nullptr;
+            HRESULT hr = pRenderTarget->CreateCompatibleRenderTarget(
+                D2D1::SizeF(64.0f, 64.0f),
+                &compatibleRenderTarget
+            );
+            if (FAILED(hr)) {
+                MessageBox(nullptr, L"호환 렌더 타겟 생성 실패!", L"오류", MB_OK);
+                return hr;
+            }
+
+            // 호환 렌더 타겟에 원본 비트맵 그리기
+            compatibleRenderTarget->BeginDraw();
+            compatibleRenderTarget->DrawBitmap(bitmap, D2D1::RectF(0, 0, 64, 64), 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, srcRect);
+            hr = compatibleRenderTarget->EndDraw();
+            if (FAILED(hr)) {
+                MessageBox(nullptr, L"비트맵 그리기 실패!", L"오류", MB_OK);
+                compatibleRenderTarget->Release();
+                return hr;
+            }
+
+            // 호환 렌더 타겟에서 비트맵 가져오기
+            ID2D1Bitmap* subBitmap = nullptr;
+            hr = compatibleRenderTarget->GetBitmap(&subBitmap);
+            compatibleRenderTarget->Release(); // 렌더 타겟 해제
+            if (FAILED(hr)) {
+                MessageBox(nullptr, L"비트맵 가져오기 실패!", L"오류", MB_OK);
+                return hr;
+            }
+
+            splitBitmaps.push_back(subBitmap);
+        }
+    }
+
+    splitBitmapMap[tag] = splitBitmaps;
+    return S_OK;
 }
 
 void Direct2DMgr::Cleanup() {
