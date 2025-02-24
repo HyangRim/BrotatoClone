@@ -27,11 +27,12 @@ void CImage::render(ID2D1HwndRenderTarget* _renderTarget)
 	// 3. GetRealPos -> ????
 
 	Vec2 vPos = m_pOwner->GetPos();
+	m_pOwner->GetRenderScale();
 	vPos = CCamera::GetInstance()->GetRenderPos(vPos);
 	/////////////수정사항////////////////////////
 
 
-	Vec2 vScale = m_pOwner->GetScale();
+	Vec2 vScale = m_pOwner->GetRenderScale();
 
 	if (nullptr == m_pBitmap) return;
 
@@ -42,6 +43,23 @@ void CImage::render(ID2D1HwndRenderTarget* _renderTarget)
 
 	D2D1_RECT_F rect = D2D1::RectF(left, top, right, down);
 
+	D2D1_MATRIX_3X2_F originalMaxrix;
+	_renderTarget->GetTransform(&originalMaxrix);
+
+	if (m_pOwner->GetFlipX()) {
+		float centerX = (left + right) / 2.f;
+		D2D1_MATRIX_3X2_F flipMatrix =
+			D2D1::Matrix3x2F::Translation(-centerX, 0) *
+			D2D1::Matrix3x2F::Scale(-1.f, 1.f) *
+			D2D1::Matrix3x2F::Translation(centerX, 0);
+
+		_renderTarget->SetTransform(flipMatrix * originalMaxrix);
+	}
+
 	_renderTarget->DrawBitmap(m_pBitmap, rect);
+
+	if (m_pOwner->GetFlipX()) {
+		_renderTarget->SetTransform(originalMaxrix);
+	}
 }
 

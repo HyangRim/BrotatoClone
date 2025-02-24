@@ -116,6 +116,7 @@ void CUI::render(Gdiplus::Graphics* _pDGraphics)
 
 void CUI::render(ID2D1HwndRenderTarget* _pRender)
 {
+	/*
 	Vec2 vPos = GetFinalPos();
 	Vec2 vScale = GetScale();
 
@@ -133,17 +134,17 @@ void CUI::render(ID2D1HwndRenderTarget* _pRender)
 
 	ID2D1SolidColorBrush* pBrush = nullptr;
 	HRESULT hr = _pRender->CreateSolidColorBrush(
-		m_bLbtnDown ? D2D1::ColorF(D2D1::ColorF::Green)   // ¸¶¿ì½º ¿ŞÂÊ ¹öÆ°ÀÌ ´­·È´Ù¸é ³ì»ö
-		: D2D1::ColorF(D2D1::ColorF::White),  // ¾Æ´Ï¸é Èò»ö
+		m_bLbtnDown ? D2D1::ColorF(D2D1::ColorF::White)   // ¸¶¿ì½º ¿ŞÂÊ ¹öÆ°ÀÌ ´­·È´Ù¸é ³ì»ö
+		: D2D1::ColorF(D2D1::ColorF::Black),  // ¾Æ´Ï¸é Èò»ö
 		&pBrush
 	);
 
 	if (SUCCEEDED(hr))
 	{
-		_pRender->DrawRectangle(rect, pBrush, 1.0f);
+		_pRender->FillRectangle(rect, pBrush);
 		pBrush->Release();
 	}
-
+	*/
 	render_child(_pRender);
 }
 

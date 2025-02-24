@@ -1,7 +1,9 @@
 #include "pch.h"
 #include "CScene_Main.h"
 #include "CTimeMgr.h"
+#include "CUI.h"
 #include "CPanelUI.h"
+#include "CBtnUI.h"
 #include "CCore.h"
 #include "CScene.h"
 #include "CCamera.h"
@@ -16,11 +18,15 @@
 #include "CGround.h"
 #include "CImage.h"
 
+
 CScene_Main::CScene_Main()
 	: m_tMainPanel{}
-	, m_fPanelMoveDuration(2.5f)
+	, m_fPanelMoveDuration(6.f)
 	, m_fPanelMoveElapsed(0.f)
 	, m_fPanelMoveWave(37.f)
+	, m_fBrotatoDuration(1.5f)
+	, m_fBrotatoElased(0.f)
+	, m_fBrotatoWave(0.15f)
 {
 }
 
@@ -89,7 +95,7 @@ void CScene_Main::Enter()
 	//Brotato
 	m_tMainPanel.pTitleBrotato = new CGround;
 	m_tMainPanel.pTitleBrotato->SetPos(vResolution / 2.f);
-	m_tMainPanel.pTitleBrotato->SetScale(Vec2(1035.f, 540.f));
+	m_tMainPanel.pTitleBrotato->SetScale(Vec2(931.5f, 486.f));
 	m_tMainPanel.pTitleBrotato->SetName(L"Title_Brotato");
 	m_tMainPanel.pTitleBrotato->CreateImage();
 	m_tMainPanel.pTitleBrotato->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_Brotato"));
@@ -114,6 +120,28 @@ void CScene_Main::Enter()
 	AddObject(m_tMainPanel.pTitlelogo, GROUP_TYPE::DEFAULT);
 
 
+	//버튼 패널 추가.
+	CUI* pPanelUI = new CPanelUI;
+	pPanelUI->SetName(L"ParentUI");
+	pPanelUI->SetScale(Vec2(100.f, 200.f));
+	pPanelUI->SetPos(Vec2(80.f, 400.f));
+	((CPanelUI*)pPanelUI)->SetCanMove(false);
+	
+	//버튼 추가. 
+	CBtnUI* pBtnUI = new CBtnUI;
+	pBtnUI->SetName(L"Start");
+	pBtnUI->SetScale(Vec2(60.f, 40.f));
+	pBtnUI->SetPos(Vec2(0.f, -60.f));
+
+	//버튼 이벤트 등록.
+	pBtnUI->SetClickedCallBack(this, (SCENE_MEMFUNC)&CScene_Main::StartBtn);
+	//버튼을 패널에 자식으로 등록. 
+	pPanelUI->AddChild(pBtnUI);
+
+	AddObject(pPanelUI, GROUP_TYPE::UI);
+
+
+
 	//카메라 위치 세팅. 
 	CCamera::GetInstance()->SetLookAt(vResolution / 2.f);
 	
@@ -128,6 +156,50 @@ void CScene_Main::Exit()
 void CScene_Main::update()
 {
 	CScene::update();
+
+
+	m_fPanelMoveElapsed += fDT;
+	m_fBrotatoElased += fDT;
+
+	Vec2 vResolution = CCore::GetInstance()->GetResolution();
+	Vec2 oriPos = vResolution / 2.f;
+
+
+	float angle = 2 * PI * m_fPanelMoveElapsed / m_fPanelMoveDuration;
+	float delta = m_fPanelMoveWave * sin(angle);
+
+
+	Vec2 backImagePos = m_tMainPanel.pTitleBack->GetPos();
+	Vec2 frontImagePos = m_tMainPanel.pTitlefront->GetPos();
+	backImagePos.x = oriPos.x + delta;
+	frontImagePos.x = oriPos.x - delta;
+	//backImagePos.x += 10.f * fDT;
+
+	m_tMainPanel.pTitleBack->SetPos(backImagePos);
+	m_tMainPanel.pTitlefront->SetPos(frontImagePos);
+
+	if (m_fPanelMoveElapsed > m_fPanelMoveDuration) {
+		m_fPanelMoveElapsed = 0.f;
+	}
+
+	//여기까진 메인 화면 군중들 왔다리 갔다리 하는 것. 
+	////////////////////////////////////////////////
+
+	Vec2 OriginalBrotatoScale = m_tMainPanel.pTitleBrotato->GetScale();
+	Vec2 BrotatoScaleWave = OriginalBrotatoScale * m_fBrotatoWave;
+
+	angle = 2 * PI * m_fBrotatoElased / m_fBrotatoDuration;
+	delta = m_fBrotatoWave * sin(angle);
+
+	Vec2 BrotatoRenderScale;
+	BrotatoRenderScale.x = OriginalBrotatoScale.x + ((1.f + delta) * BrotatoScaleWave.x);
+	BrotatoRenderScale.y = OriginalBrotatoScale.y + ((1.f - delta) * BrotatoScaleWave.y);
+
+	m_tMainPanel.pTitleBrotato->SetRenderScale(BrotatoRenderScale);
+
+	if (m_fBrotatoElased > m_fBrotatoDuration) {
+		m_fBrotatoElased = 0.f;
+	}
 }
 
 void CScene_Main::finalupdate()
@@ -151,4 +223,8 @@ void CScene_Main::render(ID2D1HwndRenderTarget* _pRender)
 	CScene::render(_pRender);
 }
 
+void CScene_Main::StartBtn()
+{
+	ChangeScene(SCENE_TYPE::START);
+}
 

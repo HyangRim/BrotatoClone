@@ -9,6 +9,7 @@ struct mainPanel {
     CObject* pTitleBrotato;
     CObject* pTitlelights;
     CObject* pTitlelogo;
+
 };
 class CScene_Main :
     public CScene
@@ -18,9 +19,15 @@ class CScene_Main :
 private:
     mainPanel m_tMainPanel;
 
+    //이건 메인 화면 Wave 전용.
     float     m_fPanelMoveDuration;
     float     m_fPanelMoveElapsed;
     float     m_fPanelMoveWave;
+
+    //이건 메인 화면 포테이토 Wave용도
+    float     m_fBrotatoDuration;
+    float     m_fBrotatoElased;
+    float     m_fBrotatoWave;
 public:
     virtual void update();
     virtual void finalupdate();
@@ -36,7 +43,7 @@ public:
 
 
 public:
-
+    void StartBtn();
 public:
     CScene_Main();
     ~CScene_Main();

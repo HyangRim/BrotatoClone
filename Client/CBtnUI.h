@@ -49,6 +49,13 @@ public:
 
     void SetClickedCallBack(CScene* _pScene, SCENE_MEMFUNC _pSceneFunc);
 
+
+public:
+    virtual void render(HDC _dc);
+    virtual void render(Gdiplus::Graphics* _pDGraphics);
+    virtual void render(ID2D1HwndRenderTarget* _pRender);
+
+
     CLONE(CBtnUI)
 
 public:
