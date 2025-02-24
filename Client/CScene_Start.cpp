@@ -38,7 +38,8 @@ CScene_Start::CScene_Start()
 	, m_fCurRadius(0.f)
 	, m_fForce(500.f)
 {
-
+	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\enemies\\baby_alien.png", L"NormalEnemy", false);
+	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\enemies\\spitter.png", L"RangeEnemy", false);
 }
 
 CScene_Start::~CScene_Start()

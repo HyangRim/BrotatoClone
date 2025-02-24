@@ -14,6 +14,7 @@ private:
     CUI*                m_pParentUI;
     Vec2                m_vFinalPos;
 
+protected:
     bool                m_bCamAffected;     //UI가 카메라의 영향을 받는 유무. 
     bool                m_bMouseOn;         //UI위에 마우스가 있는지.
     bool                m_bLbtnDown;        //UI에 왼쪽 버튼이 눌린 적이 있는지. 

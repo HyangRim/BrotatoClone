@@ -24,6 +24,7 @@ CObject::CObject()
 	, m_bEnable(true)
 	, m_fWaveDuration(1.f)
 	, m_fWaveElapsed(0.f)
+	, m_bFlipX(false)
 {
 	m_vRenderScale = m_vScale;
 }
@@ -39,6 +40,7 @@ CObject::CObject(const CObject& _origin)
 	, m_pRigidBody(nullptr)
 	, m_pGravity(nullptr)
 	, m_pImage(nullptr)
+	, m_bFlipX(false)
 	, m_fWaveDuration(_origin.m_fWaveDuration)
 	, m_fWaveElapsed(0.f)
 {

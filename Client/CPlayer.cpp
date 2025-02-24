@@ -17,6 +17,7 @@
 
 #include "CRigidbody.h"
 #include "CGravity.h"
+#include "CImage.h"
 
 CPlayer::CPlayer()
 	: m_eCurState(PLAYER_STATE::IDLE)
@@ -43,15 +44,16 @@ CPlayer::CPlayer()
 
 	CTexture* m_pTex = CResMgr::GetInstance()->LoadTexture(L"PlayerTex", L"texture\\link_0.bmp");
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\link_0.bmp",L"PlayerTex", false);
-
-	ID2D1Bitmap* m_pBit = Direct2DMgr::GetInstance()->GetStoredBitmap(L"PlayerTex");
+	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\player\\potato.png", L"PlayerBody", false);
+	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\player\\legs.png", L"PlayerLegs", false);
+	//ID2D1Bitmap* m_pBit = Direct2DMgr::GetInstance()->GetStoredBitmap(L"PlayerTex");
 
 
 	//우리 텍스쳐가 완벽하게 편집이 되어 있어서 저렇게 수월하게 할 수 있었음...
 	//근데 그렇지 않은 경우가 정말 많음. 
 
 	
-	CreateAnimator();
+	//CreateAnimator();
 
 	
 	//GetAnimator()->LoadAnimation(L"animation\\player_idle_down.anim");
@@ -67,7 +69,7 @@ CPlayer::CPlayer()
 
 	//IDLE 애니메이션 추가
 	
-	
+	/*
 	GetAnimator()->CreateAnimation(L"IDLE_DOWN", m_pTex, m_pBit,Vec2(0.f, 0.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 3);
 	GetAnimator()->CreateAnimation(L"IDLE_LEFT", m_pTex, m_pBit,Vec2(0.f, 65.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 3);
 	GetAnimator()->CreateAnimation(L"IDLE_UP", m_pTex, m_pBit,Vec2(0.f, 130.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 1);
@@ -93,8 +95,14 @@ CPlayer::CPlayer()
 	GetAnimator()->FindAnimation(L"WALK_LEFT")->Save(L"animation\\player_walk_left.anim");
 	GetAnimator()->FindAnimation(L"WALK_UP")->Save(L"animation\\player_walk_up.anim");
 	GetAnimator()->FindAnimation(L"WALK_RIGHT")->Save(L"animation\\player_walk_right.anim");
-	
+	*/
 	//CreateGravity();
+
+	//다리 오브젝트 추가. 
+
+	//이미지 추가. 
+	CreateImage();
+	GetImage()->SetBitmap(Direct2DMgr::GetInstance()->GetStoredBitmap(L"PlayerBody"));
 }
 
 CPlayer::~CPlayer()
@@ -203,6 +211,8 @@ void CPlayer::CreateMissile()
 void CPlayer::update_move()
 {
 	CRigidbody* pRigid = GetRigidbody();
+
+	if (nullptr == pRigid) return;
 	Vec2 vPos = GetPos();
 
 	if (KEY_HOLD(KEY::W)) {
@@ -242,12 +252,15 @@ void CPlayer::update_state()
 {
 	CRigidbody* pRigid = GetRigidbody();
 
+	if (nullptr == pRigid) return;
+
 	if (KEY_TAP(KEY::W)) {
 		m_iDir = 0;
 		m_eCurState = PLAYER_STATE::WALK;
 	}
 	if (KEY_TAP(KEY::D)) {
 		m_iDir = 1;
+		SetFlipX(false);		//X축 이미지 그대로 출력. 
 		m_eCurState = PLAYER_STATE::WALK;
 	}
 	if (KEY_TAP(KEY::S)) {
@@ -256,6 +269,7 @@ void CPlayer::update_state()
 	}
 	if (KEY_TAP(KEY::A)) {
 		m_iDir = 3;
+		SetFlipX(true);			//X축 이미지 플립하여 출력. 
 		m_eCurState = PLAYER_STATE::WALK;
 	}
 
@@ -267,6 +281,7 @@ void CPlayer::update_state()
 
 void CPlayer::update_animation()
 {
+	if (nullptr == GetAnimator()) return;
 	if (m_ePrevState == m_eCurState && m_iPrevDir == m_iDir) return;
 
 	switch (m_eCurState) {

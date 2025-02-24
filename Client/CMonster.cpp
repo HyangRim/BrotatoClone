@@ -8,6 +8,8 @@
 #include "CTimeMgr.h"
 #include "CCollider.h"
 #include "CMonFactory.h"
+#include "CScene.h"
+#include "CSceneMgr.h"
 
 
 
@@ -37,6 +39,20 @@ void CMonster::update()
 {
 	CObject::update();
 	if(nullptr != m_pAI) m_pAI->update();
+
+	//Flip체크. 
+	
+	Vec2 playerPos = CSceneMgr::GetInstance()->GetCurScene()->GetPlayer()->GetPos();
+	Vec2 monPos = GetPos();
+	Vec2 Dir = playerPos - monPos;
+
+	//이미지 Flip 체크. 여기다가 이걸 넣는게 맞나?
+	if (Dir.x > 0) {//플레이어가 몬스터보다 오른쪽에 있을 때. 
+		SetFlipX(false);
+	}
+	else {//플레이어가 몬스터보다 왼쪽에 있을 때. 
+		SetFlipX(true);
+	}
 }
 
 

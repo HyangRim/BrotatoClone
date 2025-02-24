@@ -13,6 +13,9 @@
 #include "CRange_TraceState.h"
 #include "CRange_AttackState.h"
 
+#include "Direct2DMgr.h"
+#include "CImage.h"
+
 
 CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
 {
@@ -43,6 +46,10 @@ CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
 		pAI->SetCurState(MON_STATE::IDLE);
 
 		pMon->SetAI(pAI);
+
+
+		pMon->CreateImage();
+		pMon->GetImage()->SetBitmap(Direct2DMgr::GetInstance()->GetStoredBitmap(L"NormalEnemy"));
 	}
 		break;
 
@@ -71,6 +78,8 @@ CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
 		pAI->SetCurState(MON_STATE::IDLE);
 
 		pMon->SetAI(pAI);
+		pMon->CreateImage();
+		pMon->GetImage()->SetBitmap(Direct2DMgr::GetInstance()->GetStoredBitmap(L"RangeEnemy"));
 	}
 		break;
 

@@ -40,6 +40,7 @@ private:
 
 	bool			m_bAlive;			//자기 자신이 활성화 or 비활성화. (삭제 전용)
 	bool			m_bEnable;			//일시적인 활성화 or 비활성화. 
+	bool			m_bFlipX;
 
 
 	//Render Wave용 Float
@@ -59,6 +60,11 @@ public:
 
 	void SetName(const wstring& _strName) { m_ObjName = _strName; }
 	void SetWaveDuration(float _fWaveTime) { m_fWaveDuration = _fWaveTime; }
+	void SetRenderScale(Vec2 _vScale) { m_vRenderScale = _vScale; }
+
+	void SetFlipX(bool _bFlipX) { m_bFlipX = _bFlipX; }
+	bool GetFlipX() { return m_bFlipX; }
+
 	const wstring& GetName() { return m_ObjName; }
 
 	CCollider* GetCollider() { return m_pCollider; }
