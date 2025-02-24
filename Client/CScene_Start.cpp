@@ -27,6 +27,7 @@
 #include "SelectGDI.h"
 #include "CTimeMgr.h"
 #include "CGround.h"
+#include "CImage.h"
 
 #include "Direct2DMgr.h"
 
@@ -170,11 +171,23 @@ void CScene_Start::render(ID2D1HwndRenderTarget* _pRender)
 
 void CScene_Start::Enter()
 {
+	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+
+
+	////////////////////////////맵생성///////////////////////////////////////
+	int randV = rand() % 7;
+	if (randV == 0) randV++;
+	//printf("randV : %d\n", randV);
+	wstring mapPath = L"texture\\tiles\\tiles_" + std::to_wstring(randV) + L".png";
+	MakeMapTile(L"texture\\tiles\\tiles_outline.png", mapPath.c_str(), L"texture\\tiles\\map\\", 50, 1);
+	pD2DMgr->StoreBitmapsFromFolder(L"texture\\tiles\\map\\", L"Map");
+	MakeTile(L"Map");
+	////////////////////////////////////////////////////////////////////////
+
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
 	//Object 추가.
 	//실제 생성된 객체는 플레이어, 주소를 받은 건 부모 클래스. 
 	CObject* pObj = new CPlayer;
-
 	pObj->SetPos(Vec2(640.f, 384.f));
 	pObj->SetScale(Vec2(100.f, 100.f));
 	pObj->SetName(L"Player");

@@ -14,6 +14,7 @@ Direct2DMgr::~Direct2DMgr()
 
 HRESULT Direct2DMgr::init(HWND hwnd)
 {
+    
     HRESULT hr;
 
     // COM 라이브러리 초기화
@@ -30,6 +31,7 @@ HRESULT Direct2DMgr::init(HWND hwnd)
 
     D2D1_SIZE_U size = D2D1::SizeU(rc.right - rc.left, rc.bottom - rc.top);
 
+    
     hr = pD2DFactory->CreateHwndRenderTarget(
         D2D1::RenderTargetProperties(),
         D2D1::HwndRenderTargetProperties(hwnd, size, D2D1_PRESENT_OPTIONS_IMMEDIATELY),
@@ -37,6 +39,7 @@ HRESULT Direct2DMgr::init(HWND hwnd)
     );
     if (FAILED(hr)) return hr;
 
+    CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
     // WIC 팩토리 생성
     hr = CoCreateInstance(
         CLSID_WICImagingFactory,   // CLSID for WIC Imaging Factory
@@ -53,6 +56,7 @@ HRESULT Direct2DMgr::init(HWND hwnd)
     if (FAILED(hr)) return hr;
 
     return S_OK;
+    
 }
 
 HRESULT Direct2DMgr::LoadAndStoreBitmap(const std::wstring& filePath, const std::wstring& tag, bool split) {
@@ -143,9 +147,7 @@ void Direct2DMgr::RenderAllBitmaps(const std::vector<std::pair<D2D1_RECT_F, std:
             pRenderTarget->DrawBitmap(bitmap, destRect);
         }
     }
-
 }
-
 
 HRESULT Direct2DMgr::LoadBitmap(const std::wstring& filePath, ID2D1Bitmap** ppBitmap) {
     // 파일 존재 여부 확인
@@ -301,3 +303,21 @@ void Direct2DMgr::Cleanup() {
 
     CoUninitialize();
 }
+
+HRESULT Direct2DMgr::StoreBitmapsFromFolder(const wstring& folderPath, const wstring& tag)
+{
+    wstring header = CPathMgr::GetInstance()->GetContentPath();
+    vector<ID2D1Bitmap*> splitBitmaps;
+    for (int i = 0; i < 64; i++)
+    {
+        wstring finalPath = header + folderPath + L"mapTile_" + std::to_wstring(i) + L".png";
+        ID2D1Bitmap* newBitmap = nullptr;
+
+        LoadBitmap(finalPath, &newBitmap);
+        splitBitmaps.push_back(newBitmap);
+    }
+        
+    splitBitmapMap[tag] = splitBitmaps;
+    return S_OK;
+}
+

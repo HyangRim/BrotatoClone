@@ -44,6 +44,9 @@ void CCamera::update()
 	if (m_pTargetObj != nullptr) {
 		if (m_pTargetObj->IsDead()) m_pTargetObj = nullptr;
 		m_vLookAt = m_pTargetObj->GetPos();
+
+		m_vLookAt.x = floor(m_vLookAt.x);
+		m_vLookAt.y = floor(m_vLookAt.y);
 	}
 	
 	if (KEY_HOLD(KEY::UP)) {

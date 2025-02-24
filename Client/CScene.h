@@ -70,7 +70,7 @@ public:
 	void DeleteAll();
 	void CreateTile(UINT _IXCount, UINT _IYCount);
 
-	void MakeTile(const wstring& _strRelativePath, const wstring& tag);
+	void MakeTile(const wstring& tag);
 
 	void LoadTile(const wstring& _strRelativePath);
 

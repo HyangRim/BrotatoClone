@@ -65,93 +65,235 @@ void CScene_Test::render(Gdiplus::Graphics* _pDGraphics)
 void CScene_Test::render(ID2D1HwndRenderTarget* _pRender)
 {
 	CScene::render(_pRender);
-
-	/*
-	// Direct2DMgr 인스턴스 가져오기
-	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
-
-	//////////////////////////////////////////////////////
-	vector<std::pair<D2D1_RECT_F, wstring>> bitmapsToRender = {
-	{ D2D1::RectF(0, 0, 512, 512), L"BaseMap1" },
-	{ D2D1::RectF(200, 200, 300, 300), L"BaseMap2" }
-	};
-
-	// 모든 비트맵 렌더링
-	//pD2DMgr->RenderAllBitmaps(bitmapsToRender);
-	//////////////////////////////////////////////////////
-
-	for (int idx = 0; idx < bitmapsToRender.size(); idx++) {
-		pD2DMgr->RenderBitmap(bitmapsToRender[idx].first, bitmapsToRender[idx].second);
-	}*/
-}
-
-// 흰색 픽셀인지 확인하는 함수
-bool IsWhitePixel(Color color) {
-	return color.GetR() == 255 && color.GetG() == 255 && color.GetB() == 255;
-}
-
-// 검정색이 아닌 픽셀인지 확인하는 함수
-bool IsNonBlackPixel(Color color) {
-	// 검정색에 가까운 픽셀을 제외 (임계값 설정)
-	int brightnessThreshold = 50; // 밝기 임계값 (0~255)
-	int brightness = (color.GetR() + color.GetG() + color.GetB()) / 3;
-	return brightness > brightnessThreshold;
-}
-
-// CLSID 가져오기 함수
-int GetEncoderClsid(const WCHAR* format, CLSID* pClsid) {
-	UINT num = 0;          // Image encoders 수량
-	UINT size = 0;         // Image encoders 크기
-
-	GetImageEncodersSize(&num, &size);
-	if (size == 0)
-		return -1;         // 실패
-
-	ImageCodecInfo* pImageCodecInfo = (ImageCodecInfo*)(malloc(size));
-	if (pImageCodecInfo == NULL)
-		return -1;         // 메모리 부족
-
-	GetImageEncoders(num, size, pImageCodecInfo);
-
-	for (UINT j = 0; j < num; ++j) {
-		if (wcscmp(pImageCodecInfo[j].MimeType, format) == 0) {
-			*pClsid = pImageCodecInfo[j].Clsid;
-			free(pImageCodecInfo);
-			return j;      // 성공
-		}
-	}
-
-	free(pImageCodecInfo);
-	return -1;             // 실패
-}
-
-// GDI+ 초기화
-void InitializeGDIPlus(ULONG_PTR& token) {
-	GdiplusStartupInput gdiplusStartupInput;
-	GdiplusStartup(&token, &gdiplusStartupInput, NULL);
-}
-
-// GDI+ 종료
-void ShutdownGDIPlus(ULONG_PTR token) {
-	GdiplusShutdown(token);
 }
 
 void CScene_Test::Enter()
 {
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
-	MakeTile(L"texture\\tiles\\result1_1.png", L"BaseMap2");
 
+	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+	MakeMapTile(L"texture\\tiles\\tiles_outline.png", L"texture\\tiles\\tiles_1.png", L"texture\\tiles\\map\\", 30, 1);
+	pD2DMgr->StoreBitmapsFromFolder(L"texture\\tiles\\map\\", L"Map");
+	MakeTile(L"Map");
+
+	/*
+	CObject* pObj = new CGround;
+	pObj->SetPos(Vec2(100.f,100.f));
+	pObj->SetScale(Vec2((float)TILE_SIZE / 2.f, (float)TILE_SIZE / 2.f));
+	pObj->SetName(L"TILE");
+	pObj->CreateImage();
+	pObj->GetImage()->SetBitmap(splitBitmap[0]);
+	AddObject(pObj, GROUP_TYPE::TILE);
+	*/
+	/*
+	// GDI+ 초기화
+	ULONG_PTR gdiplusToken;
+	GdiplusStartupInput gdiplusStartupInput;
+	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
+
+	// 이미지 파일 경로
+	const WCHAR* tileOutlinePath = L"C:\\Users\\c\\source\\repos\\HyangRim\\BrotatoClone\\Output\\bin\\content\\texture\\tiles\\tiles_outline.png";
+	const WCHAR* tilesPath = L"C:\\Users\\c\\source\\repos\\HyangRim\\BrotatoClone\\Output\\bin\\content\\texture\\tiles\\tiles_1.png";
+
+	Bitmap tileOutline(tileOutlinePath);
+	if (tileOutline.GetLastStatus() != Ok) {
+		std::cerr << "Failed to load tile_outline.png" << std::endl;
+		GdiplusShutdown(gdiplusToken);
+		return;
+	}
+
+	Bitmap tiles(tilesPath);
+	if (tiles.GetLastStatus() != Ok) {
+		std::cerr << "Failed to load tiles_1.png" << std::endl;
+		GdiplusShutdown(gdiplusToken);
+		return;
+	}
+
+	// 타일 크기 정의
+	const int tileSize = 32;
+
+	// tileOutline과 tiles의 크기 가져오기
+	int outlineWidth = tileOutline.GetWidth();
+	int outlineHeight = tileOutline.GetHeight();
+	int tilesWidth = tiles.GetWidth();
+	int tilesHeight = tiles.GetHeight();
+
+	// 각 이미지의 조각 개수 계산
+	int outlineCols = outlineWidth / tileSize;
+	int outlineRows = outlineHeight / tileSize;
+	int tilesCols = tilesWidth / tileSize;
+	int tilesRows = tilesHeight / tileSize;
+
+	// 결과 이미지 저장 경로 기본값
+	std::wstring outputDir = L"C:\\Users\\c\\source\\repos\\HyangRim\\BrotatoClone\\Output\\bin\\content\\texture\\tiles\\map1\\";
+
+	// CLSID 가져오기
+	CLSID pngClsid;
+	GetEncoderClsid(L"image/png", &pngClsid);
+
+	// 가중치 설정 (6번째 조각의 확률을 높임)
+	std::vector<int> weights(tilesCols * tilesRows, 1); // 기본 가중치: 1
+	weights[11] = 30; // 예: 6번째 조각의 가중치를 10으로 설정
+
+	// 가중치를 기반으로 한 분포 생성
+	std::discrete_distribution<int> randomTile(weights.begin(), weights.end());
+
+	// 조합된 이미지 생성 및 저장
+	int resultIndex = 0;
+
+	for (int oy = 0; oy < outlineRows; ++oy) {
+		for (int ox = 0; ox < outlineCols; ++ox) {
+			// 새로운 빈 비트맵 생성
+			Bitmap result(tileSize, tileSize);
+
+			Graphics graphics(&result);
+
+			bool hasNonBlackPixel = false;
+
+			// 랜덤 타일 선택 (가중치 기반)
+			int randomTileIndex = randomTile(rng);
+			int randomTx = randomTileIndex % tilesCols; // 열 인덱스 계산
+			int randomTy = randomTileIndex / tilesCols; // 행 인덱스 계산
+
+			for (int y = 0; y < tileSize; ++y) {
+				for (int x = 0; x < tileSize; ++x) {
+					Color pixelColor;
+					tileOutline.GetPixel(ox * tileSize + x, oy * tileSize + y, &pixelColor);
+
+					if (IsNonBlackPixel(pixelColor)) {
+						hasNonBlackPixel = true;
+
+						Color tilePixelColor;
+						tiles.GetPixel(randomTx * tileSize + x % tileSize, randomTy * tileSize + y % tileSize, &tilePixelColor);
+
+						result.SetPixel(x, y, tilePixelColor);
+					}
+					else {
+						result.SetPixel(x, y, pixelColor); // 검은색은 그대로 유지
+					}
+				}
+			}
+
+			if (hasNonBlackPixel) {
+				// 결과 파일 저장 경로 설정
+				std::wstring resultPath = outputDir + L"mapTile_" + std::to_wstring(resultIndex++) + L".png";
+
+				// 결과 이미지 저장
+				result.Save(resultPath.c_str(), &pngClsid, NULL);
+			}
+		}
+	}
+	// GDI+ 종료
+	GdiplusShutdown(gdiplusToken);
+	*/
+
+	/*
+	 // GDI+ 초기화
+	ULONG_PTR gdiplusToken;
+	InitializeGDIPlus(gdiplusToken);
+
+	// 이미지 파일 경로
+	const WCHAR* tileOutlinePath = L"C:\\Users\\c\\source\\repos\\HyangRim\\BrotatoClone\\Output\\bin\\content\\texture\\tiles\\tiles_outline1.png";
+	const WCHAR* tilesPath = L"C:\\Users\\c\\source\\repos\\HyangRim\\BrotatoClone\\Output\\bin\\content\\texture\\tiles\\tiles_1_1.png";
+
+	Bitmap tileOutline(tileOutlinePath);
+	if (tileOutline.GetLastStatus() != Ok) {
+		std::cerr << "Failed to load tile_outline.png" << std::endl;
+		ShutdownGDIPlus(gdiplusToken);
+		return;
+	}
+
+	Bitmap tiles(tilesPath);
+	if (tiles.GetLastStatus() != Ok) {
+		std::cerr << "Failed to load tiles_1.png" << std::endl;
+		ShutdownGDIPlus(gdiplusToken);
+		return;
+	}
+
+	// 타일 크기 정의
+	const int tileSize = 32;
+	std::vector<Gdiplus::Bitmap*> gdiPlusBitmaps;
+
+	// tileOutline과 tiles의 크기 가져오기
+	int outlineWidth = tileOutline.GetWidth();
+	int outlineHeight = tileOutline.GetHeight();
+	int tilesWidth = tiles.GetWidth();
+	int tilesHeight = tiles.GetHeight();
+
+	// 각 이미지의 조각 개수 계산
+	int outlineCols = outlineWidth / tileSize;
+	int outlineRows = outlineHeight / tileSize;
+	int tilesCols = tilesWidth / tileSize;
+	int tilesRows = tilesHeight / tileSize;
+
+	// 결과 이미지 저장 경로 기본값
+	std::wstring outputDir = L"C:\\Users\\c\\source\\repos\\HyangRim\\BrotatoClone\\Output\\bin\\content\\texture\\tiles\\";
+
+	// CLSID 가져오기
+	CLSID pngClsid;
+	GetEncoderClsid(L"image/png", &pngClsid);
+
+	// 조합된 이미지 생성 및 저장
+	int resultIndex = 0;
+
+	for (int oy = 0; oy < outlineRows; ++oy) {
+		for (int ox = 0; ox < outlineCols; ++ox) {
+			for (int ty = 0; ty < tilesRows; ++ty) {
+				for (int tx = 0; tx < tilesCols; ++tx) {
+					// 새로운 빈 비트맵 생성
+					Bitmap result(tileSize, tileSize);
+
+					Graphics graphics(&result);
+
+					bool hasNonBlackPixel = false;
+
+					for (int y = 0; y < tileSize; ++y) {
+						for (int x = 0; x < tileSize; ++x) {
+							Color pixelColor;
+							tileOutline.GetPixel(ox * tileSize + x, oy * tileSize + y, &pixelColor);
+
+							if (IsNonBlackPixel(pixelColor)) {
+								hasNonBlackPixel = true;
+
+								Color tilePixelColor;
+								tiles.GetPixel(tx * tileSize + x % tileSize, ty * tileSize + y % tileSize, &tilePixelColor);
+
+								result.SetPixel(x, y, tilePixelColor);
+							}
+							else {
+								result.SetPixel(x, y, pixelColor); // 검은색은 그대로 유지
+							}
+						}
+					}
+
+					if (hasNonBlackPixel) {
+						// 결과 파일 저장 경로 설정
+						std::wstring resultPath = outputDir + L"result_" + std::to_wstring(resultIndex++) + L".png";
+
+						// 결과 이미지 저장
+						result.Save(resultPath.c_str(), &pngClsid, NULL);
+					}
+
+				}
+			}
+		}
+	}
+	std::cout << "Images successfully generated and saved!" << std::endl;
+
+	// GDI+ 종료
+	ShutdownGDIPlus(gdiplusToken);
+	*/
 	/*
 	// GDI+ 초기화
 	ULONG_PTR gdiplusToken;
 	InitializeGDIPlus(gdiplusToken);
 
-	Bitmap tileOutline(L"C:\\Users\\c\\source\\repos\\HyangRim\\BrotatoClone\\Output\\bin\\content\\texture\\tiles\\tiles_outline1.png");
+	Bitmap tileOutline(L"C:\\Users\\c\\source\\repos\\HyangRim\\BrotatoClone\\Output\\bin\\content\\texture\\tiles\\tiles_outline.png");
 	if (tileOutline.GetLastStatus() != Ok) {
 		std::cerr << "Failed to load tile_outline.png" << std::endl;
 		return ;
 	}
-	Bitmap tiles(L"C:\\Users\\c\\source\\repos\\HyangRim\\BrotatoClone\\Output\\bin\\content\\texture\\tiles\\tiles_1_1.png");
+	Bitmap tiles(L"C:\\Users\\c\\source\\repos\\HyangRim\\BrotatoClone\\Output\\bin\\content\\texture\\tiles\\tiles_6.png");
 	if (tiles.GetLastStatus() != Ok) {
 		std::cerr << "Failed to load tiles_1.png" << std::endl;
 		return ;
@@ -194,7 +336,7 @@ void CScene_Test::Enter()
 	// 결과 저장
 	CLSID pngClsid;
 	GetEncoderClsid(L"image/png", &pngClsid);
-	tileOutline.Save(L"C:\\Users\\c\\source\\repos\\HyangRim\\BrotatoClone\\Output\\bin\\content\\texture\\tiles\\result1_1.png", &pngClsid, NULL);
+	tileOutline.Save(L"C:\\Users\\c\\source\\repos\\HyangRim\\BrotatoClone\\Output\\bin\\content\\texture\\tiles\\map6.png", &pngClsid, NULL);
 
 	// GDI+ 종료
 	ShutdownGDIPlus(gdiplusToken);

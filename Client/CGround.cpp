@@ -58,7 +58,6 @@ void CGround::OnCollisionEnter(CCollider* _pOther)
 
 void CGround::OnCollision(CCollider* _pOther)
 {
-
 	CObject* pOtherObj = _pOther->GetObj();
 	if (pOtherObj->GetName() == L"Player") {
 		//pOtherObj->GetGravity()->SetGround(true);
@@ -129,7 +128,6 @@ void CGround::OnCollision(CCollider* _pOther)
 
 void CGround::OnCollisionExit(CCollider* _pOther)
 {
-
 	//Exit에서 위치에 따라 Velocity값을 바꿔줘야하나? 부딪힌 곳 기준으로.
 	//아니면 Enter? 
 	CObject* pOtherObj = _pOther->GetObj();

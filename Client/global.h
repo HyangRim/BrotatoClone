@@ -11,8 +11,10 @@
 #include <ctime>
 #include <iostream>
 #include <d2d1.h>
+#include <d2d1_1.h>
+
 #include <wincodec.h>
- 
+#include <stdio.h>
 
 #pragma comment(lib, "d2d1.lib")
 #pragma comment(lib, "windowscodecs.lib")
@@ -61,3 +63,6 @@ using namespace Gdiplus;
 #include "struct.h"
 
 #include "func.h"
+
+std::random_device rd;
+std::mt19937 rng(rd());

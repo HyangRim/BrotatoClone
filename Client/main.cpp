@@ -29,14 +29,23 @@ INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 //함수들은 전방 선언해놓은 것.(함수 프로토타입)
 
 
-
-
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     _In_opt_ HINSTANCE hPrevInstance,
     _In_ LPWSTR    lpCmdLine,
     _In_ int       nCmdShow)
 {
-    srand(static_cast<unsigned int>(time(NULL)));
+    if (AllocConsole()) {
+        // 표준 입출력 스트림을 콘솔에 연결
+        FILE* fp;
+        freopen_s(&fp, "CONOUT$", "w", stdout);
+        freopen_s(&fp, "CONIN$", "r", stdin);
+
+        // 콘솔에 메시지 출력
+        std::cout << "Hello, Console Window!" << std::endl;
+    }
+    srand(time(NULL));
+    
+
     //메모리 릭(누수) 체크
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 

@@ -359,11 +359,9 @@ void CScene::CreateTile(UINT _IXCount, UINT _IYCount)
 	}
 }
 
-void CScene::MakeTile(const wstring& _strRelativePath, const wstring &tag)
+void CScene::MakeTile(const wstring &tag)
 {
 	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
-	pD2DMgr->LoadAndStoreBitmap(_strRelativePath, tag, true);
-
 	auto splitBitmaps = Direct2DMgr::GetInstance()->GetSplitBitmaps(tag);
 
 	int tileIdx = 0;
@@ -372,12 +370,13 @@ void CScene::MakeTile(const wstring& _strRelativePath, const wstring &tag)
 	{
 		for (int tileX = 0; tileX < 36; tileX++)
 		{
-			CObject* pObj = new CGround;
+			CObject* pObj = new CTile;
 			pObj->SetPos(Vec2((float)TILE_SIZE / 4.f + ((float)TILE_SIZE / 2.f * (float)(tileX))
 				, (float)TILE_SIZE / 4.f + ((float)TILE_SIZE / 2.f * (float)(tileY))));
 			pObj->SetScale(Vec2((float)TILE_SIZE / 2.f, (float)TILE_SIZE / 2.f));
 			pObj->SetName(L"TILE");
 			pObj->CreateImage();
+
 
 			if (tileY == 0 && tileX == 0) tileIdx = 0;
 			else if (tileY == 0 && tileX == 35) tileIdx = 7;
@@ -425,7 +424,7 @@ void CScene::MakeTile(const wstring& _strRelativePath, const wstring &tag)
 
 				tileIdx = randY * 8 + randX;
 			}
-			
+		
 			pObj->GetImage()->SetBitmap(splitBitmaps[tileIdx]);
 			AddObject(pObj, GROUP_TYPE::TILE);
 		}

@@ -91,6 +91,8 @@ void CTile::render(Gdiplus::Graphics* _pDGraphics)
 
 void CTile::render(ID2D1HwndRenderTarget* _pRender)
 {
+	component_render(_pRender);
+	/*
 	if (m_pTileTex == nullptr || -1 == m_iImgIdx) {
 		return;
 	}
@@ -139,6 +141,7 @@ void CTile::render(ID2D1HwndRenderTarget* _pRender)
 		D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
 		srcRect
 	);
+	*/
 }
 
 void CTile::Save(FILE* _pFile)

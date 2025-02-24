@@ -14,6 +14,13 @@ void ChangeScene(SCENE_TYPE _eNext);
 void ChangeAIState(AI* _pAI, MON_STATE _eNextState);
 
 
+bool IsNonBlackPixel(Color _color);
+int GetEncoderClsid(const WCHAR* format, CLSID* pClsid);
+void InitializeGDIPlus(ULONG_PTR& token);
+void ShutdownGDIPlus(ULONG_PTR token);
+void MakeMapTile(const WCHAR* _tileOutlinePath, const WCHAR* _tilesPath, const WCHAR* _outputDir
+	, int _blankTileWeight, int _otherTileWeight);
+
 
 template<typename T>
 void Safe_Delete_Vec(vector<T>& _vec);

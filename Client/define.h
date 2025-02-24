@@ -40,6 +40,7 @@
 #define TILE_SIZE 64
 #define TILE_SIZE_F 64.f
 
+
 enum class GROUP_TYPE {
 	DEFAULT,
 	TILE,
