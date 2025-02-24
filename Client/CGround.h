@@ -8,6 +8,7 @@ class CGround :
 private:
     virtual void start();
     virtual void update();
+    virtual void render(ID2D1HwndRenderTarget* _pRender);
 public:
     virtual void OnCollisionEnter(CCollider* _pOther);
     virtual void OnCollision(CCollider* _pOther);
