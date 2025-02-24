@@ -145,7 +145,7 @@ void CObject::render(ID2D1HwndRenderTarget* _pRender)
 
 	if (SUCCEEDED(hr))
 	{
-		//_pRender->DrawRectangle(rect, pBrush);
+		_pRender->DrawRectangle(rect, pBrush);
 		pBrush->Release();
 	}
 

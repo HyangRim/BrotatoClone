@@ -368,31 +368,32 @@ void CScene::MakeTile(const wstring& _strRelativePath, const wstring &tag)
 
 	int tileIdx = 0;
 	int rest = 0;
-	for (int tileY = 0; tileY < 18; tileY++)
+	for (int tileY = 0; tileY < 36; tileY++)
 	{
-		for (int tileX = 0; tileX < 18; tileX++)
+		for (int tileX = 0; tileX < 36; tileX++)
 		{
 			CObject* pObj = new CGround;
-			pObj->SetPos(Vec2(32.f + (64.f * (float)(tileX)), 32.f + (64.f * (float)(tileY))));
-			pObj->SetScale(Vec2(64.f, 64.f));
+			pObj->SetPos(Vec2((float)TILE_SIZE / 4.f + ((float)TILE_SIZE / 2.f * (float)(tileX))
+				, (float)TILE_SIZE / 4.f + ((float)TILE_SIZE / 2.f * (float)(tileY))));
+			pObj->SetScale(Vec2((float)TILE_SIZE / 2.f, (float)TILE_SIZE / 2.f));
 			pObj->SetName(L"TILE");
 			pObj->CreateImage();
 
 			if (tileY == 0 && tileX == 0) tileIdx = 0;
-			else if (tileY == 0 && tileX == 17) tileIdx = 7;
-			else if (tileY == 17 && tileX == 0) tileIdx = 56;
-			else if (tileY == 17 && tileX == 17) tileIdx = 63;
+			else if (tileY == 0 && tileX == 35) tileIdx = 7;
+			else if (tileY == 35 && tileX == 0) tileIdx = 56;
+			else if (tileY == 35 && tileX == 35) tileIdx = 63;
 
 			//¸ÇÀ­ÁÙ
-			else if (tileY == 0 && (tileX >= 1 && tileX <= 16))
+			else if (tileY == 0 && (tileX >= 1 && tileX <= 34))
 			{
 				rest = tileX % 7;
 				if (rest == 0) rest++;
 				tileIdx = rest;
 			}
-
+			
 			//¸Ç¾Æ·§ÁÙ
-			else if (tileY == 17 && (tileX >= 1 && tileX <= 16))
+			else if (tileY == 35 && (tileX >= 1 && tileX <= 34))
 			{
 				rest = tileX % 7;
 				if (rest == 0) rest++;
@@ -400,7 +401,7 @@ void CScene::MakeTile(const wstring& _strRelativePath, const wstring &tag)
 			}
 
 			//¸Ç¿ÞÂÊÁÙ
-			else if (tileX == 0 && (tileY >= 1 && tileY <= 16))
+			else if (tileX == 0 && (tileY >= 1 && tileY <= 34))
 			{
 				rest = tileY % 7;
 				if (rest == 0) rest++;
@@ -408,7 +409,7 @@ void CScene::MakeTile(const wstring& _strRelativePath, const wstring &tag)
 			}
 
 			//¸Ç ¿À¸¥ÂÊ
-			else if (tileX == 17 && (tileY >= 1 && tileY <= 16))
+			else if (tileX == 35 && (tileY >= 1 && tileY <= 34))
 			{
 				rest = tileY % 7;
 				if (rest == 0) rest++;
@@ -424,7 +425,7 @@ void CScene::MakeTile(const wstring& _strRelativePath, const wstring &tag)
 
 				tileIdx = randY * 8 + randX;
 			}
-
+			
 			pObj->GetImage()->SetBitmap(splitBitmaps[tileIdx]);
 			AddObject(pObj, GROUP_TYPE::TILE);
 		}

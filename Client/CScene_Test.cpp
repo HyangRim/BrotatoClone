@@ -139,19 +139,19 @@ void ShutdownGDIPlus(ULONG_PTR token) {
 void CScene_Test::Enter()
 {
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
-	MakeTile(L"texture\\result2.png", L"BaseMap2");
+	MakeTile(L"texture\\tiles\\result1_1.png", L"BaseMap2");
 
 	/*
 	// GDI+ 초기화
 	ULONG_PTR gdiplusToken;
 	InitializeGDIPlus(gdiplusToken);
 
-	Bitmap tileOutline(L"C:\\Users\\c\\source\\repos\\HyangRim\\BrotatoClone\\Output\\bin\\content\\texture\\tiles_outline.png");
+	Bitmap tileOutline(L"C:\\Users\\c\\source\\repos\\HyangRim\\BrotatoClone\\Output\\bin\\content\\texture\\tiles\\tiles_outline1.png");
 	if (tileOutline.GetLastStatus() != Ok) {
 		std::cerr << "Failed to load tile_outline.png" << std::endl;
 		return ;
 	}
-	Bitmap tiles(L"C:\\Users\\c\\source\\repos\\HyangRim\\BrotatoClone\\Output\\bin\\content\\texture\\tiles_6.png");
+	Bitmap tiles(L"C:\\Users\\c\\source\\repos\\HyangRim\\BrotatoClone\\Output\\bin\\content\\texture\\tiles\\tiles_1_1.png");
 	if (tiles.GetLastStatus() != Ok) {
 		std::cerr << "Failed to load tiles_1.png" << std::endl;
 		return ;
@@ -160,8 +160,8 @@ void CScene_Test::Enter()
 	Graphics graphics(&tileOutline);
 
 	// 타일 크기 정의
-	const int tileWidth = 64;
-	const int tileHeight = 64;
+	const int tileWidth = TILE_SIZE / 2;
+	const int tileHeight = TILE_SIZE/ 2;
 
 	// 배경 이미지 크기 가져오기
 	int outlineWidth = tileOutline.GetWidth();
@@ -194,12 +194,12 @@ void CScene_Test::Enter()
 	// 결과 저장
 	CLSID pngClsid;
 	GetEncoderClsid(L"image/png", &pngClsid);
-	tileOutline.Save(L"C:\\Users\\c\\source\\repos\\HyangRim\\BrotatoClone\\Output\\bin\\content\\texture\\result6.png", &pngClsid, NULL);
+	tileOutline.Save(L"C:\\Users\\c\\source\\repos\\HyangRim\\BrotatoClone\\Output\\bin\\content\\texture\\tiles\\result1_1.png", &pngClsid, NULL);
 
 	// GDI+ 종료
 	ShutdownGDIPlus(gdiplusToken);
-	
 	*/
+	
 	/*
 	CSpriteUI* pSpriteUI = new CSpriteUI();
 	pSpriteUI->SetTexture(L"MySprite", L"texture\\ui_lifebar_bg.png");
