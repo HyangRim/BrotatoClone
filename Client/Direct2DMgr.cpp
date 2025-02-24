@@ -224,8 +224,8 @@ HRESULT Direct2DMgr::SplitBitmap(ID2D1Bitmap* bitmap, const wstring& tag) {
     if (!bitmap || !pRenderTarget) return E_FAIL;
 
     D2D1_SIZE_F bitmapSize = bitmap->GetSize();
-    UINT rows = static_cast<UINT>(bitmapSize.height / 64);
-    UINT cols = static_cast<UINT>(bitmapSize.width / 64);
+    UINT rows = static_cast<UINT>(bitmapSize.height / ((float)TILE_SIZE / 2.f));
+    UINT cols = static_cast<UINT>(bitmapSize.width / ((float)TILE_SIZE / 2.f));
 
     vector<ID2D1Bitmap*> splitBitmaps;
 
@@ -233,16 +233,16 @@ HRESULT Direct2DMgr::SplitBitmap(ID2D1Bitmap* bitmap, const wstring& tag) {
         for (UINT col = 0; col < cols; ++col) {
             // 각 64x64 영역 정의
             D2D1_RECT_F srcRect = D2D1::RectF(
-                col * 64.0f,
-                row * 64.0f,
-                (col + 1) * 64.0f,
-                (row + 1) * 64.0f
+                col * ((float)TILE_SIZE / 2.f),
+                row * ((float)TILE_SIZE / 2.f),
+                (col + 1) * ((float)TILE_SIZE / 2.f),
+                (row + 1) * ((float)TILE_SIZE / 2.f)
             );
 
             // 호환 렌더 타겟 생성
             ID2D1BitmapRenderTarget* compatibleRenderTarget = nullptr;
             HRESULT hr = pRenderTarget->CreateCompatibleRenderTarget(
-                D2D1::SizeF(64.0f, 64.0f),
+                D2D1::SizeF(((float)TILE_SIZE / 2.f), ((float)TILE_SIZE / 2.f)),
                 &compatibleRenderTarget
             );
             if (FAILED(hr)) {
@@ -252,7 +252,7 @@ HRESULT Direct2DMgr::SplitBitmap(ID2D1Bitmap* bitmap, const wstring& tag) {
 
             // 호환 렌더 타겟에 원본 비트맵 그리기
             compatibleRenderTarget->BeginDraw();
-            compatibleRenderTarget->DrawBitmap(bitmap, D2D1::RectF(0, 0, 64, 64), 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, srcRect);
+            compatibleRenderTarget->DrawBitmap(bitmap, D2D1::RectF(0, 0, TILE_SIZE / 2, TILE_SIZE / 2), 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, srcRect);
             hr = compatibleRenderTarget->EndDraw();
             if (FAILED(hr)) {
                 MessageBox(nullptr, L"비트맵 그리기 실패!", L"오류", MB_OK);
