@@ -17,6 +17,10 @@
 #include "CImage.h"
 
 CScene_Main::CScene_Main()
+	: m_tMainPanel{}
+	, m_fPanelMoveDuration(2.5f)
+	, m_fPanelMoveElapsed(0.f)
+	, m_fPanelMoveWave(37.f)
 {
 }
 
@@ -47,67 +51,67 @@ void CScene_Main::Enter()
 	//Object 추가.
 	//실제 생성된 객체는 플레이어, 주소를 받은 건 부모 클래스. 
 	//맨 뒤 Brotato 바닥. 
-	CObject* pObj = new CGround;
-	pObj->SetPos(vResolution / 2.f);
-	pObj->SetScale(Vec2(1035.f, 540.f));
-	pObj->SetName(L"Title_Ground");
-	pObj->CreateImage();
-	pObj->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_Ground"));
-	AddObject(pObj, GROUP_TYPE::DEFAULT);
+	m_tMainPanel.pTitleGround = new CGround;
+	m_tMainPanel.pTitleGround->SetPos(vResolution / 2.f);
+	m_tMainPanel.pTitleGround->SetScale(Vec2(1035.f, 540.f));
+	m_tMainPanel.pTitleGround->SetName(L"Title_Ground");
+	m_tMainPanel.pTitleGround->CreateImage();
+	m_tMainPanel.pTitleGround->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_Ground"));
+	AddObject(m_tMainPanel.pTitleGround, GROUP_TYPE::DEFAULT);
 
 	//맨 뒤, 응원단
-	pObj = new CGround;
-	pObj->SetPos(vResolution / 2.f);
-	pObj->SetScale(Vec2(1035.f, 540.f));
-	pObj->SetName(L"Title_back");
-	pObj->CreateImage();
-	pObj->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_back"));
-	AddObject(pObj, GROUP_TYPE::DEFAULT);
+	m_tMainPanel.pTitleBack = new CGround;
+	m_tMainPanel.pTitleBack->SetPos(vResolution / 2.f);
+	m_tMainPanel.pTitleBack->SetScale(Vec2(1035.f, 540.f));
+	m_tMainPanel.pTitleBack->SetName(L"Title_back");
+	m_tMainPanel.pTitleBack->CreateImage();
+	m_tMainPanel.pTitleBack->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_back"));
+	AddObject(m_tMainPanel.pTitleBack, GROUP_TYPE::DEFAULT);
 
 	//중간, 응원단
-	pObj = new CGround;
-	pObj->SetPos(vResolution / 2.f);
-	pObj->SetScale(Vec2(1035.f, 540.f));
-	pObj->SetName(L"Title_mid");
-	pObj->CreateImage();
-	pObj->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_mid"));
-	AddObject(pObj, GROUP_TYPE::DEFAULT);
+	m_tMainPanel.pTitleMid = new CGround;
+	m_tMainPanel.pTitleMid->SetPos(vResolution / 2.f);
+	m_tMainPanel.pTitleMid->SetScale(Vec2(1035.f, 540.f));
+	m_tMainPanel.pTitleMid->SetName(L"Title_mid");
+	m_tMainPanel.pTitleMid->CreateImage();
+	m_tMainPanel.pTitleMid->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_mid"));
+	AddObject(m_tMainPanel.pTitleMid, GROUP_TYPE::DEFAULT);
 
 	//맨 앞, 응원단
-	pObj = new CGround;
-	pObj->SetPos(vResolution / 2.f);
-	pObj->SetScale(Vec2(1035.f, 540.f));
-	pObj->SetName(L"Title_front");
-	pObj->CreateImage();
-	pObj->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_front"));
-	AddObject(pObj, GROUP_TYPE::DEFAULT);
+	m_tMainPanel.pTitlefront = new CGround;
+	m_tMainPanel.pTitlefront->SetPos(vResolution / 2.f);
+	m_tMainPanel.pTitlefront->SetScale(Vec2(1035.f, 540.f));
+	m_tMainPanel.pTitlefront->SetName(L"Title_front");
+	m_tMainPanel.pTitlefront->CreateImage();
+	m_tMainPanel.pTitlefront->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_front"));
+	AddObject(m_tMainPanel.pTitlefront, GROUP_TYPE::DEFAULT);
 
 	//Brotato
-	pObj = new CGround;
-	pObj->SetPos(vResolution / 2.f);
-	pObj->SetScale(Vec2(1035.f, 540.f));
-	pObj->SetName(L"Title_Brotato");
-	pObj->CreateImage();
-	pObj->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_Brotato"));
-	AddObject(pObj, GROUP_TYPE::DEFAULT);
+	m_tMainPanel.pTitleBrotato = new CGround;
+	m_tMainPanel.pTitleBrotato->SetPos(vResolution / 2.f);
+	m_tMainPanel.pTitleBrotato->SetScale(Vec2(1035.f, 540.f));
+	m_tMainPanel.pTitleBrotato->SetName(L"Title_Brotato");
+	m_tMainPanel.pTitleBrotato->CreateImage();
+	m_tMainPanel.pTitleBrotato->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_Brotato"));
+	AddObject(m_tMainPanel.pTitleBrotato, GROUP_TYPE::DEFAULT);
 
 	//포스트 프로세싱
-	pObj = new CGround;
-	pObj->SetPos(vResolution / 2.f);
-	pObj->SetScale(Vec2(1035.f, 540.f));
-	pObj->SetName(L"Title_lights");
-	pObj->CreateImage();
-	pObj->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_lights"));
-	AddObject(pObj, GROUP_TYPE::DEFAULT);
+	m_tMainPanel.pTitlelights = new CGround;
+	m_tMainPanel.pTitlelights->SetPos(vResolution / 2.f);
+	m_tMainPanel.pTitlelights->SetScale(Vec2(1035.f, 540.f));
+	m_tMainPanel.pTitlelights->SetName(L"Title_lights");
+	m_tMainPanel.pTitlelights->CreateImage();
+	m_tMainPanel.pTitlelights->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_lights"));
+	AddObject(m_tMainPanel.pTitlelights, GROUP_TYPE::DEFAULT);
 
 	//브로타토 로고
-	pObj = new CGround;
-	pObj->SetPos(Vec2(vResolution.x / 2.f, 115.f));
-	pObj->SetScale(Vec2(561.f, 165.f));
-	pObj->SetName(L"Brotato_logo");
-	pObj->CreateImage();
-	pObj->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Brotato_logo"));
-	AddObject(pObj, GROUP_TYPE::DEFAULT);
+	m_tMainPanel.pTitlelogo = new CGround;
+	m_tMainPanel.pTitlelogo->SetPos(Vec2(vResolution.x / 2.f, 115.f));
+	m_tMainPanel.pTitlelogo->SetScale(Vec2(561.f, 165.f));
+	m_tMainPanel.pTitlelogo->SetName(L"Brotato_logo");
+	m_tMainPanel.pTitlelogo->CreateImage();
+	m_tMainPanel.pTitlelogo->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Brotato_logo"));
+	AddObject(m_tMainPanel.pTitlelogo, GROUP_TYPE::DEFAULT);
 
 
 	//카메라 위치 세팅. 

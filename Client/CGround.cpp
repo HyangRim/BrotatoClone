@@ -2,6 +2,7 @@
 #include "CGround.h"
 #include "CCollider.h"
 #include "CGravity.h"
+#include "Direct2DMgr.h"
 
 
 CGround::CGround()
@@ -22,6 +23,12 @@ void CGround::update()
 {
 
 }
+
+void CGround::render(ID2D1HwndRenderTarget* _pRender)
+{
+	component_render(_pRender);
+}
+
 
 void CGround::OnCollisionEnter(CCollider* _pOther)
 {
