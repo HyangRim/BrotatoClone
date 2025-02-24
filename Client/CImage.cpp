@@ -21,7 +21,16 @@ void CImage::render(HDC _dc)
 
 void CImage::render(ID2D1HwndRenderTarget* _renderTarget)
 {
+	/////////////수정사항////////////////////////
+	// 1. 단순 GetPos -> 방향키로 이동하면 Image는 고정된 상태임
+	// 2. GetRenderPos -> 방향키로 이동하면 Image도 Camera에 맞게 이동됨
+	// 3. GetRealPos -> ????
+
 	Vec2 vPos = m_pOwner->GetPos();
+	vPos = CCamera::GetInstance()->GetRenderPos(vPos);
+	/////////////수정사항////////////////////////
+
+
 	Vec2 vScale = m_pOwner->GetScale();
 
 	if (nullptr == m_pBitmap) return;

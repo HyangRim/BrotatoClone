@@ -9,6 +9,8 @@
 #include "CTextUI.h"
 #include "CSpriteUI.h"
 #include "Direct2DMgr.h"
+#include "CGround.h"
+#include "CImage.h"
 
 CScene_Test::CScene_Test()
 	: m_fAcc(0.f)
@@ -64,6 +66,7 @@ void CScene_Test::render(ID2D1HwndRenderTarget* _pRender)
 {
 	CScene::render(_pRender);
 
+	/*
 	// Direct2DMgr 인스턴스 가져오기
 	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
 
@@ -79,7 +82,7 @@ void CScene_Test::render(ID2D1HwndRenderTarget* _pRender)
 
 	for (int idx = 0; idx < bitmapsToRender.size(); idx++) {
 		pD2DMgr->RenderBitmap(bitmapsToRender[idx].first, bitmapsToRender[idx].second);
-	}
+	}*/
 }
 
 // 흰색 픽셀인지 확인하는 함수
@@ -135,10 +138,8 @@ void ShutdownGDIPlus(ULONG_PTR token) {
 
 void CScene_Test::Enter()
 {
-	// Direct2DMgr 인스턴스 가져오기
-	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
-	pD2DMgr->LoadAndStoreBitmap(L"texture\\result1.png", L"BaseMap1");
-	pD2DMgr->LoadAndStoreBitmap(L"texture\\result2.png", L"BaseMap2");
+	Vec2 vResolution = CCore::GetInstance()->GetResolution();
+	MakeTile(L"texture\\result2.png", L"BaseMap2");
 
 	/*
 	// GDI+ 초기화
@@ -233,8 +234,7 @@ void CScene_Test::Enter()
 	// 4. HP 비율 설정 (50%로 설정)
 	hpBar->SetHpRatio(0.9f);
 	AddObject(hpBar, GROUP_TYPE::UI);*/
-	
-	Vec2 vResolution = CCore::GetInstance()->GetResolution();
+
 /*
 	CTextUI* textUI = new CTextUI();
 	textUI->SetPos(Vec2(0.f, 0.f));			  // 위치 설정(좌상단)

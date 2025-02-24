@@ -42,7 +42,7 @@ CPlayer::CPlayer()
 	CreateRigidBody();
 
 	CTexture* m_pTex = CResMgr::GetInstance()->LoadTexture(L"PlayerTex", L"texture\\link_0.bmp");
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\link_0.bmp",L"PlayerTex");
+	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\link_0.bmp",L"PlayerTex", false);
 
 	ID2D1Bitmap* m_pBit = Direct2DMgr::GetInstance()->GetStoredBitmap(L"PlayerTex");
 
