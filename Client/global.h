@@ -26,6 +26,11 @@ using std::vector;
 #include <list>
 using std::list;
 
+#include <set>
+#include <unordered_set>
+using std::set;
+using std::unordered_set;
+
 #include <map>
 using std::map;
 using std::make_pair;

@@ -201,7 +201,6 @@ void CObject::component_render(ID2D1HwndRenderTarget* _pRender)
 void CObject::CreateCollider()
 {
 	m_pCollider = new CCollider;
-
 	m_pCollider->m_pOwner = this;
 }
 

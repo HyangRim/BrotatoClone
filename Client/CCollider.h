@@ -35,6 +35,7 @@ public:
 	Vec2 GetScale() { return m_vScale; }
 
 	Vec2 GetFinalPos() { return m_vFinalPos; }
+	CObject* GetOwner() { return m_pOwner; }
 
 	CObject* GetObj() { return m_pOwner; }
 

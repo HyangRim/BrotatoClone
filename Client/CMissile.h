@@ -12,6 +12,7 @@ private:
     float    m_fLifeElapsedTime;
     bool     m_bIsCritial;
 
+
 public:
     virtual void update();
     virtual void render(HDC _dc);

@@ -11,7 +11,6 @@ void CreateObject(CObject* _pObj, GROUP_TYPE _eGroup)
 	createEvn.lParam = (DWORD_PTR)_pObj;
 	createEvn.wParam = (DWORD_PTR)_eGroup;
 
-
 	CEventMgr::GetInstance()->AddEvent(createEvn);
 }
 

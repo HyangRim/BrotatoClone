@@ -24,13 +24,16 @@ void CEventMgr::update()
 	//==================================================
 	//이전 프레임에서 등록해준 Dead Object들을 삭제한다.
 	//==================================================
+	////임시조치///
 
 	for (auto deadObjectPtr  : m_vecDeadScheduled) {
+
+		
 		delete deadObjectPtr;
 	}
 
 	m_vecDeadScheduled.clear();
-
+	///////
 	//  ===============
 	//    Event 처리.
 	//  ===============
@@ -43,7 +46,6 @@ void CEventMgr::update()
 
 void CEventMgr::Excute(const tEvent& _eve)
 {
-
 	switch (_eve.eEven) {
 	case EVENT_TYPE::CREATE_OBJECT:
 	{
@@ -63,10 +65,8 @@ void CEventMgr::Excute(const tEvent& _eve)
 		// Object를 Dead 상태로 변경하고 -> 삭제 예정 오브젝트들을 모아둔다.
 		CObject* pDeleteObj = (CObject*)_eve.lParam;
 		pDeleteObj->SetDead();
-		m_vecDeadScheduled.push_back(pDeleteObj);
-
+		m_vecDeadScheduled.insert(pDeleteObj);
 	}
-
 		break;
 	case EVENT_TYPE::SCENE_CHANGE:
 	{

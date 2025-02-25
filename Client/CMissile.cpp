@@ -105,7 +105,6 @@ void CMissile::OnCollisionEnter(CCollider* _pOther)
 {
 	CObject* pOtherObj = _pOther->GetObj();
 
-	
 	if (pOtherObj->GetName() == L"Monster") {
 
 		//파라미터 세팅. 
@@ -135,8 +134,8 @@ void CMissile::OnCollisionEnter(CCollider* _pOther)
 				, TextUIMode::TEXT, 0);
 		}
 		CreateObject(damageText, GROUP_TYPE::IMAGE);
-		//CreateObject
-		DeleteObject(this);
+		//CreateObject	
+		DeleteObject(this);	
 	}
 	
 }

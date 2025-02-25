@@ -77,6 +77,7 @@ void CMonster::OnCollisionEnter(CCollider* _pOther)
 		m_tInfo.m_iHP -= ((CMissile*)pOtherObj)->GetDamage();
 
 		if (m_tInfo.m_iHP <= 0) {
+
 			DeleteObject(this);
 		}
 	}

@@ -134,6 +134,7 @@ bool CCollisionMgr::IsCollision(CCollider* _pLeftCol, CCollider* _pRightCol)
 
 	if ((abs(vRightPos.x - vLeftPos.x) <= (vLeftScale.x + vRightScale.x) / 2.f) &&
 		(abs(vRightPos.y - vLeftPos.y) <= (vLeftScale.y + vRightScale.y) / 2.f)) {
+
 		return true;
 	}
 

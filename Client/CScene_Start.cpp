@@ -82,6 +82,7 @@ void CScene_Start::update()
 	if (m_ftempElapsed > m_ftempDuration) {
 		//GetPlayer()->GetPos();
 		CMobSpawner::MobSpawn(MON_TYPE::NORMAL, GetPlayer()->GetPos());
+
 		m_ftempElapsed = 0.f;
 	}
 
@@ -374,11 +375,11 @@ void CScene_Start::Enter()
 	*/
 
 	
-	
+	/*
 	pMon = CMonFactory::CreateMonster(MON_TYPE::RANGE, vResolution / 2.f - Vec2(-400.f, 300.f));
 	pMon->SetScale(Vec2(45.f, 45.f));
 	pMon->SetWaveDuration(1.f);
-	AddObject(pMon, GROUP_TYPE::MONSTER);
+	AddObject(pMon, GROUP_TYPE::MONSTER);*/
 
 	//Enter은 몰라고 update에서는 CreateObject로 해야함...
 	//CreateObject(pMon, Object_type::MONSTER):
