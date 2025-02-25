@@ -114,7 +114,7 @@ void CMissile::OnCollisionEnter(CCollider* _pOther)
 
 		//DamageUI 오브젝트 만들기. 
 		CDamageUI* damageText = new CDamageUI;
-		damageText->SetPos(pOtherObj->GetPos());
+		damageText->SetPos(CCamera::GetInstance()->GetRenderPos(pOtherObj->GetPos()));
 		damageText->SetPivotPos();
 		damageText->SetDuration(1.5f);
 		if (!m_bIsCritial) {
