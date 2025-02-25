@@ -8,6 +8,9 @@
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CAnimator.cpp"
 
 
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CBirth_Monster.cpp"
+
+
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CBtnUI.cpp"
 
 
@@ -177,4 +180,7 @@
 
 
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\SelectGDI.cpp"
+
+
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CMobSpawner.cpp"
 
