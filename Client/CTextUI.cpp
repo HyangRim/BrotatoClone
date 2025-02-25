@@ -51,22 +51,15 @@ void CTextUI::render(ID2D1HwndRenderTarget* _pRender)
     //글자만 출력
     if (m_mode == TextUIMode::TEXT)
     {
-        if (m_bdrawOutline)
-        {
-            d2dManager->RenderTextWithOutline(
-                m_Text,                     // 출력할 텍스트
-                D2D1::RectF(vPos.x + m_vOffsetLT.x, vPos.y + m_vOffsetLT.y, vPos.x + m_vOffsetRB.x, vPos.y + m_vOffsetRB.y), // 출력 영역 (좌상단, 우하단)
-                m_fontType,                          // 폰트 타입
-                (float)m_iFontSize,                                  // 폰트 크기
-                m_colorText,  // 텍스트 색상
-                m_colorOutline,    // 외곽선 색상
-                m_fOutlineThickness                                // 외곽선 두께
-            );
-        }
-        else
-        {
-
-        }
+        d2dManager->RenderTextWithOutline(
+            L"안녕하세요!",                     // 출력할 텍스트
+            D2D1::RectF(vPos.x + m_vOffsetLT.x, vPos.y + m_vOffsetLT.y, vPos.x + m_vOffsetRB.x, vPos.y + m_vOffsetRB.y), // 출력 영역 (좌상단, 우하단)
+            m_fontType,                          // 폰트 타입
+            (float)m_iFontSize,                                  // 폰트 크기
+            m_colorText,  // 텍스트 색상
+            m_colorOutline,    // 외곽선 색상
+            m_fOutlineThickness                                // 외곽선 두께
+        );
     }
     //숫자만 출력
     else if(m_mode == TextUIMode::NUMBER)

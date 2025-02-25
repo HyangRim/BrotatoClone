@@ -171,6 +171,7 @@
     <ClInclude Include="CCollider.h" />
     <ClInclude Include="CCollisionMgr.h" />
     <ClInclude Include="CCore.h" />
+    <ClInclude Include="CDamageUI.h" />
     <ClInclude Include="CDropItem.h" />
     <ClInclude Include="CEventMgr.h" />
     <ClInclude Include="CFontCollectionLoader.h" />
@@ -239,6 +240,7 @@
     <ClCompile Include="CCollider.cpp" />
     <ClCompile Include="CCollisionMgr.cpp" />
     <ClCompile Include="CCore.cpp" />
+    <ClCompile Include="CDamageUI.cpp" />
     <ClCompile Include="CDropItem.cpp" />
     <ClCompile Include="CEventMgr.cpp" />
     <ClCompile Include="CFontCollectionLoader.cpp" />

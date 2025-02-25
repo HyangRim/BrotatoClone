@@ -10,6 +10,7 @@ private:
     int      m_iDamage;
     float    m_fLifeTime;
     float    m_fLifeElapsedTime;
+    bool     m_bIsCritial;
 
 public:
     virtual void update();
@@ -25,6 +26,10 @@ public:
     }
     void SetDamage(int _iDamage) {
         m_iDamage = _iDamage;
+    }
+
+    void SetCritical(bool _bCritical) {
+        m_bIsCritial = _bCritical;
     }
 
     int GetDamage() { return m_iDamage; }

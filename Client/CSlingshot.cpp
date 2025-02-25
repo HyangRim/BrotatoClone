@@ -113,6 +113,7 @@ void CSlingshot::ShotMissile(Vec2 _vDir)
 	int default_damage = Getinfo().m_iDMG;
 	if (random_distribution(random_generator) < Getinfo().m_fCritialAcc) {
 		default_damage = static_cast<int>(static_cast<float>(default_damage) * Getinfo().m_fCritialDMG);
+		pMissile->SetCritical(true);
 	}
 	pMissile->SetDamage(default_damage);
 
