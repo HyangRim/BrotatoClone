@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "CMissile.h"
 
+#include "CDamageUI.h"
+
 #include "CTimeMgr.h"
 #include "CCollider.h"
 
@@ -10,6 +12,8 @@ CMissile::CMissile()
 	, m_fTheta(PI / 4.f)
 	, m_fLifeTime(5.f)
 	, m_iDamage(12)
+	, m_bIsCritial(false)
+	, m_fLifeElapsedTime(0.f)
 {
 	m_vDir.Normalize();
 	CreateCollider();
@@ -103,6 +107,35 @@ void CMissile::OnCollisionEnter(CCollider* _pOther)
 
 	
 	if (pOtherObj->GetName() == L"Monster") {
+
+		//파라미터 세팅. 
+		Vec2 objRenderScale = pOtherObj->GetRenderScale();
+		wstring damage = std::to_wstring(m_iDamage);
+
+		//DamageUI 오브젝트 만들기. 
+		CDamageUI* damageText = new CDamageUI;
+		damageText->SetPos(pOtherObj->GetPos());
+		damageText->SetPivotPos();
+		damageText->SetDuration(1.5f);
+		if (!m_bIsCritial) {
+			damageText->CreateTextUI(damage, Vec2(-20.f, -objRenderScale.y - 10.f), Vec2(20.f, -objRenderScale.y - 5.f)
+				, 16, D2D1::ColorF::White
+				, true
+				, 2.f, D2D1::ColorF::Black
+				, FONT_TYPE::KR
+				, TextUIMode::TEXT, 0);
+
+		}
+		else {
+			damageText->CreateTextUI(damage, Vec2(-20.f, -objRenderScale.y - 10.f), Vec2(20.f, -objRenderScale.y - 5.f)
+				, 16, D2D1::ColorF::Yellow
+				, true
+				, 2.f, D2D1::ColorF::Black
+				, FONT_TYPE::KR
+				, TextUIMode::TEXT, 0);
+		}
+		CreateObject(damageText, GROUP_TYPE::IMAGE);
+		//CreateObject
 		DeleteObject(this);
 	}
 	

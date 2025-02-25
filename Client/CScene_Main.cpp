@@ -14,7 +14,7 @@
 #include "CSoundMgr.h"
 
 #include "CObject.h"
-#include "CEmptyObj.h"
+#include "CDamageUI.h"
 #include "CGround.h"
 #include "CImage.h"
 

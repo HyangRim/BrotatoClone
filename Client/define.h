@@ -51,7 +51,7 @@ enum class GROUP_TYPE {
 	DROP_ITEM,
 	PROJ_PLAYER,
 	PROJ_MONSTER,
-
+	IMAGE, 
 	UI = 31,
 	END = 32,
 };
