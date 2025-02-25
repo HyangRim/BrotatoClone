@@ -27,6 +27,8 @@ CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
 		pMon = new CNormal_Monster;
 		pMon->SetPos(_vPos);
 		pMon->SetName(L"Monster");
+		pMon->SetScale(Vec2(40.f, 40.f));
+		pMon->SetWaveDuration(1.f);
 
 		tMonInfo info = {};
 		info.m_eMonType = _eType;
@@ -59,6 +61,8 @@ CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
 		pMon = new CRange_Monster;
 		pMon->SetPos(_vPos);
 		pMon->SetName(L"Monster");
+		pMon->SetScale(Vec2(40.f, 40.f));
+		pMon->SetWaveDuration(1.f);
 
 		tMonInfo info = {};
 		info.m_eMonType = _eType;

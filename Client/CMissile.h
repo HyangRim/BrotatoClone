@@ -32,8 +32,8 @@ public:
         m_bIsCritial = _bCritical;
     }
 
-    int GetDamage() { return m_iDamage; }
-
+    int GetDamage() const { return m_iDamage; }
+    bool GetCritical() const { return m_bIsCritial; }
 public:
     virtual void OnCollision(CCollider* _pOther) {};
     virtual void OnCollisionEnter(CCollider* _pOther);
