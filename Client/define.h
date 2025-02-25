@@ -113,6 +113,7 @@ enum class TextUIMode
 {
 	TEXT,
 	NUMBER,
+	COUNT_DOWN,
 };
 
 enum class FONT_TYPE

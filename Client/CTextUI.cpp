@@ -36,7 +36,7 @@ void CTextUI::UpdateNumber()
 
         // 1초마다 숫자 증가
         if (m_fAcc >= 1.f) {
-            m_iNumber += static_cast<int>(m_fAcc / 1.f); // 초 단위로 증가
+            m_iNumber -= static_cast<int>(m_fAcc / 1.f); // 초 단위로 증가
             m_fAcc = fmod(m_fAcc, 1.f);               // 남은 시간 유지
         }
     }
@@ -61,10 +61,27 @@ void CTextUI::render(ID2D1HwndRenderTarget* _pRender)
             m_fOutlineThickness                                // 외곽선 두께
         );
     }
-    //숫자만 출력
-    else if(m_mode == TextUIMode::NUMBER)
+    //숫자카운트 다운
+    else if(m_mode == TextUIMode::COUNT_DOWN)
     {
+        d2dManager->RenderTextWithOutline(
+            std::to_wstring(m_iNumber),                     // 출력할 텍스트
+            D2D1::RectF(vPos.x + m_vOffsetLT.x, vPos.y + m_vOffsetLT.y, vPos.x + m_vOffsetRB.x, vPos.y + m_vOffsetRB.y), // 출력 영역 (좌상단, 우하단)
+            m_fontType,                          // 폰트 타입
+            (float)m_iFontSize,                                  // 폰트 크기
+            m_colorText,  // 텍스트 색상
+            m_colorOutline,    // 외곽선 색상
+            m_fOutlineThickness     // 외곽선 두께
+        );
 
+        // 누적 시간 업데이트
+        m_fAcc += fDT;
+
+        // 1초마다 숫자 증가
+        if (m_fAcc >= 1.f) {
+            m_iNumber -= static_cast<int>(m_fAcc / 1.f); // 초 단위로 증가
+            m_fAcc = fmod(m_fAcc, 1.f);               // 남은 시간 유지
+        }
     }
     //...
 }

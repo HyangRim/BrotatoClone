@@ -43,7 +43,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         // 콘솔에 메시지 출력
         std::cout << "Hello, Console Window!" << std::endl;
     }
-    srand(time(NULL));
+    srand((UINT)time(NULL));
     
 
     //메모리 릭(누수) 체크

@@ -281,6 +281,8 @@ void CObject::CreateTextUI(const wstring& _text, Vec2 _offsetLT, Vec2 _offsetRB	
 
 	m_pTextUI->SetOffsetLT(_offsetLT);
 	m_pTextUI->SetOffsetRB(_offsetRB);
+
+	m_pTextUI->SetTime(_iStartNum);
 }
 
 

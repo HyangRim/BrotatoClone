@@ -50,6 +50,8 @@ CScene_Start::CScene_Start()
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\ui\\hud\\ui_xp_fill.png", L"XpFill", false);
 
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\ui\\hud\\ui_lifebar_frame.png", L"LifebarFrame", false);
+
+	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\harvesting_icon.png", L"HarvestingIcon", false);
 }
 
 CScene_Start::~CScene_Start()
@@ -80,19 +82,50 @@ void CScene_Start::update()
 		{
 			for (size_t objIDX = 0; objIDX < vecObj.size(); objIDX++) 
 			{
+				////////////////////체력바 업뎃//////////////////////////////////
 				if (vecObj[objIDX]->GetName().compare(L"Lifebar") == 0)
 				{
 					CPlayer* player = (CPlayer*)GetPlayer();
 					playerParameter playerInfo = player->GetPlayerInfo();
 
 					wchar_t buffer[20];
-					swprintf_s(buffer, L"%d/%d", playerInfo.m_iCurHP, playerInfo.m_iMaxHP);
+					swprintf_s(buffer, L"%d / %d", playerInfo.m_iCurHP, playerInfo.m_iMaxHP);
 
 					vecObj[objIDX]->GetTextUI()->SetText(buffer);
 
+					//체력바 비율변경
 					CImage* image = (CImage*)vecObj[objIDX]->GetImage(1);
 					image->SetRatio((float)playerInfo.m_iCurHP/ (float)playerInfo.m_iMaxHP);
 				}
+				///////////////////////////////////////////////////////////////////
+				////////////////////경험치바 업뎃//////////////////////////////////
+				if (vecObj[objIDX]->GetName().compare(L"Xpbar") == 0)
+				{
+					CPlayer* player = (CPlayer*)GetPlayer();
+					playerParameter playerInfo = player->GetPlayerInfo();
+
+					wchar_t buffer[20];
+					swprintf_s(buffer, L"%d / %d", playerInfo.m_iCurEXP, playerInfo.m_iMaxEXP);
+
+					vecObj[objIDX]->GetTextUI()->SetText(buffer);
+
+					//경험치바 비율변경
+					CImage* image = (CImage*)vecObj[objIDX]->GetImage(1);
+					image->SetRatio(min((float)((float)playerInfo.m_iCurEXP / (float)playerInfo.m_iMaxEXP), 1.f));
+				}
+				///////////////////////////////////////////////////////////////////
+				////////////////////재화갯수 업뎃//////////////////////////////////
+				if (vecObj[objIDX]->GetName().compare(L"HarvestingText") == 0)
+				{
+					CPlayer* player = (CPlayer*)GetPlayer();
+					playerParameter playerInfo = player->GetPlayerInfo();
+
+					wchar_t buffer[20];
+					swprintf_s(buffer, L"%d", playerInfo.m_iCoin);
+
+					vecObj[objIDX]->GetTextUI()->SetText(buffer);
+				}
+				///////////////////////////////////////////////////////////////////
 			}
 		}
 		///////////////////////////////////////////
@@ -118,8 +151,6 @@ void CScene_Start::update()
 	if (KEY_TAP(KEY::ENTER)  ) {
 		ChangeScene(SCENE_TYPE::TOOL);
 	}
-	
-
 }
 
 void CScene_Start::render(HDC _dc)
@@ -226,8 +257,7 @@ void CScene_Start::Enter()
 	lifebar->AddImage(pD2DMgr->GetStoredBitmap(L"LifebarBackGround"));
 	lifebar->AddImage(pD2DMgr->GetStoredBitmap(L"LifebarFill"));
 	lifebar->AddImage(pD2DMgr->GetStoredBitmap(L"LifebarFrame"));
-
-	lifebar->SetPos(Vec2(100.f, 50.f));
+	lifebar->SetPos(Vec2(90.f, 25.f));
 	lifebar->SetScale(Vec2(320.f, 48.f) * 0.5f);
 	lifebar->CreateTextUI(L"", Vec2(-80.f, -12.f), Vec2(80.f, 12.f)
 		, 12, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
@@ -239,10 +269,7 @@ void CScene_Start::Enter()
 	xpbar->AddImage(pD2DMgr->GetStoredBitmap(L"XpBackGround"));
 	xpbar->AddImage(pD2DMgr->GetStoredBitmap(L"XpFill"));
 	xpbar->AddImage(pD2DMgr->GetStoredBitmap(L"LifebarFrame"));
-
-	//xpbar->AddImage(L"XpFill");
-	//xpbar->AddImage(L"LifebarFrame");
-	xpbar->SetPos(Vec2(100.f, 120.f));
+	xpbar->SetPos(Vec2(90.f, 60.f));
 	xpbar->SetScale(Vec2(320.f, 48.f) * 0.5f);
 	xpbar->CreateTextUI(L"", Vec2(-80.f, -12.f), Vec2(80.f, 12.f)
 		, 12, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
@@ -254,6 +281,51 @@ void CScene_Start::Enter()
 	AddObject(xpbar, GROUP_TYPE::UI);
 	////////////////////////////////////////////////////////////////////////
 
+	////////////////////////////웨이브 글자/////////////////////////////////
+	CObject* wavePanel = new CSpriteUI;
+	wavePanel->SetScale(Vec2(100.f, 100.f));
+	wavePanel->SetPos(Vec2(vResolution.x / 2.f, 25.f));
+	wavePanel->CreateTextUI(L"웨이브", Vec2(-100.f, -100.f), Vec2(100.f, 100.f)
+		, 24, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR, TextUIMode::TEXT, 0);
+	wavePanel->SetName(L"WavePanel");
+	wavePanel->SetObjType(GROUP_TYPE::UI);
+
+	AddObject(wavePanel, GROUP_TYPE::UI);
+	////////////////////////////////////////////////////////////////////////
+
+	////////////////////////////웨이브 숫자/////////////////////////////////
+	CObject* countDownPanel = new CSpriteUI;
+	countDownPanel->SetScale(Vec2(100.f, 100.f));
+	countDownPanel->SetPos(Vec2(vResolution.x / 2.f, 50.f));
+	countDownPanel->CreateTextUI(L"", Vec2(-100.f, -100.f), Vec2(100.f, 100.f)
+		, 24, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR, TextUIMode::COUNT_DOWN, 30);
+	countDownPanel->SetName(L"CountDownPanel");
+	countDownPanel->SetObjType(GROUP_TYPE::UI);
+	AddObject(countDownPanel, GROUP_TYPE::UI);
+	////////////////////////////////////////////////////////////////////////
+
+	////////////////////////////재화 표시///////////////////////////////////
+	CObject* harvestingIcon = new CSpriteUI;
+	harvestingIcon->AddImage(pD2DMgr->GetStoredBitmap(L"HarvestingIcon"));
+	harvestingIcon->SetScale(Vec2(96.f, 96.f) * 0.5f);
+	harvestingIcon->SetPos(Vec2(30.f, 100.f));
+
+	harvestingIcon->SetName(L"HarvestingIcon");
+	harvestingIcon->SetObjType(GROUP_TYPE::UI);
+	AddObject(harvestingIcon, GROUP_TYPE::UI);
+
+	CObject* harvestingText = new CSpriteUI;
+	harvestingText->SetScale(Vec2(96.f, 96.f) * 0.5f);
+	harvestingText->SetPos(Vec2(70.f, 100.f));
+	harvestingText->CreateTextUI(L"", Vec2(-100.f, -100.f), Vec2(100.f, 100.f)
+		, 24, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR, TextUIMode::TEXT, 30);
+	harvestingText->SetName(L"HarvestingText");
+	harvestingText->SetObjType(GROUP_TYPE::UI);
+	AddObject(harvestingText, GROUP_TYPE::UI);
+	////////////////////////////////////////////////////////////////////////
 
 	//Object 추가.
 	//실제 생성된 객체는 플레이어, 주소를 받은 건 부모 클래스. 

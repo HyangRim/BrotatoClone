@@ -139,6 +139,14 @@ void CPlayer::update()
 	{
 		m_tPlayerInfo.m_iCurHP--;
 	}
+	if (KEY_TAP(KEY::L))
+	{
+		m_tPlayerInfo.m_iCurEXP++;
+	}
+	if (KEY_TAP(KEY::J))
+	{
+		m_tPlayerInfo.m_iCoin++;
+	}
 
 	if (KEY_TAP(KEY::ENTER)) {
 		SetPos(Vec2(640.f, 384.f));
