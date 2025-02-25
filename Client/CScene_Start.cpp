@@ -224,6 +224,7 @@ void CScene_Start::Enter()
 	*/
 
 	
+	
 	pMon = CMonFactory::CreateMonster(MON_TYPE::RANGE, vResolution / 2.f - Vec2(-400.f, 300.f));
 	pMon->SetScale(Vec2(45.f, 45.f));
 	pMon->SetWaveDuration(1.f);
@@ -231,6 +232,7 @@ void CScene_Start::Enter()
 
 	//Enter은 몰라고 update에서는 CreateObject로 해야함...
 	//CreateObject(pMon, Object_type::MONSTER):
+	
 	
 	//땅 물체 배치
 	CObject* pGround = new CGround;
@@ -258,10 +260,11 @@ void CScene_Start::Enter()
 	//Camera Look 지점.
 	CCamera::GetInstance()->SetLookAt(vResolution / 2.f);
 
+	/*
 	//Camera 효과 지점. 
 	CCamera::GetInstance()->FadeOut(1.f);
 	CCamera::GetInstance()->FadeIn(1.f);
-	
+	*/
 	start();
 }
 

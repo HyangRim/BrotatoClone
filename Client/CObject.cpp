@@ -12,6 +12,7 @@
 #include "CImage.h"
 #include "Direct2DMgr.h"
 #include "CTextUI.h"
+#include "CPathMgr.h"
 
 
 CObject::CObject()
@@ -21,7 +22,7 @@ CObject::CObject()
 	, m_pAnimator(nullptr)
 	, m_pRigidBody(nullptr)
 	, m_pGravity(nullptr)
-	, m_pImage(nullptr)
+	, m_pImages{}
 	, m_pTextUI(nullptr)
 	, m_bAlive(true)
 	, m_bEnable(true)
@@ -42,7 +43,7 @@ CObject::CObject(const CObject& _origin)
 	, m_pAnimator(nullptr)
 	, m_pRigidBody(nullptr)
 	, m_pGravity(nullptr)
-	, m_pImage(nullptr)
+	, m_pImages{}
 	, m_pTextUI(nullptr)
 	, m_bFlipX(false)
 	, m_fWaveDuration(_origin.m_fWaveDuration)
@@ -69,10 +70,11 @@ CObject::CObject(const CObject& _origin)
 		m_pRigidBody->m_pOwner = this;
 	}
 
+	/*
 	if (_origin.m_pImage != nullptr) {
 		m_pImage = new CImage(*_origin.m_pImage);
 		m_pImage->m_pOwner = this;
-	}
+	}*/
 
 	if (_origin.m_pTextUI != nullptr) {
 		m_pTextUI = new CTextUI(*_origin.m_pTextUI);
@@ -86,7 +88,9 @@ CObject::~CObject() {
 	if (m_pAnimator != nullptr) delete m_pAnimator;
 	if (m_pGravity != nullptr)  delete m_pGravity;
 	if (m_pRigidBody != nullptr)delete m_pRigidBody;
-	if (m_pImage != nullptr) delete m_pImage;
+
+	Safe_Delete_Map(m_pImages);
+
 	if (m_pTextUI != nullptr) delete m_pTextUI;
 }
 
@@ -105,7 +109,6 @@ void CObject::finalupdate()
 	if (m_pRigidBody)m_pRigidBody->finalupdate();
 	if (m_pCollider) m_pCollider->finalupdate();
 	//if( m_pImage) m_pImage->finalupdate();
-
 }
 
 void CObject::render(HDC _dc)
@@ -161,17 +164,21 @@ void CObject::render(ID2D1HwndRenderTarget* _pRender)
 
 void CObject::component_render(HDC _dc)
 {
+	/*
 	if (m_pAnimator != nullptr) m_pAnimator->render(_dc);
 
 	if (m_pCollider != nullptr)	m_pCollider->render(_dc);
-	if (m_pImage != nullptr)	m_pImage->render(_dc);
+	if (!m_pImages.empty())	m_pImage->render(_dc);
+	*/
 }
 
 void CObject::component_render(Gdiplus::Graphics* _pDGraphics)
 {
+	/*
 	if (m_pAnimator != nullptr) m_pAnimator->render(_pDGraphics);
 
 	if (m_pCollider != nullptr)	m_pCollider->render(_pDGraphics);
+	*/
 }
 
 void CObject::component_render(ID2D1HwndRenderTarget* _pRender)
@@ -180,7 +187,14 @@ void CObject::component_render(ID2D1HwndRenderTarget* _pRender)
 
 	if (m_pCollider != nullptr)	m_pCollider->render(_pRender);
 
-	if (m_pImage != nullptr)	m_pImage->render(_pRender);
+	if (!m_pImages.empty())
+	{
+		map<wstring, CImage*>::iterator iter = m_pImages.begin();
+		for (; iter != m_pImages.end(); ++iter)
+		{
+			iter->second->render(_pRender);
+		}
+	}
 
 	if (m_pTextUI != nullptr)	m_pTextUI->render(_pRender);
 }
@@ -210,10 +224,29 @@ void CObject::CreateGravity()
 	m_pGravity->m_pOwner = this;
 }
 
+void CObject::AddImage(const wstring& tag)
+{
+	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+
+	CImage* tmp = new CImage;
+	tmp->SetBitmap(pD2DMgr->GetStoredBitmap(tag));
+	tmp->m_pOwner = this;
+	m_pImages[tag] = tmp;
+}
+
+void CObject::AddImage(const wstring& tag, ID2D1Bitmap* _bitmap)
+{
+	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+
+	CImage* tmp = new CImage;
+	tmp->SetBitmap(_bitmap);
+	tmp->m_pOwner = this;
+	m_pImages[tag] = tmp;
+}
+
 void CObject::CreateImage()
 {
-	m_pImage = new CImage;
-	m_pImage->m_pOwner = this;
+	
 }
 
 void CObject::CreateTextUI(const wstring& _text, Vec2 _offsetLT, Vec2 _offsetRB		//text , 좌상단 offset, 우하단 offset

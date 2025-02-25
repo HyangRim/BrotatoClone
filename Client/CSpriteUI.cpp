@@ -57,6 +57,7 @@ void CSpriteUI::render(Graphics* _pDGraphics)
 
 void CSpriteUI::render(ID2D1HwndRenderTarget* _pRender)
 {
+
 }
 
 void CSpriteUI::SetHpRatio(float _ratio)

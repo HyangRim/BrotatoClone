@@ -62,8 +62,6 @@ public:
     void AddExp(int _iExp);
     void AddCoin(int _iCoin);
 
-
-
 private:
     void PlayerLevelUp();
     void CreateMissile();

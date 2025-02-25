@@ -122,7 +122,6 @@ void CGround::OnCollision(CCollider* _pOther)
 			vObjPos.x -= (fInterpolValue);
 			pOtherObj->SetPos(vObjPos);
 		}
- 
 	}
 }
 

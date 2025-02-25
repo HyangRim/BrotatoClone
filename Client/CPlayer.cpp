@@ -53,7 +53,7 @@ CPlayer::CPlayer()
 	///////////////////
 
 	CTexture* m_pTex = CResMgr::GetInstance()->LoadTexture(L"PlayerTex", L"texture\\link_0.bmp");
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\link_0.bmp",L"PlayerTex", false);
+	//Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\link_0.bmp",L"PlayerTex", false);
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\player\\potato.png", L"PlayerBody", false);
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\player\\legs.png", L"PlayerLegs", false);
 	//ID2D1Bitmap* m_pBit = Direct2DMgr::GetInstance()->GetStoredBitmap(L"PlayerTex");
@@ -111,8 +111,10 @@ CPlayer::CPlayer()
 	//다리 오브젝트 추가. 
 
 	//이미지 추가. 
-	CreateImage();
-	GetImage()->SetBitmap(Direct2DMgr::GetInstance()->GetStoredBitmap(L"PlayerBody"));
+	AddImage(L"PlayerBody");
+	AddImage(L"PlayerLegs");
+
+	//GetImage()->SetBitmap(Direct2DMgr::GetInstance()->GetStoredBitmap(L"PlayerBody"));
 }
 
 CPlayer::~CPlayer()
@@ -163,7 +165,6 @@ void CPlayer::render(Gdiplus::Graphics* _pDGraphics)
 
 void CPlayer::render(ID2D1HwndRenderTarget* _pRender)
 {
-	
 	component_render(_pRender);
 }
 

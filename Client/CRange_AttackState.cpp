@@ -27,8 +27,6 @@ void CRange_AttackState::Enter()
 	m_vPlayerPos = ((CPlayer*)CSceneMgr::GetInstance()->GetCurScene()->GetPlayer())->GetPos();
 	m_vMonsterPos = GetMonster()->GetPos();
 	m_vMissileDir = (m_vPlayerPos - m_vMonsterPos).Normalize();
-
-
 }
 
 void CRange_AttackState::Exit()
@@ -38,7 +36,6 @@ void CRange_AttackState::Exit()
 
 void CRange_AttackState::update()
 {
-
 	m_fShotCoolTime += fDT;
 	if (m_fShotCoolTime < m_fShotDuration) {
 		//색상 붉게 변화 시켜야함. 

@@ -425,7 +425,8 @@ void CScene::MakeTile(const wstring &tag)
 				tileIdx = randY * 8 + randX;
 			}
 		
-			pObj->GetImage()->SetBitmap(splitBitmaps[tileIdx]);
+			pObj->AddImage(L"tile", splitBitmaps[tileIdx]);
+			//pObj->GetImage()->SetBitmap(splitBitmaps[tileIdx]);
 			AddObject(pObj, GROUP_TYPE::TILE);
 		}
 	}
