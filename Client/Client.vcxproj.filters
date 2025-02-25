@@ -191,6 +191,15 @@
     <Filter Include="Engine\07. Component\Image">
       <UniqueIdentifier>{f56d297b-969b-43ca-a03f-51ca5e5b5836}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\07. Component\Text">
+      <UniqueIdentifier>{5b6f22c7-ee39-4e0a-abdd-635c9c2137d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. Manager\FontMgr\CFontCollectionLoader">
+      <UniqueIdentifier>{2da4c308-6687-4142-9e63-38a1ffc243c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. Manager\FontMgr\CFontFileEnumerator">
+      <UniqueIdentifier>{74577a5c-7956-4a5f-8ac4-20d850791835}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h">
@@ -335,9 +344,6 @@
     <ClInclude Include="CPistol.h">
       <Filter>Engine\04. Object\Weapon\Pistol</Filter>
     </ClInclude>
-    <ClInclude Include="CTextUI.h">
-      <Filter>Engine\04. Object\UI\TextUI</Filter>
-    </ClInclude>
     <ClInclude Include="CFontMgr.h">
       <Filter>Engine\03. Manager\FontMgr</Filter>
     </ClInclude>
@@ -385,6 +391,15 @@
     </ClInclude>
     <ClInclude Include="CImage.h">
       <Filter>Engine\07. Component\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="CTextUI.h">
+      <Filter>Engine\07. Component\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="CFontCollectionLoader.h">
+      <Filter>Engine\03. Manager\FontMgr\CFontCollectionLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="CFontFileEnumerator.h">
+      <Filter>Engine\03. Manager\FontMgr\CFontFileEnumerator</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -522,9 +537,6 @@
     <ClCompile Include="CPistol.cpp">
       <Filter>Engine\04. Object\Weapon\Pistol</Filter>
     </ClCompile>
-    <ClCompile Include="CTextUI.cpp">
-      <Filter>Engine\04. Object\UI\TextUI</Filter>
-    </ClCompile>
     <ClCompile Include="CFontMgr.cpp">
       <Filter>Engine\03. Manager\FontMgr</Filter>
     </ClCompile>
@@ -572,6 +584,15 @@
     </ClCompile>
     <ClCompile Include="CImage.cpp">
       <Filter>Engine\07. Component\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="CTextUI.cpp">
+      <Filter>Engine\07. Component\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="CFontCollectionLoader.cpp">
+      <Filter>Engine\03. Manager\FontMgr\CFontCollectionLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="CFontFileEnumerator.cpp">
+      <Filter>Engine\03. Manager\FontMgr\CFontFileEnumerator</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

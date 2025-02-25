@@ -12,7 +12,8 @@
 #include <iostream>
 #include <d2d1.h>
 #include <d2d1_1.h>
-
+#include <dwrite.h>
+#pragma comment(lib, "Dwrite.lib")
 #include <wincodec.h>
 #include <stdio.h>
 

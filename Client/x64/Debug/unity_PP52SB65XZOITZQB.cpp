@@ -29,6 +29,12 @@
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CEventMgr.cpp"
 
 
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CFontCollectionLoader.cpp"
+
+
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CFontFileEnumerator.cpp"
+
+
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CFontMgr.cpp"
 
 

@@ -1,28 +1,30 @@
 #pragma once
-#include "CUI.h"
 
-enum class TextUIMode
-{
-    TEXT,
-    NUMBER,
-};
 
-class CTextUI :
-    public CUI
+class CTextUI
 {
 private:
+    CObject*            m_pOwner;
     TextUIMode          m_mode;
+
+    //offset개념
+    //object의 pos기준으로
+    Vec2                m_vOffsetLT;            //그려질 위치좌상단
+    Vec2                m_vOffsetRB;            //그려질 위치우하단
+
+    FONT_TYPE           m_fontType;             //폰트(DEFAULT, KR)
 
     wstring             m_Text;                 //출력할 텍스트
     int                 m_iFontSize;            //폰트 크기         
-    Color               m_textColor;            //텍스트 색상
+    D2D1::ColorF        m_colorText;            //텍스트 색상
 
-    bool                m_bdrawOutline;         // 외곽선을 그릴지 여부
-    Color               m_cgdiPlusOutlineColor; // 외곽선 색상 (GDI+용)
-    float               m_foutlineThickness;    // 외곽선 두께
+    bool                m_bdrawOutline;         //외곽선을 그릴지 여부
+    float               m_fOutlineThickness;    //외곽선 두께
+    D2D1::ColorF        m_colorOutline;         //외곽선 색상
 
     int                 m_iNumber;              //화면에 출력할 숫자
     float               m_fAcc;                 //누적 시간
+
 public:
     //UI모드 설정
     void SetMode(TextUIMode _mode) { m_mode = _mode; }
@@ -42,6 +44,11 @@ public:
         }
     }
 
+public:
+    void SetOffsetLT(Vec2 _vOffsetLT) { m_vOffsetLT = _vOffsetLT; }
+    void SetOffsetRB(Vec2 _vOffsetRB) { m_vOffsetRB = _vOffsetRB; }
+
+public:
     // 텍스트 설정
     //void SetText(const wstring& _text) { m_Text = _text; }
     const wstring& GetText() const { return m_Text; }
@@ -50,33 +57,39 @@ public:
     void SetFontSize(int _size) { m_iFontSize = _size; }
     int GetFontSize() const { return m_iFontSize; }
 
-    // 텍스트 색상 설정 (GDI+)
-    void SetGdiPlusTextColor(const Color& _color) { m_textColor = _color; }
-    Color GetGdiPlusTextColor() const { return m_textColor; }
+    void SetFontType(FONT_TYPE _eType) { m_fontType = _eType; }
+    FONT_TYPE GetFontType() { return m_fontType; }
 
+    // 글자 색상
+    void SetTextColor(D2D1::ColorF _colorText) { m_colorText = _colorText; }
+    D2D1::ColorF GetTextColor() const { return m_colorText; }
+
+public:
     // 외곽선 설정
     void SetDrawOutline(bool _draw) { m_bdrawOutline = _draw; }
     bool GetDrawOutline() { return m_bdrawOutline; }
 
-    // 외곽선 색상 (GDI+용)
-    void SetGdiPlusOutlineColor(const Color& _color) { m_cgdiPlusOutlineColor = _color; }
-    Color GetGdiPlusOutlineColor() const { return m_cgdiPlusOutlineColor; }
-
     // 외곽선 두께
-    void SetOutlineThickness(float _thickness) { m_foutlineThickness = _thickness; }
-    float GetOutlineThickness() const { return m_foutlineThickness; }
+    void SetOutlineThickness(float _thickness) { m_fOutlineThickness = _thickness; }
+    float GetOutlineThickness() const { return m_fOutlineThickness; }
+
+    // 외곽선 색상
+    void SetOutlineColor(D2D1::ColorF _colorOutline) { m_colorOutline = _colorOutline; }
+    D2D1::ColorF GetOutlineColor() const { return m_colorOutline; }
+
+public:
+    //몇초셀건지
+    void SetTime(int _iStartNum) { m_iNumber = _iStartNum; }
 
 public:
     void UpdateNumber();
-    virtual void render(Gdiplus::Graphics* _pDGraphics);
     virtual void render(ID2D1HwndRenderTarget* _pRender);
     virtual void update();
 
 public:
-    CLONE(CTextUI);
-
-public:
     CTextUI();
     ~CTextUI();
+
+    friend class CObject;
 };
 

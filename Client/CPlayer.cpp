@@ -41,6 +41,16 @@ CPlayer::CPlayer()
 	GetCollider()->SetScale(Vec2(15.f, 15.f));
 
 	CreateRigidBody();
+	
+	/////////////////
+	Vec2 vRenderScale = GetRenderScale();
+	CreateTextUI(L"¾È³çÇÏ¼¼¿ä", Vec2(0.f, vRenderScale.y / 2.f), Vec2(200.f, vRenderScale.y / 2.f + 50.f)
+		, 32, D2D1::ColorF::Black
+		, true
+		, 2.f, D2D1::ColorF::Red
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT, 0);
+	///////////////////
 
 	CTexture* m_pTex = CResMgr::GetInstance()->LoadTexture(L"PlayerTex", L"texture\\link_0.bmp");
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\link_0.bmp",L"PlayerTex", false);
@@ -153,6 +163,7 @@ void CPlayer::render(Gdiplus::Graphics* _pDGraphics)
 
 void CPlayer::render(ID2D1HwndRenderTarget* _pRender)
 {
+	
 	component_render(_pRender);
 }
 

@@ -10,6 +10,8 @@
 #include "CRigidbody.h"
 #include "CGravity.h"
 #include "CImage.h"
+#include "Direct2DMgr.h"
+#include "CTextUI.h"
 
 
 CObject::CObject()
@@ -20,6 +22,7 @@ CObject::CObject()
 	, m_pRigidBody(nullptr)
 	, m_pGravity(nullptr)
 	, m_pImage(nullptr)
+	, m_pTextUI(nullptr)
 	, m_bAlive(true)
 	, m_bEnable(true)
 	, m_fWaveDuration(1.f)
@@ -40,6 +43,7 @@ CObject::CObject(const CObject& _origin)
 	, m_pRigidBody(nullptr)
 	, m_pGravity(nullptr)
 	, m_pImage(nullptr)
+	, m_pTextUI(nullptr)
 	, m_bFlipX(false)
 	, m_fWaveDuration(_origin.m_fWaveDuration)
 	, m_fWaveElapsed(0.f)
@@ -70,6 +74,11 @@ CObject::CObject(const CObject& _origin)
 		m_pImage->m_pOwner = this;
 	}
 
+	if (_origin.m_pTextUI != nullptr) {
+		m_pTextUI = new CTextUI(*_origin.m_pTextUI);
+		m_pTextUI->m_pOwner = this;
+	}
+
 }
 
 CObject::~CObject() {
@@ -78,6 +87,7 @@ CObject::~CObject() {
 	if (m_pGravity != nullptr)  delete m_pGravity;
 	if (m_pRigidBody != nullptr)delete m_pRigidBody;
 	if (m_pImage != nullptr) delete m_pImage;
+	if (m_pTextUI != nullptr) delete m_pTextUI;
 }
 
 
@@ -103,13 +113,10 @@ void CObject::render(HDC _dc)
 	//진짜 좌표.
 	Vec2 vRenderPos = CCamera::GetInstance()->GetRenderPos(m_vPos);
 
-
-	
 	Rectangle(_dc, (int)(vRenderPos.x - m_vRenderScale.x / 2.f), (int)(vRenderPos.y - m_vRenderScale.y / 2.f),
 		(int)(vRenderPos.x + m_vRenderScale.x / 2.f), (int)(vRenderPos.y + m_vRenderScale.y / 2.f));
 		
 	component_render(_dc);
-
 }
 
 void CObject::render(Gdiplus::Graphics* _pDGraphics)
@@ -172,7 +179,10 @@ void CObject::component_render(ID2D1HwndRenderTarget* _pRender)
 	if (m_pAnimator != nullptr) m_pAnimator->render(_pRender);
 
 	if (m_pCollider != nullptr)	m_pCollider->render(_pRender);
+
 	if (m_pImage != nullptr)	m_pImage->render(_pRender);
+
+	if (m_pTextUI != nullptr)	m_pTextUI->render(_pRender);
 }
 
 void CObject::CreateCollider()
@@ -204,6 +214,32 @@ void CObject::CreateImage()
 {
 	m_pImage = new CImage;
 	m_pImage->m_pOwner = this;
+}
+
+void CObject::CreateTextUI(const wstring& _text, Vec2 _offsetLT, Vec2 _offsetRB		//text , 좌상단 offset, 우하단 offset
+	, int _fontSize, D2D1::ColorF _colorText										//글자크기, 글자색상(ColoF)
+	, bool _bDrawOutline															//글자외곽선 여부(false라면 다 0으로 작성할것)
+	, float _fOutlineThickness, D2D1::ColorF _colorOutline							//글자외곽선 두께, 글자외곽선 색상
+	, FONT_TYPE _eType																//폰트 타입(DEFAULT, KR)
+	, TextUIMode _eMode, int _iStartNum)											//(TEXT,NUMBER)모드 , NUMBER모드일 경우 감소시작할 숫자(타이머))
+{
+	m_pTextUI = new CTextUI;
+	m_pTextUI->m_pOwner = this;
+
+	m_pTextUI->SetMode(_eMode);
+	m_pTextUI->SetText(_text);
+
+	m_pTextUI->SetFontSize(_fontSize);
+	m_pTextUI->SetTextColor(_colorText);
+
+	m_pTextUI->SetDrawOutline(_bDrawOutline);
+	m_pTextUI->SetOutlineThickness(_fOutlineThickness);
+	m_pTextUI->SetOutlineColor(_colorOutline);
+
+	m_pTextUI->SetFontType(_eType);
+
+	m_pTextUI->SetOffsetLT(_offsetLT);
+	m_pTextUI->SetOffsetRB(_offsetRB);
 }
 
 

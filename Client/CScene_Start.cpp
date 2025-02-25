@@ -138,7 +138,8 @@ void CScene_Start::render(Gdiplus::Graphics* _pDGraphics)
 
 void CScene_Start::render(ID2D1HwndRenderTarget* _pRender)
 {
-	CScene::render(_pRender);
+	CScene::render(_pRender); 
+
 
 	if (!m_bUseForce) return;
 
@@ -147,6 +148,7 @@ void CScene_Start::render(ID2D1HwndRenderTarget* _pRender)
 	if (m_fCurRadius > m_fForceRadius) {
 		m_fCurRadius = 0.f;
 	}
+	
 	Vec2 vRenderPos = CCamera::GetInstance()->GetRenderPos(m_vForcePos);
 
 	// vRenderPos와 m_fCurRadius는 이미 계산되어 있다고 가정합니다.
@@ -176,13 +178,14 @@ void CScene_Start::Enter()
 
 
 	////////////////////////////맵생성///////////////////////////////////////
+	/*
 	int randV = rand() % 7;
 	if (randV == 0) randV++;
 	//printf("randV : %d\n", randV);
 	wstring mapPath = L"texture\\tiles\\tiles_" + std::to_wstring(randV) + L".png";
-	MakeMapTile(L"texture\\tiles\\tiles_outline.png", mapPath.c_str(), L"texture\\tiles\\map\\", 50, 1);
+	MakeMapTile(L"texture\\tiles\\tiles_outline.png", mapPath.c_str(), L"texture\\tiles\\map\\",10, 1);
 	pD2DMgr->StoreBitmapsFromFolder(L"texture\\tiles\\map\\", L"Map");
-	MakeTile(L"Map");
+	MakeTile(L"Map");*/
 	////////////////////////////////////////////////////////////////////////
 
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
@@ -194,6 +197,7 @@ void CScene_Start::Enter()
 	pObj->SetName(L"Player");
 	AddObject(pObj, GROUP_TYPE::PLAYER);
 	RegisterPlayer(pObj);
+
 
 	CCamera::GetInstance()->SetTarget(pObj);
 
@@ -218,6 +222,8 @@ void CScene_Start::Enter()
 	//pMon = CMonFactory::CreateMonster(MON_TYPE::NORMAL, vResolution / 2.f - Vec2(-200.f, 300.f));
 	//AddObject(pMon, GROUP_TYPE::MONSTER);
 	*/
+
+	
 	pMon = CMonFactory::CreateMonster(MON_TYPE::RANGE, vResolution / 2.f - Vec2(-400.f, 300.f));
 	pMon->SetScale(Vec2(45.f, 45.f));
 	pMon->SetWaveDuration(1.f);
@@ -225,7 +231,7 @@ void CScene_Start::Enter()
 
 	//Enter은 몰라고 update에서는 CreateObject로 해야함...
 	//CreateObject(pMon, Object_type::MONSTER):
-
+	
 	//땅 물체 배치
 	CObject* pGround = new CGround;
 	pGround->SetName(L"Ground");

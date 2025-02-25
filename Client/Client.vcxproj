@@ -173,6 +173,8 @@
     <ClInclude Include="CCore.h" />
     <ClInclude Include="CDropItem.h" />
     <ClInclude Include="CEventMgr.h" />
+    <ClInclude Include="CFontCollectionLoader.h" />
+    <ClInclude Include="CFontFileEnumerator.h" />
     <ClInclude Include="CFontMgr.h" />
     <ClInclude Include="CGravity.h" />
     <ClInclude Include="CGround.h" />
@@ -239,6 +241,8 @@
     <ClCompile Include="CCore.cpp" />
     <ClCompile Include="CDropItem.cpp" />
     <ClCompile Include="CEventMgr.cpp" />
+    <ClCompile Include="CFontCollectionLoader.cpp" />
+    <ClCompile Include="CFontFileEnumerator.cpp" />
     <ClCompile Include="CFontMgr.cpp" />
     <ClCompile Include="CGravity.cpp" />
     <ClCompile Include="CGround.cpp" />

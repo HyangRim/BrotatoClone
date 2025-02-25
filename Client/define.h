@@ -109,8 +109,17 @@ enum class WEAPON_TYPE {
 	END,
 };
 
+enum class TextUIMode
+{
+	TEXT,
+	NUMBER,
+};
+
 enum class FONT_TYPE
 {
 	DEFALUT,
 	KR,
+	END,
 };
+
+

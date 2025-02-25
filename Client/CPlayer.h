@@ -71,7 +71,6 @@ private:
     void update_state();
     void update_animation();
 
-
     virtual void OnCollisionEnter(CCollider* _pOther);
 
     //플레이어 오브젝트는 복사되면 

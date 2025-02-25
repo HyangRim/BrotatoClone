@@ -8,7 +8,7 @@ class CImage
 {
 
 private:
-	CObject*			m_pOwner;		//collider를 소유하고 있는 오브젝트. 
+	CObject*			m_pOwner;		//image를 소유하고 있는 오브젝트. 
 	ID2D1Bitmap*		m_pBitmap;
 
 public:

@@ -212,7 +212,7 @@ void CCore::Clear()
 	ID2D1HwndRenderTarget* pRenderTarget = Direct2DMgr::GetInstance()->GetRenderTarget();
 
 	pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
-
+	//pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF(0.5f, 0.5f, 0.5f, 1.0f)));
 }
 
 void CCore::CreateBrushPen()

@@ -60,6 +60,7 @@ void CScene_Test::render(Gdiplus::Graphics* _pDGraphics)
 {
 	// 부모 클래스의 render 호출
 	CScene::render(_pDGraphics);
+
 }
 
 void CScene_Test::render(ID2D1HwndRenderTarget* _pRender)
@@ -70,12 +71,13 @@ void CScene_Test::render(ID2D1HwndRenderTarget* _pRender)
 void CScene_Test::Enter()
 {
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
-
+	
+	/*
 	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
 	MakeMapTile(L"texture\\tiles\\tiles_outline.png", L"texture\\tiles\\tiles_1.png", L"texture\\tiles\\map\\", 30, 1);
 	pD2DMgr->StoreBitmapsFromFolder(L"texture\\tiles\\map\\", L"Map");
 	MakeTile(L"Map");
-
+	*/
 	/*
 	CObject* pObj = new CGround;
 	pObj->SetPos(Vec2(100.f,100.f));

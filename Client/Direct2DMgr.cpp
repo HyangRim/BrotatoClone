@@ -25,6 +25,7 @@ HRESULT Direct2DMgr::init(HWND hwnd)
     hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &pD2DFactory);
     if (FAILED(hr)) return hr;
 
+   
     // 렌더 타겟 생성
     RECT rc;
     GetClientRect(hwnd, &rc);
@@ -54,6 +55,7 @@ HRESULT Direct2DMgr::init(HWND hwnd)
 
     hr = pRenderTarget->CreateCompatibleRenderTarget(&pBitmapRenderTarget);
     if (FAILED(hr)) return hr;
+
 
     return S_OK;
     
@@ -321,3 +323,94 @@ HRESULT Direct2DMgr::StoreBitmapsFromFolder(const wstring& folderPath, const wst
     return S_OK;
 }
 
+
+void Direct2DMgr::RenderText(const std::wstring& text, const D2D1_RECT_F& layoutRect, FONT_TYPE fontType, float fontSize, const D2D1_COLOR_F& color)
+{
+    if (!pRenderTarget) return;
+
+    IDWriteTextFormat* pTextFormat = CFontMgr::GetInstance()->GetTextFormat(fontType, fontSize);
+    if (!pTextFormat) return;
+
+    ID2D1SolidColorBrush* pBrush = nullptr;
+    HRESULT hr = pRenderTarget->CreateSolidColorBrush(color, &pBrush);
+
+    if (SUCCEEDED(hr)) {
+        pRenderTarget->DrawText(
+            text.c_str(),
+            static_cast<UINT32>(text.length()),
+            pTextFormat,
+            &layoutRect,
+            pBrush
+        );
+        pBrush->Release();
+    }
+
+    pTextFormat->Release();
+}
+void Direct2DMgr::RenderTextWithOutline(
+    const std::wstring& text,
+    const D2D1_RECT_F& layoutRect,
+    FONT_TYPE fontType,
+    float fontSize,
+    const D2D1_COLOR_F& textColor,
+    const D2D1_COLOR_F& outlineColor,
+    float outlineThickness
+) {
+    if (!pRenderTarget) return;
+
+    // 폰트 생성
+    IDWriteTextFormat* pTextFormat = CFontMgr::GetInstance()->GetTextFormat(fontType, fontSize);
+    if (!pTextFormat) return;
+
+    // 외곽선 브러시 생성
+    ID2D1SolidColorBrush* pOutlineBrush = nullptr;
+    HRESULT hr = pRenderTarget->CreateSolidColorBrush(outlineColor, &pOutlineBrush);
+    if (FAILED(hr)) {
+        pTextFormat->Release();
+        return;
+    }
+
+    // 텍스트 브러시 생성
+    ID2D1SolidColorBrush* pTextBrush = nullptr;
+    hr = pRenderTarget->CreateSolidColorBrush(textColor, &pTextBrush);
+    if (FAILED(hr)) {
+        pOutlineBrush->Release();
+        pTextFormat->Release();
+        return;
+    }
+
+    // 외곽선 렌더링 (텍스트를 약간씩 이동시키며 그리기)
+    for (float dx = -outlineThickness; dx <= outlineThickness; dx += outlineThickness) {
+        for (float dy = -outlineThickness; dy <= outlineThickness; dy += outlineThickness) {
+            if (dx == 0 && dy == 0) continue; // 중심점은 건너뜀
+
+            D2D1_RECT_F outlineRect = layoutRect;
+            outlineRect.left += dx;
+            outlineRect.top += dy;
+            outlineRect.right += dx;
+            outlineRect.bottom += dy;
+
+            pRenderTarget->DrawText(
+                text.c_str(),
+                static_cast<UINT32>(text.length()),
+                pTextFormat,
+                &outlineRect,
+                pOutlineBrush
+            );
+        }
+    }
+
+    // 본문 텍스트 렌더링
+    pRenderTarget->DrawText(
+        text.c_str(),
+        static_cast<UINT32>(text.length()),
+        pTextFormat,
+        &layoutRect,
+        pTextBrush
+    );
+
+    // 리소스 해제
+    pOutlineBrush->Release();
+    pTextBrush->Release();
+    pTextFormat->Release();
+}

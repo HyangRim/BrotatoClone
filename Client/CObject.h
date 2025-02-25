@@ -21,6 +21,7 @@ class CAnimator;
 class CRigidbody;
 class CGravity;
 class CImage;
+class CTextUI;
 
 class CObject
 {
@@ -37,6 +38,7 @@ private:
 	CRigidbody*		m_pRigidBody;
 	CGravity*		m_pGravity;
 	CImage*			m_pImage;
+	CTextUI*		m_pTextUI;
 
 	bool			m_bAlive;			//자기 자신이 활성화 or 비활성화. (삭제 전용)
 	bool			m_bEnable;			//일시적인 활성화 or 비활성화. 
@@ -72,12 +74,19 @@ public:
 	CRigidbody* GetRigidbody() { return m_pRigidBody; }
 	CGravity* GetGravity() { return m_pGravity; }
 	CImage* GetImage() { return m_pImage; }
+	CTextUI* GetTextUI() { return m_pTextUI; }
 
 	void CreateCollider();
 	void CreateAnimator();
 	void CreateRigidBody();
 	void CreateGravity();
 	void CreateImage();
+	void CreateTextUI(const wstring& _text, Vec2 _offsetLT, Vec2 _offsetRB		//text , 좌상단 offset, 우하단 offset
+						, int _fontSize, D2D1::ColorF _colorText				//글자크기, 글자색상(ColoF)
+						, bool _bDrawOutline									//글자외곽선 여부(false라면 다 0으로 작성할것)
+						, float _fOutlineThickness, D2D1::ColorF _colorOutline	//글자외곽선 두께, 글자외곽선 색상
+						, FONT_TYPE _eType										//폰트 타입(DEFAULT, KR)
+						, TextUIMode _eMode, int _iStartNum);					//(TEXT,NUMBER)모드 , NUMBER모드일 경우 감소시작할 숫자(타이머)
 
 	virtual void OnCollision(CCollider* _pOther) {};
 	virtual void OnCollisionEnter(CCollider* _pOther) {};
