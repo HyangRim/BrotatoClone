@@ -186,7 +186,10 @@
     <ClInclude Include="CKnife.h" />
     <ClInclude Include="CKnifeAI.h" />
     <ClInclude Include="Client.h" />
-    <ClInclude Include="CMobSpawner.h" />
+    <ClInclude Include="CMobSpawner.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="CMonFactory.h" />
     <ClInclude Include="CMonster.h" />
     <ClInclude Include="CNormal_Monster.h" />
@@ -256,7 +259,10 @@
     <ClCompile Include="CkeyMgr.cpp" />
     <ClCompile Include="CKnife.cpp" />
     <ClCompile Include="CKnifeAI.cpp" />
-    <ClCompile Include="CMobSpawner.cpp" />
+    <ClCompile Include="CMobSpawner.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="CMonFactory.cpp" />
     <ClCompile Include="CMonster.cpp" />
     <ClCompile Include="CNormal_Monster.cpp" />

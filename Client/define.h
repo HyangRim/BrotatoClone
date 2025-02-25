@@ -92,6 +92,13 @@ enum class EVENT_TYPE {
 	END,
 };
 
+enum class MON_TYPE {
+	NORMAL,
+	RANGE,
+	DROP_ITEM,
+};
+
+
 enum class MON_STATE {
 	IDLE,
 	PATROL,

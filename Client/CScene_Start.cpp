@@ -33,15 +33,20 @@
 #include "CSpriteUI.h"
 #include "CTextUI.h"
 
+#include "CMobSpawner.h"
+
 
 CScene_Start::CScene_Start()
 	: m_bUseForce(false)
 	, m_fForceRadius(500.f)
 	, m_fCurRadius(0.f)
 	, m_fForce(500.f)
+	, m_ftempDuration(3.f)
+	, m_ftempElapsed(0.f)
 {
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\enemies\\baby_alien.png", L"NormalEnemy", false);
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\enemies\\spitter.png", L"RangeEnemy", false);
+	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\enemies\\entity_birth.png", L"BirthEnemy", false);
 
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\ui\\hud\\ui_lifebar_bg.png", L"LifebarBackGround", false);
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\ui\\hud\\ui_lifebar_fill.png", L"LifebarFill", false);
@@ -69,6 +74,13 @@ void CScene_Start::update()
 
 	if (KEY_TAP(KEY::C)) {
 		CSoundMgr::GetInstance()->Play(L"Extend");
+	}
+
+	m_ftempElapsed += fDT;
+	if (m_ftempElapsed > m_ftempDuration) {
+		//GetPlayer()->GetPos();
+		CMobSpawner::MobSpawn(MON_TYPE::NORMAL, GetPlayer()->GetPos());
+		m_ftempElapsed = 0.f;
 	}
 
 
