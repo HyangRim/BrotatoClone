@@ -43,13 +43,7 @@ CPlayer::CPlayer()
 	CreateRigidBody();
 	
 	/////////////////
-	Vec2 vRenderScale = GetRenderScale();
-	CreateTextUI(L"¾È³çÇÏ¼¼¿ä", Vec2(0.f, vRenderScale.y / 2.f), Vec2(200.f, vRenderScale.y / 2.f + 50.f)
-		, 32, D2D1::ColorF::Black
-		, true
-		, 2.f, D2D1::ColorF::Red
-		, FONT_TYPE::KR
-		, TextUIMode::TEXT, 0);
+	
 	///////////////////
 
 	CTexture* m_pTex = CResMgr::GetInstance()->LoadTexture(L"PlayerTex", L"texture\\link_0.bmp");
@@ -137,6 +131,11 @@ void CPlayer::update()
 
 	if (KEY_TAP(KEY::Z)) {
 		CreateMissile();
+	}
+
+	if (KEY_TAP(KEY::K))
+	{
+		m_tPlayerInfo.m_iCurHP--;
 	}
 
 	if (KEY_TAP(KEY::ENTER)) {

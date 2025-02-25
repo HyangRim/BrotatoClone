@@ -116,6 +116,7 @@ void CUI::render(Gdiplus::Graphics* _pDGraphics)
 
 void CUI::render(ID2D1HwndRenderTarget* _pRender)
 {
+	component_render(_pRender);
 	/*
 	Vec2 vPos = GetFinalPos();
 	Vec2 vScale = GetScale();

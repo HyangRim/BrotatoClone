@@ -30,6 +30,8 @@
 #include "CImage.h"
 
 #include "Direct2DMgr.h"
+#include "CSpriteUI.h"
+#include "CTextUI.h"
 
 
 CScene_Start::CScene_Start()
@@ -40,6 +42,12 @@ CScene_Start::CScene_Start()
 {
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\enemies\\baby_alien.png", L"NormalEnemy", false);
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\enemies\\spitter.png", L"RangeEnemy", false);
+
+	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\ui\\hud\\ui_lifebar_bg.png", L"LifebarBackGround", false);
+	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\ui\\hud\\ui_lifebar_fill.png", L"LifebarFill", false);
+	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\ui\\hud\\ui_xp_bg.png", L"XpBackGround", false);
+	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\ui\\hud\\ui_xp_fill.png", L"XpFill", false);
+	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\ui\\hud\\ui_lifebar_frame.png", L"LifebarFrame", false);
 }
 
 CScene_Start::~CScene_Start()
@@ -65,6 +73,27 @@ void CScene_Start::update()
 	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; typeIDX++) {
 		const vector<CObject*>& vecObj = GetGroupObject((GROUP_TYPE)typeIDX);
 
+		///////////////////////////////////////////
+		if (typeIDX == (UINT)GROUP_TYPE::UI)
+		{
+			for (size_t objIDX = 0; objIDX < vecObj.size(); objIDX++) 
+			{
+				if (vecObj[objIDX]->GetName().compare(L"Lifebar") == 0)
+				{
+					CPlayer* player = (CPlayer*)GetPlayer();
+					playerParameter playerInfo = player->GetPlayerInfo();
+
+					wchar_t buffer[20];
+					swprintf_s(buffer, L"%d/%d", playerInfo.m_iCurHP, playerInfo.m_iMaxHP);
+
+					vecObj[objIDX]->GetTextUI()->SetText(buffer);
+
+					CImage* image = (CImage*)vecObj[objIDX]->GetImage(L"LifebarFill");
+					image->SetRatio((float)playerInfo.m_iCurHP/ (float)playerInfo.m_iMaxHP);
+				}
+			}
+		}
+		///////////////////////////////////////////
 		for (size_t objIDX = 0; objIDX < vecObj.size(); objIDX++) {
 			if (!vecObj[objIDX]->IsDead()) {
 				if (m_bUseForce && vecObj[objIDX]->GetRigidbody()) {
@@ -175,20 +204,43 @@ void CScene_Start::render(ID2D1HwndRenderTarget* _pRender)
 void CScene_Start::Enter()
 {
 	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
-
-
+	Vec2 vResolution = CCore::GetInstance()->GetResolution();
+	
 	////////////////////////////맵생성///////////////////////////////////////
-	/*
+	
 	int randV = rand() % 7;
 	if (randV == 0) randV++;
 	//printf("randV : %d\n", randV);
 	wstring mapPath = L"texture\\tiles\\tiles_" + std::to_wstring(randV) + L".png";
-	MakeMapTile(L"texture\\tiles\\tiles_outline.png", mapPath.c_str(), L"texture\\tiles\\map\\",10, 1);
+	MakeMapTile(L"texture\\tiles\\tiles_outline.png", mapPath.c_str(), L"texture\\tiles\\map\\",50, 1);
 	pD2DMgr->StoreBitmapsFromFolder(L"texture\\tiles\\map\\", L"Map");
-	MakeTile(L"Map");*/
+	MakeTile(L"Map");
 	////////////////////////////////////////////////////////////////////////
 
-	Vec2 vResolution = CCore::GetInstance()->GetResolution();
+	/////////////////////////////체력바,경험치바////////////////////////////
+	
+	CObject* lifebar = new CSpriteUI;
+	lifebar->AddImage(L"LifebarBackGround");
+	lifebar->AddImage(L"LifebarFill");
+	lifebar->AddImage(L"LifebarFrame");
+	lifebar->SetPos(Vec2(200.f, 100.f));
+	lifebar->SetScale(Vec2(320.f, 48.f) * 0.5f);
+
+	
+	lifebar->CreateTextUI(L"", Vec2(-80.f, -12.f), Vec2(80.f, 12.f)
+		, 12, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR, TextUIMode::TEXT, 0);
+
+	lifebar->SetName(L"Lifebar");
+
+	lifebar->SetObjType(GROUP_TYPE::UI);
+
+
+
+	AddObject(lifebar, GROUP_TYPE::UI);
+	////////////////////////////////////////////////////////////////////////
+
+
 	//Object 추가.
 	//실제 생성된 객체는 플레이어, 주소를 받은 건 부모 클래스. 
 	CObject* pObj = new CPlayer;
@@ -197,7 +249,7 @@ void CScene_Start::Enter()
 	pObj->SetName(L"Player");
 	AddObject(pObj, GROUP_TYPE::PLAYER);
 	RegisterPlayer(pObj);
-
+	
 
 	CCamera::GetInstance()->SetTarget(pObj);
 
@@ -224,7 +276,7 @@ void CScene_Start::Enter()
 	*/
 
 	
-	
+	/*
 	pMon = CMonFactory::CreateMonster(MON_TYPE::RANGE, vResolution / 2.f - Vec2(-400.f, 300.f));
 	pMon->SetScale(Vec2(45.f, 45.f));
 	pMon->SetWaveDuration(1.f);
@@ -232,14 +284,15 @@ void CScene_Start::Enter()
 
 	//Enter은 몰라고 update에서는 CreateObject로 해야함...
 	//CreateObject(pMon, Object_type::MONSTER):
+	*/
 	
-	
+	/*
 	//땅 물체 배치
 	CObject* pGround = new CGround;
 	pGround->SetName(L"Ground");
 	pGround->SetPos(Vec2(640.f, 584.f));
 	pGround->SetScale(Vec2(200.f, 60.f));
-	AddObject(pGround, GROUP_TYPE::GROUND);
+	AddObject(pGround, GROUP_TYPE::GROUND);*/
 
 	//충돌 지점. 
 	//Player 그룹과 Monster그룹간의 충돌 체크 

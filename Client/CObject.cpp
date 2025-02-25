@@ -17,6 +17,7 @@
 
 CObject::CObject()
 	: m_vPos{}
+	, m_ObjType(GROUP_TYPE::END)
 	, m_vScale{} 
 	, m_pCollider(nullptr)
 	, m_pAnimator(nullptr)
@@ -35,6 +36,7 @@ CObject::CObject()
 
 CObject::CObject(const CObject& _origin)
 	: m_ObjName(_origin.m_ObjName)
+	, m_ObjType(_origin.m_ObjType)
 	, m_vPos(_origin.m_vPos)
 	, m_vScale(_origin.m_vScale)
 	, m_pCollider(nullptr)

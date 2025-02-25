@@ -362,6 +362,10 @@ void Direct2DMgr::RenderTextWithOutline(
     IDWriteTextFormat* pTextFormat = CFontMgr::GetInstance()->GetTextFormat(fontType, fontSize);
     if (!pTextFormat) return;
 
+    // 텍스트 정렬 설정 (가운데 정렬)
+    pTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER); // 가로 가운데 정렬
+    pTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER); // 세로 가운데 정렬
+
     // 외곽선 브러시 생성
     ID2D1SolidColorBrush* pOutlineBrush = nullptr;
     HRESULT hr = pRenderTarget->CreateSolidColorBrush(outlineColor, &pOutlineBrush);

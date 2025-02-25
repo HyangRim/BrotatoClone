@@ -9,7 +9,7 @@ CSpriteUI::CSpriteUI()
 	:CUI(false)
 	, m_fHpRatio(1.0f)
 {
-
+    
 }
 
 CSpriteUI::~CSpriteUI()
@@ -45,19 +45,24 @@ void CSpriteUI::render(Graphics* _pDGraphics)
     int fillWidth = static_cast<int>(destRect.Width * m_fHpRatio);
     // 채워지는 부분 렌더링 (HP 비율에 따라 너비 조정)
     Gdiplus::Rect fillRect(
-        destRect.X + 2,
-        destRect.Y + 1,
+        destRect.X ,
+        destRect.Y,
         fillWidth, // 너비는 HP 비율에 따라 조정
-        destRect.Height - 2);
+        destRect.Height);
     _pDGraphics->DrawImage(m_pFillTexture->GetBitmap(), fillRect);
 
     // 테두리 렌더링
     _pDGraphics->DrawImage(m_pFrameTexture->GetBitmap(), destRect);
 }
 
-void CSpriteUI::render(ID2D1HwndRenderTarget* _pRender)
+void CSpriteUI::update()
 {
 
+}
+
+void CSpriteUI::render(ID2D1HwndRenderTarget* _pRender)
+{
+    component_render(_pRender);
 }
 
 void CSpriteUI::SetHpRatio(float _ratio)

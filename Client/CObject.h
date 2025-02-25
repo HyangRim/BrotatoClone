@@ -26,6 +26,8 @@ class CTextUI;
 class CObject
 {
 private:
+	GROUP_TYPE		m_ObjType;
+
 	wstring			m_ObjName;
 	Vec2			m_vPos;
 	Vec2			m_vPrevPos;
@@ -56,10 +58,12 @@ public:
 		m_vRenderScale = _vScale;
 	}
 
+	GROUP_TYPE GetObjType() { return m_ObjType; }
 	Vec2 GetPos() { return m_vPos; }
 	Vec2 GetScale() { return m_vScale; }
 	Vec2 GetRenderScale() { return m_vRenderScale; }
 
+	void SetObjType(GROUP_TYPE _eType) { m_ObjType = _eType; }
 	void SetName(const wstring& _strName) { m_ObjName = _strName; }
 	void SetWaveDuration(float _fWaveTime) { m_fWaveDuration = _fWaveTime; }
 	void SetRenderScale(Vec2 _vScale) { m_vRenderScale = _vScale; }
@@ -75,7 +79,7 @@ public:
 	CGravity* GetGravity() { return m_pGravity; }
 
 	map<wstring, CImage*>& GetImages() { return m_pImages; }
-	CImage* GetImage(wstring& tag) { return m_pImages[tag]; }
+	CImage* GetImage(const wstring& tag) { return m_pImages[tag]; }
 	void AddImage(const wstring& tag);
 	void AddImage(const wstring& tag, ID2D1Bitmap* _bitmap);
 
