@@ -21,6 +21,7 @@ public:
         , const wstring& _frameKey, const wstring& _framePath);
     void SetHpRatio(float _ratio);
 
+    void update();
     virtual void render(Graphics* _pDGraphics);  // GDI+ 기반 렌더링 함수
     virtual void render(ID2D1HwndRenderTarget* _pRender);
 };

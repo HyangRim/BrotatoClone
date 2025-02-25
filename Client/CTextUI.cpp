@@ -47,7 +47,7 @@ void CTextUI::render(ID2D1HwndRenderTarget* _pRender)
     auto d2dManager = Direct2DMgr::GetInstance();
 
     Vec2 vPos = m_pOwner->GetPos();
-    vPos = CCamera::GetInstance()->GetRenderPos(vPos);
+    //vPos = CCamera::GetInstance()->GetRenderPos(vPos);
     //글자만 출력
     if (m_mode == TextUIMode::TEXT)
     {
