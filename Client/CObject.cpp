@@ -91,7 +91,7 @@ CObject::~CObject() {
 	if (m_pGravity != nullptr)  delete m_pGravity;
 	if (m_pRigidBody != nullptr)delete m_pRigidBody;
 
-	Safe_Delete_Map(m_pImages);
+	Safe_Delete_Vec(m_pImages);
 
 	if (m_pTextUI != nullptr) delete m_pTextUI;
 }
@@ -191,11 +191,8 @@ void CObject::component_render(ID2D1HwndRenderTarget* _pRender)
 
 	if (!m_pImages.empty())
 	{
-		map<wstring, CImage*>::iterator iter = m_pImages.begin();
-		for (; iter != m_pImages.end(); ++iter)
-		{
-			iter->second->render(_pRender);
-		}
+		for (size_t i = 0; i < m_pImages.size(); ++i)
+			m_pImages[i]->render(_pRender);
 	}
 
 	if (m_pTextUI != nullptr)	m_pTextUI->render(_pRender);
@@ -225,7 +222,7 @@ void CObject::CreateGravity()
 	m_pGravity = new CGravity;
 	m_pGravity->m_pOwner = this;
 }
-
+/*
 void CObject::AddImage(const wstring& tag)
 {
 	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
@@ -244,6 +241,15 @@ void CObject::AddImage(const wstring& tag, ID2D1Bitmap* _bitmap)
 	tmp->SetBitmap(_bitmap);
 	tmp->m_pOwner = this;
 	m_pImages[tag] = tmp;
+}*/
+void CObject::AddImage(ID2D1Bitmap* _bitmap)
+{
+	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+
+	CImage* tmp = new CImage;
+	tmp->SetBitmap(_bitmap);
+	tmp->m_pOwner = this;
+	m_pImages.push_back(tmp);
 }
 
 void CObject::CreateImage()

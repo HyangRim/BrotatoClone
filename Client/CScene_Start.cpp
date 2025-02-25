@@ -45,8 +45,10 @@ CScene_Start::CScene_Start()
 
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\ui\\hud\\ui_lifebar_bg.png", L"LifebarBackGround", false);
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\ui\\hud\\ui_lifebar_fill.png", L"LifebarFill", false);
+
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\ui\\hud\\ui_xp_bg.png", L"XpBackGround", false);
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\ui\\hud\\ui_xp_fill.png", L"XpFill", false);
+
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\ui\\hud\\ui_lifebar_frame.png", L"LifebarFrame", false);
 }
 
@@ -88,7 +90,7 @@ void CScene_Start::update()
 
 					vecObj[objIDX]->GetTextUI()->SetText(buffer);
 
-					CImage* image = (CImage*)vecObj[objIDX]->GetImage(L"LifebarFill");
+					CImage* image = (CImage*)vecObj[objIDX]->GetImage(1);
 					image->SetRatio((float)playerInfo.m_iCurHP/ (float)playerInfo.m_iMaxHP);
 				}
 			}
@@ -219,25 +221,37 @@ void CScene_Start::Enter()
 
 	/////////////////////////////체력바,경험치바////////////////////////////
 	
+	//pD2DMgr->GetStoredBitmap(L"ifebarBackGround")
 	CObject* lifebar = new CSpriteUI;
-	lifebar->AddImage(L"LifebarBackGround");
-	lifebar->AddImage(L"LifebarFill");
-	lifebar->AddImage(L"LifebarFrame");
-	lifebar->SetPos(Vec2(200.f, 100.f));
-	lifebar->SetScale(Vec2(320.f, 48.f) * 0.5f);
+	lifebar->AddImage(pD2DMgr->GetStoredBitmap(L"LifebarBackGround"));
+	lifebar->AddImage(pD2DMgr->GetStoredBitmap(L"LifebarFill"));
+	lifebar->AddImage(pD2DMgr->GetStoredBitmap(L"LifebarFrame"));
 
-	
+	lifebar->SetPos(Vec2(100.f, 50.f));
+	lifebar->SetScale(Vec2(320.f, 48.f) * 0.5f);
 	lifebar->CreateTextUI(L"", Vec2(-80.f, -12.f), Vec2(80.f, 12.f)
 		, 12, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR, TextUIMode::TEXT, 0);
-
 	lifebar->SetName(L"Lifebar");
-
 	lifebar->SetObjType(GROUP_TYPE::UI);
 
+	CObject* xpbar = new CSpriteUI;
+	xpbar->AddImage(pD2DMgr->GetStoredBitmap(L"XpBackGround"));
+	xpbar->AddImage(pD2DMgr->GetStoredBitmap(L"XpFill"));
+	xpbar->AddImage(pD2DMgr->GetStoredBitmap(L"LifebarFrame"));
 
+	//xpbar->AddImage(L"XpFill");
+	//xpbar->AddImage(L"LifebarFrame");
+	xpbar->SetPos(Vec2(100.f, 120.f));
+	xpbar->SetScale(Vec2(320.f, 48.f) * 0.5f);
+	xpbar->CreateTextUI(L"", Vec2(-80.f, -12.f), Vec2(80.f, 12.f)
+		, 12, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR, TextUIMode::TEXT, 0);
+	xpbar->SetName(L"Xpbar");
+	xpbar->SetObjType(GROUP_TYPE::UI);
 
 	AddObject(lifebar, GROUP_TYPE::UI);
+	AddObject(xpbar, GROUP_TYPE::UI);
 	////////////////////////////////////////////////////////////////////////
 
 
@@ -276,7 +290,7 @@ void CScene_Start::Enter()
 	*/
 
 	
-	/*
+	
 	pMon = CMonFactory::CreateMonster(MON_TYPE::RANGE, vResolution / 2.f - Vec2(-400.f, 300.f));
 	pMon->SetScale(Vec2(45.f, 45.f));
 	pMon->SetWaveDuration(1.f);
@@ -284,15 +298,15 @@ void CScene_Start::Enter()
 
 	//Enter은 몰라고 update에서는 CreateObject로 해야함...
 	//CreateObject(pMon, Object_type::MONSTER):
-	*/
 	
-	/*
+	
+	
 	//땅 물체 배치
 	CObject* pGround = new CGround;
 	pGround->SetName(L"Ground");
 	pGround->SetPos(Vec2(640.f, 584.f));
 	pGround->SetScale(Vec2(200.f, 60.f));
-	AddObject(pGround, GROUP_TYPE::GROUND);*/
+	AddObject(pGround, GROUP_TYPE::GROUND);
 
 	//충돌 지점. 
 	//Player 그룹과 Monster그룹간의 충돌 체크 

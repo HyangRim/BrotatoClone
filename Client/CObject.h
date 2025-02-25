@@ -39,7 +39,7 @@ private:
 	CAnimator*		m_pAnimator;
 	CRigidbody*		m_pRigidBody;
 	CGravity*		m_pGravity;
-	map<wstring, CImage*>	m_pImages;
+	vector<CImage*>	m_pImages;
 	CTextUI*		m_pTextUI;
 
 	bool			m_bAlive;			//자기 자신이 활성화 or 비활성화. (삭제 전용)
@@ -78,10 +78,11 @@ public:
 	CRigidbody* GetRigidbody() { return m_pRigidBody; }
 	CGravity* GetGravity() { return m_pGravity; }
 
-	map<wstring, CImage*>& GetImages() { return m_pImages; }
-	CImage* GetImage(const wstring& tag) { return m_pImages[tag]; }
-	void AddImage(const wstring& tag);
-	void AddImage(const wstring& tag, ID2D1Bitmap* _bitmap);
+	vector<CImage*>& GetImages() { return m_pImages; }
+	CImage* GetImage(int _Idx) { return m_pImages[_Idx]; }
+	//void AddImage(const wstring& tag);
+	//void AddImage(const wstring& tag, ID2D1Bitmap* _bitmap);
+	void AddImage(ID2D1Bitmap* _bitmap);
 
 	CTextUI* GetTextUI() { return m_pTextUI; }
 

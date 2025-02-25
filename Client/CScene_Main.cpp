@@ -62,7 +62,7 @@ void CScene_Main::Enter()
 	m_tMainPanel.pTitleGround->SetScale(Vec2(1035.f, 540.f));
 	m_tMainPanel.pTitleGround->SetName(L"Title_Ground");
 	m_tMainPanel.pTitleGround->CreateImage();
-	m_tMainPanel.pTitleGround->AddImage(L"Title_Ground", pD2DMgr->GetStoredBitmap(L"Title_Ground"));
+	m_tMainPanel.pTitleGround->AddImage(pD2DMgr->GetStoredBitmap(L"Title_Ground"));
 	//m_tMainPanel.pTitleGround->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_Ground"));
 	AddObject(m_tMainPanel.pTitleGround, GROUP_TYPE::DEFAULT);
 
@@ -72,7 +72,7 @@ void CScene_Main::Enter()
 	m_tMainPanel.pTitleBack->SetScale(Vec2(1035.f, 540.f));
 	m_tMainPanel.pTitleBack->SetName(L"Title_back");
 	m_tMainPanel.pTitleBack->CreateImage();
-	m_tMainPanel.pTitleBack->AddImage(L"Title_back", pD2DMgr->GetStoredBitmap(L"Title_back"));
+	m_tMainPanel.pTitleBack->AddImage(pD2DMgr->GetStoredBitmap(L"Title_back"));
 	//m_tMainPanel.pTitleBack->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_back"));
 	AddObject(m_tMainPanel.pTitleBack, GROUP_TYPE::DEFAULT);
 
@@ -82,7 +82,7 @@ void CScene_Main::Enter()
 	m_tMainPanel.pTitleMid->SetScale(Vec2(1035.f, 540.f));
 	m_tMainPanel.pTitleMid->SetName(L"Title_mid");
 	m_tMainPanel.pTitleMid->CreateImage();
-	m_tMainPanel.pTitleMid->AddImage(L"Title_mid", pD2DMgr->GetStoredBitmap(L"Title_mid"));
+	m_tMainPanel.pTitleMid->AddImage(pD2DMgr->GetStoredBitmap(L"Title_mid"));
 	//m_tMainPanel.pTitleMid->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_mid"));
 	AddObject(m_tMainPanel.pTitleMid, GROUP_TYPE::DEFAULT);
 
@@ -92,7 +92,7 @@ void CScene_Main::Enter()
 	m_tMainPanel.pTitlefront->SetScale(Vec2(1035.f, 540.f));
 	m_tMainPanel.pTitlefront->SetName(L"Title_front");
 	m_tMainPanel.pTitlefront->CreateImage();
-	m_tMainPanel.pTitlefront->AddImage(L"Title_front", pD2DMgr->GetStoredBitmap(L"Title_front"));
+	m_tMainPanel.pTitlefront->AddImage(pD2DMgr->GetStoredBitmap(L"Title_front"));
 	//m_tMainPanel.pTitlefront->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_front"));
 	AddObject(m_tMainPanel.pTitlefront, GROUP_TYPE::DEFAULT);
 
@@ -102,7 +102,7 @@ void CScene_Main::Enter()
 	m_tMainPanel.pTitleBrotato->SetScale(Vec2(931.5f, 486.f));
 	m_tMainPanel.pTitleBrotato->SetName(L"Title_Brotato");
 	m_tMainPanel.pTitleBrotato->CreateImage();
-	m_tMainPanel.pTitleBrotato->AddImage(L"Title_Brotato", pD2DMgr->GetStoredBitmap(L"Title_Brotato"));
+	m_tMainPanel.pTitleBrotato->AddImage(pD2DMgr->GetStoredBitmap(L"Title_Brotato"));
 	//m_tMainPanel.pTitleBrotato->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_Brotato"));
 	AddObject(m_tMainPanel.pTitleBrotato, GROUP_TYPE::DEFAULT);
 
@@ -112,7 +112,7 @@ void CScene_Main::Enter()
 	m_tMainPanel.pTitlelights->SetScale(Vec2(1035.f, 540.f));
 	m_tMainPanel.pTitlelights->SetName(L"Title_lights");
 	m_tMainPanel.pTitlelights->CreateImage();
-	m_tMainPanel.pTitlelights->AddImage(L"Title_lights", pD2DMgr->GetStoredBitmap(L"Title_lights"));
+	m_tMainPanel.pTitlelights->AddImage(pD2DMgr->GetStoredBitmap(L"Title_lights"));
 	//m_tMainPanel.pTitlelights->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_lights"));
 	AddObject(m_tMainPanel.pTitlelights, GROUP_TYPE::DEFAULT);
 
@@ -122,7 +122,7 @@ void CScene_Main::Enter()
 	m_tMainPanel.pTitlelogo->SetScale(Vec2(561.f, 165.f));
 	m_tMainPanel.pTitlelogo->SetName(L"Brotato_logo");
 	m_tMainPanel.pTitlelogo->CreateImage();
-	m_tMainPanel.pTitlelogo->AddImage(L"Brotato_logo", pD2DMgr->GetStoredBitmap(L"Brotato_logo"));
+	m_tMainPanel.pTitlelogo->AddImage(pD2DMgr->GetStoredBitmap(L"Brotato_logo"));
 	//m_tMainPanel.pTitlelogo->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Brotato_logo"));
 	AddObject(m_tMainPanel.pTitlelogo, GROUP_TYPE::DEFAULT);
 
