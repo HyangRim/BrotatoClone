@@ -121,7 +121,7 @@ void CMissile::OnCollisionEnter(CCollider* _pOther)
 			damageText->CreateTextUI(damage, Vec2(-20.f, -objRenderScale.y - 10.f), Vec2(20.f, -objRenderScale.y - 5.f)
 				, 16, D2D1::ColorF::White
 				, true
-				, 2.f, D2D1::ColorF::Black
+				, 1.f, D2D1::ColorF::Black
 				, FONT_TYPE::KR
 				, TextUIMode::TEXT, 0);
 
@@ -130,7 +130,7 @@ void CMissile::OnCollisionEnter(CCollider* _pOther)
 			damageText->CreateTextUI(damage, Vec2(-20.f, -objRenderScale.y - 10.f), Vec2(20.f, -objRenderScale.y - 5.f)
 				, 16, D2D1::ColorF::Yellow
 				, true
-				, 2.f, D2D1::ColorF::Black
+				, 1.f, D2D1::ColorF::Black
 				, FONT_TYPE::KR
 				, TextUIMode::TEXT, 0);
 		}

@@ -2,6 +2,7 @@
 #include "CCollider.h"
 #include "CScene.h"
 #include "CSceneMgr.h"
+#include "CDamageUI.h"
 
 #include "CSlingShot_Missile.h"
 
@@ -32,6 +33,34 @@ void CSlingShot_Missile::OnCollisionEnter(CCollider* _pOther)
 		if (m_iBounce > 0) {
 			m_iBounce -= 1;
 			ReDirection(pOtherObj);
+
+			//파라미터 세팅. 
+			Vec2 objRenderScale = pOtherObj->GetRenderScale();
+			wstring damage = std::to_wstring(GetDamage());
+
+			//DamageUI 오브젝트 만들기. 
+			CDamageUI* damageText = new CDamageUI;
+			damageText->SetPos(pOtherObj->GetPos());
+			damageText->SetPivotPos();
+			damageText->SetDuration(1.5f);
+			if (!GetCritical()) {
+				damageText->CreateTextUI(damage, Vec2(-20.f, -objRenderScale.y - 10.f), Vec2(20.f, -objRenderScale.y - 5.f)
+					, 16, D2D1::ColorF::White
+					, true
+					, 1.f, D2D1::ColorF::Black
+					, FONT_TYPE::KR
+					, TextUIMode::TEXT, 0);
+
+			}
+			else {
+				damageText->CreateTextUI(damage, Vec2(-20.f, -objRenderScale.y - 10.f), Vec2(20.f, -objRenderScale.y - 5.f)
+					, 16, D2D1::ColorF::Yellow
+					, true
+					, 1.f, D2D1::ColorF::Black
+					, FONT_TYPE::KR
+					, TextUIMode::TEXT, 0);
+			}
+			CreateObject(damageText, GROUP_TYPE::IMAGE);
 		}
 		else {
 			DeleteObject(this);
