@@ -13,13 +13,15 @@ private:
     vector<CUI*>        m_vecChildUI;
     CUI*                m_pParentUI;
     Vec2                m_vFinalPos;
+    UI_TYPE             m_eUIType;
 
 protected:
     bool                m_bCamAffected;     //UI가 카메라의 영향을 받는 유무. 
     bool                m_bMouseOn;         //UI위에 마우스가 있는지.
     bool                m_bLbtnDown;        //UI에 왼쪽 버튼이 눌린 적이 있는지. 
 public:
-
+    void SetUIType(UI_TYPE _eType) { m_eUIType = _eType; }
+    UI_TYPE GetUIType() { return m_eUIType; }
     Vec2 GetFinalPos() { return m_vFinalPos; }
     CUI* GetParent() { return m_pParentUI; }
     bool IsMouseOn() { return m_bMouseOn; }
@@ -47,14 +49,13 @@ private:
     void render_child(ID2D1HwndRenderTarget* _pRender);
 
 
-    void MouseOnCheck();
-
+   
 public:
     virtual void MouseOn();             //마우스가 UI위에 올라와 있을 때. 
-    
     virtual void MouseLbtnDown();       //눌렸을 때.
     virtual void MouseLbtnUp();         //떼졌을 때.
     virtual void MouseLbtnClicked();    //클릭. 
+    void MouseOnCheck();
 
     virtual CUI* Clone() = 0;
 

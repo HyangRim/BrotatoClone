@@ -101,6 +101,8 @@ void CObject::update()
 {
 	ShakeScale();
 
+	
+
 	m_vPrevPos = m_vPos;
 }
 
@@ -221,6 +223,12 @@ void CObject::CreateGravity()
 {
 	m_pGravity = new CGravity;
 	m_pGravity->m_pOwner = this;
+}
+CImage* CObject::GetImage(int _Idx)
+{
+	int tmp = m_pImages.size() - 1;
+	if (tmp < _Idx) return nullptr;
+	else return m_pImages[_Idx];
 }
 /*
 void CObject::AddImage(const wstring& tag)

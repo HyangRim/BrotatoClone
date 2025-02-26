@@ -1,6 +1,8 @@
 #pragma once
 #include "CUI.h"
 
+class CPanelUI;
+
 //여기서 원형을 알려주지 않으면 함수 포인터(정확한 클래스의 구조)를 
 //모르기에 이상한 지점에 접근할 수 있어 에러가 생김. 
 
@@ -37,6 +39,9 @@ private:
     D2D1::ColorF    m_colorMouseOn;         //0~1 정규화 시켜야됨
     D2D1::ColorF    m_colorNormal;
 
+    bool                m_bPanelCreated;
+    vector<CObject*>    m_vTempObjects;
+
     //씬 멥버 함수를 얻기 위한 객체와, 호출 할 함수. 
     SCENE_MEMFUNC   m_pSceneFunc;
     CScene*         m_pSceneInst;
@@ -71,6 +76,7 @@ public:
 
 
 public:
+    virtual void update();
     virtual void render(HDC _dc);
     virtual void render(Gdiplus::Graphics* _pDGraphics);
     virtual void render(ID2D1HwndRenderTarget* _pRender);

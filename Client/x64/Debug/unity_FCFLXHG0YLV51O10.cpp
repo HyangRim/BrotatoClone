@@ -170,6 +170,9 @@
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CUIMgr.cpp"
 
 
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CWaveMgr.cpp"
+
+
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CWeapon.cpp"
 
 

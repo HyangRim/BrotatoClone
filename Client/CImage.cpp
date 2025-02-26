@@ -32,7 +32,7 @@ void CImage::render(ID2D1HwndRenderTarget* _renderTarget)
 
 	if (m_pOwner->GetObjType() == GROUP_TYPE::UI)
 	{
-		
+		//vPos = CCamera::GetInstance()->GetRenderPos(vPos);
 	}
 	else
 		vPos = CCamera::GetInstance()->GetRenderPos(vPos);

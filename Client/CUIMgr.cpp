@@ -1,6 +1,10 @@
 #include "pch.h"
 #include "CUIMgr.h"
 
+#include "CCore.h"
+
+#include "CObject.h"
+#include "CPanelUI.h"
 #include "CSceneMgr.h"
 #include "CScene.h"
 #include "CUI.h"
@@ -64,7 +68,6 @@ void CUIMgr::SetFocusedUI(CUI* _pUI)
 	CScene* pCurScene = CSceneMgr::GetInstance()->GetCurScene();
 	vector<CObject*>& vecUI = pCurScene->GetUIGroup();
 
-
 	vector<CObject*>::iterator CUIIter = vecUI.begin();
 	//왼쪽 버튼 TAP이 발생했다는 전제가 있는 UI들. 
 	for (; CUIIter != vecUI.end(); CUIIter++) {
@@ -105,8 +108,15 @@ CUI* CUIMgr::GetFocusedUI()
 	if (vecUI.end() == targetIter) {
 		return nullptr;
 	}
-
+	/*
+	CUI* tmp = (CUI*)*targetIter;
+	if (tmp->GetUIType() == UI_TYPE::BTN)
+	{
+		pFocusedUI = (CUI*)*targetIter;
+	}
+	else return nullptr;*/
 	pFocusedUI = (CUI*)*targetIter;
+
 	//계속 위에서 교체되다가 보면, 최종적인 Focus를 가져가는 UI가 된다. 
 	//그리고 벡터 내부에서 순서를 바꿔줘야함. 
 

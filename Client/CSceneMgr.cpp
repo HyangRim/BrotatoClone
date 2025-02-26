@@ -61,6 +61,7 @@ void CSceneMgr::init()
 
 void CSceneMgr::update()
 {
+
 	m_pCurScene->update();
 
 	m_pCurScene->finalupdate();

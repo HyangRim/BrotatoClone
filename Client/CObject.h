@@ -79,7 +79,7 @@ public:
 	CGravity* GetGravity() { return m_pGravity; }
 
 	vector<CImage*>& GetImages() { return m_pImages; }
-	CImage* GetImage(int _Idx) { return m_pImages[_Idx]; }
+	CImage* GetImage(int _Idx);
 	//void AddImage(const wstring& tag);
 	//void AddImage(const wstring& tag, ID2D1Bitmap* _bitmap);
 	void AddImage(ID2D1Bitmap* _bitmap);

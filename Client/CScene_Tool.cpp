@@ -32,21 +32,19 @@ void CScene_Tool::Enter()
 {
 	//툴 Scene에서 사용할 메뉴를 붙인다. 
 	CCore::GetInstance()->DockMenu();
-
-	CreateTile(18, 18);
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
 
 
 	//UI가 무언가 역할을 수행하려면 클릭할 수 있어야만 함. 
 	//전반적인 UI의 이벤트 설계를 해준다면 <- 특정 상황때 호출하는 함수가 명확
 
-
+	
 	CUI* pPanelUI = new CPanelUI;
 	pPanelUI->SetName(L"ParentUI");
 	pPanelUI->SetScale(Vec2(500.f, 300.f));
 	pPanelUI->SetPos(Vec2(vResolution.x - pPanelUI->GetScale().x, 0.f));
-
-	CBtnUI* pBtnUI = new CBtnUI;
+	
+	CUI* pBtnUI = new CBtnUI;
 	pBtnUI->SetName(L"ChildUI");
 	pBtnUI->SetScale(Vec2(100.f, 40.f));
 	pBtnUI->SetPos(Vec2(0.f, 0.f));
@@ -60,7 +58,7 @@ void CScene_Tool::Enter()
 	((CBtnUI*)pBtnUI)->SetClickedCallBack(this, (SCENE_MEMFUNC)&CScene_Tool::SaveTileData);
 
 
-	pBtnUI->SetClickedCallBack(ChangeScene, 0, 0);
+	((CBtnUI*)pBtnUI)->SetClickedCallBack(ChangeScene, 0, 0);
 	pPanelUI->AddChild(pBtnUI);
 	AddObject(pPanelUI, GROUP_TYPE::UI);
 

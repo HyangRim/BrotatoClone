@@ -11,6 +11,7 @@ CUI::CUI(bool _bCamAff)
 	, m_bCamAffected(_bCamAff)
 	, m_bMouseOn(false)
 	, m_bLbtnDown(false)
+	, m_eUIType(UI_TYPE::DEFAULT)
 {
 }
 
@@ -36,8 +37,10 @@ CUI::~CUI()
 
 void CUI::update()
 {
+	
+
 	//child ui update
-	update_child();
+	//update_child();
 }
 
 void CUI::finalupdate()
@@ -52,6 +55,7 @@ void CUI::finalupdate()
 
 	//UI 마우스 체크
 	MouseOnCheck();
+	
 
 	finalupdate_child();
 }
@@ -187,6 +191,7 @@ void CUI::render_child(ID2D1HwndRenderTarget* _pRender)
 
 void CUI::MouseOn()
 {
+
 }
 
 void CUI::MouseLbtnDown()

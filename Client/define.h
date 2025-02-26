@@ -40,6 +40,8 @@
 #define TILE_SIZE 64
 #define TILE_SIZE_F 64.f
 
+#define CHARACTER_CNT 51
+
 
 enum class GROUP_TYPE {
 	DEFAULT,
@@ -131,4 +133,12 @@ enum class FONT_TYPE
 	END,
 };
 
+enum class UI_TYPE
+{
+	DEFAULT,
+	PANEL,
+	SPRITE_UI,
+	BTN,
+	END,
+};
 

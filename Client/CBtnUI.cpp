@@ -3,6 +3,12 @@
 #include "CScene.h"
 #include "CScene_Tool.h"
 #include "CObject.h"
+#include "CCore.h"
+#include "CPanelUI.h"
+#include "CSceneMgr.h"
+#include "Direct2DMgr.h"
+#include "CSpriteUI.h"
+#include "CImage.h"
 
 
 CBtnUI::CBtnUI()
@@ -19,15 +25,50 @@ CBtnUI::CBtnUI()
 
 CBtnUI::~CBtnUI()
 {
+	
 }
 
 
 void CBtnUI::MouseOn()
 {
+	if (m_bPanelCreated) {
+		return;
+	}
+	//186, 250
+	Vec2 vResolution = CCore::GetInstance()->GetResolution();
+
+	/////////////////
+	CImage* image = GetImage(0);
+	if (image == nullptr) return;
+	/////////////////
+
+	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+
+	CPanelUI* panel = new CPanelUI;
+	panel->SetPos(Vec2(vResolution.x / 2.f, 210.f));
+	panel->SetScale(Vec2(186.f, 250.f));
+	panel->SetRadius(10.f, 10.f);
+	panel->SetColor(ColorNormalize(0, 0, 0), ColorNormalize(0, 0, 0));
+
+	CObject* characterImage = new CSpriteUI;
+	characterImage->AddImage(image->GetBitmap());
+	characterImage->SetScale(Vec2(48.f, 48.f));
+
+	Vec2 vPos = panel->GetPos() - (panel->GetScale() / 2.f) + Vec2(35.f,35.f);
+	characterImage->SetPos(vPos);
+
+	CSceneMgr::GetInstance()->GetCurScene()->AddObject(panel, GROUP_TYPE::UI);
+	CSceneMgr::GetInstance()->GetCurScene()->AddObject(characterImage, GROUP_TYPE::UI);
+	
+	m_vTempObjects.push_back(characterImage);
+	m_vTempObjects.push_back(panel);
+
+	m_bPanelCreated = true;
 }
 
 void CBtnUI::MouseLbtnDown()
 {
+
 }
 
 void CBtnUI::MouseLbtnUp()
@@ -98,6 +139,8 @@ void CBtnUI::render(ID2D1HwndRenderTarget* _pRender)
 		if (m_bIsRoundedRect)
 		{
 			_pRender->FillRoundedRectangle(roundedRect, pBrush);
+			//_pRender->DrawRoundedRectangle(roundedRect, pBrush, 2.0f);
+			//_pRender->FillRoundedRectangle(roundedRect, pBrush2);
 		}
 		else _pRender->FillRectangle(rect, pBrush);
 
@@ -115,3 +158,17 @@ void CBtnUI::render(ID2D1HwndRenderTarget* _pRender)
 //각각 타일들의 이미지를 넣음. 
 
 //다 넣을 수 없으면 다음 페이지 이미지로. 
+
+void CBtnUI::update()
+{
+	if (IsMouseOn() == true)
+		MouseOn();
+	else {
+		
+		for (size_t i = 0; i < m_vTempObjects.size(); ++i)
+			DeleteObject(m_vTempObjects[i]);
+
+		m_vTempObjects.clear();
+		m_bPanelCreated = false;
+	}
+}

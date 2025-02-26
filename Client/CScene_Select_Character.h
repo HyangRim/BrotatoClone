@@ -1,8 +1,13 @@
 #pragma once
 #include "CScene.h"
+
 class CScene_Select_Character :
     public CScene
 {
+private:
+    vector<CBtnUI*> m_vCharaters;
+
+
 
 public:
     virtual void update();

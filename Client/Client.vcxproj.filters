@@ -215,6 +215,9 @@
     <Filter Include="Engine\03. Manager\CharacterInfoMgr">
       <UniqueIdentifier>{5dd68af9-38a7-480a-9e1b-4901acdd5e93}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\03. Manager\WaveMgr">
+      <UniqueIdentifier>{34f35eb4-ace8-4a5a-a43b-0adf21889007}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h">
@@ -431,6 +434,9 @@
     <ClInclude Include="CharacterInfoMgr.h">
       <Filter>Engine\03. Manager\CharacterInfoMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CWaveMgr.h">
+      <Filter>Engine\03. Manager\WaveMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -638,6 +644,9 @@
     </ClCompile>
     <ClCompile Include="CharacterInfoMgr.cpp">
       <Filter>Engine\03. Manager\CharacterInfoMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CWaveMgr.cpp">
+      <Filter>Engine\03. Manager\WaveMgr</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
