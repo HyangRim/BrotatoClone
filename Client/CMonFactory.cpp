@@ -16,10 +16,11 @@
 #include "Direct2DMgr.h"
 #include "CImage.h"
 
+float CMonFactory::m_fRecog = 250.f;
+float CMonFactory::m_fSpeed = 250.f;
 
 CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
 {
-
 	CMonster* pMon = nullptr;
 	switch (_eType) {
 	case MON_TYPE::NORMAL:
@@ -98,9 +99,9 @@ CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
 		info.m_eMonType = _eType;
 		info.m_fAtt = 1;
 		info.m_fAttRange = 1.f;
-		info.m_fRecogRange = 250.f;
+		info.m_fRecogRange = CMonFactory::m_fRecog;
 		info.m_iHP = 9999999;
-		info.m_fSpeed = 250.f;
+		info.m_fSpeed = CMonFactory::m_fSpeed;
 
 		pMon->SetMonInfo(info);
 
@@ -110,6 +111,12 @@ CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
 		pAI->SetCurState(MON_STATE::IDLE);
 
 		pMon->SetAI(pAI);
+
+		pMon->CreateImage();
+
+		int dropItemImage = distribution(rng) % 11;
+		wstring dropItemImageKey = dropItemKey + std::to_wstring(dropItemImage);
+		pMon->AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(dropItemImageKey));
 	}
 
 

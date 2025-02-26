@@ -13,10 +13,6 @@ private:
     bool    m_bUseForce;
 
 
-    //임시 변수.
-    float   m_ftempDuration;
-    float   m_ftempElapsed;
-
 public:
     virtual void update();
     //부모로부터 상속받은 가상함수인지, 일반 함수인지 보통은 구별 안되서 virtual씀. 

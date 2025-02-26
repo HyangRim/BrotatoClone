@@ -7,7 +7,7 @@
 
 
 CBirth_Monster::CBirth_Monster()
-	:m_fDeleteDuration(3.f)
+	:m_fDeleteDuration(2.5f)
 	,m_fDeleteElapsed(0.f)
 {
 	CreateImage();

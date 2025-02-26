@@ -200,6 +200,18 @@
     <Filter Include="Engine\03. Manager\FontMgr\CFontFileEnumerator">
       <UniqueIdentifier>{74577a5c-7956-4a5f-8ac4-20d850791835}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\04. Object\Monster\Birth_Monster">
+      <UniqueIdentifier>{b1c3dde7-8d74-4312-b8b7-2d811df42667}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Object\DamageUI">
+      <UniqueIdentifier>{c023d6e4-332f-4e8d-a84a-d0a12c0bfaae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\09. Factory\MobSpawner">
+      <UniqueIdentifier>{5dce2411-b59d-4213-af04-5cb0c5970c8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. Manager\WaveMgr">
+      <UniqueIdentifier>{ee56a47d-3a10-42fc-a397-00b07fc56915}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h">
@@ -401,6 +413,18 @@
     <ClInclude Include="CFontFileEnumerator.h">
       <Filter>Engine\03. Manager\FontMgr\CFontFileEnumerator</Filter>
     </ClInclude>
+    <ClInclude Include="CBirth_Monster.h">
+      <Filter>Engine\04. Object\Monster\Birth_Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CDamageUI.h">
+      <Filter>Engine\04. Object\DamageUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CMobSpawner.h">
+      <Filter>Engine\09. Factory\MobSpawner</Filter>
+    </ClInclude>
+    <ClInclude Include="CWaveMgr.h">
+      <Filter>Engine\03. Manager\WaveMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -593,6 +617,18 @@
     </ClCompile>
     <ClCompile Include="CFontFileEnumerator.cpp">
       <Filter>Engine\03. Manager\FontMgr\CFontFileEnumerator</Filter>
+    </ClCompile>
+    <ClCompile Include="CBirth_Monster.cpp">
+      <Filter>Engine\04. Object\Monster\Birth_Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CDamageUI.cpp">
+      <Filter>Engine\04. Object\DamageUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CMobSpawner.cpp">
+      <Filter>Engine\09. Factory\MobSpawner</Filter>
+    </ClCompile>
+    <ClCompile Include="CWaveMgr.cpp">
+      <Filter>Engine\03. Manager\WaveMgr</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
