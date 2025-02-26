@@ -25,6 +25,8 @@ private:
     int                 m_iNumber;              //화면에 출력할 숫자
     float               m_fAcc;                 //누적 시간
 
+    D2D1::ColorF        m_RedColor;
+
 public:
     //UI모드 설정
     void SetMode(TextUIMode _mode) { m_mode = _mode; }

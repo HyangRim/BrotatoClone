@@ -17,6 +17,11 @@ public:
 	void render(Gdiplus::Graphics* _pDGraphics);
 	void render(ID2D1HwndRenderTarget* _pRender);
 
+	bool IsWaveScene() {
+		if (m_pCurScene == m_arrScene[(UINT)SCENE_TYPE::START]) return true;
+		return false;
+	}
+
 public:
 	CScene* GetCurScene() { return m_pCurScene; }
 

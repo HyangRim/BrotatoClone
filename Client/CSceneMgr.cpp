@@ -8,6 +8,7 @@
 #include "CScene_Test.h"
 #include "CScene_Select_Character.h"
 #include "CEventMgr.h"
+#include "CWaveMgr.h"
 
 CSceneMgr::CSceneMgr()
 	: m_pCurScene(nullptr)
@@ -47,6 +48,9 @@ void CSceneMgr::init()
 	//m_arrScene[(UINT)SCENE_TYPE::STAGE_01] = new CScene_Stage01;
 	//m_arrScene[(UINT)SCENE_TYPE::STAGE_02] = new CScene_Stage02;
 
+	//웨이브 세팅
+	CWaveMgr::GetInstance()->WaveInit();
+
 	//현재 씬 설정
 	m_pCurScene = m_arrScene[(UINT)SCENE_TYPE::SELECT_CHARACTER];
 
@@ -60,6 +64,8 @@ void CSceneMgr::update()
 	m_pCurScene->update();
 
 	m_pCurScene->finalupdate();
+
+	CWaveMgr::GetInstance()->update();
 }
 
 void CSceneMgr::render(HDC _dc)

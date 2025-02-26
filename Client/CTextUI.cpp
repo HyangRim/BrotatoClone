@@ -19,6 +19,7 @@ CTextUI::CTextUI()
     , m_colorOutline(D2D1::ColorF(0,0,0,0))
     , m_iNumber(0)
     , m_fAcc(0.f)
+    , m_RedColor(D2D1::ColorF(D2D1::ColorF::Red))
 {
    
 }
@@ -64,15 +65,28 @@ void CTextUI::render(ID2D1HwndRenderTarget* _pRender)
     //숫자카운트 다운
     else if(m_mode == TextUIMode::COUNT_DOWN)
     {
-        d2dManager->RenderTextWithOutline(
-            std::to_wstring(m_iNumber),                     // 출력할 텍스트
-            D2D1::RectF(vPos.x + m_vOffsetLT.x, vPos.y + m_vOffsetLT.y, vPos.x + m_vOffsetRB.x, vPos.y + m_vOffsetRB.y), // 출력 영역 (좌상단, 우하단)
-            m_fontType,                          // 폰트 타입
-            (float)m_iFontSize,                                  // 폰트 크기
-            m_colorText,  // 텍스트 색상
-            m_colorOutline,    // 외곽선 색상
-            m_fOutlineThickness     // 외곽선 두께
-        );
+        if (m_iNumber > -1 && m_iNumber <= 5) {   //5초 아래는 안쪽 텍스트가 붉은 색. 
+            d2dManager->RenderTextWithOutline(
+                std::to_wstring(m_iNumber),                     // 출력할 텍스트
+                D2D1::RectF(vPos.x + m_vOffsetLT.x, vPos.y + m_vOffsetLT.y, vPos.x + m_vOffsetRB.x, vPos.y + m_vOffsetRB.y), // 출력 영역 (좌상단, 우하단)
+                m_fontType,                          // 폰트 타입
+                (float)m_iFontSize,                                  // 폰트 크기
+                m_RedColor,  // 텍스트 색상
+                m_colorOutline,    // 외곽선 색상
+                m_fOutlineThickness     // 외곽선 두께
+            );
+        }
+        else if(m_iNumber > 5){//5초 이상은 흰색. 
+            d2dManager->RenderTextWithOutline(
+                std::to_wstring(m_iNumber),                     // 출력할 텍스트
+                D2D1::RectF(vPos.x + m_vOffsetLT.x, vPos.y + m_vOffsetLT.y, vPos.x + m_vOffsetRB.x, vPos.y + m_vOffsetRB.y), // 출력 영역 (좌상단, 우하단)
+                m_fontType,                          // 폰트 타입
+                (float)m_iFontSize,                                  // 폰트 크기
+                m_colorText,  // 텍스트 색상
+                m_colorOutline,    // 외곽선 색상
+                m_fOutlineThickness     // 외곽선 두께
+            );
+        }
 
         // 누적 시간 업데이트
         m_fAcc += fDT;

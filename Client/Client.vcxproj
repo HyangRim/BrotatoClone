@@ -225,6 +225,7 @@
     <ClInclude Include="CTraceState.h" />
     <ClInclude Include="CUI.h" />
     <ClInclude Include="CUIMgr.h" />
+    <ClInclude Include="CWaveMgr.h" />
     <ClInclude Include="CWeapon.h" />
     <ClInclude Include="define.h" />
     <ClInclude Include="Direct2DMgr.h" />
@@ -300,6 +301,7 @@
     <ClCompile Include="CTraceState.cpp" />
     <ClCompile Include="CUI.cpp" />
     <ClCompile Include="CUIMgr.cpp" />
+    <ClCompile Include="CWaveMgr.cpp" />
     <ClCompile Include="CWeapon.cpp" />
     <ClCompile Include="Direct2DMgr.cpp" />
     <ClCompile Include="func.cpp" />

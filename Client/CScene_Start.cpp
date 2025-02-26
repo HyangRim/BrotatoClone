@@ -32,6 +32,7 @@
 #include "Direct2DMgr.h"
 #include "CSpriteUI.h"
 #include "CTextUI.h"
+#include "CWaveMgr.h"
 
 #include "CMobSpawner.h"
 
@@ -41,8 +42,6 @@ CScene_Start::CScene_Start()
 	, m_fForceRadius(500.f)
 	, m_fCurRadius(0.f)
 	, m_fForce(500.f)
-	, m_ftempDuration(3.f)
-	, m_ftempElapsed(0.f)
 {
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\enemies\\baby_alien.png", L"NormalEnemy", false);
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\enemies\\spitter.png", L"RangeEnemy", false);
@@ -57,6 +56,27 @@ CScene_Start::CScene_Start()
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\ui\\hud\\ui_lifebar_frame.png", L"LifebarFrame", false);
 
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\harvesting_icon.png", L"HarvestingIcon", false);
+	
+	//Drop_ITEM들
+	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0000.png", L"drop_item0", false);
+	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0001.png", L"drop_item1", false);
+	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0002.png", L"drop_item2", false);
+	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0003.png", L"drop_item3", false);
+	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0004.png", L"drop_item4", false);
+	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0005.png", L"drop_item5", false);
+	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0006.png", L"drop_item6", false);
+	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0007.png", L"drop_item7", false);
+	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0008.png", L"drop_item8", false);
+	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0009.png", L"drop_item9", false);
+	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0010.png", L"drop_item10", false);
+
+	//사운드 관련 등록
+	//사운드 관련 Instance 가져오기. 
+	CSoundMgr::GetInstance()->AddSound(L"drop_item1", L"sound\\materials\\drop_item1.wav", false, false);
+	CSoundMgr::GetInstance()->AddSound(L"drop_item2", L"sound\\materials\\drop_item2.wav", false, false);
+	CSoundMgr::GetInstance()->AddSound(L"drop_item3", L"sound\\materials\\drop_item3.wav", false, false);
+	CSoundMgr::GetInstance()->AddSound(L"drop_item4", L"sound\\materials\\drop_item4.wav", false, false);
+	CSoundMgr::GetInstance()->AddSound(L"drop_item5", L"sound\\materials\\drop_item5.wav", false, false);
 }
 
 CScene_Start::~CScene_Start()
@@ -66,6 +86,7 @@ CScene_Start::~CScene_Start()
 
 void CScene_Start::update()
 {
+	//웨이브 세팅. 
 	if (KEY_HOLD(KEY::LBTN)) {
 		m_bUseForce = true;
 		CreateForce();
@@ -77,15 +98,6 @@ void CScene_Start::update()
 	if (KEY_TAP(KEY::C)) {
 		CSoundMgr::GetInstance()->Play(L"Extend");
 	}
-
-	m_ftempElapsed += fDT;
-	if (m_ftempElapsed > m_ftempDuration) {
-		//GetPlayer()->GetPos();
-		CMobSpawner::MobSpawn(MON_TYPE::NORMAL, GetPlayer()->GetPos());
-
-		m_ftempElapsed = 0.f;
-	}
-
 
 	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; typeIDX++) {
 		const vector<CObject*>& vecObj = GetGroupObject((GROUP_TYPE)typeIDX);
@@ -295,9 +307,11 @@ void CScene_Start::Enter()
 
 	////////////////////////////웨이브 글자/////////////////////////////////
 	CObject* wavePanel = new CSpriteUI;
+	wstring waveLevel = L"웨이브 ";
+	waveLevel += std::to_wstring(CWaveMgr::GetInstance()->GetLevel());
 	wavePanel->SetScale(Vec2(100.f, 100.f));
 	wavePanel->SetPos(Vec2(vResolution.x / 2.f, 25.f));
-	wavePanel->CreateTextUI(L"웨이브", Vec2(-100.f, -100.f), Vec2(100.f, 100.f)
+	wavePanel->CreateTextUI(waveLevel, Vec2(-100.f, -100.f), Vec2(100.f, 100.f)
 		, 24, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR, TextUIMode::TEXT, 0);
 	wavePanel->SetName(L"WavePanel");
@@ -310,9 +324,10 @@ void CScene_Start::Enter()
 	CObject* countDownPanel = new CSpriteUI;
 	countDownPanel->SetScale(Vec2(100.f, 100.f));
 	countDownPanel->SetPos(Vec2(vResolution.x / 2.f, 50.f));
+	int waveLength = static_cast<int>(CWaveMgr::GetInstance()->GetWaveDuration());
 	countDownPanel->CreateTextUI(L"", Vec2(-100.f, -100.f), Vec2(100.f, 100.f)
 		, 24, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
-		, FONT_TYPE::KR, TextUIMode::COUNT_DOWN, 30);
+		, FONT_TYPE::KR, TextUIMode::COUNT_DOWN, waveLength);
 	countDownPanel->SetName(L"CountDownPanel");
 	countDownPanel->SetObjType(GROUP_TYPE::UI);
 	AddObject(countDownPanel, GROUP_TYPE::UI);
@@ -416,6 +431,9 @@ void CScene_Start::Enter()
 	CCamera::GetInstance()->FadeOut(1.f);
 	CCamera::GetInstance()->FadeIn(1.f);
 	*/
+
+	//웨이브 가능하도록 세팅.(Scene_Start에 들어오면 무조건 그 때 시작이니까.)
+	CWaveMgr::GetInstance()->WaveStart();
 	start();
 }
 
@@ -426,6 +444,9 @@ void CScene_Start::Exit()
 	DeleteAll();
 	//충돌도 전부 초기화 해주기. 
 	CCollisionMgr::GetInstance()->Reset();
+
+	//웨이브가 멈춤. 
+	CWaveMgr::GetInstance()->WaveStart();
 }
 
 void CScene_Start::CreateForce()

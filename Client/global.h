@@ -72,3 +72,7 @@ using namespace Gdiplus;
 
 std::random_device rd;
 std::mt19937 rng(rd());
+std::uniform_real_distribution<float> float_distribution(-0.03f, 0.03f);
+std::uniform_int_distribution<int> distribution(0, 100);
+
+const wstring dropItemKey = L"drop_item";
