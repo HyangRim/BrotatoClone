@@ -9,10 +9,7 @@
 #include "CObject.h"
 typedef void(*BTN_FUNC) (DWORD_PTR, DWORD_PTR);
 
-
-
 //툴 씬이 보유하고 있는 특정 멤버 함수를 받아와야만 함. 
-
 
 //버튼 UI는 범용적으로 바라는데, 이런 식으로 멤버를 쓰는 게 맞나?
 //어떤 오브젝트의 기능을 쓰고 싶으면? 범용적으로 쓸 방법 없을까?
@@ -27,13 +24,36 @@ class CBtnUI :
 
 private:
     //함수 포인터를 불러와서 버튼이 눌렸을 때 그걸 씀.
-    BTN_FUNC    m_pFunc;
-    DWORD_PTR   m_param1;
-    DWORD_PTR   m_param2;
+    BTN_FUNC        m_pFunc;
+    DWORD_PTR       m_param1;
+    DWORD_PTR       m_param2;
+
+    //꼭짓점을 둥글게 할건지
+    bool            m_bIsRoundedRect;
+    float           m_fradiusX;
+    float           m_fradiusY;
+
+    //MouseOn일때와 평상시일때 색
+    D2D1::ColorF    m_colorMouseOn;         //0~1 정규화 시켜야됨
+    D2D1::ColorF    m_colorNormal;
 
     //씬 멥버 함수를 얻기 위한 객체와, 호출 할 함수. 
     SCENE_MEMFUNC   m_pSceneFunc;
     CScene*         m_pSceneInst;
+
+public:
+    void SetIsRound(bool _bIsRoundedRect, float _fradiusX, float _fradiusY) 
+    { 
+        m_bIsRoundedRect = _bIsRoundedRect; 
+        m_fradiusX = _fradiusX;
+        m_fradiusY = _fradiusY;
+    }
+
+    void SetColor(D2D1::ColorF _mouseOn, D2D1::ColorF _normal)
+    {
+        m_colorMouseOn = _mouseOn;
+        m_colorNormal = _normal;
+    }
 
 public:
     virtual void MouseOn();
@@ -54,7 +74,6 @@ public:
     virtual void render(HDC _dc);
     virtual void render(Gdiplus::Graphics* _pDGraphics);
     virtual void render(ID2D1HwndRenderTarget* _pRender);
-
 
     CLONE(CBtnUI)
 

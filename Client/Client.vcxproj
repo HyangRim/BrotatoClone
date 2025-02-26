@@ -180,6 +180,7 @@
     <ClInclude Include="CFontMgr.h" />
     <ClInclude Include="CGravity.h" />
     <ClInclude Include="CGround.h" />
+    <ClInclude Include="CharacterInfoMgr.h" />
     <ClInclude Include="CIdleState.h" />
     <ClInclude Include="CImage.h" />
     <ClInclude Include="CkeyMgr.h" />
@@ -207,6 +208,7 @@
     <ClInclude Include="CScene.h" />
     <ClInclude Include="CSceneMgr.h" />
     <ClInclude Include="CScene_Main.h" />
+    <ClInclude Include="CScene_Select_Character.h" />
     <ClInclude Include="CScene_Start.h" />
     <ClInclude Include="CScene_Test.h" />
     <ClInclude Include="CScene_Tool.h" />
@@ -254,6 +256,7 @@
     <ClCompile Include="CFontMgr.cpp" />
     <ClCompile Include="CGravity.cpp" />
     <ClCompile Include="CGround.cpp" />
+    <ClCompile Include="CharacterInfoMgr.cpp" />
     <ClCompile Include="CIdleState.cpp" />
     <ClCompile Include="CImage.cpp" />
     <ClCompile Include="CkeyMgr.cpp" />
@@ -280,6 +283,7 @@
     <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CSceneMgr.cpp" />
     <ClCompile Include="CScene_Main.cpp" />
+    <ClCompile Include="CScene_Select_Character.cpp" />
     <ClCompile Include="CScene_Start.cpp" />
     <ClCompile Include="CScene_Test.cpp" />
     <ClCompile Include="CScene_Tool.cpp" />

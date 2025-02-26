@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Fire 5 (DPS).mp3-ca7da64db7887e27b6844d6ad3027dd6.mp3str"
+
+[deps]
+
+source_file="res://weapons/ranged/fireball/Fire 5 (DPS).mp3"
+dest_files=[ "res://.import/Fire 5 (DPS).mp3-ca7da64db7887e27b6844d6ad3027dd6.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

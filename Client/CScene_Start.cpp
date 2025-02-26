@@ -215,7 +215,6 @@ void CScene_Start::render(ID2D1HwndRenderTarget* _pRender)
 {
 	CScene::render(_pRender); 
 
-
 	if (!m_bUseForce) return;
 
 	m_fCurRadius += m_fForceRadius * 3.f * fDT;

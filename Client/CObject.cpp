@@ -151,6 +151,7 @@ void CObject::render(ID2D1HwndRenderTarget* _pRender)
 	float bottom = vRenderPos.y + m_vRenderScale.y / 2.f;
 
 	D2D1_RECT_F rect = D2D1::RectF(left, top, right, bottom);
+
 	ID2D1SolidColorBrush* pBrush = nullptr;
 	HRESULT hr = _pRender->CreateSolidColorBrush(
 		D2D1::ColorF(D2D1::ColorF::Black), &pBrush);

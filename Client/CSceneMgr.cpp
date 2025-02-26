@@ -6,6 +6,7 @@
 #include "CScene_Start.h"
 #include "CScene_Tool.h"
 #include "CScene_Test.h"
+#include "CScene_Select_Character.h"
 #include "CEventMgr.h"
 
 CSceneMgr::CSceneMgr()
@@ -40,11 +41,14 @@ void CSceneMgr::init()
 	m_arrScene[(UINT)SCENE_TYPE::TEST] = new CScene_Test;
 	m_arrScene[(UINT)SCENE_TYPE::TEST]->SetName(L"Test Scene");
 
+	m_arrScene[(UINT)SCENE_TYPE::SELECT_CHARACTER] = new CScene_Select_Character;
+	m_arrScene[(UINT)SCENE_TYPE::SELECT_CHARACTER]->SetName(L"Select Character Scene");
+
 	//m_arrScene[(UINT)SCENE_TYPE::STAGE_01] = new CScene_Stage01;
 	//m_arrScene[(UINT)SCENE_TYPE::STAGE_02] = new CScene_Stage02;
 
 	//ÇöÀç ¾À ¼³Á¤
-	m_pCurScene = m_arrScene[(UINT)SCENE_TYPE::MAIN];
+	m_pCurScene = m_arrScene[(UINT)SCENE_TYPE::SELECT_CHARACTER];
 
 	m_pCurScene->Enter();
 

@@ -13,6 +13,7 @@ void DeleteObject(CObject* _pObj);
 void ChangeScene(SCENE_TYPE _eNext);
 void ChangeAIState(AI* _pAI, MON_STATE _eNextState);
 
+D2D1::ColorF ColorNormalize(int r, int g, int b);
 
 bool IsNonBlackPixel(Color _color);
 int GetEncoderClsid(const WCHAR* format, CLSID* pClsid);

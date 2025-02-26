@@ -200,6 +200,21 @@
     <Filter Include="Engine\03. Manager\FontMgr\CFontFileEnumerator">
       <UniqueIdentifier>{74577a5c-7956-4a5f-8ac4-20d850791835}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\05. Scene\Scene_Select_Character">
+      <UniqueIdentifier>{2adffb69-7b35-4d46-9528-c57b0ae6e998}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Object\Monster\Birth_Monster">
+      <UniqueIdentifier>{f5d8809a-3165-4a78-adaa-5ce721e0b105}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Object\DamageUI">
+      <UniqueIdentifier>{f98f6c86-47d2-4d23-b0c1-7e320dc8488d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\09. Factory\CMobSpawner">
+      <UniqueIdentifier>{abd709fc-b992-4499-87bc-f48a6e5df21f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. Manager\CharacterInfoMgr">
+      <UniqueIdentifier>{5dd68af9-38a7-480a-9e1b-4901acdd5e93}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h">
@@ -401,6 +416,21 @@
     <ClInclude Include="CFontFileEnumerator.h">
       <Filter>Engine\03. Manager\FontMgr\CFontFileEnumerator</Filter>
     </ClInclude>
+    <ClInclude Include="CScene_Select_Character.h">
+      <Filter>Engine\05. Scene\Scene_Select_Character</Filter>
+    </ClInclude>
+    <ClInclude Include="CBirth_Monster.h">
+      <Filter>Engine\04. Object\Monster\Birth_Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="CDamageUI.h">
+      <Filter>Engine\04. Object\DamageUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CMobSpawner.h">
+      <Filter>Engine\09. Factory\CMobSpawner</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterInfoMgr.h">
+      <Filter>Engine\03. Manager\CharacterInfoMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -593,6 +623,21 @@
     </ClCompile>
     <ClCompile Include="CFontFileEnumerator.cpp">
       <Filter>Engine\03. Manager\FontMgr\CFontFileEnumerator</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene_Select_Character.cpp">
+      <Filter>Engine\05. Scene\Scene_Select_Character</Filter>
+    </ClCompile>
+    <ClCompile Include="CBirth_Monster.cpp">
+      <Filter>Engine\04. Object\Monster\Birth_Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="CDamageUI.cpp">
+      <Filter>Engine\04. Object\DamageUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CMobSpawner.cpp">
+      <Filter>Engine\09. Factory\CMobSpawner</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterInfoMgr.cpp">
+      <Filter>Engine\03. Manager\CharacterInfoMgr</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

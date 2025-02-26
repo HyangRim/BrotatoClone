@@ -12,6 +12,8 @@ CBtnUI::CBtnUI()
 	, m_param2(0)
 	, m_pSceneInst(nullptr)
 	, m_pSceneFunc(nullptr)
+	, m_colorNormal(D2D1::ColorF::Black)
+	, m_colorMouseOn(D2D1::ColorF::White)
 {
 }
 
@@ -76,19 +78,37 @@ void CBtnUI::render(ID2D1HwndRenderTarget* _pRender)
 		vPos.x + vScale.x / 2.f,
 		vPos.y + vScale.y / 2.f
 	);
+	D2D1_ROUNDED_RECT roundedRect = D2D1::RoundedRect(
+		D2D1::RectF(
+			vPos.x - vScale.x / 2.f, 
+			vPos.y - vScale.y / 2.f, 
+			vPos.x + vScale.x / 2.f, 
+			vPos.y + vScale.y / 2.f), // 사각형의 좌표 (left, top, right, bottom)
+		m_fradiusX, // X축 반지름 (radiusX)
+		m_fradiusY  // Y축 반지름 (radiusY)
+	);
 
 	ID2D1SolidColorBrush* pBrush = nullptr;
 	HRESULT hr = _pRender->CreateSolidColorBrush(
-		m_bMouseOn ? D2D1::ColorF(D2D1::ColorF::White)   // 마우스 왼쪽 버튼이 눌렸다면 녹색
-		: D2D1::ColorF(D2D1::ColorF::Black),  // 아니면 흰색
+		m_bMouseOn ? m_colorMouseOn : m_colorNormal,
 		&pBrush
-	);
-
+	); 
 	if (SUCCEEDED(hr))
 	{
-		_pRender->FillRectangle(rect, pBrush);
+		if (m_bIsRoundedRect)
+		{
+			_pRender->FillRoundedRectangle(roundedRect, pBrush);
+		}
+		else _pRender->FillRectangle(rect, pBrush);
+
+		// 둥근 사각형 그리기
+		//_pRender->DrawRoundedRectangle(roundedRect, pBrush, 2.0f); // 윤곽선 그리기
+		//_pRender->FillRoundedRectangle(roundedRect, pBrush);
+
 		pBrush->Release();
 	}
+
+	component_render(_pRender);
 }
 
 //과제, 패널 UI안에 이미지를 출력할 수 있는 버튼들을 넣음.

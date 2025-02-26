@@ -1,0 +1,30 @@
+[gd_resource type="Resource" load_steps=8 format=2]
+
+[ext_resource path="res://items/global/weapon_data.gd" type="Script" id=1]
+[ext_resource path="res://weapons/ranged/icicle/icicle_icon.png" type="Texture" id=2]
+[ext_resource path="res://weapons/ranged/icicle/2/icicle_2_stats.tres" type="Resource" id=3]
+[ext_resource path="res://weapons/ranged/icicle/3/icicle_3_data.tres" type="Resource" id=4]
+[ext_resource path="res://weapons/ranged/icicle/icicle.tscn" type="PackedScene" id=5]
+[ext_resource path="res://items/sets/fire/fire_set_data.tres" type="Resource" id=6]
+[ext_resource path="res://items/sets/precise/precise_set_data.tres" type="Resource" id=7]
+
+[resource]
+script = ExtResource( 1 )
+my_id = "weapon_icicle_2"
+unlocked_by_default = true
+icon = ExtResource( 2 )
+name = "WEAPON_ICICLE"
+tier = 1
+value = 36
+effects = [  ]
+tracking_text = ""
+is_lockable = true
+is_cursed = false
+curse_factor = 0.0
+weapon_id = "weapon_icicle"
+type = 1
+sets = [ ExtResource( 7 ), ExtResource( 6 ) ]
+scene = ExtResource( 5 )
+stats = ExtResource( 3 )
+upgrades_into = ExtResource( 4 )
+add_to_chars_as_starting = [  ]

@@ -1,0 +1,31 @@
+[gd_resource type="Resource" load_steps=9 format=2]
+
+[ext_resource path="res://items/global/weapon_data.gd" type="Script" id=1]
+[ext_resource path="res://weapons/melee/sharp_tooth/sharp_tooth_icon.png" type="Texture" id=2]
+[ext_resource path="res://weapons/melee/sharp_tooth/1/sharp_tooth_stats.tres" type="Resource" id=3]
+[ext_resource path="res://weapons/melee/sharp_tooth/2/sharp_tooth_2_data.tres" type="Resource" id=4]
+[ext_resource path="res://weapons/melee/sharp_tooth/sharp_tooth.tscn" type="PackedScene" id=5]
+[ext_resource path="res://weapons/melee/sharp_tooth/1/sharp_tooth_effect_0.tres" type="Resource" id=6]
+[ext_resource path="res://items/sets/precise/precise_set_data.tres" type="Resource" id=7]
+[ext_resource path="res://items/sets/primitive/primitive_set_data.tres" type="Resource" id=8]
+
+[resource]
+script = ExtResource( 1 )
+my_id = "weapon_sharp_tooth_1"
+unlocked_by_default = true
+icon = ExtResource( 2 )
+name = "WEAPON_SHARP_TOOTH"
+tier = 0
+value = 12
+effects = [ ExtResource( 6 ) ]
+tracking_text = ""
+is_lockable = true
+is_cursed = false
+curse_factor = 0.0
+weapon_id = "weapon_sharp_tooth"
+type = 0
+sets = [ ExtResource( 8 ), ExtResource( 7 ) ]
+scene = ExtResource( 5 )
+stats = ExtResource( 3 )
+upgrades_into = ExtResource( 4 )
+add_to_chars_as_starting = [  ]

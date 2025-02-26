@@ -93,6 +93,13 @@ Vec2 lerp(const Vec2& a, const Vec2& b, float t)
 	return result;
 }
 
+//0~255값을 -> 0~1로 정규화
+D2D1::ColorF ColorNormalize(int r, int g, int b) 
+{ 
+	return D2D1::ColorF(r / 255.f, g / 255.f, b / 255.f);
+}
+
+
 // 검정색이 아닌 픽셀인지 확인하는 함수
 bool IsNonBlackPixel(Color _color) 
 {

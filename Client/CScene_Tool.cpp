@@ -217,9 +217,6 @@ void CScene_Tool::LoadTileData()
 	}
 }
 
-
-
-
 void ChangeScene(DWORD_PTR, DWORD_PTR) {
 	ChangeScene(SCENE_TYPE::START);
 }
