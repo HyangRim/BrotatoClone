@@ -1,15 +1,10 @@
 #pragma once
 #include "CScene.h"
 
-class CBtnUI;
-
-class CScene_Select_Character :
+class CScene_Select_Weapon :
     public CScene
 {
 private:
-    vector<CBtnUI*> m_vCharaters;
-
-
 
 public:
     virtual void update();
@@ -18,9 +13,8 @@ public:
 public:
     virtual void Enter();		//해당 Scene에 진입 시 호출.
     virtual void Exit();		//해당 Scene에 탈출 시 호출.
-
+    
 public:
-    CScene_Select_Character();
-    ~CScene_Select_Character();
+    CScene_Select_Weapon();
+    ~CScene_Select_Weapon();
 };
-

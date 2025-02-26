@@ -218,6 +218,9 @@
     <Filter Include="Engine\03. Manager\WaveMgr">
       <UniqueIdentifier>{34f35eb4-ace8-4a5a-a43b-0adf21889007}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\05. Scene\Scene_Select_Weapon">
+      <UniqueIdentifier>{fa54a553-66f0-4d12-8e6e-0dacb85ed7a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h">
@@ -437,6 +440,9 @@
     <ClInclude Include="CWaveMgr.h">
       <Filter>Engine\03. Manager\WaveMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CScene_Select_Weapon.h">
+      <Filter>Engine\05. Scene\Scene_Select_Weapon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -647,6 +653,9 @@
     </ClCompile>
     <ClCompile Include="CWaveMgr.cpp">
       <Filter>Engine\03. Manager\WaveMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene_Select_Weapon.cpp">
+      <Filter>Engine\05. Scene\Scene_Select_Weapon</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
