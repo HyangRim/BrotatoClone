@@ -23,6 +23,9 @@ void MakeMapTile(const WCHAR* _tileOutlinePath, const WCHAR* _tilesPath, const W
 	, int _blankTileWeight, int _otherTileWeight);
 
 
+void ShowCharacterInfo(DWORD_PTR param1, DWORD_PTR param2);
+void ChangeScene(DWORD_PTR, DWORD_PTR);
+
 template<typename T>
 void Safe_Delete_Vec(vector<T>& _vec);
 

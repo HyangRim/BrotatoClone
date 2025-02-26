@@ -30,6 +30,12 @@ private:
     DWORD_PTR       m_param1;
     DWORD_PTR       m_param2;
 
+    //마우스 on일때 쓸 함수
+    BTN_FUNC        m_pFuncMouseOn;
+    DWORD_PTR       m_param1MouseOn;
+    DWORD_PTR       m_param2MouseOn;
+
+
     //꼭짓점을 둥글게 할건지
     bool            m_bIsRoundedRect;
     float           m_fradiusX;
@@ -40,6 +46,7 @@ private:
     D2D1::ColorF    m_colorNormal;
 
     bool                m_bPanelCreated;
+    bool                m_bMouseOnCalled;   // MouseOn 콜백이 호출되었는지 여부
     vector<CObject*>    m_vTempObjects;
 
     //씬 멥버 함수를 얻기 위한 객체와, 호출 할 함수. 
@@ -66,6 +73,14 @@ public:
     virtual void MouseLbtnUp();
     virtual void MouseLbtnClicked();
 
+
+    void SetOnCallBack(BTN_FUNC _pFunc, DWORD_PTR _param1, DWORD_PTR _param2)
+    {
+        m_pFuncMouseOn = _pFunc;
+        m_param1MouseOn = _param1;
+        m_param2MouseOn = _param2;
+    }
+
     void SetClickedCallBack(BTN_FUNC _pFunc, DWORD_PTR _param1, DWORD_PTR _param2) {
         m_pFunc = _pFunc;
         m_param1 = _param1;
@@ -74,6 +89,8 @@ public:
 
     void SetClickedCallBack(CScene* _pScene, SCENE_MEMFUNC _pSceneFunc);
 
+public:
+    vector<CObject*>& GetTrashCan() { return m_vTempObjects; }
 
 public:
     virtual void update();

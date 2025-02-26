@@ -226,7 +226,7 @@ void CObject::CreateGravity()
 }
 CImage* CObject::GetImage(int _Idx)
 {
-	int tmp = m_pImages.size() - 1;
+	size_t tmp = m_pImages.size() - 1;
 	if (tmp < _Idx) return nullptr;
 	else return m_pImages[_Idx];
 }

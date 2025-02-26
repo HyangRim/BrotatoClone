@@ -4,7 +4,10 @@
 #include "CSpriteUI.h"
 #include "CCamera.h"
 #include "CBtnUI.h"
+#include "CPanelUI.h"
+#include "CImage.h"
 
+#include "CSceneMgr.h"
 #include "Direct2DMgr.h"
 
 #include "CScene_Select_Character.h"
@@ -56,6 +59,7 @@ void CScene_Select_Character::Enter()
 	backBtn->SetPos(Vec2(71.f, 38.f));
 	backBtn->SetIsRound(true, 10.f, 10.f);
 	backBtn->SetColor(ColorNormalize(237,237,237), ColorNormalize(28,28,28));
+	backBtn->SetClickedCallBack(ChangeScene, (DWORD_PTR)SCENE_TYPE::MAIN, 0);
 	backBtn->CreateTextUI(L"µÚ·Î", Vec2(-47.f, -14.f), Vec2(47.f, 14.f)
 		, 12, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR
@@ -99,6 +103,11 @@ void CScene_Select_Character::Enter()
 			else if (i == 0 && j == 1) selectCharacterUI->AddImage(pD2DMgr->GetStoredBitmap(L"WellRounded"));
 			else selectCharacterUI->AddImage(pD2DMgr->GetStoredBitmap(L"LockedIcon"));
 
+			CImage* image = selectCharacterUI->GetImage(0);
+			selectCharacterUI->SetOnCallBack(ShowCharacterInfo
+				, reinterpret_cast<DWORD_PTR>(image)
+				, reinterpret_cast<DWORD_PTR>(&selectCharacterUI->GetTrashCan()));
+
 			selectCharacterUI->SetPos(startPos + Vec2((selectCharacterUI->GetScale().x + LR_interval) * j
 				, (selectCharacterUI->GetScale().y + UD_interval) * i));
 			selectCharacterUI->SetIsRound(true, 10.f, 10.f);
@@ -116,4 +125,38 @@ void CScene_Select_Character::Enter()
 void CScene_Select_Character::Exit()
 {
 
+}
+
+
+
+void ShowCharacterInfo(DWORD_PTR param1, DWORD_PTR param2)
+{
+	printf("tesT\n");
+	CImage* image = reinterpret_cast<CImage*>(param1);
+	vector<CObject*>* tempObjects = reinterpret_cast<vector<CObject*>*>(param2);
+
+	if (image == nullptr || tempObjects == nullptr) return;
+
+	Vec2 vResolution = CCore::GetInstance()->GetResolution();
+
+	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+
+	CPanelUI* panel = new CPanelUI;
+	panel->SetPos(Vec2(vResolution.x / 2.f, 210.f));
+	panel->SetScale(Vec2(186.f, 250.f));
+	panel->SetRadius(10.f, 10.f);
+	panel->SetColor(ColorNormalize(0, 0, 0), ColorNormalize(0, 0, 0));
+
+	CObject* characterImage = new CSpriteUI;
+	characterImage->AddImage(image->GetBitmap());
+	characterImage->SetScale(Vec2(48.f, 48.f));
+
+	Vec2 vPos = panel->GetPos() - (panel->GetScale() / 2.f) + Vec2(35.f, 35.f);
+	characterImage->SetPos(vPos);
+
+	CSceneMgr::GetInstance()->GetCurScene()->AddObject(panel, GROUP_TYPE::UI);
+	CSceneMgr::GetInstance()->GetCurScene()->AddObject(characterImage, GROUP_TYPE::UI);
+
+	tempObjects->push_back(characterImage);
+	tempObjects->push_back(panel);
 }

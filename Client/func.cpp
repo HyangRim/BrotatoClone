@@ -100,6 +100,17 @@ D2D1::ColorF ColorNormalize(int r, int g, int b)
 }
 
 
+void ChangeScene(DWORD_PTR lParam, DWORD_PTR wParam) {
+	//lParam : 변경할신
+	//wParam : not use
+
+	SCENE_TYPE Scene_Type = (SCENE_TYPE)(lParam);
+
+	ChangeScene(Scene_Type);
+}
+
+
+
 // 검정색이 아닌 픽셀인지 확인하는 함수
 bool IsNonBlackPixel(Color _color) 
 {

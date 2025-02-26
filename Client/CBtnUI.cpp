@@ -25,12 +25,24 @@ CBtnUI::CBtnUI()
 
 CBtnUI::~CBtnUI()
 {
-	
+	for (size_t i = 0; i < m_vTempObjects.size(); ++i)
+		DeleteObject(m_vTempObjects[i]);
 }
 
 
 void CBtnUI::MouseOn()
 {
+	// MouseOn 콜백 함수가 이미 호출되었으면 아무 작업도 하지 않음
+	if (m_bMouseOnCalled) {
+		return;
+	}
+	if (nullptr != m_pFuncMouseOn) {
+		m_pFuncMouseOn(m_param1MouseOn, m_param2MouseOn);
+		// MouseOn 콜백 함수가 이미 호출되었으면 아무 작업도 하지 않음
+		m_bMouseOnCalled = true; // 호출 상태로 설정
+		return;
+	}
+	/*
 	if (m_bPanelCreated) {
 		return;
 	}
@@ -63,7 +75,7 @@ void CBtnUI::MouseOn()
 	m_vTempObjects.push_back(characterImage);
 	m_vTempObjects.push_back(panel);
 
-	m_bPanelCreated = true;
+	m_bPanelCreated = true;*/
 }
 
 void CBtnUI::MouseLbtnDown()
@@ -165,10 +177,13 @@ void CBtnUI::update()
 		MouseOn();
 	else {
 		
-		for (size_t i = 0; i < m_vTempObjects.size(); ++i)
-			DeleteObject(m_vTempObjects[i]);
-
-		m_vTempObjects.clear();
-		m_bPanelCreated = false;
+		if (m_vTempObjects.size() != 0)
+		{
+			printf("OUT\n");
+			for (size_t i = 0; i < m_vTempObjects.size(); ++i)
+				DeleteObject(m_vTempObjects[i]);
+			m_vTempObjects.clear();
+			m_bMouseOnCalled = false;
+		}
 	}
 }
