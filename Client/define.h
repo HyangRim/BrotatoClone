@@ -96,6 +96,11 @@ enum class EVENT_TYPE {
 	END,
 };
 
+enum class CHAR_TYPE {
+	WELL_ROUNDED,
+	RANGER,
+};
+
 enum class MON_TYPE {
 	NORMAL,
 	RANGE,

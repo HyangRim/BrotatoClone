@@ -2,14 +2,17 @@
 #include "CObject.h"
 
 struct tWeaponInfo {
-    wstring         m_sName;
-    WEAPON_TYPE     m_eType;
-    int             m_iDMG;
-    float           m_fCritialDMG;
-    float           m_fCritialAcc;
-    float           m_fCooldown;
-    float           m_fRecogRange;
-    int             m_iPenet;
+    wstring         m_sName;            //무기 이름
+    WEAPON_TYPE     m_eType;            //무기 타입
+    int             m_iDMG;             //무기 기본 데미지
+
+    float           m_iMeleeCoef;       //근거리 데미지 계수
+    float           m_iRangeCoef;       //원거리 데미지 계수
+    float           m_fCritialDMG;      //크리티컬 데미지 계수
+    float           m_fCritialAcc;      //크리티컬 데미지 확률
+    float           m_fCooldown;        //무기 공격 쿨다운
+    float           m_fRecogRange;      //무기 적 인식범위
+    int             m_iPenet;           //무기 튕김 수치. 
 };
 
 class CTexture;
