@@ -10,10 +10,12 @@ CImage::CImage()
 	, m_pBitmap(nullptr)
 	, m_fRatio(1.0f)
 {
+
 }
 
 CImage::~CImage()
 {
+
 }
 
 

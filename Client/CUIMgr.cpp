@@ -76,7 +76,6 @@ void CUIMgr::SetFocusedUI(CUI* _pUI)
 		}
 	}
 
-
 	vecUI.erase(CUIIter);
 	vecUI.push_back(m_pFocusedUI);
 }

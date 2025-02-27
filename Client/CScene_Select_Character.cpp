@@ -94,8 +94,7 @@ void CScene_Select_Character::Enter()
 	for (int i = 0; i < 3; i++)
 	{
 		for (int j = 0; j < 17; j++)
-		{
-			
+		{		
 			CBtnUI* selectCharacterUI = new CBtnUI;
 			selectCharacterUI->SetObjType(GROUP_TYPE::UI);
 			selectCharacterUI->SetScale(Vec2(48.f, 48.f));
@@ -116,10 +115,7 @@ void CScene_Select_Character::Enter()
 			selectCharacterUI->SetIsRound(true, 10.f, 10.f);
 			selectCharacterUI->SetColor(ColorNormalize(237, 237, 237), ColorNormalize(31, 31, 31));
 
-
 			AddObject(selectCharacterUI, GROUP_TYPE::UI);
-			
-
 		}
 	}
 	//////////////////////////캐릭터들 UI////////////////////////

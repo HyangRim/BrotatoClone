@@ -57,7 +57,7 @@ void CSceneMgr::init()
 	CWaveMgr::GetInstance()->WaveInit();
 
 	//ÇöÀç ¾À ¼³Á¤
-	m_pCurScene = m_arrScene[(UINT)SCENE_TYPE::SELECT_WEAPON];
+	m_pCurScene = m_arrScene[(UINT)SCENE_TYPE::START];
 
 	m_pCurScene->Enter();
 

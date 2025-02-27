@@ -72,7 +72,6 @@ void SaveWstring(const wstring& _str, FILE* _pFile)
 
 void LoadWstring(wstring& _str, FILE* _pFile)
 {
-
 	size_t iLen = 0;
 	wchar_t szBuffer[256] = {};
 	//문장 길이 저장. 
@@ -99,7 +98,6 @@ D2D1::ColorF ColorNormalize(int r, int g, int b)
 	return D2D1::ColorF(r / 255.f, g / 255.f, b / 255.f);
 }
 
-
 void ChangeScene(DWORD_PTR lParam, DWORD_PTR wParam) {
 	//lParam : 변경할신
 	//wParam : not use
@@ -108,8 +106,6 @@ void ChangeScene(DWORD_PTR lParam, DWORD_PTR wParam) {
 
 	ChangeScene(Scene_Type);
 }
-
-
 
 // 검정색이 아닌 픽셀인지 확인하는 함수
 bool IsNonBlackPixel(Color _color) 

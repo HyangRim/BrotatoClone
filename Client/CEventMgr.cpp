@@ -26,11 +26,7 @@ void CEventMgr::update()
 	//==================================================
 	////임시조치///
 
-	if (m_vecDeadScheduled.size() > 0)
-	{
-		printf("========================================================\n");
-		printf("%d\n", m_vecDeadScheduled.size());
-	}
+	
 	for (auto deadObjectPtr  : m_vecDeadScheduled) {
 
 		

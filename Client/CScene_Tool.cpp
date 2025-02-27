@@ -27,7 +27,6 @@ CScene_Tool::~CScene_Tool()
 
 }
 
-
 void CScene_Tool::Enter()
 {
 	//툴 Scene에서 사용할 메뉴를 붙인다. 
@@ -57,12 +56,9 @@ void CScene_Tool::Enter()
 	//호출 시킬 객체가 반드시 필요함. 
 	((CBtnUI*)pBtnUI)->SetClickedCallBack(this, (SCENE_MEMFUNC)&CScene_Tool::SaveTileData);
 
-
 	//((CBtnUI*)pBtnUI)->SetClickedCallBack(ChangeScene, 0, 0);
 	pPanelUI->AddChild(pBtnUI);
 	AddObject(pPanelUI, GROUP_TYPE::UI);
-
-
 	
 	/*
 	CUI* pClonePanel = pPanelUI->Clone();
