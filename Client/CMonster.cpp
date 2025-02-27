@@ -11,6 +11,9 @@
 #include "CScene.h"
 #include "CSceneMgr.h"
 
+#include "CDamageUI.h"
+#include "CTextUI.h"
+
 
 
 
@@ -67,6 +70,7 @@ void CMonster::TakeDamaged(int _iDamage)
 }
 
 
+
 void CMonster::OnCollisionEnter(CCollider* _pOther)
 {
 	CObject* pOtherObj = _pOther->GetObj();
@@ -81,12 +85,48 @@ void CMonster::OnCollisionEnter(CCollider* _pOther)
 			DeleteObject(this);
 		}
 	}
-	if (pOtherObj->GetName() == L"Knife") {
-		m_tInfo.m_iHP -= ((CKnife*)pOtherObj)->GetDamage();
+	else if (pOtherObj->GetName() == L"Knife") {
+
+		auto DamageInfo = ((CKnife*)pOtherObj)->GetDamage();
+		m_tInfo.m_iHP -= DamageInfo.first;
+		bool IsCritical = DamageInfo.second;
+
+		//파라미터 세팅. 
+		Vec2 objRenderScale = pOtherObj->GetRenderScale();
+		wstring damage = std::to_wstring(DamageInfo.first);
+
+		//DamageUI 오브젝트 만들기. 
+		CDamageUI* damageText = new CDamageUI;
+		Vec2 textPos = GetPos();
+		//textPos.y -= (objRenderScale.y + 3.f);
+		damageText->SetPos(textPos);
+		damageText->SetPivotPos();
+		damageText->SetDuration(1.5f);
+		if (!IsCritical) {
+			damageText->CreateTextUI(damage, Vec2(-20.f, -objRenderScale.y - 10.f), Vec2(20.f, -objRenderScale.y - 5.f)
+				, 16, D2D1::ColorF::White
+				, true
+				, 1.f, D2D1::ColorF::Black
+				, FONT_TYPE::KR
+				, TextUIMode::TEXT, 0);
+			damageText->GetTextUI()->SetCamAffected(true);
+		}
+		else {
+			damageText->CreateTextUI(damage, Vec2(-20.f, -objRenderScale.y - 10.f), Vec2(20.f, -objRenderScale.y - 5.f)
+				, 16, D2D1::ColorF::Yellow
+				, true
+				, 1.f, D2D1::ColorF::Black
+				, FONT_TYPE::KR
+				, TextUIMode::TEXT, 0);
+			damageText->GetTextUI()->SetCamAffected(true);
+		}
+		CreateObject(damageText, GROUP_TYPE::IMAGE);
 
 		if (m_tInfo.m_iHP <= 0) {
 			DeleteObject(this);
 		}
+
+
 	}
 	
 }

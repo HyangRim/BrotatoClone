@@ -29,6 +29,10 @@ public:
 
 
 private:
+    void KnifeDamageUI();
+
+
+private:
     void SetMonInfo(const tMonInfo& _info) {
         m_tInfo = _info;
     }

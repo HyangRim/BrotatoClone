@@ -15,7 +15,7 @@ CWaveMgr::CWaveMgr()
 	, m_fWaveElapsed(0.f)
 	, m_pWaveComplete(nullptr)
 	, m_bWaving(false)
-	, m_fWaveSpawnTime(1.f)
+	, m_fWaveSpawnTime(2.f)
 	, m_fWaveSpawnElapsed(0.f)
 {
 
@@ -58,7 +58,7 @@ void CWaveMgr::WaveStart()
 	
 	CMonFactory::SetDropItemRecog(250.f);
 	CMonFactory::SetDropItemSpeed(250.f);
-	m_fWaveSpawnTime = (1.f - (m_iWaveLevel * 0.05f)) + float_distribution(rng);
+	m_fWaveSpawnTime = (2.f - (m_iWaveLevel * 0.07f)) + float_distribution(rng);
 
 }
 
@@ -108,7 +108,7 @@ void CWaveMgr::WaveInit()
 
 void CWaveMgr::SpawnMob()
 {
-	static std::uniform_int_distribution<int> MobSpawnCount(1, 5);
+	static std::uniform_int_distribution<int> MobSpawnCount(1, 3);
 	static std::uniform_int_distribution<int> MobSpawnPos(50, 1000);
 	int mobSpawnNum = MobSpawnCount(rng);
 	

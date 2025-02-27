@@ -64,6 +64,8 @@ std::uniform_int_distribution<int> random_distribution(0, 100);
 #pragma comment(lib, "gdiplus")
 using namespace Gdiplus;
 
+#include <utility>
+
 
 #include "define.h"
 #include "struct.h"

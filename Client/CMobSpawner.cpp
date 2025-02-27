@@ -18,7 +18,7 @@ void CMobSpawner::MobSpawn(MON_TYPE _eType, Vec2 _vPos)
 		pBirth_Mon = new CBirth_Monster;
 		pBirth_Mon->SetMonType(_eType);
 		pBirth_Mon->SetPos(_vPos);
-		pBirth_Mon->SetScale(Vec2(75.f, 75.f));
+		pBirth_Mon->SetScale(Vec2(50.f, 50.f));
 		pBirth_Mon->CreateImage();
 		pBirth_Mon->AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"BirthEnemy"));
 		CreateObject(pBirth_Mon, GROUP_TYPE::GROUND);
@@ -30,7 +30,7 @@ void CMobSpawner::MobSpawn(MON_TYPE _eType, Vec2 _vPos)
 		pBirth_Mon = new CBirth_Monster;
 		pBirth_Mon->SetMonType(_eType);
 		pBirth_Mon->SetPos(_vPos);
-		pBirth_Mon->SetScale(Vec2(75.f, 75.f));
+		pBirth_Mon->SetScale(Vec2(50.f, 50.f));
 
 		pBirth_Mon->CreateImage();
 		pBirth_Mon->AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"BirthEnemy"));

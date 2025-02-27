@@ -5,7 +5,7 @@
 CDamageUI::CDamageUI()
 	: m_fDestroyDuration(0.f)
 	, m_fDestoryElapsed(0.f)
-	, m_fWaveDuration(1.f)
+	, m_fWaveDuration(0.5f)
 	, m_fWaveElapsed(0.f)
 	, m_fWaveLength(2.f)
 	, m_vPivotPos{}

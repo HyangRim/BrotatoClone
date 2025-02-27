@@ -21,7 +21,7 @@ class CEventMgr
 
 private:
 	vector<tEvent> m_vecEvent;
-	unordered_set<CObject*> m_vecDeadScheduled;		//삭제 예정인 오브젝트들. 
+	unordered_set<CObject*> m_setDeadScheduled;		//삭제 예정인 오브젝트들. 
 public:
 	void update();
 
