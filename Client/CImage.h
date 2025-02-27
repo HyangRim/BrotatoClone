@@ -14,9 +14,20 @@ private:
 	Vec2				m_vOffSet;
 	Vec2				m_vFinalPos;
 
+	//사이즈 커스터마이징용
+	bool				m_bScaleCustom;
+	Vec2				m_vScale;//0~1
+
 	float				m_fRatio;
 
 public:
+
+	void ScaleCustomizing(Vec2 _vScale, bool _bScaleCustom)
+	{
+		m_vScale = _vScale;
+		m_bScaleCustom = _bScaleCustom;
+	}
+
 	CObject* GetObj() { return m_pOwner; }
 	ID2D1Bitmap* GetBitmap() { return m_pBitmap; }
 	void		 SetBitmap(ID2D1Bitmap* _bitmap) { m_pBitmap = _bitmap; }

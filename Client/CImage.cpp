@@ -69,7 +69,15 @@ void CImage::render(ID2D1HwndRenderTarget* _renderTarget)
 		m_vFinalPos = CCamera::GetInstance()->GetRenderPos(m_vFinalPos);
 	/////////////수정사항////////////////////////
 
-	Vec2 vScale = m_pOwner->GetRenderScale();
+	//Vec2 vScale = m_pOwner->GetRenderScale();
+	Vec2 vScale;
+	if (m_bScaleCustom)
+	{
+		vScale = m_pOwner->GetRenderScale() * m_vScale;
+	}
+	else
+		vScale = m_pOwner->GetRenderScale();
+
 
 	if (nullptr == m_pBitmap) return;
 

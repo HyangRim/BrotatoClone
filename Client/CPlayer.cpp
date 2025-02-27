@@ -109,8 +109,13 @@ CPlayer::CPlayer()
 	//다리 오브젝트 추가. 
 
 	//이미지 추가. 
-	AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"PlayerBody"));
+	//0번
 	AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"PlayerLegs"));
+	CImage* image = GetImage(0);
+	image->ScaleCustomizing(Vec2(0.5f, 0.3f), true);
+	image->SetOffset(Vec2(0.f, 15.f));
+	//1번
+	AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"PlayerBody"));
 
 	//AddImage(L"PlayerLegs");
 
