@@ -36,17 +36,27 @@ public:
 public:
     virtual void update();
     virtual void finalupdate();
+
+    void update_child();
+    void finalupdate_child();
+
     virtual void render(HDC _dc);
     virtual void render(Gdiplus::Graphics* _pDGraphics);
     virtual void render(ID2D1HwndRenderTarget* _pRender);
 
-private:
-    void update_child();
-    void finalupdate_child();
-
     void render_child(HDC _dc);
     void render_child(Gdiplus::Graphics* _pDGraphics);
     void render_child(ID2D1HwndRenderTarget* _pRender);
+
+private:
+    /*
+    void update_child();
+    void finalupdate_child();
+
+    
+    void render_child(HDC _dc);
+    void render_child(Gdiplus::Graphics* _pDGraphics);
+    void render_child(ID2D1HwndRenderTarget* _pRender);*/
 
 
    

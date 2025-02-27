@@ -10,7 +10,9 @@
 
 CScene_Select_Weapon::CScene_Select_Weapon()
 {
-	/////////////무조건 백그라운드와 물음표는 로딩 되어있을거임 무조건무조건
+	/////////////무조건 백그라운드, 물음표, 자물쇠는 로딩 되어있을거임 무조건무조건
+	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"weapons\\melee\\knife\\knife_icon.png", L"WeaponKnife", false);
+
 }
 
 CScene_Select_Weapon::~CScene_Select_Weapon()
@@ -59,6 +61,19 @@ void CScene_Select_Weapon::Enter()
 	AddObject(backBtn, GROUP_TYPE::UI);
 	/////////////////뒤로 가기 버틈///////////////////
 
+	/////////////////무기선택 UI(상단)///////////////////
+	CObject* panelTextSelectWeapon = new CSpriteUI;
+	panelTextSelectWeapon->SetObjType(GROUP_TYPE::UI);
+	panelTextSelectWeapon->SetPos(Vec2(vResolution.x / 2.f, 50.f));
+	panelTextSelectWeapon->SetScale(Vec2(300.f, 36.f));
+	panelTextSelectWeapon->CreateTextUI(L"무기 선택", Vec2(-150.f, -18.f), Vec2(150.f, 18.f)
+		, 30, D2D1::ColorF::White, true, 2.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	AddObject(panelTextSelectWeapon, GROUP_TYPE::UI);
+	/////////////////무기선택 UI(상단)///////////////////
+
 	//////////////////////////캐릭터들 UI////////////////////////
 	float leftMargin = 32.f;
 	float LR_interval = 5.f;
@@ -76,7 +91,7 @@ void CScene_Select_Weapon::Enter()
 			selectCharacterUI->SetUIType(UI_TYPE::BTN);
 
 			if (i == 0 && j == 0) selectCharacterUI->AddImage(pD2DMgr->GetStoredBitmap(L"RandomIcon"));
-			else if (i == 0 && j == 1) selectCharacterUI->AddImage(pD2DMgr->GetStoredBitmap(L"WellRounded"));
+			else if (i == 0 && j == 1) selectCharacterUI->AddImage(pD2DMgr->GetStoredBitmap(L"WeaponKnife"));
 			else selectCharacterUI->AddImage(pD2DMgr->GetStoredBitmap(L"LockedIcon"));
 
 			CImage* image = selectCharacterUI->GetImage(0);
@@ -89,10 +104,7 @@ void CScene_Select_Weapon::Enter()
 			selectCharacterUI->SetIsRound(true, 10.f, 10.f);
 			selectCharacterUI->SetColor(ColorNormalize(237, 237, 237), ColorNormalize(31, 31, 31));
 
-
 			AddObject(selectCharacterUI, GROUP_TYPE::UI);
-
-
 		}
 	}
 	//////////////////////////캐릭터들 UI////////////////////////

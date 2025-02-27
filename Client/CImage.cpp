@@ -2,6 +2,7 @@
 #include "CImage.h"
 #include "CObject.h"
 #include "Direct2DMgr.h"
+#include "CUI.h"
 
 
 CImage::CImage()
@@ -16,6 +17,13 @@ CImage::~CImage()
 }
 
 
+void CImage::finalupdate()
+{
+	/*
+	Vec2 vObjectPos = ((CUI*)m_pOwner)->GetFinalPos();
+	m_vFinalPos = m_vOffSet + vObjectPos;*/
+}
+
 void CImage::render(HDC _dc)
 {
 }
@@ -28,6 +36,7 @@ void CImage::render(ID2D1HwndRenderTarget* _renderTarget)
 	// 3. GetRealPos -> ????
 
 	Vec2 vPos = m_pOwner->GetPos();
+	//m_vFinalPos
 	m_pOwner->GetRenderScale();
 
 	if (m_pOwner->GetObjType() == GROUP_TYPE::UI)

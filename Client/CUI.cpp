@@ -40,7 +40,7 @@ void CUI::update()
 	
 
 	//child ui update
-	//update_child();
+	update_child();
 }
 
 void CUI::finalupdate()
@@ -56,7 +56,6 @@ void CUI::finalupdate()
 	//UI 마우스 체크
 	MouseOnCheck();
 	
-
 	finalupdate_child();
 }
 

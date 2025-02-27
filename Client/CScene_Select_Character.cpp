@@ -52,6 +52,7 @@ void CScene_Select_Character::Enter()
 	/////////////////뒷 배경 오브젝트/////////////////
 
 	/////////////////뒤로 가기 버틈///////////////////
+	
 	CBtnUI* backBtn = new CBtnUI;
 	backBtn->SetName(L"BackBtn");
 	backBtn->SetObjType(GROUP_TYPE::UI);
@@ -66,6 +67,7 @@ void CScene_Select_Character::Enter()
 		, TextUIMode::TEXT
 		, 0);
 	AddObject(backBtn, GROUP_TYPE::UI);
+	
 	/////////////////뒤로 가기 버틈///////////////////
 
 	/////////////////캐릭터 선택 글자 UI(상단)///////////////////
@@ -93,6 +95,7 @@ void CScene_Select_Character::Enter()
 	{
 		for (int j = 0; j < 17; j++)
 		{
+			
 			CBtnUI* selectCharacterUI = new CBtnUI;
 			selectCharacterUI->SetObjType(GROUP_TYPE::UI);
 			selectCharacterUI->SetScale(Vec2(48.f, 48.f));
@@ -115,7 +118,7 @@ void CScene_Select_Character::Enter()
 
 
 			AddObject(selectCharacterUI, GROUP_TYPE::UI);
-
+			
 
 		}
 	}
@@ -143,16 +146,21 @@ void ShowCharacterInfo(DWORD_PTR param1, DWORD_PTR param2)
 
 	CPanelUI* panel = new CPanelUI;
 	panel->SetPos(Vec2(vResolution.x / 2.f, 210.f));
+	panel->SetName(L"Parent");
 	panel->SetScale(Vec2(186.f, 250.f));
 	panel->SetRadius(10.f, 10.f);
 	panel->SetColor(ColorNormalize(0, 0, 0), ColorNormalize(0, 0, 0));
 
 	CObject* characterImage = new CSpriteUI;
 	characterImage->AddImage(image->GetBitmap());
+	//characterImage->GetImage(0)->SetOffset(Vec2(0.f, 0.f));
+	characterImage->SetObjType(GROUP_TYPE::UI);
+	characterImage->SetName(L"Child");
 	characterImage->SetScale(Vec2(48.f, 48.f));
-
 	Vec2 vPos = panel->GetPos() - (panel->GetScale() / 2.f) + Vec2(35.f, 35.f);
 	characterImage->SetPos(vPos);
+
+	//panel->AddChild((CUI*)characterImage);
 
 	CSceneMgr::GetInstance()->GetCurScene()->AddObject(panel, GROUP_TYPE::UI);
 	CSceneMgr::GetInstance()->GetCurScene()->AddObject(characterImage, GROUP_TYPE::UI);

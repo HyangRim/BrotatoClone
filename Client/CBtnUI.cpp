@@ -9,6 +9,7 @@
 #include "Direct2DMgr.h"
 #include "CSpriteUI.h"
 #include "CImage.h"
+#include "CUI.h"
 
 
 CBtnUI::CBtnUI()
@@ -42,40 +43,6 @@ void CBtnUI::MouseOn()
 		m_bMouseOnCalled = true; // 호출 상태로 설정
 		return;
 	}
-	/*
-	if (m_bPanelCreated) {
-		return;
-	}
-	//186, 250
-	Vec2 vResolution = CCore::GetInstance()->GetResolution();
-
-	/////////////////
-	CImage* image = GetImage(0);
-	if (image == nullptr) return;
-	/////////////////
-
-	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
-
-	CPanelUI* panel = new CPanelUI;
-	panel->SetPos(Vec2(vResolution.x / 2.f, 210.f));
-	panel->SetScale(Vec2(186.f, 250.f));
-	panel->SetRadius(10.f, 10.f);
-	panel->SetColor(ColorNormalize(0, 0, 0), ColorNormalize(0, 0, 0));
-
-	CObject* characterImage = new CSpriteUI;
-	characterImage->AddImage(image->GetBitmap());
-	characterImage->SetScale(Vec2(48.f, 48.f));
-
-	Vec2 vPos = panel->GetPos() - (panel->GetScale() / 2.f) + Vec2(35.f,35.f);
-	characterImage->SetPos(vPos);
-
-	CSceneMgr::GetInstance()->GetCurScene()->AddObject(panel, GROUP_TYPE::UI);
-	CSceneMgr::GetInstance()->GetCurScene()->AddObject(characterImage, GROUP_TYPE::UI);
-	
-	m_vTempObjects.push_back(characterImage);
-	m_vTempObjects.push_back(panel);
-
-	m_bPanelCreated = true;*/
 }
 
 void CBtnUI::MouseLbtnDown()
@@ -181,7 +148,9 @@ void CBtnUI::update()
 		{
 			printf("OUT\n");
 			for (size_t i = 0; i < m_vTempObjects.size(); ++i)
+			{
 				DeleteObject(m_vTempObjects[i]);
+			}	
 			m_vTempObjects.clear();
 			m_bMouseOnCalled = false;
 		}

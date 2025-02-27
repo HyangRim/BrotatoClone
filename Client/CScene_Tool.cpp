@@ -58,7 +58,7 @@ void CScene_Tool::Enter()
 	((CBtnUI*)pBtnUI)->SetClickedCallBack(this, (SCENE_MEMFUNC)&CScene_Tool::SaveTileData);
 
 
-	((CBtnUI*)pBtnUI)->SetClickedCallBack(ChangeScene, 0, 0);
+	//((CBtnUI*)pBtnUI)->SetClickedCallBack(ChangeScene, 0, 0);
 	pPanelUI->AddChild(pBtnUI);
 	AddObject(pPanelUI, GROUP_TYPE::UI);
 

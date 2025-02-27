@@ -101,7 +101,7 @@ void CObject::update()
 {
 	ShakeScale();
 
-	
+	//finalupdate();
 
 	m_vPrevPos = m_vPos;
 }
@@ -112,7 +112,12 @@ void CObject::finalupdate()
 	if (m_pGravity)  m_pGravity->finalupdate();
 	if (m_pRigidBody)m_pRigidBody->finalupdate();
 	if (m_pCollider) m_pCollider->finalupdate();
-	//if( m_pImage) m_pImage->finalupdate();
+	
+	if (!m_pImages.empty())
+	{
+		for (size_t i = 0; i < m_pImages.size(); ++i)
+			m_pImages[i]->finalupdate();
+	}
 }
 
 void CObject::render(HDC _dc)

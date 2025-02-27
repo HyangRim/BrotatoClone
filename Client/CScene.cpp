@@ -377,7 +377,6 @@ void CScene::MakeTile(const wstring &tag)
 			pObj->SetName(L"TILE");
 			pObj->CreateImage();
 
-
 			if (tileY == 0 && tileX == 0) tileIdx = 0;
 			else if (tileY == 0 && tileX == 35) tileIdx = 7;
 			else if (tileY == 35 && tileX == 0) tileIdx = 56;

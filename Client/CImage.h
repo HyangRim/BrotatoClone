@@ -12,6 +12,7 @@ private:
 	ID2D1Bitmap*		m_pBitmap;
 
 	Vec2				m_vOffSet;
+	Vec2 m_vFinalPos;
 
 	float				m_fRatio;
 
@@ -21,8 +22,10 @@ public:
 	void		 SetBitmap(ID2D1Bitmap* _bitmap) { m_pBitmap = _bitmap; }
 
 	void SetRatio(float _ratio) { m_fRatio = _ratio; }
+	void SetOffset(Vec2 _vOffset) { m_vOffSet = _vOffset; }
 
 public:
+	void finalupdate();
 	void render(HDC _dc);
 	void render(ID2D1HwndRenderTarget* _renderTarget);
 public:
