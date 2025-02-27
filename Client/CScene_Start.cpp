@@ -77,6 +77,12 @@ CScene_Start::CScene_Start()
 	CSoundMgr::GetInstance()->AddSound(L"drop_item3", L"sound\\materials\\drop_item3.wav", false, false);
 	CSoundMgr::GetInstance()->AddSound(L"drop_item4", L"sound\\materials\\drop_item4.wav", false, false);
 	CSoundMgr::GetInstance()->AddSound(L"drop_item5", L"sound\\materials\\drop_item5.wav", false, false);
+
+
+	CSoundMgr::GetInstance()->AddSound(L"step1", L"sound\\step\\Step1.mp3", false, false);
+	CSoundMgr::GetInstance()->AddSound(L"step2", L"sound\\step\\Step2.mp3", false, false);
+	CSoundMgr::GetInstance()->AddSound(L"step3", L"sound\\step\\Step3.mp3", false, false);
+	CSoundMgr::GetInstance()->AddSound(L"step4", L"sound\\step\\Step4.mp3", false, false);
 }
 
 CScene_Start::~CScene_Start()

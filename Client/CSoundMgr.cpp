@@ -3,6 +3,7 @@
 #include "CResMgr.h"
 #include "CSound.h" 
 #include "CPathMgr.h"
+#include "CTimeMgr.h"
 #include "CCore.h"
 
 CSoundMgr::CSoundMgr()
@@ -140,7 +141,8 @@ void CSoundMgr::Resume(wstring _keyName)
 	soundIter->second->m_pChannel->setPaused(false);
 }
 
-bool CSoundMgr::IsPlaySound(wstring _keyName)
+
+bool CSoundMgr::IsPlaySound(wstring& _keyName)
 {
 	auto soundIter = m_mapSounds.find(_keyName);
 
@@ -159,3 +161,9 @@ bool CSoundMgr::IsPauseSound(wstring _keyName)
 {
 	return false;
 }
+
+void CSoundMgr::PlayWalkSound()
+{
+	Play(walkSoundKey[distribution(rng) % 4], 0.05f);
+}
+

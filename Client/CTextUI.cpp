@@ -20,6 +20,7 @@ CTextUI::CTextUI()
     , m_iNumber(0)
     , m_fAcc(0.f)
     , m_RedColor(D2D1::ColorF(D2D1::ColorF::Red))
+    , m_bCamAffected(false)
 {
    
 }
@@ -48,6 +49,10 @@ void CTextUI::render(ID2D1HwndRenderTarget* _pRender)
     auto d2dManager = Direct2DMgr::GetInstance();
 
     Vec2 vPos = m_pOwner->GetPos();
+
+    if (m_bCamAffected) {
+        vPos = CCamera::GetInstance()->GetRenderPos(vPos);
+    }
     //vPos = CCamera::GetInstance()->GetRenderPos(vPos);
     //글자만 출력
     if (m_mode == TextUIMode::TEXT)

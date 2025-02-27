@@ -27,6 +27,8 @@ private:
 
     D2D1::ColorF        m_RedColor;
 
+    bool                m_bCamAffected;          //카메라 영향 받느냐, 안 받느냐. 
+
 public:
     //UI모드 설정
     void SetMode(TextUIMode _mode) { m_mode = _mode; }
@@ -45,6 +47,8 @@ public:
             m_iNumber = _number;
         }
     }
+
+    void SetCamAffected(bool _b) { m_bCamAffected = _b; }
 
 public:
     void SetOffsetLT(Vec2 _vOffsetLT) { m_vOffsetLT = _vOffsetLT; }

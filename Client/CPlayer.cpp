@@ -19,12 +19,16 @@
 #include "CGravity.h"
 #include "CImage.h"
 
+#include "CSoundMgr.h"
+
 CPlayer::CPlayer()
 	: m_eCurState(PLAYER_STATE::IDLE)
 	, m_ePrevState(PLAYER_STATE::IDLE)
 	, m_iDir(1)
 	, m_iPrevDir(1)
 	, m_tPlayerInfo{}
+	, m_fStepSoundDuration(0.4f)
+	, m_fStepSoundElapsed(0.f)
 {
 	//m_pTex = CResMgr::GetInstance()->LoadTexture(L"PlayerTex", L"texture\\Tenshi.bmp");
 
@@ -155,6 +159,16 @@ void CPlayer::update()
 	GetAnimator()->update();
 
 
+	//발걸음 소리 업데이트 관련
+	if (PLAYER_STATE::WALK == m_eCurState) {
+		m_fStepSoundElapsed += fDT;
+
+		if (m_fStepSoundElapsed > m_fStepSoundDuration) {
+			CSoundMgr::GetInstance()->PlayWalkSound();
+			m_fStepSoundElapsed = 0.f;
+		}
+	}
+
 	//맨 뒤에 놔줘야 이전과 현재를 맞춰놔야 이후에 발생하는 상태가 적용가능. 
 	//EX) 충돌, 콜라이더 등등. 
 	m_ePrevState = m_eCurState;
@@ -206,7 +220,7 @@ bool CPlayer::DeleteWeapon(CWeapon* _pWeapon)
 			break;
 		}
 	}
-	//동적 할당한 무기 해제. 
+	//동적 할당한 무기 해제. DeleteObject로 해야할수도?
 	delete *targetWeaponIter;
 	return true;
 }
@@ -345,6 +359,8 @@ void CPlayer::update_animation()
 	}
 }
 
+
+
 void CPlayer::OnCollisionEnter(CCollider* _pOther)
 {
 
@@ -378,3 +394,9 @@ void CPlayer::PlayerLevelUp()
 	m_tPlayerInfo.m_iCurHP += 1;
 }
 
+void CPlayer::PlayWalkSound()
+{
+	//최적화를 위해 따로 만들어야 할듯. 
+	CSoundMgr::GetInstance()->PlayWalkSound();
+
+}

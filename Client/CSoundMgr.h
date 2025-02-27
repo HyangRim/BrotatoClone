@@ -8,6 +8,12 @@ class CSound;
 
 #define SOUNDBUFFERSIZE 64
 
+//최적화를 위한 뭔가 깔끔하지 않은 방법. 
+static wstring walkSoundKey[4] = { L"step1", L"step2",L"step3",L"step4" };
+const float	   fWalkDuration = 0.3f;
+float		   fWalkElapsed = 0.f;
+
+
 struct SoundInfo {
 	FMOD::Sound*	m_pSound = nullptr;
 	FMOD::Channel*	m_pChannel = nullptr;
@@ -36,10 +42,12 @@ public:
 	void Stop(wstring _keyName);
 	void Pause(wstring _keyName);
 	void Resume(wstring _keyName);
+	void PlayWalkSound();
 
 
-	bool IsPlaySound(wstring _keyName);
+	bool IsPlaySound(wstring& _keyName);
 	bool IsPauseSound(wstring _keyName);
+
 
 public:
 };

@@ -3,6 +3,7 @@
 #include "CScene.h"
 #include "CSceneMgr.h"
 #include "CDamageUI.h"
+#include "CTextUI.h"
 
 #include "CSlingShot_Missile.h"
 
@@ -50,7 +51,7 @@ void CSlingShot_Missile::OnCollisionEnter(CCollider* _pOther)
 					, 1.f, D2D1::ColorF::Black
 					, FONT_TYPE::KR
 					, TextUIMode::TEXT, 0);
-
+				damageText->GetTextUI()->SetCamAffected(true);
 			}
 			else {
 				damageText->CreateTextUI(damage, Vec2(-20.f, -objRenderScale.y - 10.f), Vec2(20.f, -objRenderScale.y - 5.f)
@@ -59,6 +60,7 @@ void CSlingShot_Missile::OnCollisionEnter(CCollider* _pOther)
 					, 1.f, D2D1::ColorF::Black
 					, FONT_TYPE::KR
 					, TextUIMode::TEXT, 0);
+				damageText->GetTextUI()->SetCamAffected(true);
 			}
 			CreateObject(damageText, GROUP_TYPE::IMAGE);
 		}

@@ -39,6 +39,12 @@ private:
     int                     m_iDir;
     int                     m_iPrevDir;
 
+
+    //Duration관련 
+private:
+    float m_fStepSoundDuration;
+    float m_fStepSoundElapsed;
+
 private:
     //무기 위치 고정된 offset값. 
     const Vec2 weaponOffsetPos[6] = {
@@ -68,6 +74,8 @@ private:
     void update_move();
     void update_state();
     void update_animation();
+
+    void PlayWalkSound();
 
     virtual void OnCollisionEnter(CCollider* _pOther);
 

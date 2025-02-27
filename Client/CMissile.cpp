@@ -5,6 +5,7 @@
 
 #include "CTimeMgr.h"
 #include "CCollider.h"
+#include "CTextUI.h"
 
 
 CMissile::CMissile()
@@ -113,7 +114,9 @@ void CMissile::OnCollisionEnter(CCollider* _pOther)
 
 		//DamageUI 오브젝트 만들기. 
 		CDamageUI* damageText = new CDamageUI;
-		damageText->SetPos(CCamera::GetInstance()->GetRenderPos(pOtherObj->GetPos()));
+		Vec2 textPos = _pOther->GetObj()->GetPos();
+		//textPos.y -= (objRenderScale.y + 3.f);
+		damageText->SetPos(textPos);
 		damageText->SetPivotPos();
 		damageText->SetDuration(1.5f);
 		if (!m_bIsCritial) {
@@ -123,7 +126,7 @@ void CMissile::OnCollisionEnter(CCollider* _pOther)
 				, 1.f, D2D1::ColorF::Black
 				, FONT_TYPE::KR
 				, TextUIMode::TEXT, 0);
-
+			damageText->GetTextUI()->SetCamAffected(true);
 		}
 		else {
 			damageText->CreateTextUI(damage, Vec2(-20.f, -objRenderScale.y - 10.f), Vec2(20.f, -objRenderScale.y - 5.f)
@@ -132,6 +135,7 @@ void CMissile::OnCollisionEnter(CCollider* _pOther)
 				, 1.f, D2D1::ColorF::Black
 				, FONT_TYPE::KR
 				, TextUIMode::TEXT, 0);
+			damageText->GetTextUI()->SetCamAffected(true);
 		}
 		CreateObject(damageText, GROUP_TYPE::IMAGE);
 		//CreateObject	
