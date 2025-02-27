@@ -150,23 +150,27 @@ void CObject::render(Gdiplus::Graphics* _pDGraphics)
 void CObject::render(ID2D1HwndRenderTarget* _pRender)
 {
 	//ÁøÂ¥ ÁÂÇ¥.
-	Vec2 vRenderPos = CCamera::GetInstance()->GetRenderPos(m_vPos);
 
-	float left = vRenderPos.x - m_vRenderScale.x / 2.f;
-	float top = vRenderPos.y - m_vRenderScale.y / 2.f;
-	float right = vRenderPos.x + m_vRenderScale.x / 2.f;
-	float bottom = vRenderPos.y + m_vRenderScale.y / 2.f;
 
-	D2D1_RECT_F rect = D2D1::RectF(left, top, right, bottom);
+	if (GetImages().empty() && nullptr == GetAnimator()) {
+		Vec2 vRenderPos = CCamera::GetInstance()->GetRenderPos(m_vPos);
 
-	ID2D1SolidColorBrush* pBrush = nullptr;
-	HRESULT hr = _pRender->CreateSolidColorBrush(
-		D2D1::ColorF(D2D1::ColorF::Black), &pBrush);
+		float left = vRenderPos.x - m_vRenderScale.x / 2.f;
+		float top = vRenderPos.y - m_vRenderScale.y / 2.f;
+		float right = vRenderPos.x + m_vRenderScale.x / 2.f;
+		float bottom = vRenderPos.y + m_vRenderScale.y / 2.f;
 
-	if (SUCCEEDED(hr))
-	{
-		_pRender->DrawRectangle(rect, pBrush);
-		pBrush->Release();
+		D2D1_RECT_F rect = D2D1::RectF(left, top, right, bottom);
+
+		ID2D1SolidColorBrush* pBrush = nullptr;
+		HRESULT hr = _pRender->CreateSolidColorBrush(
+			D2D1::ColorF(D2D1::ColorF::Black), &pBrush);
+
+		if (SUCCEEDED(hr))
+		{
+			_pRender->DrawRectangle(rect, pBrush);
+			pBrush->Release();
+		}
 	}
 
 	component_render(_pRender);

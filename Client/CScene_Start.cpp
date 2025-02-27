@@ -364,7 +364,7 @@ void CScene_Start::Enter()
 	//실제 생성된 객체는 플레이어, 주소를 받은 건 부모 클래스. 
 	CObject* pObj = new CPlayer;
 	pObj->SetPos(Vec2(640.f, 384.f));
-	pObj->SetScale(Vec2(100.f, 100.f));
+	pObj->SetScale(Vec2(65.f, 65.f));
 	pObj->SetName(L"Player");
 	AddObject(pObj, GROUP_TYPE::PLAYER);
 	RegisterPlayer(pObj);
@@ -407,12 +407,13 @@ void CScene_Start::Enter()
 	
 	
 	//땅 물체 배치
+	/*
 	CObject* pGround = new CGround;
 	pGround->SetName(L"Ground");
 	pGround->SetPos(Vec2(640.f, 584.f));
 	pGround->SetScale(Vec2(200.f, 60.f));
 	AddObject(pGround, GROUP_TYPE::GROUND);
-
+	*/
 	//충돌 지점. 
 	//Player 그룹과 Monster그룹간의 충돌 체크 
 	//update에서 로직, finalupdate에서 최종 움직임 완료

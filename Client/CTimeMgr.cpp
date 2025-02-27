@@ -11,6 +11,7 @@ CTimeMgr::CTimeMgr()
 	,m_iCallCount(0)
 	,m_dAcc(0.)
 	,m_iFPS(0)
+	,m_ftimeScale(1.f)
 {
 
 }
@@ -28,6 +29,7 @@ void CTimeMgr::init()
 
 	//초당 카운트 횟수(1000만)
 	QueryPerformanceFrequency(&m_llFrequency);
+	SetTimeScale(1.f);
 
 }
 

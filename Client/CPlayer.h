@@ -21,6 +21,18 @@ struct playerParameter {
     int                     m_iMaxEXP;
     int                     m_iCurEXP;
     int                     m_iCoin;
+
+    //캐릭터에 의해 추가될 수 있는 파라미터
+
+    float			m_fDefaultSpeed;	// 기본 스피드. 
+
+    int				m_AddMaxHP;			// + 최대 체력
+    float			m_fDamageCoef;		//최종뎀 %
+    float			m_fMeleeCoef;		//근거리 최종뎀 %
+    float			m_fRangeCoef;		//원거리 최종뎀 %
+    float			m_fAttackSpeedCoef; // 공격속도 %
+    float			m_iCriticalAcc;		// 크확 %
+    float			m_fSpeed;			// 속도 계수.
 };
 class CPlayer :
     public CObject

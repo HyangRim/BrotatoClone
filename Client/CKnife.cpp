@@ -6,6 +6,8 @@
 #include "CCollider.h"
 #include "CKnife.h"
 #include "CKnifeAI.h"
+#include "CDamageUI.h"
+#include "CTextUI.h"
 
 #include "CTimeMgr.h"
 
@@ -89,15 +91,19 @@ void CKnife::update()
 	}
 }
 
-int CKnife::GetDamage()
+std::pair<int, bool> CKnife::GetDamage()
 {
 	int default_damage = Getinfo().m_iDMG;
+	bool Critical = false;
 
 	if (random_distribution(random_generator) < Getinfo().m_fCritialAcc) {
 		default_damage = static_cast<int>(static_cast<float>(default_damage) * Getinfo().m_fCritialDMG);
+		Critical = true;
 	}
-
-	return default_damage;
+	std::pair<int, bool> res;
+	res.first = default_damage;
+	res.second = Critical;
+	return res;
 }
 
 void CKnife::ShotMissile(Vec2 _vDir)
@@ -151,4 +157,5 @@ void CKnife::render(ID2D1HwndRenderTarget* _pRender)
 		pBrush->Release();
 	}
 }
+
 
