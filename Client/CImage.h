@@ -12,7 +12,7 @@ private:
 	ID2D1Bitmap*		m_pBitmap;
 
 	Vec2				m_vOffSet;
-	Vec2 m_vFinalPos;
+	Vec2				m_vFinalPos;
 
 	float				m_fRatio;
 

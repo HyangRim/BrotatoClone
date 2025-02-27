@@ -15,6 +15,7 @@
 
 #include "CObject.h"
 #include "CDamageUI.h"
+#include "CSpriteUI.h"
 #include "CGround.h"
 #include "CImage.h"
 
@@ -51,29 +52,32 @@ void CScene_Main::Enter()
 	CSoundMgr::GetInstance()->AddSound(L"MainTitle", L"sound\\music\\main_title_bgm.mp3", true, true);
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
 
-
-
 	//UI구성. 
 	//Object 추가.
 	//실제 생성된 객체는 플레이어, 주소를 받은 건 부모 클래스. 
 	//맨 뒤 Brotato 바닥. 
 	m_tMainPanel.pTitleGround = new CGround;
 	m_tMainPanel.pTitleGround->SetPos(vResolution / 2.f);
+	m_tMainPanel.pTitleGround->SetObjType(GROUP_TYPE::DEFAULT);
 	m_tMainPanel.pTitleGround->SetScale(Vec2(1035.f, 540.f));
 	m_tMainPanel.pTitleGround->SetName(L"Title_Ground");
 	m_tMainPanel.pTitleGround->CreateImage();
 	m_tMainPanel.pTitleGround->AddImage(pD2DMgr->GetStoredBitmap(L"Title_Ground"));
-	//m_tMainPanel.pTitleGround->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_Ground"));
+	m_tMainPanel.pTitleGround->SetObjType(GROUP_TYPE::DEFAULT);
 	AddObject(m_tMainPanel.pTitleGround, GROUP_TYPE::DEFAULT);
 
+	
 	//맨 뒤, 응원단
 	m_tMainPanel.pTitleBack = new CGround;
+	//m_tMainPanel.pTitleBack = new CSpriteUI;
+
 	m_tMainPanel.pTitleBack->SetPos(vResolution / 2.f);
 	m_tMainPanel.pTitleBack->SetScale(Vec2(1035.f, 540.f));
 	m_tMainPanel.pTitleBack->SetName(L"Title_back");
 	m_tMainPanel.pTitleBack->CreateImage();
 	m_tMainPanel.pTitleBack->AddImage(pD2DMgr->GetStoredBitmap(L"Title_back"));
 	//m_tMainPanel.pTitleBack->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_back"));
+	m_tMainPanel.pTitleBack->SetObjType(GROUP_TYPE::DEFAULT);
 	AddObject(m_tMainPanel.pTitleBack, GROUP_TYPE::DEFAULT);
 
 	//중간, 응원단
@@ -84,6 +88,7 @@ void CScene_Main::Enter()
 	m_tMainPanel.pTitleMid->CreateImage();
 	m_tMainPanel.pTitleMid->AddImage(pD2DMgr->GetStoredBitmap(L"Title_mid"));
 	//m_tMainPanel.pTitleMid->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_mid"));
+	m_tMainPanel.pTitleMid->SetObjType(GROUP_TYPE::DEFAULT);
 	AddObject(m_tMainPanel.pTitleMid, GROUP_TYPE::DEFAULT);
 
 	//맨 앞, 응원단
@@ -94,8 +99,9 @@ void CScene_Main::Enter()
 	m_tMainPanel.pTitlefront->CreateImage();
 	m_tMainPanel.pTitlefront->AddImage(pD2DMgr->GetStoredBitmap(L"Title_front"));
 	//m_tMainPanel.pTitlefront->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_front"));
+	m_tMainPanel.pTitlefront->SetObjType(GROUP_TYPE::DEFAULT);
 	AddObject(m_tMainPanel.pTitlefront, GROUP_TYPE::DEFAULT);
-
+	
 	//Brotato
 	m_tMainPanel.pTitleBrotato = new CGround;
 	m_tMainPanel.pTitleBrotato->SetPos(vResolution / 2.f);
@@ -104,6 +110,7 @@ void CScene_Main::Enter()
 	m_tMainPanel.pTitleBrotato->CreateImage();
 	m_tMainPanel.pTitleBrotato->AddImage(pD2DMgr->GetStoredBitmap(L"Title_Brotato"));
 	//m_tMainPanel.pTitleBrotato->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_Brotato"));
+	m_tMainPanel.pTitleBrotato->SetObjType(GROUP_TYPE::DEFAULT);
 	AddObject(m_tMainPanel.pTitleBrotato, GROUP_TYPE::DEFAULT);
 
 	//포스트 프로세싱
@@ -114,6 +121,7 @@ void CScene_Main::Enter()
 	m_tMainPanel.pTitlelights->CreateImage();
 	m_tMainPanel.pTitlelights->AddImage(pD2DMgr->GetStoredBitmap(L"Title_lights"));
 	//m_tMainPanel.pTitlelights->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_lights"));
+	m_tMainPanel.pTitlelights->SetObjType(GROUP_TYPE::DEFAULT);
 	AddObject(m_tMainPanel.pTitlelights, GROUP_TYPE::DEFAULT);
 
 	//브로타토 로고
@@ -124,30 +132,80 @@ void CScene_Main::Enter()
 	m_tMainPanel.pTitlelogo->CreateImage();
 	m_tMainPanel.pTitlelogo->AddImage(pD2DMgr->GetStoredBitmap(L"Brotato_logo"));
 	//m_tMainPanel.pTitlelogo->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Brotato_logo"));
+	m_tMainPanel.pTitlelogo->SetObjType(GROUP_TYPE::DEFAULT);
 	AddObject(m_tMainPanel.pTitlelogo, GROUP_TYPE::DEFAULT);
 
 
+	/*
 	//버튼 패널 추가.
 	CUI* pPanelUI = new CPanelUI;
 	pPanelUI->SetName(L"ParentUI");
 	pPanelUI->SetScale(Vec2(100.f, 200.f));
 	pPanelUI->SetPos(Vec2(80.f, 400.f));
 	((CPanelUI*)pPanelUI)->SetCanMove(false);
-	
+	*/
+
+	/*
+	CBtnUI* backBtn = new CBtnUI;
+	backBtn->SetName(L"BackBtn");
+	backBtn->SetObjType(GROUP_TYPE::UI);
+	backBtn->SetScale(Vec2(94.f, 28.f));
+	backBtn->SetPos(Vec2(71.f, 38.f));
+	backBtn->SetIsRound(true, 10.f, 10.f);
+	backBtn->SetColor(ColorNormalize(237, 237, 237), ColorNormalize(28, 28, 28));
+	backBtn->SetClickedCallBack(ChangeScene, (DWORD_PTR)SCENE_TYPE::MAIN, 0);
+	backBtn->CreateTextUI(L"뒤로", Vec2(-47.f, -14.f), Vec2(47.f, 14.f)
+		, 12, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	AddObject(backBtn, GROUP_TYPE::UI);
+	*/
+
 	//버튼 추가. 
-	CBtnUI* pBtnUI = new CBtnUI;
-	pBtnUI->SetName(L"Start");
-	pBtnUI->SetScale(Vec2(60.f, 40.f));
-	pBtnUI->SetPos(Vec2(0.f, -60.f));
 
+	//////////////////////////시작 버튼///////////////////////////
+	CBtnUI* pStartBtn = new CBtnUI;
+	pStartBtn->SetName(L"StartBtn");
+	pStartBtn->SetObjType(GROUP_TYPE::UI);
+	pStartBtn->SetScale(Vec2(52.f, 34.f));
+	pStartBtn->SetPos(Vec2(51.f,348.f));
+	pStartBtn->SetIsRound(true, 10.f, 10.f);
+	pStartBtn->SetColor(ColorNormalize(237, 237, 237), ColorNormalize(0, 0, 0));
+	pStartBtn->SetClickedCallBack(ChangeScene, (DWORD_PTR)SCENE_TYPE::START, 0);
+	pStartBtn->CreateTextUI(L"시작", Vec2(-26.f, -17.f), Vec2(26.f, 17.f)
+		, 20, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	AddObject(pStartBtn, GROUP_TYPE::UI);
+	//////////////////////////시작 버튼///////////////////////////
+
+
+	//////////////////////////임시 버튼///////////////////////////
+	CBtnUI* pBtnTemp = new CBtnUI;
+	pBtnTemp->SetName(L"Temp");
+	pBtnTemp->SetObjType(GROUP_TYPE::UI);
+	pBtnTemp->SetScale(Vec2(52.f, 34.f));
+	pBtnTemp->SetPos(Vec2(51.f, 348.f + 12.f + 34.f));
+	pBtnTemp->SetIsRound(true, 10.f, 10.f);
+	pBtnTemp->SetColor(ColorNormalize(237, 237, 237), ColorNormalize(0, 0, 0));
+	pBtnTemp->SetClickedCallBack(ChangeScene, (DWORD_PTR)SCENE_TYPE::SELECT_CHARACTER, 0);
+	pBtnTemp->CreateTextUI(L"캐선", Vec2(-26.f, -17.f), Vec2(26.f, 17.f)
+		, 20, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	AddObject(pBtnTemp, GROUP_TYPE::UI);
+	//////////////////////////임시 버튼///////////////////////////
+	
 	//버튼 이벤트 등록.
-	pBtnUI->SetClickedCallBack(this, (SCENE_MEMFUNC)&CScene_Main::StartBtn);
+
+	//pBtnUI->SetClickedCallBack(this, (SCENE_MEMFUNC)&CScene_Main::StartBtn);
 	//버튼을 패널에 자식으로 등록. 
-	pPanelUI->AddChild(pBtnUI);
+	//pPanelUI->AddChild(pBtnUI);
 
-	AddObject(pPanelUI, GROUP_TYPE::UI);
-
-
+	//AddObject(pBtnUI, GROUP_TYPE::UI);
 
 	//카메라 위치 세팅. 
 	CCamera::GetInstance()->SetLookAt(vResolution / 2.f);
@@ -158,6 +216,7 @@ void CScene_Main::Enter()
 
 void CScene_Main::Exit()
 {
+	DeleteAll();
 }
 
 void CScene_Main::update()

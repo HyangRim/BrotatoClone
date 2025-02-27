@@ -123,7 +123,7 @@ void CScene_Select_Character::Enter()
 
 void CScene_Select_Character::Exit()
 {
-
+	DeleteAll();
 }
 
 
@@ -149,18 +149,18 @@ void ShowCharacterInfo(DWORD_PTR param1, DWORD_PTR param2)
 
 	CObject* characterImage = new CSpriteUI;
 	characterImage->AddImage(image->GetBitmap());
-	//characterImage->GetImage(0)->SetOffset(Vec2(0.f, 0.f));
+	Vec2 vPos = Vec2(35.f, 35.f) - (panel->GetScale() / 2.f);
+	characterImage->GetImage(0)->SetOffset(vPos);
 	characterImage->SetObjType(GROUP_TYPE::UI);
 	characterImage->SetName(L"Child");
 	characterImage->SetScale(Vec2(48.f, 48.f));
-	Vec2 vPos = panel->GetPos() - (panel->GetScale() / 2.f) + Vec2(35.f, 35.f);
-	characterImage->SetPos(vPos);
+	characterImage->SetPos(panel->GetPos());
 
-	//panel->AddChild((CUI*)characterImage);
+	panel->AddChild((CUI*)characterImage);
 
 	CSceneMgr::GetInstance()->GetCurScene()->AddObject(panel, GROUP_TYPE::UI);
-	CSceneMgr::GetInstance()->GetCurScene()->AddObject(characterImage, GROUP_TYPE::UI);
+	//CSceneMgr::GetInstance()->GetCurScene()->AddObject(characterImage, GROUP_TYPE::UI);
 
-	tempObjects->push_back(characterImage);
+	//tempObjects->push_back(characterImage);
 	tempObjects->push_back(panel);
 }

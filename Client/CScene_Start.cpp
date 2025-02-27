@@ -271,6 +271,7 @@ void CScene_Start::Enter()
 	
 	////////////////////////////¸Ê»ý¼º///////////////////////////////////////
 	
+	
 	int randV = rand() % 7;
 	if (randV == 0) randV++;
 	//printf("randV : %d\n", randV);

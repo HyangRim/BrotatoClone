@@ -45,6 +45,15 @@ void CUI::update()
 
 void CUI::finalupdate()
 {
+	if (GetName().compare(L"Parent") == 0)
+	{
+
+		int a = 0;
+
+	}
+
+
+
 	CObject::finalupdate();
 	m_vFinalPos = GetPos();
 	//UI의 최종 좌표를 구한다.

@@ -5,10 +5,29 @@
 #include "CUI.h"
 
 
+//CImage사용법
+//이미지 한장을 띄우는 객체라면 vOffset설정 안해도됨
+//하지만 이미지를 가지는 객체가 계층구조(parent가 존재할경우)가 있을경우 계층구조 내에서 위치를 지정해야됨
+//parent중심 기준 offset을 설정할것.
+
+
+/* 예제
+CObject* characterImage = new CSpriteUI;
+	characterImage->AddImage(image->GetBitmap());
+
+	Vec2 vPos = Vec2(35.f, 35.f) - (panel->GetScale() / 2.f);
+	characterImage->GetImage(0)->SetOffset(vPos);
+
+	characterImage->SetObjType(GROUP_TYPE::UI);
+	characterImage->SetPos(panel->GetPos());
+
+	Image가 포함된 객체의 위치를 부모로 지정하고 offset을 설정하면됨
+*/
 CImage::CImage()
 	: m_pOwner(nullptr)
 	, m_pBitmap(nullptr)
 	, m_fRatio(1.0f)
+	, m_vOffSet(Vec2(0.f,0.f))
 {
 
 }
@@ -21,9 +40,8 @@ CImage::~CImage()
 
 void CImage::finalupdate()
 {
-	/*
-	Vec2 vObjectPos = ((CUI*)m_pOwner)->GetFinalPos();
-	m_vFinalPos = m_vOffSet + vObjectPos;*/
+	Vec2 vObjectPos = m_pOwner->GetPos();
+	m_vFinalPos = m_vOffSet + vObjectPos;
 }
 
 void CImage::render(HDC _dc)
@@ -41,22 +59,24 @@ void CImage::render(ID2D1HwndRenderTarget* _renderTarget)
 	//m_vFinalPos
 	m_pOwner->GetRenderScale();
 
-	if (m_pOwner->GetObjType() == GROUP_TYPE::UI)
+	//임시적으로 GROUP_TYPE이 UI거나 DEFAULT인 경우에만 RenderPos 적용 x -> 화면상에서 고정된 위치
+	// -> MAIN화면의 뒷배경, START화면의 HP,XP,재화 표시 UI, (캐릭선택,무기선택)씬
+	if (m_pOwner->GetObjType() == GROUP_TYPE::UI || m_pOwner->GetObjType() == GROUP_TYPE::DEFAULT)
 	{
 		//vPos = CCamera::GetInstance()->GetRenderPos(vPos);
 	}
 	else
-		vPos = CCamera::GetInstance()->GetRenderPos(vPos);
+		m_vFinalPos = CCamera::GetInstance()->GetRenderPos(m_vFinalPos);
 	/////////////수정사항////////////////////////
 
 	Vec2 vScale = m_pOwner->GetRenderScale();
 
 	if (nullptr == m_pBitmap) return;
 
-	float left = vPos.x - (vScale.x / 2.f);
-	float top = vPos.y - (vScale.y / 2.f);
-	float right = vPos.x + (vScale.x / 2.f);
-	float down = vPos.y + (vScale.y / 2.f);
+	float left = m_vFinalPos.x - (vScale.x / 2.f);
+	float top = m_vFinalPos.y - (vScale.y / 2.f);
+	float right = m_vFinalPos.x + (vScale.x / 2.f);
+	float down = m_vFinalPos.y + (vScale.y / 2.f);
 
 	D2D1_RECT_F rect = D2D1::RectF(left, top, right, down);
 
