@@ -20,6 +20,7 @@
 
 #include "SelectGDI.h"
 #include "Resource.h"
+#include "CFileMgr.h"
 
 
 
@@ -89,6 +90,7 @@ int CCore::init(HWND _hWnd, POINT _ptResolution) {
 
 	CCamera::GetInstance()->init();
 	Direct2DMgr::GetInstance()->init(m_hWnd);
+	CFileMgr::GetInstance()->init(CPathMgr::GetInstance()->GetContentPath());
 	CSceneMgr::GetInstance()->init();
 
 

@@ -14,10 +14,10 @@
 
 CScene_Select_Character::CScene_Select_Character()
 {
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\ui\\menus\\shop\\shop_background.png", L"BackGround", false);
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\global\\locked_icon.png", L"LockedIcon", false);
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\global\\random_icon.png", L"RandomIcon", false);
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\characters\\well_rounded\\well_rounded_icon.png", L"WellRounded", false);
+	//Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\ui\\menus\\shop\\shop_background.png", L"BackGround", false);
+	//Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\global\\locked_icon.png", L"LockedIcon", false);
+	//Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\global\\random_icon.png", L"RandomIcon", false);
+	//Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\characters\\well_rounded\\well_rounded_icon.png", L"WellRounded", false);
 
 }
 
@@ -45,7 +45,7 @@ void CScene_Select_Character::Enter()
 	/////////////////뒷 배경 오브젝트/////////////////
 	CObject* backGround = new CSpriteUI;
 	backGround->SetObjType(GROUP_TYPE::UI);
-	backGround->AddImage(pD2DMgr->GetStoredBitmap(L"BackGround"));
+	backGround->AddImage(pD2DMgr->GetStoredBitmap(L"shop_background"));
 	backGround->SetPos(vResolution/2.f);
 	backGround->SetScale(vResolution);
 	AddObject(backGround, GROUP_TYPE::DEFAULT);
@@ -101,9 +101,9 @@ void CScene_Select_Character::Enter()
 			selectCharacterUI->SetName(L"TEST");
 			selectCharacterUI->SetUIType(UI_TYPE::BTN);
 
-			if (i == 0 && j == 0) selectCharacterUI->AddImage(pD2DMgr->GetStoredBitmap(L"RandomIcon"));
-			else if (i == 0 && j == 1) selectCharacterUI->AddImage(pD2DMgr->GetStoredBitmap(L"WellRounded"));
-			else selectCharacterUI->AddImage(pD2DMgr->GetStoredBitmap(L"LockedIcon"));
+			if (i == 0 && j == 0) selectCharacterUI->AddImage(pD2DMgr->GetStoredBitmap(L"random_icon"));
+			else if (i == 0 && j == 1) selectCharacterUI->AddImage(pD2DMgr->GetStoredBitmap(L"well_rounded_icon"));
+			else selectCharacterUI->AddImage(pD2DMgr->GetStoredBitmap(L"locked_icon"));
 
 			CImage* image = selectCharacterUI->GetImage(0);
 			selectCharacterUI->SetOnCallBack(ShowCharacterInfo

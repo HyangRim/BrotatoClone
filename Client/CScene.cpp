@@ -425,7 +425,6 @@ void CScene::MakeTile(const wstring &tag)
 			}
 		
 			pObj->AddImage(splitBitmaps[tileIdx]);
-			//pObj->GetImage()->SetBitmap(splitBitmaps[tileIdx]);
 			AddObject(pObj, GROUP_TYPE::TILE);
 		}
 	}

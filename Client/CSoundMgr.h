@@ -9,7 +9,7 @@ class CSound;
 #define SOUNDBUFFERSIZE 64
 
 //최적화를 위한 뭔가 깔끔하지 않은 방법. 
-static wstring walkSoundKey[4] = { L"step1", L"step2",L"step3",L"step4" };
+static wstring walkSoundKey[4] = { L"Step1", L"Step2",L"Step3",L"Step4" };
 const float	   fWalkDuration = 0.3f;
 float		   fWalkElapsed = 0.f;
 

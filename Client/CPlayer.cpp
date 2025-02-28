@@ -50,10 +50,10 @@ CPlayer::CPlayer()
 	
 	///////////////////
 
-	CTexture* m_pTex = CResMgr::GetInstance()->LoadTexture(L"PlayerTex", L"texture\\link_0.bmp");
+	//CTexture* m_pTex = CResMgr::GetInstance()->LoadTexture(L"PlayerTex", L"texture\\link_0.bmp");
 	//Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\link_0.bmp",L"PlayerTex", false);
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\player\\potato.png", L"PlayerBody", false);
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\player\\legs.png", L"PlayerLegs", false);
+	//Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\player\\potato.png", L"PlayerBody", false);
+	//Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\player\\legs.png", L"PlayerLegs", false);
 	//ID2D1Bitmap* m_pBit = Direct2DMgr::GetInstance()->GetStoredBitmap(L"PlayerTex");
 
 
@@ -110,12 +110,12 @@ CPlayer::CPlayer()
 
 	//이미지 추가. 
 	//0번
-	AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"PlayerLegs"));
+	AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"legs"));
 	CImage* image = GetImage(0);
 	image->ScaleCustomizing(Vec2(0.5f, 0.3f), true);
 	image->SetOffset(Vec2(0.f, 15.f));
 	//1번
-	AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"PlayerBody"));
+	AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"potato"));
 
 	//AddImage(L"PlayerLegs");
 

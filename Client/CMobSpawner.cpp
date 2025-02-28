@@ -20,7 +20,7 @@ void CMobSpawner::MobSpawn(MON_TYPE _eType, Vec2 _vPos)
 		pBirth_Mon->SetPos(_vPos);
 		pBirth_Mon->SetScale(Vec2(50.f, 50.f));
 		pBirth_Mon->CreateImage();
-		pBirth_Mon->AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"BirthEnemy"));
+		pBirth_Mon->AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"entity_birth"));
 		CreateObject(pBirth_Mon, GROUP_TYPE::GROUND);
 	}
 	break;
@@ -33,7 +33,7 @@ void CMobSpawner::MobSpawn(MON_TYPE _eType, Vec2 _vPos)
 		pBirth_Mon->SetScale(Vec2(50.f, 50.f));
 
 		pBirth_Mon->CreateImage();
-		pBirth_Mon->AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"BirthEnemy"));
+		pBirth_Mon->AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"entity_birth"));
 		CreateObject(pBirth_Mon, GROUP_TYPE::GROUND);
 	}
 	break;

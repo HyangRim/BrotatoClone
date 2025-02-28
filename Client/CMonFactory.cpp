@@ -52,7 +52,8 @@ CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
 
 
 		pMon->CreateImage();
-		pMon->AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"NormalEnemy"));
+		pMon->AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"baby_alien"));
+		//pMon->AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"NormalEnemy"));
 		//pMon->GetImage()->SetBitmap(Direct2DMgr::GetInstance()->GetStoredBitmap(L"NormalEnemy"));
 	}
 		break;
@@ -85,7 +86,8 @@ CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
 
 		pMon->SetAI(pAI);
 		pMon->CreateImage();
-		pMon->AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"RangeEnemy"));
+		pMon->AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"spitter"));
+		//pMon->AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"RangeEnemy"));
 		//pMon->GetImage()->SetBitmap(Direct2DMgr::GetInstance()->GetStoredBitmap(L"RangeEnemy"));
 	}
 		break;

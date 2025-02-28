@@ -43,10 +43,12 @@ CScene_Start::CScene_Start()
 	, m_fCurRadius(0.f)
 	, m_fForce(500.f)
 {
+	/*
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\enemies\\baby_alien.png", L"NormalEnemy", false);
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\enemies\\spitter.png", L"RangeEnemy", false);
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\enemies\\entity_birth.png", L"BirthEnemy", false);
-
+	*/
+	/*
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\ui\\hud\\ui_lifebar_bg.png", L"LifebarBackGround", false);
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\ui\\hud\\ui_lifebar_fill.png", L"LifebarFill", false);
 
@@ -56,8 +58,9 @@ CScene_Start::CScene_Start()
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\ui\\hud\\ui_lifebar_frame.png", L"LifebarFrame", false);
 
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\harvesting_icon.png", L"HarvestingIcon", false);
-	
+	*/
 	//Drop_ITEM들
+	/*
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0000.png", L"drop_item0", false);
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0001.png", L"drop_item1", false);
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0002.png", L"drop_item2", false);
@@ -69,20 +72,23 @@ CScene_Start::CScene_Start()
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0008.png", L"drop_item8", false);
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0009.png", L"drop_item9", false);
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0010.png", L"drop_item10", false);
-
+	*/
 	//사운드 관련 등록
 	//사운드 관련 Instance 가져오기. 
+
+	/*
 	CSoundMgr::GetInstance()->AddSound(L"drop_item1", L"sound\\materials\\drop_item1.wav", false, false);
 	CSoundMgr::GetInstance()->AddSound(L"drop_item2", L"sound\\materials\\drop_item2.wav", false, false);
 	CSoundMgr::GetInstance()->AddSound(L"drop_item3", L"sound\\materials\\drop_item3.wav", false, false);
 	CSoundMgr::GetInstance()->AddSound(L"drop_item4", L"sound\\materials\\drop_item4.wav", false, false);
 	CSoundMgr::GetInstance()->AddSound(L"drop_item5", L"sound\\materials\\drop_item5.wav", false, false);
-
-
+	*/
+	/*
 	CSoundMgr::GetInstance()->AddSound(L"step1", L"sound\\step\\Step1.mp3", false, false);
 	CSoundMgr::GetInstance()->AddSound(L"step2", L"sound\\step\\Step2.mp3", false, false);
 	CSoundMgr::GetInstance()->AddSound(L"step3", L"sound\\step\\Step3.mp3", false, false);
 	CSoundMgr::GetInstance()->AddSound(L"step4", L"sound\\step\\Step4.mp3", false, false);
+	*/
 }
 
 CScene_Start::~CScene_Start()
@@ -270,11 +276,8 @@ void CScene_Start::Enter()
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
 	
 	////////////////////////////맵생성///////////////////////////////////////
-	
-	
 	int randV = rand() % 7;
 	if (randV == 0) randV++;
-	//printf("randV : %d\n", randV);
 	wstring mapPath = L"texture\\tiles\\tiles_" + std::to_wstring(randV) + L".png";
 	MakeMapTile(L"texture\\tiles\\tiles_outline.png", mapPath.c_str(), L"texture\\tiles\\map\\",50, 1);
 	pD2DMgr->StoreBitmapsFromFolder(L"texture\\tiles\\map\\", L"Map");
@@ -285,9 +288,9 @@ void CScene_Start::Enter()
 	
 	//pD2DMgr->GetStoredBitmap(L"ifebarBackGround")
 	CObject* lifebar = new CSpriteUI;
-	lifebar->AddImage(pD2DMgr->GetStoredBitmap(L"LifebarBackGround"));
-	lifebar->AddImage(pD2DMgr->GetStoredBitmap(L"LifebarFill"));
-	lifebar->AddImage(pD2DMgr->GetStoredBitmap(L"LifebarFrame"));
+	lifebar->AddImage(pD2DMgr->GetStoredBitmap(L"ui_lifebar_bg"));
+	lifebar->AddImage(pD2DMgr->GetStoredBitmap(L"ui_lifebar_fill"));
+	lifebar->AddImage(pD2DMgr->GetStoredBitmap(L"ui_lifebar_frame"));
 	lifebar->SetPos(Vec2(90.f, 25.f));
 	lifebar->SetScale(Vec2(320.f, 48.f) * 0.5f);
 	lifebar->CreateTextUI(L"", Vec2(-80.f, -12.f), Vec2(80.f, 12.f)
@@ -297,9 +300,9 @@ void CScene_Start::Enter()
 	lifebar->SetObjType(GROUP_TYPE::UI);
 
 	CObject* xpbar = new CSpriteUI;
-	xpbar->AddImage(pD2DMgr->GetStoredBitmap(L"XpBackGround"));
-	xpbar->AddImage(pD2DMgr->GetStoredBitmap(L"XpFill"));
-	xpbar->AddImage(pD2DMgr->GetStoredBitmap(L"LifebarFrame"));
+	xpbar->AddImage(pD2DMgr->GetStoredBitmap(L"ui_xp_bg"));
+	xpbar->AddImage(pD2DMgr->GetStoredBitmap(L"ui_xp_fill"));
+	xpbar->AddImage(pD2DMgr->GetStoredBitmap(L"ui_lifebar_frame"));
 	xpbar->SetPos(Vec2(90.f, 60.f));
 	xpbar->SetScale(Vec2(320.f, 48.f) * 0.5f);
 	xpbar->CreateTextUI(L"", Vec2(-80.f, -12.f), Vec2(80.f, 12.f)
@@ -342,7 +345,7 @@ void CScene_Start::Enter()
 
 	////////////////////////////재화 표시///////////////////////////////////
 	CObject* harvestingIcon = new CSpriteUI;
-	harvestingIcon->AddImage(pD2DMgr->GetStoredBitmap(L"HarvestingIcon"));
+	harvestingIcon->AddImage(pD2DMgr->GetStoredBitmap(L"harvesting_icon"));
 	harvestingIcon->SetScale(Vec2(96.f, 96.f) * 0.5f);
 	harvestingIcon->SetPos(Vec2(30.f, 100.f));
 
@@ -422,7 +425,7 @@ void CScene_Start::Enter()
 
 
 	//사운드 추가
-	CSoundMgr::GetInstance()->AddSound(L"Extend", L"sound\\extend.wav", false, false);
+	CSoundMgr::GetInstance()->AddSound(L"extend", L"sound\\extend.wav", false, false);
 
 	//이제 새로운 충돌이 발생할수도 있음. 
 	CCollisionMgr::GetInstance()->CheckGroup(GROUP_TYPE::PLAYER, GROUP_TYPE::MONSTER);

@@ -39,17 +39,17 @@ void CScene_Main::Enter()
 {
 	// Direct2DMgr 인스턴스 가져오기 (텍스쳐 관련)
 	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
-	pD2DMgr->LoadAndStoreBitmap(L"texture\\ui\\menus\\title_screen\\splash_art_bg.png", L"Title_Ground", false);
-	pD2DMgr->LoadAndStoreBitmap(L"texture\\ui\\menus\\title_screen\\splash_art_brotato.png", L"Title_Brotato", false);
-	pD2DMgr->LoadAndStoreBitmap(L"texture\\ui\\menus\\title_screen\\splash_art_mist_back.png", L"Title_back", false);
-	pD2DMgr->LoadAndStoreBitmap(L"texture\\ui\\menus\\title_screen\\splash_art_mist_front.png", L"Title_front", false);
-	pD2DMgr->LoadAndStoreBitmap(L"texture\\ui\\menus\\title_screen\\splash_art_mist_mid.png", L"Title_mid", false);
-	pD2DMgr->LoadAndStoreBitmap(L"texture\\ui\\menus\\title_screen\\splash_art_post_processing.png", L"Title_lights", false);
-	pD2DMgr->LoadAndStoreBitmap(L"texture\\ui\\menus\\title_screen\\ui_logo.png", L"Brotato_logo", false);
+	//pD2DMgr->LoadAndStoreBitmap(L"texture\\ui\\menus\\title_screen\\splash_art_bg.png", L"Title_Ground", false);
+	//pD2DMgr->LoadAndStoreBitmap(L"texture\\ui\\menus\\title_screen\\splash_art_brotato.png", L"Title_Brotato", false);
+	//pD2DMgr->LoadAndStoreBitmap(L"texture\\ui\\menus\\title_screen\\splash_art_mist_back.png", L"Title_back", false);
+	//pD2DMgr->LoadAndStoreBitmap(L"texture\\ui\\menus\\title_screen\\splash_art_mist_front.png", L"Title_front", false);
+	//pD2DMgr->LoadAndStoreBitmap(L"texture\\ui\\menus\\title_screen\\splash_art_mist_mid.png", L"Title_mid", false);
+	//pD2DMgr->LoadAndStoreBitmap(L"texture\\ui\\menus\\title_screen\\splash_art_post_processing.png", L"Title_lights", false);
+	//pD2DMgr->LoadAndStoreBitmap(L"texture\\ui\\menus\\title_screen\\ui_logo.png", L"Brotato_logo", false);
 
 
 	//사운드 관련 Instance 가져오기. 
-	CSoundMgr::GetInstance()->AddSound(L"MainTitle", L"sound\\music\\main_title_bgm.mp3", true, true);
+	//CSoundMgr::GetInstance()->AddSound(L"MainTitle", L"sound\\music\\main_title_bgm.mp3", true, true);
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
 
 	//UI구성. 
@@ -62,7 +62,7 @@ void CScene_Main::Enter()
 	m_tMainPanel.pTitleGround->SetScale(Vec2(1035.f, 540.f));
 	m_tMainPanel.pTitleGround->SetName(L"Title_Ground");
 	m_tMainPanel.pTitleGround->CreateImage();
-	m_tMainPanel.pTitleGround->AddImage(pD2DMgr->GetStoredBitmap(L"Title_Ground"));
+	m_tMainPanel.pTitleGround->AddImage(pD2DMgr->GetStoredBitmap(L"splash_art_bg"));
 	m_tMainPanel.pTitleGround->SetObjType(GROUP_TYPE::DEFAULT);
 	AddObject(m_tMainPanel.pTitleGround, GROUP_TYPE::DEFAULT);
 
@@ -75,7 +75,7 @@ void CScene_Main::Enter()
 	m_tMainPanel.pTitleBack->SetScale(Vec2(1035.f, 540.f));
 	m_tMainPanel.pTitleBack->SetName(L"Title_back");
 	m_tMainPanel.pTitleBack->CreateImage();
-	m_tMainPanel.pTitleBack->AddImage(pD2DMgr->GetStoredBitmap(L"Title_back"));
+	m_tMainPanel.pTitleBack->AddImage(pD2DMgr->GetStoredBitmap(L"splash_art_mist_back"));
 	//m_tMainPanel.pTitleBack->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_back"));
 	m_tMainPanel.pTitleBack->SetObjType(GROUP_TYPE::DEFAULT);
 	AddObject(m_tMainPanel.pTitleBack, GROUP_TYPE::DEFAULT);
@@ -86,7 +86,7 @@ void CScene_Main::Enter()
 	m_tMainPanel.pTitleMid->SetScale(Vec2(1035.f, 540.f));
 	m_tMainPanel.pTitleMid->SetName(L"Title_mid");
 	m_tMainPanel.pTitleMid->CreateImage();
-	m_tMainPanel.pTitleMid->AddImage(pD2DMgr->GetStoredBitmap(L"Title_mid"));
+	m_tMainPanel.pTitleMid->AddImage(pD2DMgr->GetStoredBitmap(L"splash_art_mist_mid"));
 	//m_tMainPanel.pTitleMid->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_mid"));
 	m_tMainPanel.pTitleMid->SetObjType(GROUP_TYPE::DEFAULT);
 	AddObject(m_tMainPanel.pTitleMid, GROUP_TYPE::DEFAULT);
@@ -97,7 +97,7 @@ void CScene_Main::Enter()
 	m_tMainPanel.pTitlefront->SetScale(Vec2(1035.f, 540.f));
 	m_tMainPanel.pTitlefront->SetName(L"Title_front");
 	m_tMainPanel.pTitlefront->CreateImage();
-	m_tMainPanel.pTitlefront->AddImage(pD2DMgr->GetStoredBitmap(L"Title_front"));
+	m_tMainPanel.pTitlefront->AddImage(pD2DMgr->GetStoredBitmap(L"splash_art_mist_front"));
 	//m_tMainPanel.pTitlefront->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_front"));
 	m_tMainPanel.pTitlefront->SetObjType(GROUP_TYPE::DEFAULT);
 	AddObject(m_tMainPanel.pTitlefront, GROUP_TYPE::DEFAULT);
@@ -108,7 +108,7 @@ void CScene_Main::Enter()
 	m_tMainPanel.pTitleBrotato->SetScale(Vec2(931.5f, 486.f));
 	m_tMainPanel.pTitleBrotato->SetName(L"Title_Brotato");
 	m_tMainPanel.pTitleBrotato->CreateImage();
-	m_tMainPanel.pTitleBrotato->AddImage(pD2DMgr->GetStoredBitmap(L"Title_Brotato"));
+	m_tMainPanel.pTitleBrotato->AddImage(pD2DMgr->GetStoredBitmap(L"splash_art_brotato"));
 	//m_tMainPanel.pTitleBrotato->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_Brotato"));
 	m_tMainPanel.pTitleBrotato->SetObjType(GROUP_TYPE::DEFAULT);
 	AddObject(m_tMainPanel.pTitleBrotato, GROUP_TYPE::DEFAULT);
@@ -119,7 +119,7 @@ void CScene_Main::Enter()
 	m_tMainPanel.pTitlelights->SetScale(Vec2(1035.f, 540.f));
 	m_tMainPanel.pTitlelights->SetName(L"Title_lights");
 	m_tMainPanel.pTitlelights->CreateImage();
-	m_tMainPanel.pTitlelights->AddImage(pD2DMgr->GetStoredBitmap(L"Title_lights"));
+	m_tMainPanel.pTitlelights->AddImage(pD2DMgr->GetStoredBitmap(L"splash_art_post_processing"));
 	//m_tMainPanel.pTitlelights->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Title_lights"));
 	m_tMainPanel.pTitlelights->SetObjType(GROUP_TYPE::DEFAULT);
 	AddObject(m_tMainPanel.pTitlelights, GROUP_TYPE::DEFAULT);
@@ -130,7 +130,7 @@ void CScene_Main::Enter()
 	m_tMainPanel.pTitlelogo->SetScale(Vec2(561.f, 165.f));
 	m_tMainPanel.pTitlelogo->SetName(L"Brotato_logo");
 	m_tMainPanel.pTitlelogo->CreateImage();
-	m_tMainPanel.pTitlelogo->AddImage(pD2DMgr->GetStoredBitmap(L"Brotato_logo"));
+	m_tMainPanel.pTitlelogo->AddImage(pD2DMgr->GetStoredBitmap(L"ui_logo"));
 	//m_tMainPanel.pTitlelogo->GetImage()->SetBitmap(pD2DMgr->GetStoredBitmap(L"Brotato_logo"));
 	m_tMainPanel.pTitlelogo->SetObjType(GROUP_TYPE::DEFAULT);
 	AddObject(m_tMainPanel.pTitlelogo, GROUP_TYPE::DEFAULT);
@@ -211,7 +211,7 @@ void CScene_Main::Enter()
 	CCamera::GetInstance()->SetLookAt(vResolution / 2.f);
 	
 	//처음 시작했을 때, BGM틀기. 
-	CSoundMgr::GetInstance()->Play(L"MainTitle", 0.2f);
+	CSoundMgr::GetInstance()->Play(L"main_title_bgm", 0.2f);
 }
 
 void CScene_Main::Exit()

@@ -175,6 +175,7 @@
     <ClInclude Include="CDamageUI.h" />
     <ClInclude Include="CDropItem.h" />
     <ClInclude Include="CEventMgr.h" />
+    <ClInclude Include="CFileMgr.h" />
     <ClInclude Include="CFontCollectionLoader.h" />
     <ClInclude Include="CFontFileEnumerator.h" />
     <ClInclude Include="CFontMgr.h" />
@@ -253,6 +254,7 @@
     <ClCompile Include="CDamageUI.cpp" />
     <ClCompile Include="CDropItem.cpp" />
     <ClCompile Include="CEventMgr.cpp" />
+    <ClCompile Include="CFileMgr.cpp" />
     <ClCompile Include="CFontCollectionLoader.cpp" />
     <ClCompile Include="CFontFileEnumerator.cpp" />
     <ClCompile Include="CFontMgr.cpp" />
