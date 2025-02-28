@@ -198,6 +198,23 @@ void CScene_Main::Enter()
 		, 0);
 	AddObject(pBtnTemp, GROUP_TYPE::UI);
 	//////////////////////////임시 버튼///////////////////////////
+
+	//////////////////////////임시 버튼///////////////////////////
+	CBtnUI* pBtnTemp2 = new CBtnUI;
+	pBtnTemp2->SetName(L"Temp2");
+	pBtnTemp2->SetObjType(GROUP_TYPE::UI);
+	pBtnTemp2->SetScale(Vec2(52.f, 34.f));
+	pBtnTemp2->SetPos(Vec2(51.f, 348.f + (12.f + 34.f) * 2.f));
+	pBtnTemp2->SetIsRound(true, 10.f, 10.f);
+	pBtnTemp2->SetColor(ColorNormalize(237, 237, 237), ColorNormalize(0, 0, 0));
+	pBtnTemp2->SetClickedCallBack(ChangeScene, (DWORD_PTR)SCENE_TYPE::RUN_END, 0);
+	pBtnTemp2->CreateTextUI(L"실패화면", Vec2(-26.f, -17.f), Vec2(26.f, 17.f)
+		, 20, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	AddObject(pBtnTemp2, GROUP_TYPE::UI);
+	//////////////////////////임시 버튼///////////////////////////
 	
 	//버튼 이벤트 등록.
 

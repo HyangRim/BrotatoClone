@@ -8,6 +8,7 @@
 #include "CScene_Test.h"
 #include "CScene_Select_Character.h"
 #include "CScene_Select_Weapon.h"
+#include "CScene_Run_End.h"
 
 #include "CEventMgr.h"
 #include "CWaveMgr.h"
@@ -50,6 +51,9 @@ void CSceneMgr::init()
 	m_arrScene[(UINT)SCENE_TYPE::SELECT_WEAPON] = new CScene_Select_Weapon;
 	m_arrScene[(UINT)SCENE_TYPE::SELECT_WEAPON]->SetName(L"Select Weapon Scene");
 
+	m_arrScene[(UINT)SCENE_TYPE::RUN_END] = new CScene_Run_End;
+	m_arrScene[(UINT)SCENE_TYPE::RUN_END]->SetName(L"Run End");
+
 	//m_arrScene[(UINT)SCENE_TYPE::STAGE_01] = new CScene_Stage01;
 	//m_arrScene[(UINT)SCENE_TYPE::STAGE_02] = new CScene_Stage02;
 
@@ -57,7 +61,7 @@ void CSceneMgr::init()
 	CWaveMgr::GetInstance()->WaveInit();
 
 	//ÇöÀç ¾À ¼³Á¤
-	m_pCurScene = m_arrScene[(UINT)SCENE_TYPE::MAIN];
+	m_pCurScene = m_arrScene[(UINT)SCENE_TYPE::RUN_END];
 
 	m_pCurScene->Enter();
 

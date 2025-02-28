@@ -65,9 +65,13 @@ enum class SCENE_TYPE {
 	SELECT_CHARACTER,
 	SELECT_WEAPON,
 	TEST,
+
 	STAGE_01,
 	STAGE_02,
 
+
+
+	RUN_END,
 	END,
 };
 

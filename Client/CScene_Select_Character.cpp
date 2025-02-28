@@ -44,7 +44,7 @@ void CScene_Select_Character::Enter()
 
 	/////////////////뒷 배경 오브젝트/////////////////
 	CObject* backGround = new CSpriteUI;
-	backGround->SetObjType(GROUP_TYPE::UI);
+	backGround->SetObjType(GROUP_TYPE::DEFAULT);
 	backGround->AddImage(pD2DMgr->GetStoredBitmap(L"shop_background"));
 	backGround->SetPos(vResolution/2.f);
 	backGround->SetScale(vResolution);

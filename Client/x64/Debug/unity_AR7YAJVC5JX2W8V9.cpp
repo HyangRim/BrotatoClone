@@ -122,6 +122,9 @@
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CScene_Main.cpp"
 
 
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CScene_Run_End.cpp"
+
+
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CScene_Select_Character.cpp"
 
 

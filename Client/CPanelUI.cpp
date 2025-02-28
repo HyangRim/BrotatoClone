@@ -11,6 +11,8 @@ CPanelUI::CPanelUI()
 	, m_fradiusY(10.f)
 	, m_colorMouseOn(D2D1::ColorF::White)
 	, m_colorNormal(D2D1::ColorF::White)
+	, m_fMouseOnAlpha(1.0f)
+	, m_fNormalAlpha(1.0f)
 {
 
 }
@@ -28,7 +30,7 @@ void CPanelUI::update()
 
 void CPanelUI::MouseOn()
 {
-	
+	/*
 	if (m_bCanMove && IsLbtnDown()) {
 		Vec2 vDiff = MOUSE_POS - m_vDragStart;
 
@@ -37,7 +39,7 @@ void CPanelUI::MouseOn()
 		SetPos(vCurPos);
 
 		m_vDragStart = MOUSE_POS;
-	}
+	}*/
 }
 
 void CPanelUI::MouseLbtnDown()
@@ -79,10 +81,19 @@ void CPanelUI::render(ID2D1HwndRenderTarget* _pRender)
 	);
 
 	ID2D1SolidColorBrush* pBrush = nullptr;
+	/*
 	HRESULT hr = _pRender->CreateSolidColorBrush(
 		m_bMouseOn ? m_colorMouseOn : m_colorNormal,
 		&pBrush
+	);*/
+
+	HRESULT hr = _pRender->CreateSolidColorBrush(
+		m_bMouseOn
+		? D2D1::ColorF(m_colorMouseOn.r, m_colorMouseOn.g, m_colorMouseOn.b, m_fMouseOnAlpha)
+		: D2D1::ColorF(m_colorNormal.r, m_colorNormal.g, m_colorNormal.b, m_fNormalAlpha),
+		&pBrush
 	);
+
 	if (SUCCEEDED(hr))
 	{
 		_pRender->FillRoundedRectangle(roundedRect, pBrush);
