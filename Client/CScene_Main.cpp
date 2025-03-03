@@ -136,34 +136,6 @@ void CScene_Main::Enter()
 	AddObject(m_tMainPanel.pTitlelogo, GROUP_TYPE::DEFAULT);
 
 
-	/*
-	//버튼 패널 추가.
-	CUI* pPanelUI = new CPanelUI;
-	pPanelUI->SetName(L"ParentUI");
-	pPanelUI->SetScale(Vec2(100.f, 200.f));
-	pPanelUI->SetPos(Vec2(80.f, 400.f));
-	((CPanelUI*)pPanelUI)->SetCanMove(false);
-	*/
-
-	/*
-	CBtnUI* backBtn = new CBtnUI;
-	backBtn->SetName(L"BackBtn");
-	backBtn->SetObjType(GROUP_TYPE::UI);
-	backBtn->SetScale(Vec2(94.f, 28.f));
-	backBtn->SetPos(Vec2(71.f, 38.f));
-	backBtn->SetIsRound(true, 10.f, 10.f);
-	backBtn->SetColor(ColorNormalize(237, 237, 237), ColorNormalize(28, 28, 28));
-	backBtn->SetClickedCallBack(ChangeScene, (DWORD_PTR)SCENE_TYPE::MAIN, 0);
-	backBtn->CreateTextUI(L"뒤로", Vec2(-47.f, -14.f), Vec2(47.f, 14.f)
-		, 12, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
-		, FONT_TYPE::KR
-		, TextUIMode::TEXT
-		, 0);
-	AddObject(backBtn, GROUP_TYPE::UI);
-	*/
-
-	//버튼 추가. 
-
 	//////////////////////////시작 버튼///////////////////////////
 	CBtnUI* pStartBtn = new CBtnUI;
 	pStartBtn->SetName(L"StartBtn");

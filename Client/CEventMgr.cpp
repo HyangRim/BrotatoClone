@@ -26,7 +26,7 @@ void CEventMgr::update()
 	//==================================================
 	////임시조치///
 	if (m_setDeadScheduled.size() > 0) {
-		wprintf(L"Delete Object: %d\n", m_setDeadScheduled.size());
+		wprintf(L"Delete Object: %zd\n", m_setDeadScheduled.size());
 	}
 
 	if(m_setDeadScheduled.size() > 0)

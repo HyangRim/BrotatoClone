@@ -23,9 +23,10 @@ void MakeMapTile(const WCHAR* _tileOutlinePath, const WCHAR* _tilesPath, const W
 	, int _blankTileWeight, int _otherTileWeight);
 
 
-void ShowCharacterInfo(DWORD_PTR param1, DWORD_PTR param2);
-void ShowWeaponInfo(DWORD_PTR param1, DWORD_PTR param2);
+void ShowCharacterInfo(DWORD_PTR lParam, DWORD_PTR wParam);
+void ShowWeaponInfo(DWORD_PTR lParam, DWORD_PTR wParam);
 void SelectCharacter(DWORD_PTR lParam, DWORD_PTR wParam);
+void SelectWeapon(DWORD_PTR lParam, DWORD_PTR wParam);
 void ChangeScene(DWORD_PTR, DWORD_PTR);
 
 template<typename T>

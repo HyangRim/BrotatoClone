@@ -41,6 +41,7 @@ void CScene_Select_Character::render(ID2D1HwndRenderTarget* _pRender)
 	CScene::render(_pRender);
 }
 
+
 void CScene_Select_Character::Enter()
 {
 	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
@@ -105,20 +106,21 @@ void CScene_Select_Character::Enter()
 			selectCharacterUI->SetName(L"TEST");
 			selectCharacterUI->SetUIType(UI_TYPE::BTN);
 
-			wstring tag = L"well_rounded";
+			wstring tag;
+			
+			CharacterMapping(selectCharacterUI, i, j, tag);
 			wstring* pTag = new wstring(tag);
-			if (i == 0 && j == 0) selectCharacterUI->AddImage(pD2DMgr->GetStoredBitmap(L"random_icon"));
-			else if (i == 0 && j == 1) selectCharacterUI->AddImage(pD2DMgr->GetStoredBitmap(L"well_rounded_icon"));
-			else if (i == 0 && j == 4) selectCharacterUI->AddImage(pD2DMgr->GetStoredBitmap(L"ranger_icon"));
-			else selectCharacterUI->AddImage(pD2DMgr->GetStoredBitmap(L"locked_icon"));
-
+			
 			CImage* image = selectCharacterUI->GetImage(0);
 			selectCharacterUI->SetOnCallBack(ShowCharacterInfo
 				, reinterpret_cast<DWORD_PTR>(image)
 				, reinterpret_cast<DWORD_PTR>(&selectCharacterUI->GetTrashCan()));
-			selectCharacterUI->SetClickedCallBack(SelectCharacter
-				, reinterpret_cast<DWORD_PTR>(pTag)
-				, reinterpret_cast<DWORD_PTR>(image));
+			if (tag.compare(L"") != 0)
+			{
+				selectCharacterUI->SetClickedCallBack(SelectCharacter
+					, reinterpret_cast<DWORD_PTR>(pTag)
+					, reinterpret_cast<DWORD_PTR>(nullptr));
+			}
 
 			selectCharacterUI->SetPos(startPos + Vec2((selectCharacterUI->GetScale().x + LR_interval) * j
 				, (selectCharacterUI->GetScale().y + UD_interval) * i));
@@ -131,6 +133,8 @@ void CScene_Select_Character::Enter()
 	//////////////////////////캐릭터들 UI////////////////////////
 }
 
+
+
 void CScene_Select_Character::Exit()
 {
 	DeleteAll();
@@ -138,11 +142,13 @@ void CScene_Select_Character::Exit()
 
 
 
-void ShowCharacterInfo(DWORD_PTR param1, DWORD_PTR param2)
+void ShowCharacterInfo(DWORD_PTR lParam, DWORD_PTR wParam)
 {
+	//lParam -> 이미지
+	//wParam -> 버튼에서 자체적으로 on이 해제되면 panel과 image를 delete 시키기 위해 저장해둘 벡터 포인터
 	printf("tesT\n");
-	CImage* image = reinterpret_cast<CImage*>(param1);
-	vector<CObject*>* tempObjects = reinterpret_cast<vector<CObject*>*>(param2);
+	CImage* image = reinterpret_cast<CImage*>(lParam);
+	vector<CObject*>* tempObjects = reinterpret_cast<vector<CObject*>*>(wParam);
 
 	if (image == nullptr || tempObjects == nullptr) return;
 
@@ -175,18 +181,77 @@ void ShowCharacterInfo(DWORD_PTR param1, DWORD_PTR param2)
 void SelectCharacter(DWORD_PTR lParam, DWORD_PTR wParam)
 {
 	// lParam -> 이미지 태그
-	// wParam -> 이미지
-
-	CImage* image = reinterpret_cast<CImage*>(wParam);
-	
-
-	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
-
+	// wParam -> x
+	wstring tag = *reinterpret_cast<wstring*>(lParam);
 	Item* basicCharater = new Item;
-	basicCharater->image = image;
+	basicCharater->tag = tag;
 	basicCharater->m_eItemType = ITEM_TYPE::PASSIVE;
 
 	ItemMgr::GetInstance()->SetBasicCharacter(basicCharater);
 
 	ChangeScene(SCENE_TYPE::SELECT_WEAPON);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void CScene_Select_Character::CharacterMapping(CBtnUI* _btn, int i, int j, wstring& tag)
+{
+	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+
+	if (i == 0 && j == 0)
+	{
+		_btn->AddImage(pD2DMgr->GetStoredBitmap(L"random_icon"));
+		tag = L"random_icon";
+	}
+	else if (i == 0 && j == 1)
+	{
+		_btn->AddImage(pD2DMgr->GetStoredBitmap(L"well_rounded_icon"));
+		tag = L"well_rounded_icon";
+	}
+	else if (i == 0 && j == 2)
+	{
+		_btn->AddImage(pD2DMgr->GetStoredBitmap(L"brawler_icon"));
+		tag = L"brawler_icon";
+	}
+	else if (i == 0 && j == 3)
+	{
+		_btn->AddImage(pD2DMgr->GetStoredBitmap(L"crazy_icon"));
+		tag = L"crazy_icon";
+	}
+	else if (i == 0 && j == 4)
+	{
+		_btn->AddImage(pD2DMgr->GetStoredBitmap(L"ranger_icon"));
+		tag = L"ranger_icon";
+	}
+	else if (i == 0 && j == 5)
+	{
+		_btn->AddImage(pD2DMgr->GetStoredBitmap(L"mage_icon"));
+		tag = L"mage_icon";
+	}
+	else if (i == 0 && j == 6)
+	{
+		_btn->AddImage(pD2DMgr->GetStoredBitmap(L"chunky_icon"));
+		tag = L"chunky_icon";
+	}
+	else _btn->AddImage(pD2DMgr->GetStoredBitmap(L"locked_icon"));
 }
