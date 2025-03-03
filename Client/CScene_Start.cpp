@@ -566,7 +566,7 @@ void CScene_Start::CreateLeftBtns()
 	returnToGameBtn->SetIsRound(true, 10.f, 10.f);
 	//returnToGameBtn->SetColor(ColorNormalize(237, 237, 237), ColorNormalize(0, 0, 0));
 	returnToGameBtn->SetClickedCallBack(this, (SCENE_MEMFUNC)&CScene_Start::OffPause);
-	returnToGameBtn->SetClickedCallBack(ChangeScene, (DWORD_PTR)SCENE_TYPE::MAIN, 0);
+	//returnToGameBtn->SetClickedCallBack(ChangeScene, (DWORD_PTR)SCENE_TYPE::MAIN, 0);
 	returnToGameBtn->CreateTextUI(L"Àç°³", -(returnToGameBtn->GetScale() / 2.f), (returnToGameBtn->GetScale() / 2.f)
 		, 20, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR
