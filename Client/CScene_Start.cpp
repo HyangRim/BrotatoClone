@@ -31,6 +31,7 @@
 #include "CImage.h"
 
 #include "Direct2DMgr.h"
+#include "CUIMgr.h"
 #include "CPanelUI.h"
 #include "CBtnUI.h"
 #include "CSpriteUI.h"
@@ -447,7 +448,7 @@ void CScene_Start::Enter()
 
 
 	//사운드 추가
-	CSoundMgr::GetInstance()->AddSound(L"extend", L"sound\\extend.wav", false, false);
+	//CSoundMgr::GetInstance()->AddSound(L"extend", L"sound\\extend.wav", false, false);
 
 	//이제 새로운 충돌이 발생할수도 있음. 
 	CCollisionMgr::GetInstance()->CheckGroup(GROUP_TYPE::PLAYER, GROUP_TYPE::MONSTER);
@@ -466,6 +467,7 @@ void CScene_Start::Enter()
 	*/
 	//웨이브 가능하도록 세팅.(Scene_Start에 들어오면 무조건 그 때 시작이니까.)
 	CWaveMgr::GetInstance()->WaveStart();
+	m_vecPauseObj.clear();
 	start();
 }
 
@@ -484,6 +486,7 @@ void CScene_Start::Exit()
 
 	//웨이브가 멈춤. 
 	CWaveMgr::GetInstance()->WaveStart();
+	m_vecPauseObj.clear();
 }
 
 void CScene_Start::CreateForce()
@@ -502,8 +505,9 @@ void CScene_Start::CreatePause()
 
 void CScene_Start::OnPause()
 {
-	ChangePause(true);
 	CreatePause();
+	ChangePause(true);
+
 }
 
 void CScene_Start::OffPause()
@@ -513,6 +517,7 @@ void CScene_Start::OffPause()
 	for (auto* pauseObj : m_vecPauseObj) {
 		DeleteObject(pauseObj);
 	}
+	CUIMgr::GetInstance()->SetFocusedUI(nullptr);
 	m_vecPauseObj.clear();
 	ChangePause(false);
 }
