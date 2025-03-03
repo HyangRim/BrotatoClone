@@ -103,7 +103,6 @@ void CSceneMgr::render(ID2D1HwndRenderTarget* _pRender)
 void CSceneMgr::ChangeScene(SCENE_TYPE _eNext)
 {
 	m_pCurScene->Exit();
-
 	m_pCurScene = m_arrScene[(UINT)_eNext];
 	m_pCurScene->Enter();
 }

@@ -17,6 +17,7 @@
 #include "Direct2DMgr.h"
 #include "CFontMgr.h"
 #include "CharacterInfoMgr.h"
+#include "ItemMgr.h"
 
 #include "SelectGDI.h"
 #include "Resource.h"
@@ -96,6 +97,7 @@ int CCore::init(HWND _hWnd, POINT _ptResolution) {
 
 	CFontMgr::GetInstance()->init();
 	CharacterInfoMgr::GetInstance()->init();
+	ItemMgr::GetInstance()->init();
 
 	return S_OK;
 }

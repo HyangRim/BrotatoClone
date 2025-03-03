@@ -191,6 +191,9 @@
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\func.cpp"
 
 
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\ItemMgr.cpp"
+
+
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\main.cpp"
 
 

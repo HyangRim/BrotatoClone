@@ -5,7 +5,11 @@
 #include "CCore.h"
 #include "CSpriteUI.h"
 #include "CBtnUI.h"
+#include "CPanelUI.h"
+#include "CImage.h"
 
+
+#include "CSceneMgr.h"
 #include "Direct2DMgr.h"
 
 CScene_Select_Weapon::CScene_Select_Weapon()
@@ -80,14 +84,14 @@ void CScene_Select_Weapon::Enter()
 	float UD_interval = 4.f;
 
 	Vec2 startPos(190.f, 380.f);
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 3; i++)
 	{
-		for (int j = 0; j < 11; j++)
+		for (int j = 0; j < 12; j++)
 		{
 			CBtnUI* selectCharacterUI = new CBtnUI;
 			selectCharacterUI->SetObjType(GROUP_TYPE::UI);
 			selectCharacterUI->SetScale(Vec2(48.f, 48.f));
-			selectCharacterUI->SetName(L"TEST");
+			selectCharacterUI->SetName(L"TEST12314");
 			selectCharacterUI->SetUIType(UI_TYPE::BTN);
 
 			if (i == 0 && j == 0) selectCharacterUI->AddImage(pD2DMgr->GetStoredBitmap(L"random_icon"));
@@ -112,5 +116,5 @@ void CScene_Select_Weapon::Enter()
 
 void CScene_Select_Weapon::Exit()
 {
-
+	DeleteAll();
 }

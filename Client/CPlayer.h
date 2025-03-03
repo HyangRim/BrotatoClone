@@ -1,6 +1,6 @@
 #pragma once
 #include "CObject.h"
-
+#include "CharacterInfoMgr.h"
 
 enum class PLAYER_STATE {
     IDLE,
@@ -24,8 +24,9 @@ struct playerParameter {
 
     //캐릭터에 의해 추가될 수 있는 파라미터
 
-    float			m_fDefaultSpeed;	// 기본 스피드. 
-
+    tCharacterInfo*         m_stCharacterInfo;
+    
+    float			m_fDefaultSpeed;	// 기본 스피드.
     int				m_AddMaxHP;			// + 최대 체력
     float			m_fDamageCoef;		//최종뎀 %
     float			m_fMeleeCoef;		//근거리 최종뎀 %
@@ -66,6 +67,10 @@ private:
     };
 
 public:
+    void SetCharacterParam(tCharacterInfo* _characterInfo) { m_tPlayerInfo.m_stCharacterInfo = _characterInfo; }
+    tCharacterInfo* GetCharacterParam() { return m_tPlayerInfo.m_stCharacterInfo; }
+
+public:
     virtual void update();
     virtual void render(HDC _dc);
     virtual void render(Gdiplus::Graphics* _pDGraphics);
@@ -74,7 +79,7 @@ public:
 public:
     bool AddWeapon(CWeapon* _pWeapon);  //무기 리스트에 무기 넣는 함수. 
     bool DeleteWeapon(CWeapon* _pWeapon);
-    int  GetWeaponCount() { return m_listWeapon.size(); }
+    size_t  GetWeaponCount() { return m_listWeapon.size(); }
 
     const playerParameter& GetPlayerInfo() { return m_tPlayerInfo; }
 

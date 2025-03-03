@@ -74,7 +74,7 @@ void CScene_Run_End::Enter()
 		, TextUIMode::TEXT
 		, 0);
 	rerunBtn->SetPos(Vec2(244.f, 506.f));
-	AddObject(rerunBtn, GROUP_TYPE::UI);
+	AddObject(rerunBtn, GROUP_TYPE::DEFAULT);
 	/////////////////재시작 버튼//////////////////////
 
 	/////////////////새로달리기 버튼//////////////////

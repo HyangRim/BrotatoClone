@@ -24,9 +24,11 @@ public:
 
 public:
 	CScene* GetCurScene() { return m_pCurScene; }
+	CScene* GetScene(SCENE_TYPE _eType) { return m_arrScene[(UINT)_eType]; }
 
 private:
 
 	void ChangeScene(SCENE_TYPE _eNext);
 	friend class CEventMgr;
+	friend class CScene_Select_Character;
 };

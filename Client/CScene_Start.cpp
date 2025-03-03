@@ -664,7 +664,7 @@ void CScene_Start::CreateMiddleInfo()
 	weaponCountText->SetObjType(GROUP_TYPE::UI);
 	weaponCountText->SetPos(Vec2(410.f, 170.f));
 	weaponCountText->SetScale(Vec2(196.f, 35.f));
-	swprintf_s(buffer, L"무기(%d/6)", static_cast<CPlayer*>((CSceneMgr::GetInstance()->GetCurScene()->GetPlayer()))->GetWeaponCount());
+	swprintf_s(buffer, L"무기(%zd/6)", static_cast<CPlayer*>((CSceneMgr::GetInstance()->GetCurScene()->GetPlayer()))->GetWeaponCount());
 
 
 	weaponCountText->CreateTextUI(buffer, -(weaponCountText->GetScale() / 2.f), (weaponCountText->GetScale() / 2.f)

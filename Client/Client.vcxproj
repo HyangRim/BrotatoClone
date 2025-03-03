@@ -236,6 +236,7 @@
     <ClInclude Include="CMissile.h" />
     <ClInclude Include="func.h" />
     <ClInclude Include="global.h" />
+    <ClInclude Include="ItemMgr.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SelectGDI.h" />
@@ -311,6 +312,7 @@
     <ClCompile Include="CWeapon.cpp" />
     <ClCompile Include="Direct2DMgr.cpp" />
     <ClCompile Include="func.cpp" />
+    <ClCompile Include="ItemMgr.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="CMissile.cpp" />
     <ClCompile Include="SelectGDI.cpp" />

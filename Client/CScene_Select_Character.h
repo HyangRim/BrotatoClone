@@ -1,5 +1,6 @@
 #pragma once
 #include "CScene.h"
+#include "CharacterInfoMgr.h"
 
 class CBtnUI;
 
@@ -8,9 +9,6 @@ class CScene_Select_Character :
 {
 private:
     vector<CBtnUI*> m_vCharaters;
-
-
-
 public:
     virtual void update();
     virtual void render(ID2D1HwndRenderTarget* _pRender);

@@ -6,11 +6,15 @@
 #include "CBtnUI.h"
 #include "CPanelUI.h"
 #include "CImage.h"
+#include "CPlayer.h"
 
 #include "CSceneMgr.h"
 #include "Direct2DMgr.h"
+#include "CharacterInfoMgr.h"
+#include "ItemMgr.h"
 
 #include "CScene_Select_Character.h"
+#include "CScene_Select_Weapon.h"
 
 CScene_Select_Character::CScene_Select_Character()
 {
@@ -101,14 +105,20 @@ void CScene_Select_Character::Enter()
 			selectCharacterUI->SetName(L"TEST");
 			selectCharacterUI->SetUIType(UI_TYPE::BTN);
 
+			wstring tag = L"well_rounded";
+			wstring* pTag = new wstring(tag);
 			if (i == 0 && j == 0) selectCharacterUI->AddImage(pD2DMgr->GetStoredBitmap(L"random_icon"));
 			else if (i == 0 && j == 1) selectCharacterUI->AddImage(pD2DMgr->GetStoredBitmap(L"well_rounded_icon"));
+			else if (i == 0 && j == 4) selectCharacterUI->AddImage(pD2DMgr->GetStoredBitmap(L"ranger_icon"));
 			else selectCharacterUI->AddImage(pD2DMgr->GetStoredBitmap(L"locked_icon"));
 
 			CImage* image = selectCharacterUI->GetImage(0);
 			selectCharacterUI->SetOnCallBack(ShowCharacterInfo
 				, reinterpret_cast<DWORD_PTR>(image)
 				, reinterpret_cast<DWORD_PTR>(&selectCharacterUI->GetTrashCan()));
+			selectCharacterUI->SetClickedCallBack(SelectCharacter
+				, reinterpret_cast<DWORD_PTR>(pTag)
+				, reinterpret_cast<DWORD_PTR>(image));
 
 			selectCharacterUI->SetPos(startPos + Vec2((selectCharacterUI->GetScale().x + LR_interval) * j
 				, (selectCharacterUI->GetScale().y + UD_interval) * i));
@@ -137,13 +147,12 @@ void ShowCharacterInfo(DWORD_PTR param1, DWORD_PTR param2)
 	if (image == nullptr || tempObjects == nullptr) return;
 
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
-
 	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
 
-	CPanelUI* panel = new CPanelUI;
+	CPanelUI* panel = new CPanelUI;	
+	panel->SetScale(Vec2(186.f, 250.f));
 	panel->SetPos(Vec2(vResolution.x / 2.f, 210.f));
 	panel->SetName(L"Parent");
-	panel->SetScale(Vec2(186.f, 250.f));
 	panel->SetRadius(10.f, 10.f);
 	panel->SetColor(ColorNormalize(0, 0, 0), ColorNormalize(0, 0, 0));
 
@@ -159,8 +168,25 @@ void ShowCharacterInfo(DWORD_PTR param1, DWORD_PTR param2)
 	panel->AddChild((CUI*)characterImage);
 
 	CSceneMgr::GetInstance()->GetCurScene()->AddObject(panel, GROUP_TYPE::UI);
-	//CSceneMgr::GetInstance()->GetCurScene()->AddObject(characterImage, GROUP_TYPE::UI);
 
-	//tempObjects->push_back(characterImage);
 	tempObjects->push_back(panel);
+}
+
+void SelectCharacter(DWORD_PTR lParam, DWORD_PTR wParam)
+{
+	// lParam -> 이미지 태그
+	// wParam -> 이미지
+
+	CImage* image = reinterpret_cast<CImage*>(wParam);
+	
+
+	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+
+	Item* basicCharater = new Item;
+	basicCharater->image = image;
+	basicCharater->m_eItemType = ITEM_TYPE::PASSIVE;
+
+	ItemMgr::GetInstance()->SetBasicCharacter(basicCharater);
+
+	ChangeScene(SCENE_TYPE::SELECT_WEAPON);
 }

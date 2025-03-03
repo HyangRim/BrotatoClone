@@ -152,3 +152,9 @@ enum class UI_TYPE
 	END,
 };
 
+enum class ITEM_TYPE
+{
+	WEAPON,
+	PASSIVE,
+	END,
+};

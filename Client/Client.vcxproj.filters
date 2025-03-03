@@ -227,6 +227,9 @@
     <Filter Include="Engine\05. Scene\Scene_Run_End">
       <UniqueIdentifier>{12051162-c7c0-47a3-adbb-62dd93170e26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\03. Manager\ItemMgr">
+      <UniqueIdentifier>{2c604962-75f2-430f-9f53-a2348d06c1c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h">
@@ -455,6 +458,9 @@
     <ClInclude Include="CScene_Run_End.h">
       <Filter>Engine\05. Scene\Scene_Run_End</Filter>
     </ClInclude>
+    <ClInclude Include="ItemMgr.h">
+      <Filter>Engine\03. Manager\ItemMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -674,6 +680,9 @@
     </ClCompile>
     <ClCompile Include="CScene_Run_End.cpp">
       <Filter>Engine\05. Scene\Scene_Run_End</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemMgr.cpp">
+      <Filter>Engine\03. Manager\ItemMgr</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

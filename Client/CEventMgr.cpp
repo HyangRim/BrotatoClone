@@ -28,7 +28,7 @@ void CEventMgr::update()
 
 	if(m_setDeadScheduled.size() > 0)
 	{
-		wprintf(L"Size : %d\n", m_setDeadScheduled.size());
+		wprintf(L"Size : %zd\n", m_setDeadScheduled.size());
 	}
 
 	

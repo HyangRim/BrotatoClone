@@ -1,7 +1,5 @@
 #pragma once
 
-
-
 struct tCharacterInfo
 {
 	wstring         m_sName;			// 플레이어 이름. 
@@ -18,7 +16,6 @@ struct tCharacterInfo
 	float			m_fSpeed;			// 속도 계수.
 };
 
-/*
 tCharacterInfo NormalInfo = {
 	NormalInfo.m_sName = L"다재다능",
 	NormalInfo.m_eType = CHAR_TYPE::WELL_ROUNDED,
@@ -31,7 +28,7 @@ tCharacterInfo NormalInfo = {
 	NormalInfo.m_iCriticalAcc = 1.f,
 	NormalInfo.m_fSpeed = 1.f
 };
-
+/*
 tCharacterInfo NormalInfo = {
 	NormalInfo.m_sName = L"레인저",
 	NormalInfo.m_eType = CHAR_TYPE::RANGER,
@@ -53,6 +50,11 @@ class CharacterInfoMgr
 private:
 	//임시, 확정 x
 	map<wstring, tCharacterInfo*> m_characterStatData;
+public:
+	tCharacterInfo* GetCharacterInfo(const wstring& tag)
+	{
+		return m_characterStatData[tag];
+	}
 
 public:
 	void init();
