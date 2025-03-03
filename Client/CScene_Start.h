@@ -1,5 +1,7 @@
 #pragma once
 #include "CScene.h"
+
+class CPanelUI;
 class CScene_Start :
     public CScene
 {
@@ -11,6 +13,9 @@ private:
     float   m_fCurRadius;
     float   m_fForce;
     bool    m_bUseForce;
+    CPanelUI* m_pPausePanel;
+    vector<CObject*> m_vecPauseObj;
+    
 
 
 public:
@@ -28,6 +33,16 @@ public:
 
 public:
     void CreateForce();
+
+
+private:
+    void CreatePause();
+    void CreateLeftBtns();
+    void CreateMiddleInfo();
+    void CreateInfoPanel();
+
+    void OnPause();
+    void OffPause();
 
 public:
     CScene_Start();

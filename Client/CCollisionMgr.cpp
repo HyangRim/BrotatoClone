@@ -21,7 +21,7 @@ CCollisionMgr::~CCollisionMgr() {
 
 void CCollisionMgr::update()
 {
-
+	if (CScene::GetPause()) return;
 	//표를 확인하면서, 비트값이 ON되어 있다면 충돌하고,
 	//OFF라면 충돌하지 않음.
 

@@ -74,6 +74,7 @@ public:
 public:
     bool AddWeapon(CWeapon* _pWeapon);  //무기 리스트에 무기 넣는 함수. 
     bool DeleteWeapon(CWeapon* _pWeapon);
+    int  GetWeaponCount() { return m_listWeapon.size(); }
 
     const playerParameter& GetPlayerInfo() { return m_tPlayerInfo; }
 

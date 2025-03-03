@@ -31,8 +31,11 @@ CSceneMgr::~CSceneMgr() {
 
 void CSceneMgr::init()
 {
-	//Scene 持失
 
+	//Pause Init
+	
+	//Scene 持失
+	
 	m_arrScene[(UINT)SCENE_TYPE::MAIN] = new CScene_Main;
 	m_arrScene[(UINT)SCENE_TYPE::MAIN]->SetName(L"Main Title Scene");
 
@@ -70,8 +73,8 @@ void CSceneMgr::init()
 
 void CSceneMgr::update()
 {
-
 	m_pCurScene->update();
+	
 
 	m_pCurScene->finalupdate();
 
