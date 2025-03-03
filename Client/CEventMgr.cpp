@@ -26,12 +26,18 @@ void CEventMgr::update()
 	//==================================================
 	////임시조치///
 
+	if(m_setDeadScheduled.size() > 0)
+	{
+		wprintf(L"Size : %d\n", m_setDeadScheduled.size());
+	}
+
+	
 	for (auto deadObjectPtr  : m_setDeadScheduled) {
 
 		
 		delete deadObjectPtr;
 	}
-
+	
 	m_setDeadScheduled.clear();
 	///////
 	//  ===============
