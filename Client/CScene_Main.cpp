@@ -226,9 +226,11 @@ void CScene_Main::Enter()
 
 	//카메라 위치 세팅. 
 	CCamera::GetInstance()->SetLookAt(vResolution / 2.f);
-	
+	wstring mainTitleBGMKey = L"main_title_bgm";
 	//처음 시작했을 때, BGM틀기. 
-	CSoundMgr::GetInstance()->Play(L"main_title_bgm", 0.2f);
+	if (!CSoundMgr::GetInstance()->IsPlaySound(mainTitleBGMKey)) {
+		CSoundMgr::GetInstance()->Play(mainTitleBGMKey, 0.4f);
+	}
 }
 
 void CScene_Main::Exit()
@@ -240,6 +242,7 @@ void CScene_Main::update()
 {
 	CScene::update();
 
+	
 
 	m_fPanelMoveElapsed += fDT;
 	m_fBrotatoElased += fDT;

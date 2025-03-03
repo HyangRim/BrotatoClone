@@ -131,8 +131,9 @@ CPlayer::~CPlayer()
 
 void CPlayer::update()
 {
-	CObject::update();
+	if (CScene::GetPause()) return;
 
+	CObject::update();
 	update_move();
 	update_state();
 	update_animation();

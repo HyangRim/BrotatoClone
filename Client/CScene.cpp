@@ -14,6 +14,9 @@
 #include "CImage.h"
 
 
+
+bool CScene::isPause = false;
+
 CScene::CScene()
 
 	: m_iTileX(0)
@@ -458,4 +461,17 @@ void CScene::LoadTile(const wstring& _strRelativePath)
 	}
 
 	fclose(pFile);
+}
+
+//static ÇÔ¼ö. 
+void CScene::ChangePause(bool _bPause)
+{
+	if (true == _bPause) {
+		CScene::isPause = _bPause;
+		CTimeMgr::GetInstance()->SetTimeScale(0.f);
+	}
+	else if (false == _bPause) {
+		CScene::isPause = _bPause;
+		CTimeMgr::GetInstance()->SetTimeScale(1.f);
+	}
 }
