@@ -8,6 +8,7 @@ class CCore {
 	SINGLE(CCore);
 
 private:
+	float m_scrollSpeed; // 스크롤 속도 (기본값: 30.0f)
 	HWND		m_hWnd;				//메인 윈도우 핸들. 
 	POINT		m_ptResolution;		//메인 윈도우 해상도
 
@@ -43,6 +44,9 @@ private:
 private:
 	void Clear();
 	void CreateBrushPen();
+public:
+	void SetScrollSpeed(float speed); // 스크롤 속도 설정
+	float GetScrollSpeed() const;    // 현재 스크롤 속도 가져오기
 
 public:
 	int init(HWND _hWnd, POINT _ptResolution);

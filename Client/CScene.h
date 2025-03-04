@@ -14,6 +14,7 @@ private:
 	vector<CObject*> m_arrObj[(UINT)GROUP_TYPE::END];		//벡터 안에 모든 오브젝트 집어 넣겠다. 이런 특성(요소)를 가진만큼 나눠주기.
 	//달리말하면 그룹 갯수만큼 나눠주기.
 
+	SCENE_TYPE		m_eType;
 	wstring			m_strName; //Scene 이름
 
 	UINT			m_iTileX;		//타일 가로 개수
@@ -28,6 +29,8 @@ public:
 	UINT GetTileX() { return m_iTileX; }
 	UINT GetTileY() { return m_iTileY; }
 
+	SCENE_TYPE GetSceneType() { return m_eType; }
+	void SetSceneType(SCENE_TYPE _eType) { m_eType = _eType; }
 	CObject* GetPlayer() { return m_pPlayer; }
 
 	virtual void start();

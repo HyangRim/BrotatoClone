@@ -33,6 +33,7 @@ void CScene_Shop::update()
 void CScene_Shop::render(ID2D1HwndRenderTarget* _pRender)
 {
 	CScene::render(_pRender);
+	RenderScrollArea(_pRender);
 }
 
 void CScene_Shop::Enter()
@@ -166,6 +167,8 @@ void CScene_Shop::Enter()
 	/////////////////다음 웨이브 버튼/////////////////
 
 	CreateInfoPanel();
+
+	CreateScrollArea();
 }
 
 void CScene_Shop::Exit()
@@ -173,6 +176,59 @@ void CScene_Shop::Exit()
 	DeleteAll();
 }
 
+void CScene_Shop::CreateScrollArea()
+{
+	Vec2 vResolution = CCore::GetInstance()->GetResolution();
+	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+
+	// 스크롤 영역 설정
+	m_scrollArea.viewRect = D2D1::RectF(8.f, 408.f, 508.f, 562.f);
+	m_scrollArea.contentRect = D2D1::RectF(0.f, 0.f, 500.f, 800.f);
+	m_scrollArea.scrollPos = D2D1::Point2F(0, 0);
+
+	// 스크롤 내용 생성 (예: 여러 개의 아이템)
+	for (int i = 0; i < 3; ++i)
+	{
+		CObject* item = new CSpriteUI;
+		//item->SetObjType(GROUP_TYPE::UI);
+		item->AddImage(pD2DMgr->GetStoredBitmap(L"well_rounded_icon")); // 적절한 아이템 아이콘으로 변경
+		item->SetPos(Vec2(24.f + i * (50.f), 27.f)); //contentRect기준 offset개념으로 접근
+		item->SetScale(Vec2(60.f, 60.f));
+
+		m_scrollContent.push_back(item);
+	}
+}
+
+void CScene_Shop::UpdateScrollPosition(float deltaY)
+{
+	m_scrollArea.scrollPos.y += deltaY;
+	m_scrollArea.scrollPos.y = max(0.f, min(m_scrollArea.scrollPos.y,
+		m_scrollArea.contentRect.bottom - (m_scrollArea.viewRect.bottom - m_scrollArea.viewRect.top)));
+}
+
+void CScene_Shop::RenderScrollArea(ID2D1HwndRenderTarget* _pRender)
+{
+	if (!_pRender) return;
+
+	//외부영역은 안 그리게
+	_pRender->PushAxisAlignedClip(m_scrollArea.viewRect, D2D1_ANTIALIAS_MODE_PER_PRIMITIVE);
+
+	//변환 행렬
+	D2D1::Matrix3x2F transform = D2D1::Matrix3x2F::Translation(
+		m_scrollArea.viewRect.left - m_scrollArea.scrollPos.x,
+		m_scrollArea.viewRect.top - m_scrollArea.scrollPos.y
+	);
+	_pRender->SetTransform(transform);
+
+	for (auto& item : m_scrollContent)
+	{
+		item->finalupdate();
+		item->render(_pRender);
+	}
+
+	_pRender->SetTransform(D2D1::Matrix3x2F::Identity());
+	_pRender->PopAxisAlignedClip();
+}
 
 void CScene_Shop::CreateInfoPanel()
 {

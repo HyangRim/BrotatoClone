@@ -58,6 +58,7 @@ void CSceneMgr::init()
 
 	m_arrScene[(UINT)SCENE_TYPE::SHOP] = new CScene_Shop;
 	m_arrScene[(UINT)SCENE_TYPE::SHOP]->SetName(L"Shop Scene");
+	m_arrScene[(UINT)SCENE_TYPE::SHOP]->SetSceneType(SCENE_TYPE::SHOP);
 
 	m_arrScene[(UINT)SCENE_TYPE::RUN_END] = new CScene_Run_End;
 	m_arrScene[(UINT)SCENE_TYPE::RUN_END]->SetName(L"Run End");

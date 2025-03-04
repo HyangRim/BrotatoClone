@@ -6,6 +6,10 @@
 #include "framework.h"
 #include "Client.h"
 #include "CCore.h"
+#include "CScene_Shop.h"
+#include "CScene.h"
+#include "CSceneMgr.h"
+#include "CkeyMgr.h"
 
 #include <crtdbg.h>
 
@@ -255,7 +259,29 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
+    case WM_MOUSEWHEEL:
+    {
+        int zDelta = GET_WHEEL_DELTA_WPARAM(wParam);
+        float scrollDelta = -zDelta / WHEEL_DELTA * CCore::GetInstance()->GetScrollSpeed(); // 스크롤 속도 적용
 
+        CScene* pCurScene = CSceneMgr::GetInstance()->GetCurScene();
+        if (pCurScene->GetSceneType() == SCENE_TYPE::SHOP) {
+            CScene_Shop* pShopScene = dynamic_cast<CScene_Shop*>(pCurScene);
+            if (pShopScene) {
+
+                Vec2 vMPos = MOUSE_POS;
+                D2D1_RECT_F viewRect = pShopScene->GetScrollArea().viewRect;
+                if (vMPos.x >= viewRect.left && vMPos.x <= viewRect.right &&
+                    vMPos.y >= viewRect.top && vMPos.y <= viewRect.bottom) {
+                    // 스크롤 영역 내부일 때만 스크롤 적용
+                    pShopScene->UpdateScrollPosition(scrollDelta);
+                    InvalidateRect(hWnd, NULL, FALSE);
+                }
+
+            }
+        }
+    }
+    break;
     case WM_KEYDOWN:
     {
     }

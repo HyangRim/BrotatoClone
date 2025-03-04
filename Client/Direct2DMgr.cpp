@@ -324,6 +324,8 @@ HRESULT Direct2DMgr::StoreBitmapsFromFolder(const wstring& folderPath, const wst
 }
 
 
+
+
 void Direct2DMgr::RenderText(const std::wstring& text, const D2D1_RECT_F& layoutRect, FONT_TYPE fontType, float fontSize, const D2D1_COLOR_F& color)
 {
     if (!pRenderTarget) return;

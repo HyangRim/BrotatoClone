@@ -50,10 +50,18 @@ CCore::~CCore() {
 	Gdiplus::GdiplusShutdown(gdiplusToken);
 }
 
+void CCore::SetScrollSpeed(float speed) {
+	m_scrollSpeed = max(1.0f, speed); // 최소 속도 제한 (1.0f)
+}
+
+float CCore::GetScrollSpeed() const {
+	return m_scrollSpeed;
+}
 
 int CCore::init(HWND _hWnd, POINT _ptResolution) {
 	m_hWnd = _hWnd;
 	m_ptResolution = _ptResolution;
+	m_scrollSpeed = 30.f;
 
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 

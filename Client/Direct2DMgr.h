@@ -2,6 +2,12 @@
 
 #include "CFontMgr.h"
 
+struct ScrollArea {
+	D2D1_RECT_F viewRect;     // 화면에 표시되는 영역
+	D2D1_RECT_F contentRect;  // 전체 콘텐츠 영역
+	D2D1_POINT_2F scrollPos;  // 현재 스크롤 위치
+};
+
 class Direct2DMgr
 {
 	SINGLE(Direct2DMgr)
@@ -24,6 +30,8 @@ private:
 
 public:
 	ID2D1HwndRenderTarget* GetRenderTarget() { return pRenderTarget; }
+
+
 public:
 	HRESULT init(HWND hwnd);									//초기화함수
 
