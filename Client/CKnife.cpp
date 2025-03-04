@@ -21,6 +21,7 @@ CKnife::CKnife()
 	tWeaponInfo	tInfo = {};
 	SetName(L"Knife");
 	tInfo.m_sName = L"Knife";
+	tInfo.m_sIconImageKey = L"knife_icon";
 	tInfo.m_eType = WEAPON_TYPE::KNIFE;
 	tInfo.m_fCooldown = 1.01f;
 	tInfo.m_fCritialDMG = 2.5f;

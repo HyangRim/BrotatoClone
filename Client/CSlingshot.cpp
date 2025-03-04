@@ -17,6 +17,7 @@ CSlingshot::CSlingshot()
 	tWeaponInfo	tInfo = {};
 
 	tInfo.m_sName = L"Slingshot";
+	tInfo.m_sIconImageKey = L"slingshot_icon";
 	tInfo.m_eType = WEAPON_TYPE::PISTOL;
 	tInfo.m_fCooldown = 1.22f;
 	tInfo.m_fCritialDMG = 2.f;

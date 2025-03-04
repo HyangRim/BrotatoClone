@@ -16,6 +16,7 @@ CPistol::CPistol()
 	tWeaponInfo	tInfo = {};
 
 	tInfo.m_sName = L"Pistol";
+	tInfo.m_sIconImageKey = L"pistol_icon";
 	tInfo.m_eType = WEAPON_TYPE::PISTOL;
 	tInfo.m_fCooldown = 1.2f;
 	tInfo.m_fCritialDMG = 2.f;
