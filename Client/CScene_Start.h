@@ -47,9 +47,10 @@ private:
     void CreateLeftBtns();
     void CreateMiddleInfo();
     void CreateInfoPanel();
-
+    void CreateLevelUpShop();
     void OnPause();
     void OffPause();
+
 
 
 public:

@@ -27,7 +27,10 @@ private:
 
     D2D1::ColorF        m_RedColor;
 
-    bool                m_bCamAffected;          //카메라 영향 받느냐, 안 받느냐. 
+    bool                m_bCamAffected;         //카메라 영향 받느냐, 안 받느냐.
+
+    int                 m_iHorizontal;          //0 : Center, 1 : Left, 2 : Right(미구현)
+    int                 m_iVertical;
 
 public:
     //UI모드 설정
@@ -53,6 +56,9 @@ public:
 public:
     void SetOffsetLT(Vec2 _vOffsetLT) { m_vOffsetLT = _vOffsetLT; }
     void SetOffsetRB(Vec2 _vOffsetRB) { m_vOffsetRB = _vOffsetRB; }
+
+    void SetHorizontal(int _iHorizontal) { m_iHorizontal = _iHorizontal; }
+    void SetVertical(int _iVertical) { m_iVertical = _iVertical; }
 
 public:
     // 텍스트 설정

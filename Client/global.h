@@ -39,6 +39,7 @@ using std::make_pair;
 using std::unordered_map;
 
 #include <string>
+#include <string_view>
 using std::string;
 using std::wstring;
 
@@ -65,12 +66,14 @@ std::uniform_int_distribution<int> random_distribution(0, 100);
 using namespace Gdiplus;
 
 #include <utility>
+#include <algorithm>
 
 
 #include "define.h"
 #include "struct.h"
 #include "func.h"
 #include "item_string.h"
+#include "upgrade_string.h"
 
 
 std::random_device rd;
