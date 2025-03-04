@@ -5,7 +5,9 @@
 #include "CObject.h"
 #include "CBtnUI.h"
 #include "CImage.h"
+#include "CObject.h"
 #include "CPanelUI.h"
+#include "CTextUI.h"
 
 #include "Direct2DMgr.h"
 #include "CWaveMgr.h"
@@ -27,11 +29,27 @@ CScene_Shop::~CScene_Shop()
 
 void CScene_Shop::update()
 {
-	CScene::update();
+	//CScene::update();
 
-
-
-
+	wchar_t buffer[20];
+	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; typeIDX++) 
+	{
+		const vector<CObject*>& vecObj = GetGroupObject((GROUP_TYPE)typeIDX);
+		
+		///////////////////////////////////////////
+		for (size_t objIDX = 0; objIDX < vecObj.size(); objIDX++) 
+		{
+			if (!vecObj[objIDX]->IsDead()) 
+			{
+				if (vecObj[objIDX]->GetName().compare(L"RestCoin") == 0)
+				{
+					swprintf_s(buffer, L"%d", ((CPlayer*)CSceneMgr::GetInstance()->GetPlayer())->GetCharacterParam().m_iCoin);
+					vecObj[objIDX]->GetTextUI()->SetText(buffer);
+				}
+				vecObj[objIDX]->update();
+			}
+		}
+	}
 }
 
 void CScene_Shop::render(ID2D1HwndRenderTarget* _pRender)
@@ -109,7 +127,7 @@ void CScene_Shop::Enter()
 	resetBtn->SetColor(ColorNormalize(237, 237, 237), ColorNormalize(0, 0, 0));
 
 	//returnToGameBtn->SetClickedCallBack(this, (SCENE_MEMFUNC)&CScene_Start::OffPause);
-	//resetBtn->SetClickedCallBack(this, (CSCENE_SHOP_MEMFUNC)&CScene_Shop::ReRollItemPanel);
+	resetBtn->SetClickedCallBack(this, static_cast<SCENE_MEMFUNC>(&CScene_Shop::ReRollItem));
 	resetBtn->CreateTextUI(L"초기화 -1", -(resetBtn->GetScale() / 2.f), resetBtn->GetScale() / 2.f
 		, 16, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR
@@ -131,6 +149,7 @@ void CScene_Shop::Enter()
 
 	///////////////////////////남은 재화 표시///////////////////
 	CObject* panelTextCurCoin = new CSpriteUI;
+	panelTextCurCoin->SetName(L"RestCoin");
 	panelTextCurCoin->SetObjType(GROUP_TYPE::UI);
 	panelTextCurCoin->SetPos(Vec2(386.f, 32.f));
 	panelTextCurCoin->SetScale(Vec2(32.f, 22.f));
@@ -269,6 +288,33 @@ void CScene_Shop::RenderScrollArea(ID2D1HwndRenderTarget* _pRender)
 	_pRender->PopAxisAlignedClip();
 }
 
+void CScene_Shop::ReRollItem()
+{
+	if (static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->GetCharacterParam().m_iCoin < 1)
+		return;
+
+	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+	vector<int> item_numbers;
+	for (int i = 0; i < 4; i++)
+	{
+		item_numbers.push_back(rand() % item_tag_list.size());
+	}
+	wstring iconTag;
+
+	for (int i = 0; i < 4; i++)
+	{
+		Vec2 vPos = Vec2(35.f, 35.f) - (m_vItemPanels[i]->GetScale() / 2.f);
+		const vector<CUI*>& childs = m_vItemPanels[i]->GetChildsUI();
+		childs[0]->DeleteImage();
+		iconTag = item_tag_list[item_numbers[i]] + L"_icon";
+		childs[0]->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
+		childs[0]->GetImage(0)->SetOffset(vPos);
+	}
+
+	static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->DecreaseCoin(1);
+	int a = static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->GetCharacterParam().m_iCoin;
+	int b = 0;
+}
 
 
 
