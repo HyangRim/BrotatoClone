@@ -212,6 +212,7 @@
     <ClInclude Include="CScene_Run_End.h" />
     <ClInclude Include="CScene_Select_Character.h" />
     <ClInclude Include="CScene_Select_Weapon.h" />
+    <ClInclude Include="CScene_Shop.h" />
     <ClInclude Include="CScene_Start.h" />
     <ClInclude Include="CScene_Test.h" />
     <ClInclude Include="CScene_Tool.h" />
@@ -292,6 +293,7 @@
     <ClCompile Include="CScene_Run_End.cpp" />
     <ClCompile Include="CScene_Select_Character.cpp" />
     <ClCompile Include="CScene_Select_Weapon.cpp" />
+    <ClCompile Include="CScene_Shop.cpp" />
     <ClCompile Include="CScene_Start.cpp" />
     <ClCompile Include="CScene_Test.cpp" />
     <ClCompile Include="CScene_Tool.cpp" />

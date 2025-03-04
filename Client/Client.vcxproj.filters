@@ -230,6 +230,9 @@
     <Filter Include="Engine\03. Manager\ItemMgr">
       <UniqueIdentifier>{2c604962-75f2-430f-9f53-a2348d06c1c0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\05. Scene\Scene_Shop">
+      <UniqueIdentifier>{4c02fc09-43b2-4ad4-87c5-4e356c04b01c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h">
@@ -461,6 +464,9 @@
     <ClInclude Include="ItemMgr.h">
       <Filter>Engine\03. Manager\ItemMgr</Filter>
     </ClInclude>
+    <ClInclude Include="CScene_Shop.h">
+      <Filter>Engine\05. Scene\Scene_Shop</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -683,6 +689,9 @@
     </ClCompile>
     <ClCompile Include="ItemMgr.cpp">
       <Filter>Engine\03. Manager\ItemMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene_Shop.cpp">
+      <Filter>Engine\05. Scene\Scene_Shop</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

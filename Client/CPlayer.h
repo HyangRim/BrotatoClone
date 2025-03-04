@@ -69,7 +69,7 @@ private:
 
 public:
     void SetCharacterParam(tCharacterInfo* _characterInfo) { m_tPlayerInfo.m_stCharacterInfo = _characterInfo; }
-    tCharacterInfo* GetCharacterParam() { return m_tPlayerInfo.m_stCharacterInfo; }
+    playerParameter& GetCharacterParam() { return m_tPlayerInfo; }
 
 public:
     virtual void update();

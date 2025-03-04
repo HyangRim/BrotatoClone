@@ -57,7 +57,6 @@ void CScene_Select_Character::Enter()
 	/////////////////뒷 배경 오브젝트/////////////////
 
 	/////////////////뒤로 가기 버틈///////////////////
-	
 	CBtnUI* backBtn = new CBtnUI;
 	backBtn->SetName(L"BackBtn");
 	backBtn->SetObjType(GROUP_TYPE::UI);
@@ -72,7 +71,6 @@ void CScene_Select_Character::Enter()
 		, TextUIMode::TEXT
 		, 0);
 	AddObject(backBtn, GROUP_TYPE::UI);
-	
 	/////////////////뒤로 가기 버틈///////////////////
 
 	/////////////////캐릭터 선택 글자 UI(상단)///////////////////

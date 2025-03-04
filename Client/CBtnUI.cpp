@@ -135,6 +135,7 @@ void CBtnUI::render(ID2D1HwndRenderTarget* _pRender)
 	}
 
 	component_render(_pRender);
+	render_child(_pRender);
 }
 
 //과제, 패널 UI안에 이미지를 출력할 수 있는 버튼들을 넣음.

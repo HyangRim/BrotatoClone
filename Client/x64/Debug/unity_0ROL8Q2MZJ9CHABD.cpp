@@ -131,6 +131,9 @@
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CScene_Select_Weapon.cpp"
 
 
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CScene_Shop.cpp"
+
+
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CScene_Start.cpp"
 
 
