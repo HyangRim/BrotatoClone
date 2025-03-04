@@ -42,6 +42,14 @@ void CImage::finalupdate()
 {
 	Vec2 vObjectPos = m_pOwner->GetPos();
 	m_vFinalPos = m_vOffSet + vObjectPos;
+
+	if (m_pOwner->GetName().compare(L"TEST1234") == 0)
+	{
+		Vec2 vPos = vObjectPos;
+		Vec2 vFinalPos = m_vFinalPos;
+
+		int a = 0;
+	}
 }
 
 void CImage::render(HDC _dc)

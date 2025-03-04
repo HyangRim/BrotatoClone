@@ -35,9 +35,6 @@
     <Filter Include="Engine\03. Manager\SceneMgr">
       <UniqueIdentifier>{940a5494-50bd-4a8e-99d0-a0c656e58112}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\05. Scene\Scene_Start">
-      <UniqueIdentifier>{cd7aa06c-a106-4d7d-8ca9-209d752cf701}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\05. Scene\Scene_Tool">
       <UniqueIdentifier>{a2bbdbb7-64ff-4664-a7cd-10c675987d4e}</UniqueIdentifier>
     </Filter>
@@ -232,6 +229,9 @@
     </Filter>
     <Filter Include="Engine\04. Object\UI\BtnUI">
       <UniqueIdentifier>{571e8c81-7429-4d0a-915c-2084e17ffe54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\05. Scene\Scene_Start">
+      <UniqueIdentifier>{cd7aa06c-a106-4d7d-8ca9-209d752cf701}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

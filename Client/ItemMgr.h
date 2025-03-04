@@ -9,6 +9,7 @@ struct Item
 	//무기던, 패시브 템인던 무조건 가져야할 정보
 	wstring		tag;							//이미지 태그 정보(아이템창에 표시할 아이콘 이미지)
 	ITEM_TYPE	m_eItemType;					//WEAPON , PASSIVE
+	int			m_iBasePrice;
 
 	//아이템이 가질수있는 추가될 능력치들....
 	float			m_fDefaultSpeed;	// 기본 스피드.

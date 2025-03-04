@@ -93,7 +93,7 @@ void CWaveMgr::WaveClear()
 void CWaveMgr::WaveInit()
 {
 	m_iWaveLevel = 1;
-	m_fWaveDuration = 20.f;
+	m_fWaveDuration = 10.f;
 	m_fWaveElapsed = 0;
 	m_bWaving = false;
 	m_fWaveSpawnTime = 1.f;

@@ -10,7 +10,6 @@ class CScene_Shop :
 private:
     vector<CPanelUI*> m_vItemPanels;
 
-
 private:
     ScrollArea m_scrollArea;                //구조체 정의는 Direct2DMgr에
     vector<CObject*> m_scrollContent;       //스크롤 영역에 정의할 객체들

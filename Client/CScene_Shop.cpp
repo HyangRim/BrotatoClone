@@ -60,6 +60,8 @@ void CScene_Shop::render(ID2D1HwndRenderTarget* _pRender)
 
 void CScene_Shop::Enter()
 {
+	m_vItemPanels.clear();
+	
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
 	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
 	wchar_t buffer[20];
@@ -79,7 +81,7 @@ void CScene_Shop::Enter()
 	panelTextShopAndWave->SetPos(Vec2(78.f, 32.f));
 	panelTextShopAndWave->SetScale(Vec2(130.f, 32.f));
 
-	swprintf_s(buffer, L"상점(웨이브 %d)", CWaveMgr::GetInstance()->GetLevel());
+	swprintf_s(buffer, L"상점(웨이브 %d)", CWaveMgr::GetInstance()->GetLevel() - 1);
 	panelTextShopAndWave->CreateTextUI(buffer, Vec2(-150.f, -18.f), Vec2(150.f, 18.f)
 		, 20, D2D1::ColorF::White, true, 2.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR
@@ -155,7 +157,7 @@ void CScene_Shop::Enter()
 	panelTextCurCoin->SetScale(Vec2(32.f, 22.f));
 	swprintf_s(buffer, L"%d", ((CPlayer*)CSceneMgr::GetInstance()->GetPlayer())->GetCharacterParam().m_iCoin);
 	panelTextCurCoin->CreateTextUI(buffer, -(panelTextCurCoin->GetScale() / 2.f), panelTextCurCoin->GetScale() / 2.f
-		, 20, D2D1::ColorF::White, true, 2.f, D2D1::ColorF::Black
+		, 16, D2D1::ColorF::White, true, 2.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR
 		, TextUIMode::TEXT
 		, 0);
@@ -180,8 +182,8 @@ void CScene_Shop::Enter()
 	nextWaveBtn->SetPos(Vec2(844.f, 508.f));
 	nextWaveBtn->SetIsRound(true, 10.f, 10.f);
 	nextWaveBtn->SetColor(ColorNormalize(237, 237, 237), ColorNormalize(0, 0, 0));
-	nextWaveBtn->SetClickedCallBack(ChangeScene, (DWORD_PTR)SCENE_TYPE::MAIN, 0);
-	swprintf_s(buffer, L"이동(웨이브%d)", CWaveMgr::GetInstance()->GetLevel() + 1);
+	nextWaveBtn->SetClickedCallBack(ChangeScene, (DWORD_PTR)SCENE_TYPE::START, 0);
+	swprintf_s(buffer, L"이동(웨이브%d)", CWaveMgr::GetInstance()->GetLevel());
 	nextWaveBtn->CreateTextUI(buffer, -(nextWaveBtn->GetScale() / 2.f), nextWaveBtn->GetScale() / 2.f
 		, 16, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR
@@ -199,13 +201,15 @@ void CScene_Shop::Enter()
 
 	for (int i = 0; i < 4; i++)
 	{
-		CPanelUI* panelItemUI = new CPanelUI;
-		panelItemUI->SetScale(Vec2(176.f, 242.f));
-		panelItemUI->SetPos(Vec2(100.f + i * (5.f + panelItemUI->GetScale().x), 204.f));
-		panelItemUI->SetColor(ColorNormalize(237, 237, 237), ColorNormalize(0, 0, 0));
-
 		wstring iconTag = item_tag_list[item_numbers[i]] + L"_icon";
 
+		CPanelUI* panelItemUI = new CPanelUI;
+		panelItemUI->SetName(iconTag);
+		panelItemUI->SetScale(Vec2(176.f, 242.f));
+		panelItemUI->SetPos(Vec2(100.f + i * (5.f + panelItemUI->GetScale().x), 204.f));
+		panelItemUI->SetColor(ColorNormalize(0, 0, 0), ColorNormalize(0, 0, 0));
+
+		////////////////////아이템 이미지/////////////////////////////
 		CObject* itemImage = new CSpriteUI;
 		itemImage->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
 		Vec2 vPos = Vec2(35.f, 35.f) - (panelItemUI->GetScale() / 2.f);
@@ -214,8 +218,32 @@ void CScene_Shop::Enter()
 		itemImage->SetName(L"Child");
 		itemImage->SetScale(Vec2(48.f, 48.f));
 		itemImage->SetPos(panelItemUI->GetPos());
+		////////////////////아이템 이미지/////////////////////////////
 
+		/////////////////////구매 버튼/////////////////////////////////
+		CBtnUI* priceBtn = new CBtnUI;
+		priceBtn->SetName(L"PriceBtn");
+		priceBtn->SetPos(Vec2(0.f, panelItemUI->GetScale().y / 2.f - 8.f - 17.f));
+		priceBtn->SetScale(Vec2(80.f, 34.f));
+		priceBtn->SetObjType(GROUP_TYPE::UI);
+		priceBtn->SetColor(ColorNormalize(255, 255, 255), ColorNormalize(30, 30, 30));
+		priceBtn->SetIsRound(true, 10.f, 10.f);
+
+		//구매버튼에 이미지//
+		CObject* priceBtnCoinImage = new CSpriteUI;
+		priceBtnCoinImage->SetName(L"TEST1234");
+		priceBtnCoinImage->SetPos(panelItemUI->GetPos());
+		priceBtnCoinImage->AddImage(pD2DMgr->GetStoredBitmap(L"harvesting_icon"));
+		priceBtnCoinImage->GetImage(0)->SetOffset(Vec2(20.f, panelItemUI->GetScale().y / 2.f - 8.f - 17.f));
+		priceBtnCoinImage->SetObjType(GROUP_TYPE::UI);
+		priceBtnCoinImage->SetScale(Vec2(24.f, 24.f));
+		//구매버튼에 이미지//
+	
+		/////////////////////구매 버튼/////////////////////////////////
+		panelItemUI->AddChild((CUI*)priceBtn);
+		panelItemUI->AddChild((CUI*)priceBtnCoinImage);
 		panelItemUI->AddChild((CUI*)itemImage);
+	
 
 		m_vItemPanels.push_back(panelItemUI);
 		AddObject(panelItemUI, GROUP_TYPE::UI);
@@ -231,6 +259,8 @@ void CScene_Shop::Enter()
 
 void CScene_Shop::Exit()
 {
+	//Safe_Delete_Vec(m_scrollContent);
+	//Safe_Delete_Vec(m_vItemPanels);
 	DeleteAll();
 }
 
