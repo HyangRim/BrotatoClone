@@ -10,10 +10,7 @@ struct Item
 	wstring		tag;							//이미지 태그 정보(아이템창에 표시할 아이콘 이미지)
 	ITEM_TYPE	m_eItemType;					//WEAPON , PASSIVE
 
-
-
 	//아이템이 가질수있는 추가될 능력치들....
-
 };
 
 
@@ -22,11 +19,11 @@ class ItemMgr
 {
 	SINGLE(ItemMgr);
 
-
 private:
+
 	vector<Item*>	m_vWeaponsItems;			//무기류 저장
 	vector<Item*>	m_vPassiveItems;			//패시브류 저장
-	Item* m_basicCharacter;
+	Item*			m_basicCharacter;
 
 public:
 	vector<Item*>& GetWeaponItems() { return m_vWeaponsItems; }

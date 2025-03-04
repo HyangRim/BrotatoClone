@@ -708,8 +708,6 @@ void CScene_Start::CreateInfoPanel()
 	//플레이어 Info 출력. 
 	const playerParameter playerInfo = static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetCurScene()->GetPlayer())->GetPlayerInfo();
 
-
-
 	//////////////////우측 능력치 보여주는 곳///////////////////////
 	CPanelUI* parameterPanel = new CPanelUI;
 	parameterPanel->SetName(L"parameterPanel");

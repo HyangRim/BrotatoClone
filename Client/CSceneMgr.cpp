@@ -70,7 +70,7 @@ void CSceneMgr::init()
 	CWaveMgr::GetInstance()->WaveInit();
 
 	//ÇöÀç ¾À ¼³Á¤
-	m_pCurScene = m_arrScene[(UINT)SCENE_TYPE::SHOP];
+	m_pCurScene = m_arrScene[(UINT)SCENE_TYPE::MAIN];
 
 	m_pCurScene->Enter();
 

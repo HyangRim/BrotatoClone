@@ -214,8 +214,6 @@ void CScene_Main::update()
 {
 	CScene::update();
 
-	
-
 	m_fPanelMoveElapsed += fDT;
 	m_fBrotatoElased += fDT;
 
