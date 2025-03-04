@@ -3,10 +3,12 @@
 
 #include "CSceneMgr.h"
 #include "CScene.h"
+#include "CScene_Start.h"
 #include "CkeyMgr.h"
 #include "CTimeMgr.h"
 #include "CResMgr.h"
 #include "Direct2DMgr.h"
+
 #include "CWeapon.h"
 
 #include "CMissile.h"
@@ -132,6 +134,7 @@ CPlayer::~CPlayer()
 void CPlayer::update()
 {
 	if (CScene::GetPause()) return;
+
 
 	//피격음 딜레이. 
 	m_fUnderAttackSoundDelay -= fDT;
@@ -380,32 +383,38 @@ void CPlayer::OnCollisionEnter(CCollider* _pOther)
 
 	CObject* pOtherObj = _pOther->GetObj();
 	if (L"Monster" == pOtherObj->GetName()) {
+
+		if (m_fUnderAttackSoundDelay >= 0.f) return;
 		int randomRC = distribution(rng) % 4;
 
 		if (randomRC == 0) {
-			if (m_fUnderAttackSoundDelay < 0.f) {
-				CSoundMgr::GetInstance()->Play(L"underattack1");
-				m_fUnderAttackSoundDelay = 0.35f;
-			}
+			CSoundMgr::GetInstance()->Play(L"underattack1");
 		}
 		else if (randomRC == 1) {
-			if (m_fUnderAttackSoundDelay < 0.f) {
-				CSoundMgr::GetInstance()->Play(L"underattack2");
-				m_fUnderAttackSoundDelay = 0.35f;
-			}
+			CSoundMgr::GetInstance()->Play(L"underattack2");
 		}
 		else if (randomRC == 2) {
-			if (m_fUnderAttackSoundDelay < 0.f) {
-				CSoundMgr::GetInstance()->Play(L"underattack3");
-				m_fUnderAttackSoundDelay = 0.35f;
-			}
+			CSoundMgr::GetInstance()->Play(L"underattack3");
 		}
 		else if (randomRC == 3) {
-			if (m_fUnderAttackSoundDelay < 0.f) {
-				CSoundMgr::GetInstance()->Play(L"underattack4");
-				m_fUnderAttackSoundDelay = 0.35f;
+			CSoundMgr::GetInstance()->Play(L"underattack4");
+		}
+
+		m_tPlayerInfo.m_iCurHP -= 1;
+
+		if (m_tPlayerInfo.m_iCurHP <= 0) {
+			if (CSceneMgr::GetInstance()->IsWaveScene()) {
+				//(CScene_Start*)(CSceneMgr::GetInstance()->GetCurScene());
+				CScene_Start* startScene = dynamic_cast<CScene_Start*>(CSceneMgr::GetInstance()->GetCurScene());
+				if (nullptr == startScene) assert(nullptr);
+
+				startScene->SceneFailed();
+
+				m_tPlayerInfo.m_iCurHP = m_tPlayerInfo.m_iMaxHP;
 			}
 		}
+
+		m_fUnderAttackSoundDelay = 0.35f;
 	}
 }
 

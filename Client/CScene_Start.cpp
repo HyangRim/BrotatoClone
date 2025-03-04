@@ -48,6 +48,8 @@ CScene_Start::CScene_Start()
 	, m_fForceRadius(500.f)
 	, m_fCurRadius(0.f)
 	, m_fForce(500.f)
+	, m_fFailDuration(0.f)
+	, m_bFailed(false)
 {
 	/*
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\enemies\\baby_alien.png", L"NormalEnemy", false);
@@ -120,18 +122,24 @@ void CScene_Start::update()
 		}
 	}
 
-	//웨이브 세팅. 
-	if (KEY_HOLD(KEY::LBTN)) {
-		m_bUseForce = true;
-		CreateForce();
-	}
-	else {
-		m_bUseForce = false;
+	if (KEY_TAP(KEY::H)) {
+		CreateLevelUpShop();
 	}
 
-	if (KEY_TAP(KEY::C)) {
-		CSoundMgr::GetInstance()->Play(L"Extend");
+
+	if (true == m_bFailed) {
+		m_fFailDuration += fDTN;
+		
+		float lerpAlpha = min(m_fFailDuration * 0.5f, 0.7f);
+		m_pFailPanel->SetNormalAlpha(lerpAlpha);
+		m_pFailPanel->SetMouseOnAlpha(lerpAlpha);
+		
+
+		if (m_fFailDuration >= 2.5f) {
+			ChangeScene(SCENE_TYPE::RUN_END);
+		}
 	}
+
 
 	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; typeIDX++) {
 		const vector<CObject*>& vecObj = GetGroupObject((GROUP_TYPE)typeIDX);
@@ -492,7 +500,10 @@ void CScene_Start::Enter()
 	*/
 	//웨이브 가능하도록 세팅.(Scene_Start에 들어오면 무조건 그 때 시작이니까.)
 	CWaveMgr::GetInstance()->WaveStart();
+	m_fFailDuration = 0.f;
+	m_bFailed = false;
 	m_vecPauseObj.clear();
+	m_vecFailObj.clear();
 	start();
 }
 
@@ -501,21 +512,24 @@ void CScene_Start::Exit()
 	//나갈때 CSceneMgr쪽에 Player등록 요청
 	CObject* tmp = GetPlayer();
 	CSceneMgr::GetInstance()->RegisterPlayer(tmp);
-	int a = 0;
 
 	//나갈때 전부 삭제해줘야함.
-	if (GetPause()) {
+	if (GetPause() || m_bFailed) {
 		CTimeMgr::GetInstance()->SetTimeScale(1.f);
+		m_bFailed = false;
 	}
 
 	DeleteAll();
+
 	m_pPausePanel = nullptr;
+	m_pFailPanel = nullptr;
 	//충돌도 전부 초기화 해주기. 
 	CCollisionMgr::GetInstance()->Reset();
 
 	//웨이브가 멈춤. 
 	CWaveMgr::GetInstance()->WaveStart();
 	m_vecPauseObj.clear();
+	m_vecFailObj.clear();
 }
 
 void CScene_Start::CreateForce()
@@ -550,6 +564,7 @@ void CScene_Start::OffPause()
 	m_vecPauseObj.clear();
 	ChangePause(false);
 }
+
 
 
 void CScene_Start::CreateLeftBtns()
@@ -1155,4 +1170,143 @@ void CScene_Start::CreateInfoPanel()
 	m_vecPauseObj.push_back(speedCount);
 	AddObject(speedCount, GROUP_TYPE::UI);
 	////////////치명타율 % ////////////////////
+}
+
+void CScene_Start::CreateLevelUpShop()
+{
+	Vec2 vResolution = CCore::GetInstance()->GetResolution();
+	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+	CWaveMgr* waveMgr = CWaveMgr::GetInstance();
+
+	CTimeMgr::GetInstance()->SetTimeScale(0.f);
+
+
+	//////////////////뒷 판떼기///////////////////////
+	CPanelUI* LevelUpPanel = new CPanelUI;
+	LevelUpPanel->SetObjType(GROUP_TYPE::IMAGE);
+	LevelUpPanel->SetPos(vResolution / 2.f);
+	LevelUpPanel->SetColor(ColorNormalize(0, 0, 0), ColorNormalize(0, 0, 0));
+	LevelUpPanel->SetNormalAlpha(0.5f);
+	LevelUpPanel->SetMouseOnAlpha(0.5f);
+	LevelUpPanel->SetScale(vResolution);
+	AddObject(LevelUpPanel, GROUP_TYPE::IMAGE);
+	//////////////////뒷 판떼기///////////////////////
+
+	////////////레벨 업 텍스트////////////////////
+	CObject* levelUpText = new CSpriteUI;
+	levelUpText->SetName(L"levelUpText");
+	levelUpText->SetObjType(GROUP_TYPE::UI);
+	levelUpText->SetPos(Vec2(vResolution.x / 2, 150.f));
+	levelUpText->SetScale(Vec2(350.f, 75.f));
+
+
+	levelUpText->CreateTextUI(L"레벨 업!", -(levelUpText->GetScale() / 2.f), (levelUpText->GetScale() / 2.f)
+		, 38, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	AddObject(levelUpText, GROUP_TYPE::UI);
+	////////////레벨 업 텍스트////////////////////
+
+	////////////////////////가운데 아이템 패널 4개////////////////////////////////
+	vector<int> upgrade_numbers;
+
+	while (upgrade_numbers.size() < 4) {
+		int randomRC = rand() % upgrade_tag_list.size();
+		auto it = find(upgrade_numbers.begin(), upgrade_numbers.end(), randomRC);
+		if (it == upgrade_numbers.end()) {
+			upgrade_numbers.push_back(randomRC);
+		}
+	}
+
+	for (int upgradeIndex = 0; upgradeIndex < 4; upgradeIndex++)
+	{
+		CPanelUI* panelItemUI = new CPanelUI;
+		panelItemUI->SetScale(Vec2(176.f, 132.f));
+		panelItemUI->SetPos(Vec2(100.f + upgradeIndex * (5.f + panelItemUI->GetScale().x), vResolution.y / 2));
+		panelItemUI->SetColor(ColorNormalize(0, 0, 0), ColorNormalize(0, 0, 0));
+
+		////////////////////////Upgrade 능력치 아이콘////////////////////////////////
+		wstring iconTag = upgrade_tag_list[upgrade_numbers[upgradeIndex]];
+		CObject* itemImage = new CSpriteUI;
+		itemImage->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
+		Vec2 vPos = Vec2(35.f, 35.f) - (panelItemUI->GetScale() / 2.f);
+		itemImage->GetImage(0)->SetOffset(vPos);
+		itemImage->SetObjType(GROUP_TYPE::UI);
+		itemImage->SetName(L"Child");
+		itemImage->SetScale(Vec2(48.f, 48.f));
+		itemImage->SetPos(panelItemUI->GetPos());
+
+		panelItemUI->AddChild((CUI*)itemImage);
+		////////////////////////Upgrade 능력치 아이콘////////////////////////////////
+
+		////////////Upgrade Name////////////////////
+		CObject* upgradeNameText = new CSpriteUI;
+		upgradeNameText->SetName(L"upgradeNameText");
+		upgradeNameText->SetObjType(GROUP_TYPE::UI);
+		upgradeNameText->SetPos(vResolution / 2);
+		upgradeNameText->SetScale(Vec2(300.f, 100.f));
+		//upgrade_name_list[upgrade_numbers[upgradeIndex]]
+
+		upgradeNameText->CreateTextUI(L"hihihi", -(upgradeNameText->GetScale() / 2.f), (upgradeNameText->GetScale() / 2.f)
+			, 30, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+			, FONT_TYPE::KR
+			, TextUIMode::TEXT
+			, 0);
+		upgradeNameText->GetTextUI()->SetHorizontal(0);
+		panelItemUI->AddChild((CUI*)upgradeNameText);
+		////////////Upgrade Name////////////////////
+
+		
+		AddObject(panelItemUI, GROUP_TYPE::UI);
+	}
+
+	////////////////////////가운데 아이템 패널 4개////////////////////////////////
+
+
+
+	CreateInfoPanel();
+}
+
+
+void CScene_Start::SceneFailed()
+{
+	Vec2 vResolution = CCore::GetInstance()->GetResolution();
+	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+	CWaveMgr* waveMgr = CWaveMgr::GetInstance();
+
+	m_bFailed = true;
+	CTimeMgr::GetInstance()->SetTimeScale(0.f);
+
+	//////////////////뒷 판떼기///////////////////////
+	m_pFailPanel = new CPanelUI;
+	m_pFailPanel->SetObjType(GROUP_TYPE::IMAGE);
+	m_pFailPanel->SetPos(vResolution / 2.f);
+	m_pFailPanel->SetColor(ColorNormalize(0, 0, 0), ColorNormalize(0, 0, 0));
+	m_pFailPanel->SetNormalAlpha(0.0f);
+	m_pFailPanel->SetMouseOnAlpha(0.0f);
+	m_pFailPanel->SetScale(vResolution);
+	m_vecFailObj.push_back(m_pFailPanel);
+	AddObject(m_pFailPanel, GROUP_TYPE::IMAGE);
+	//////////////////뒷 판떼기///////////////////////
+
+
+	////////////중앙 달리기 패배////////////////////
+	CObject* runFailed = new CSpriteUI;
+	runFailed->SetName(L"runFailed");
+	runFailed->SetObjType(GROUP_TYPE::UI);
+	runFailed->SetPos(Vec2(vResolution.x / 2, 100.f));
+	runFailed->SetScale(Vec2(350.f, 75.f));
+
+
+	runFailed->CreateTextUI(L"달리기 패배", -(runFailed->GetScale() / 2.f), (runFailed->GetScale() / 2.f)
+		, 56, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	m_vecFailObj.push_back(runFailed);
+	AddObject(runFailed, GROUP_TYPE::UI);
+	////////////중앙 달리기 패배////////////////////
+
+
 }

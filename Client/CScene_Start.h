@@ -15,8 +15,15 @@ private:
     bool    m_bUseForce;
     CPanelUI* m_pPausePanel;
     vector<CObject*> m_vecPauseObj;
+
+
+    CPanelUI* m_pFailPanel;
+    vector<CObject*> m_vecFailObj;
     
 
+private:
+    float       m_fFailDuration; 
+    bool        m_bFailed;
 
 public:
     virtual void update();
@@ -33,16 +40,18 @@ public:
 
 public:
     void CreateForce();
-
+    void SceneFailed();
 
 private:
     void CreatePause();
     void CreateLeftBtns();
     void CreateMiddleInfo();
     void CreateInfoPanel();
-
+    void CreateLevelUpShop();
     void OnPause();
     void OffPause();
+
+
 
 public:
     CScene_Start();
