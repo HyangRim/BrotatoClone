@@ -7,6 +7,7 @@
 class CObject;
 
 
+
 class CScene
 {
 	static bool isPause;

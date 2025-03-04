@@ -387,6 +387,31 @@ void CScene_Start::Enter()
 	AddObject(harvestingText, GROUP_TYPE::UI);
 	////////////////////////////////////////////////////////////////////////
 
+	////////////////////////////////외부 벽/////////////////////////////////
+	CObject* leftWall = new CGround;
+	leftWall->SetPos(Vec2(16.f, 576.f));
+	leftWall->SetScale(Vec2(32.f, 1152.f));
+	AddObject(leftWall, GROUP_TYPE::GROUND);
+
+	CObject* rightWall = new CGround;
+	rightWall->SetPos(Vec2(1152.f - 16.f, 576.f));
+	rightWall->SetScale(Vec2(32.f, 1152.f));
+	AddObject(rightWall, GROUP_TYPE::GROUND);
+
+	CObject* topWall = new CGround;
+	topWall->SetPos(Vec2(576.f, 16.f));
+	topWall->SetScale(Vec2(1152.f - 64.f, 32.f));
+	AddObject(topWall, GROUP_TYPE::GROUND);
+
+	CObject* bottomWall = new CGround;
+	bottomWall->SetPos(Vec2(576.f, 1152.f - 16.f));
+	bottomWall->SetScale(Vec2(1152.f - 64.f, 32.f));
+	AddObject(bottomWall, GROUP_TYPE::GROUND);
+	////////////////////////////////외부 벽/////////////////////////////////
+
+
+
+
 	//Object 추가.
 	//실제 생성된 객체는 플레이어, 주소를 받은 건 부모 클래스. 
 	CObject* pObj = new CPlayer;
@@ -473,8 +498,12 @@ void CScene_Start::Enter()
 
 void CScene_Start::Exit()
 {
-	//나갈때 전부 삭제해줘야함.
+	//나갈때 CSceneMgr쪽에 Player등록 요청
+	CObject* tmp = GetPlayer();
+	CSceneMgr::GetInstance()->RegisterPlayer(tmp);
+	int a = 0;
 
+	//나갈때 전부 삭제해줘야함.
 	if (GetPause()) {
 		CTimeMgr::GetInstance()->SetTimeScale(1.f);
 	}

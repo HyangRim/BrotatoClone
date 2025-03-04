@@ -101,9 +101,6 @@
     <Filter Include="Engine\04. Object\UI\PanelUI">
       <UniqueIdentifier>{fc4f5820-56fc-436e-9538-fbc0d49f2eeb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\04. Object\UI\BtnUI">
-      <UniqueIdentifier>{571e8c81-7429-4d0a-915c-2084e17ffe54}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\08. Module\AI">
       <UniqueIdentifier>{f39a0a45-6c6b-4c8a-9593-26f28c647f98}</UniqueIdentifier>
     </Filter>
@@ -232,6 +229,9 @@
     </Filter>
     <Filter Include="Engine\05. Scene\Scene_Shop">
       <UniqueIdentifier>{4c02fc09-43b2-4ad4-87c5-4e356c04b01c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Object\UI\BtnUI">
+      <UniqueIdentifier>{571e8c81-7429-4d0a-915c-2084e17ffe54}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -466,6 +466,9 @@
     </ClInclude>
     <ClInclude Include="CScene_Shop.h">
       <Filter>Engine\05. Scene\Scene_Shop</Filter>
+    </ClInclude>
+    <ClInclude Include="item_string.h">
+      <Filter>Engine\01. Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

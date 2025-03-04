@@ -69,6 +69,8 @@ void CBtnUI::MouseLbtnClicked()
 	if (m_pSceneInst && m_pSceneFunc) {
 		((*m_pSceneInst).*m_pSceneFunc)();
 	}
+
+	
 	CSoundMgr::GetInstance()->Play(L"button_press");
 }
 
@@ -77,6 +79,7 @@ void CBtnUI::SetClickedCallBack(CScene* _pScene, SCENE_MEMFUNC _pSceneFunc)
 	m_pSceneFunc = _pSceneFunc;
 	m_pSceneInst = _pScene;
 }
+
 
 void CBtnUI::render(HDC _dc)
 {

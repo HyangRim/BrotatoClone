@@ -12,6 +12,7 @@
 #include "CSpriteUI.h"
 #include "Direct2DMgr.h"
 #include "CSoundMgr.h"
+#include "CSceneMgr.h"
 
 #include "CObject.h"
 #include "CDamageUI.h"
@@ -37,6 +38,9 @@ CScene_Main::~CScene_Main()
 
 void CScene_Main::Enter()
 {
+	ClearPlayer();
+
+
 	// Direct2DMgr 인스턴스 가져오기 (텍스쳐 관련)
 	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
 	//pD2DMgr->LoadAndStoreBitmap(L"texture\\ui\\menus\\title_screen\\splash_art_bg.png", L"Title_Ground", false);
@@ -208,6 +212,14 @@ void CScene_Main::Enter()
 void CScene_Main::Exit()
 {
 	DeleteAll();
+}
+
+void CScene_Main::ClearPlayer()
+{
+	//Player객체 리셋
+	CObject* player = CSceneMgr::GetInstance()->GetPlayer();
+	if (player != nullptr) delete player;
+	CSceneMgr::GetInstance()->RegisterPlayer(nullptr);
 }
 
 void CScene_Main::update()

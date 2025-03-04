@@ -9,6 +9,7 @@ class CPanelUI;
 //멤버함수 포인터 접근할 때에는 정확한 클래스 정보를 알아야 함. 
 #include "CScene.h"
 #include "CObject.h"
+#include "CScene_Shop.h"
 typedef void(*BTN_FUNC) (DWORD_PTR, DWORD_PTR);
 
 //툴 씬이 보유하고 있는 특정 멤버 함수를 받아와야만 함. 
@@ -19,6 +20,7 @@ typedef void(*BTN_FUNC) (DWORD_PTR, DWORD_PTR);
 //이렇게 하면 SCENE이나, 오브젝트에서 파생된 것을 쓸 수 있음. 
 typedef void(CScene:: *SCENE_MEMFUNC)(void);
 typedef void(CObject::*OBJECT_MEMFUNC)(void);
+
 
 class CBtnUI :
     public CUI
@@ -91,7 +93,7 @@ public:
     }
 
     void SetClickedCallBack(CScene* _pScene, SCENE_MEMFUNC _pSceneFunc);
-
+    
 public:
     vector<CObject*>& GetTrashCan() { return m_vTempObjects; }
 

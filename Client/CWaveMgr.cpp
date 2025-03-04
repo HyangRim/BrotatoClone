@@ -47,7 +47,7 @@ void CWaveMgr::update()
 		
 		if ((CSceneMgr::GetInstance()->GetCurScene()->GetGroupObject(GROUP_TYPE::DROP_ITEM).size() == 0)
 			&& (CSceneMgr::GetInstance()->GetCurScene()->GetGroupObject(GROUP_TYPE::MONSTER).size() == 0)) {
-			ChangeScene(SCENE_TYPE::MAIN);
+			ChangeScene(SCENE_TYPE::SHOP);
 		}
 	}
 }
@@ -88,7 +88,6 @@ void CWaveMgr::WaveClear()
 	CMonFactory::SetDropItemSpeed(500.f);
 	WaveLevelUp();
 	CSceneMgr::GetInstance()->GetCurScene()->DeleteGroup(GROUP_TYPE::MONSTER);
-
 }
 
 void CWaveMgr::WaveInit()

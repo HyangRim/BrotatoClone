@@ -28,6 +28,10 @@ private:
     float     m_fBrotatoDuration;
     float     m_fBrotatoElased;
     float     m_fBrotatoWave;
+
+public:
+    void ClearPlayer();
+
 public:
     virtual void update();
     virtual void finalupdate();

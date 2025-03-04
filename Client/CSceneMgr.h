@@ -1,14 +1,23 @@
 #pragma once
 
 class CScene;
+class CObject;
 
 class CSceneMgr
 {
 	SINGLE(CSceneMgr)
 
 private:
+	CObject* m_pPlayer;		//Player
+
+private:
 	CScene* m_arrScene[(UINT)SCENE_TYPE::END];	//모든 씬에 대한 정보를 다 가짐
 	CScene* m_pCurScene;						//현재 씬 
+
+public:
+	void RegisterPlayer(CObject* _player) { m_pPlayer = _player; }
+	CObject* GetPlayer() { return m_pPlayer; }
+
 public:
 	void init();
 

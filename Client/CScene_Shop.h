@@ -1,8 +1,16 @@
 #pragma once
 #include "CScene.h"
+#include "Direct2DMgr.h"
+
+class CPanelUI;
+
 class CScene_Shop :
     public CScene
 {
+private:
+    vector<CPanelUI*> m_vItemPanels;
+
+
 private:
     ScrollArea m_scrollArea;                //구조체 정의는 Direct2DMgr에
     vector<CObject*> m_scrollContent;       //스크롤 영역에 정의할 객체들
@@ -16,6 +24,7 @@ public:
 public:
     virtual void update();
     virtual void render(ID2D1HwndRenderTarget* _pRender);
+
 
 public:
     void CreateInfoPanel();

@@ -28,6 +28,10 @@ CScene_Shop::~CScene_Shop()
 void CScene_Shop::update()
 {
 	CScene::update();
+
+
+
+
 }
 
 void CScene_Shop::render(ID2D1HwndRenderTarget* _pRender)
@@ -86,8 +90,8 @@ void CScene_Shop::Enter()
 	panelTextWeapon->SetPos(Vec2(608.f, 386.f));
 	panelTextWeapon->SetScale(Vec2(64.f, 3.f));
 
-	//swprintf_s(buffer, L"무기(%d/6)", ((CPlayer*)GetPlayer())->GetWeaponCount());
-	panelTextWeapon->CreateTextUI(L"무기(1/6)", Vec2(-150.f, -18.f), Vec2(150.f, 18.f)
+	swprintf_s(buffer, L"무기(%d/6)", (int)((CPlayer*)CSceneMgr::GetInstance()->GetPlayer())->GetWeaponCount());
+	panelTextWeapon->CreateTextUI(buffer, Vec2(-150.f, -18.f), Vec2(150.f, 18.f)
 		, 20, D2D1::ColorF::White, true, 2.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR
 		, TextUIMode::TEXT
@@ -103,7 +107,9 @@ void CScene_Shop::Enter()
 	resetBtn->SetPos(Vec2(662.f, 32.f));
 	resetBtn->SetIsRound(true, 10.f, 10.f);
 	resetBtn->SetColor(ColorNormalize(237, 237, 237), ColorNormalize(0, 0, 0));
-	//resetBtn->SetClickedCallBack(ChangeScene, (DWORD_PTR)SCENE_TYPE::MAIN, 0);
+
+	//returnToGameBtn->SetClickedCallBack(this, (SCENE_MEMFUNC)&CScene_Start::OffPause);
+	//resetBtn->SetClickedCallBack(this, (CSCENE_SHOP_MEMFUNC)&CScene_Shop::ReRollItemPanel);
 	resetBtn->CreateTextUI(L"초기화 -1", -(resetBtn->GetScale() / 2.f), resetBtn->GetScale() / 2.f
 		, 16, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR
@@ -128,8 +134,8 @@ void CScene_Shop::Enter()
 	panelTextCurCoin->SetObjType(GROUP_TYPE::UI);
 	panelTextCurCoin->SetPos(Vec2(386.f, 32.f));
 	panelTextCurCoin->SetScale(Vec2(32.f, 22.f));
-	//swprintf_s(buffer, L"%d", ((CPlayer*)GetPlayer())->GetCharacterParam().m_iCoin);
-	panelTextCurCoin->CreateTextUI(L"60", -(panelTextCurCoin->GetScale() / 2.f), panelTextCurCoin->GetScale() / 2.f
+	swprintf_s(buffer, L"%d", ((CPlayer*)CSceneMgr::GetInstance()->GetPlayer())->GetCharacterParam().m_iCoin);
+	panelTextCurCoin->CreateTextUI(buffer, -(panelTextCurCoin->GetScale() / 2.f), panelTextCurCoin->GetScale() / 2.f
 		, 20, D2D1::ColorF::White, true, 2.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR
 		, TextUIMode::TEXT
@@ -143,7 +149,6 @@ void CScene_Shop::Enter()
 	panelTextCurCoinImage->AddImage(pD2DMgr->GetStoredBitmap(L"harvesting_icon"));
 	panelTextCurCoinImage->SetPos(Vec2(356.f, 32.f));
 	panelTextCurCoinImage->SetScale(Vec2(24.f, 24.f));
-	//swprintf_s(buffer, L"%d", ((CPlayer*)GetPlayer())->GetCharacterParam().m_iCoin);
 	AddObject(panelTextCurCoinImage, GROUP_TYPE::UI);
 	///////////////////////////남은 재화 표시 이미지///////////////////
 
@@ -156,7 +161,7 @@ void CScene_Shop::Enter()
 	nextWaveBtn->SetPos(Vec2(844.f, 508.f));
 	nextWaveBtn->SetIsRound(true, 10.f, 10.f);
 	nextWaveBtn->SetColor(ColorNormalize(237, 237, 237), ColorNormalize(0, 0, 0));
-	//resetBtn->SetClickedCallBack(ChangeScene, (DWORD_PTR)SCENE_TYPE::MAIN, 0);
+	nextWaveBtn->SetClickedCallBack(ChangeScene, (DWORD_PTR)SCENE_TYPE::MAIN, 0);
 	swprintf_s(buffer, L"이동(웨이브%d)", CWaveMgr::GetInstance()->GetLevel() + 1);
 	nextWaveBtn->CreateTextUI(buffer, -(nextWaveBtn->GetScale() / 2.f), nextWaveBtn->GetScale() / 2.f
 		, 16, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
@@ -165,6 +170,40 @@ void CScene_Shop::Enter()
 		, 0);
 	AddObject(nextWaveBtn, GROUP_TYPE::UI);
 	/////////////////다음 웨이브 버튼/////////////////
+
+	////////////////////////가운데 아이템 패널 4개////////////////////////////////
+	vector<int> item_numbers;
+	for (int i = 0; i < 4; i++)
+	{
+		item_numbers.push_back(rand() % item_tag_list.size());
+	}
+
+	for (int i = 0; i < 4; i++)
+	{
+		CPanelUI* panelItemUI = new CPanelUI;
+		panelItemUI->SetScale(Vec2(176.f, 242.f));
+		panelItemUI->SetPos(Vec2(100.f + i * (5.f + panelItemUI->GetScale().x), 204.f));
+		panelItemUI->SetColor(ColorNormalize(237, 237, 237), ColorNormalize(0, 0, 0));
+
+		wstring iconTag = item_tag_list[item_numbers[i]] + L"_icon";
+
+		CObject* itemImage = new CSpriteUI;
+		itemImage->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
+		Vec2 vPos = Vec2(35.f, 35.f) - (panelItemUI->GetScale() / 2.f);
+		itemImage->GetImage(0)->SetOffset(vPos);
+		itemImage->SetObjType(GROUP_TYPE::UI);
+		itemImage->SetName(L"Child");
+		itemImage->SetScale(Vec2(48.f, 48.f));
+		itemImage->SetPos(panelItemUI->GetPos());
+
+		panelItemUI->AddChild((CUI*)itemImage);
+
+		m_vItemPanels.push_back(panelItemUI);
+		AddObject(panelItemUI, GROUP_TYPE::UI);
+	}
+
+	////////////////////////가운데 아이템 패널 4개////////////////////////////////
+
 
 	CreateInfoPanel();
 
@@ -190,7 +229,7 @@ void CScene_Shop::CreateScrollArea()
 	for (int i = 0; i < 3; ++i)
 	{
 		CObject* item = new CSpriteUI;
-		//item->SetObjType(GROUP_TYPE::UI);
+		item->SetObjType(GROUP_TYPE::UI);
 		item->AddImage(pD2DMgr->GetStoredBitmap(L"well_rounded_icon")); // 적절한 아이템 아이콘으로 변경
 		item->SetPos(Vec2(24.f + i * (50.f), 27.f)); //contentRect기준 offset개념으로 접근
 		item->SetScale(Vec2(60.f, 60.f));
@@ -230,6 +269,9 @@ void CScene_Shop::RenderScrollArea(ID2D1HwndRenderTarget* _pRender)
 	_pRender->PopAxisAlignedClip();
 }
 
+
+
+
 void CScene_Shop::CreateInfoPanel()
 {
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
@@ -237,7 +279,7 @@ void CScene_Shop::CreateInfoPanel()
 	CWaveMgr* waveMgr = CWaveMgr::GetInstance();
 	wchar_t buffer[20];
 	//플레이어 Info 출력. 
-	//const playerParameter playerInfo = static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetCurScene()->GetPlayer())->GetPlayerInfo();
+	const playerParameter playerInfo = static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->GetPlayerInfo();
 
 
 	//////////////////우측 능력치 보여주는 곳///////////////////////
@@ -272,7 +314,7 @@ void CScene_Shop::CreateInfoPanel()
 	////////////우측 능력치 보여주는 곳////////////////////
 
 
-	/*
+	
 	////////////현재 레벨 ////////////////////
 	CObject* nowLevelIcon = new CSpriteUI;
 	nowLevelIcon->SetName(L"nowLevelIcon");
@@ -659,5 +701,5 @@ void CScene_Shop::CreateInfoPanel()
 		, 0);
 	
 	AddObject(speedCount, GROUP_TYPE::UI);
-	////////////치명타율 % ////////////////////*/
+	////////////치명타율 % ////////////////////
 }

@@ -238,6 +238,7 @@
     <ClInclude Include="func.h" />
     <ClInclude Include="global.h" />
     <ClInclude Include="ItemMgr.h" />
+    <ClInclude Include="item_string.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SelectGDI.h" />

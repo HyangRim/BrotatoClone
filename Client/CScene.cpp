@@ -288,6 +288,11 @@ void CScene::DeleteGroup(GROUP_TYPE _eGroup)
 void CScene::DeleteAll()
 {
 	for (UINT GroupIdx = 0; GroupIdx < (UINT)GROUP_TYPE::END; GroupIdx++) {
+		if (GroupIdx == (UINT)GROUP_TYPE::PLAYER)
+		{
+			m_arrObj[(UINT)GROUP_TYPE::PLAYER].clear();
+			continue;
+		}
 		DeleteGroup((GROUP_TYPE)GroupIdx);
 	}
 }

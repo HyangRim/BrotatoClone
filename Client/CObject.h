@@ -80,6 +80,7 @@ public:
 
 	vector<CImage*>& GetImages() { return m_pImages; }
 	CImage* GetImage(int _Idx);
+	void DeleteImage() { Safe_Delete_Vec(m_pImages); }
 	//void AddImage(const wstring& tag);
 	//void AddImage(const wstring& tag, ID2D1Bitmap* _bitmap);
 	void AddImage(ID2D1Bitmap* _bitmap);
