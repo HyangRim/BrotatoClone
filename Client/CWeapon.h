@@ -3,6 +3,7 @@
 
 struct tWeaponInfo {
     wstring         m_sName;            //무기 이름
+    wstring         m_sIconImageKey;    //무기 이미지 Key값. 
     WEAPON_TYPE     m_eType;            //무기 타입
     int             m_iDMG;             //무기 기본 데미지
 

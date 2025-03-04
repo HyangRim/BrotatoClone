@@ -84,6 +84,10 @@ public:
 
     const playerParameter& GetPlayerInfo() { return m_tPlayerInfo; }
 
+
+    //웨폰 리스트 전해주는 함수. 
+    const list<CWeapon*>& GetPlayerWeapons() { return m_listWeapon; }
+
     void AddExp(int _iExp);
     void AddCoin(int _iCoin);
 
