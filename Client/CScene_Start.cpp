@@ -567,6 +567,7 @@ void CScene_Start::OffPause()
 
 
 
+
 void CScene_Start::CreateLeftBtns()
 {
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
@@ -1299,7 +1300,13 @@ void CScene_Start::CreateLevelUpShop()
 		selectBtn->SetPos(Vec2(100.f + upgradeIndex * (5.f + panelItemUI->GetScale().x), vResolution.y / 2 + 40.f));
 		selectBtn->SetIsRound(true, 5.f, 5.f);
 		selectBtn->SetColor(ColorNormalize(237, 237, 237), ColorNormalize(36, 36, 36));
-		//selectBtn->SetClickedCallBack(ChangeScene, (DWORD_PTR)SCENE_TYPE::MAIN, 0);
+
+		//콜백 함수로 구현. 
+		int callbackParam = upgrade_numbers[upgradeIndex];
+		selectBtn->SetClickedCallBack([this, callbackParam]() {
+			this->callPlayerUpgrade(callbackParam);
+		});
+		
 		selectBtn->CreateTextUI(L"선택", -(selectBtn->GetScale() / 2.f), (selectBtn->GetScale() / 2.f)
 			, 20, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 			, FONT_TYPE::KR
@@ -1361,4 +1368,10 @@ void CScene_Start::SceneFailed()
 	////////////중앙 달리기 패배////////////////////
 
 
+}
+
+void CScene_Start::callPlayerUpgrade(int upgradeIdx)
+{
+	static_cast<CPlayer*>(GetPlayer())->upgradeParameter(upgradeIdx);
+	ChangeScene(SCENE_TYPE::SHOP);
 }

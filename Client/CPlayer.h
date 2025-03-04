@@ -94,6 +94,7 @@ public:
 
     void AddCoin(int _iCoin);
     void DecreaseCoin(int _iCoin) { m_tPlayerInfo.m_iCoin -= _iCoin; }
+    void upgradeParameter(int upgradeIDX);
 
 private:
     void PlayerLevelUp();

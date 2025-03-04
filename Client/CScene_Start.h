@@ -41,6 +41,7 @@ public:
 public:
     void CreateForce();
     void SceneFailed();
+    void callPlayerUpgrade(int upgradeIdx);
 
 private:
     void CreatePause();

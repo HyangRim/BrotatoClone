@@ -67,6 +67,7 @@ using namespace Gdiplus;
 
 #include <utility>
 #include <algorithm>
+#include <functional>
 
 
 #include "define.h"
