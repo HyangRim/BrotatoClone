@@ -105,6 +105,11 @@ void CWaveMgr::WaveInit()
 	}
 }
 
+void CWaveMgr::WavePause()
+{
+	m_bWaving = false;
+}
+
 void CWaveMgr::SpawnMob()
 {
 	static std::uniform_int_distribution<int> MobSpawnCount(1, 3);

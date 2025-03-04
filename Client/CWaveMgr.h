@@ -42,6 +42,7 @@ public:
 	void WaveStart();
 	void WaveClear();
 	void WaveInit();
+	void WavePause();
 	
 	void SetWabing(bool _bWave) { m_bWaving = _bWave; }
 	int GetLevel() const { return m_iWaveLevel; }

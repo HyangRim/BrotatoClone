@@ -11,6 +11,7 @@
 #include "CTextUI.h"
 #include "CSpriteUI.h"
 #include "Direct2DMgr.h"
+#include "CWaveMgr.h"
 #include "CSoundMgr.h"
 #include "CSceneMgr.h"
 
@@ -200,6 +201,7 @@ void CScene_Main::Enter()
 
 	//AddObject(pBtnUI, GROUP_TYPE::UI);
 
+	CWaveMgr::GetInstance()->WaveInit();
 	//카메라 위치 세팅. 
 	CCamera::GetInstance()->SetLookAt(vResolution / 2.f);
 	wstring mainTitleBGMKey = L"main_title_bgm";

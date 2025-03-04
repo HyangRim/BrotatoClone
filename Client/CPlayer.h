@@ -56,7 +56,6 @@ private:
     //Duration°ü·Ã 
 private:
     float m_fStepSoundDelay;
-
     float m_fUnderAttackSoundDelay;
 
 private:

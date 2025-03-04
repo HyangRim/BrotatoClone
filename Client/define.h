@@ -24,6 +24,8 @@
 
 #define fDT CTimeMgr::GetInstance()->GetfDT()
 #define DT	CTimeMgr::GetInstance()->GetDT()
+#define fDTN CTimeMgr::GetInstance()->GetfDTN()
+#define DTN CTimeMgr::GetInstance()->GetDTN()
 
 #define CLONE(type) type* Clone() {return new type(*this);}
 

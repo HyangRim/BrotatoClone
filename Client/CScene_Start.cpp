@@ -48,6 +48,8 @@ CScene_Start::CScene_Start()
 	, m_fForceRadius(500.f)
 	, m_fCurRadius(0.f)
 	, m_fForce(500.f)
+	, m_fFailDuration(0.f)
+	, m_bFailed(false)
 {
 	/*
 	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\enemies\\baby_alien.png", L"NormalEnemy", false);
@@ -120,18 +122,19 @@ void CScene_Start::update()
 		}
 	}
 
-	//웨이브 세팅. 
-	if (KEY_HOLD(KEY::LBTN)) {
-		m_bUseForce = true;
-		CreateForce();
-	}
-	else {
-		m_bUseForce = false;
+	if (true == m_bFailed) {
+		m_fFailDuration += fDTN;
+		
+		float lerpAlpha = min(m_fFailDuration * 0.5f, 0.7f);
+		m_pFailPanel->SetNormalAlpha(lerpAlpha);
+		m_pFailPanel->SetMouseOnAlpha(lerpAlpha);
+		
+
+		if (m_fFailDuration >= 2.5f) {
+			ChangeScene(SCENE_TYPE::RUN_END);
+		}
 	}
 
-	if (KEY_TAP(KEY::C)) {
-		CSoundMgr::GetInstance()->Play(L"Extend");
-	}
 
 	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; typeIDX++) {
 		const vector<CObject*>& vecObj = GetGroupObject((GROUP_TYPE)typeIDX);
@@ -492,7 +495,10 @@ void CScene_Start::Enter()
 	*/
 	//웨이브 가능하도록 세팅.(Scene_Start에 들어오면 무조건 그 때 시작이니까.)
 	CWaveMgr::GetInstance()->WaveStart();
+	m_fFailDuration = 0.f;
+	m_bFailed = false;
 	m_vecPauseObj.clear();
+	m_vecFailObj.clear();
 	start();
 }
 
@@ -501,21 +507,24 @@ void CScene_Start::Exit()
 	//나갈때 CSceneMgr쪽에 Player등록 요청
 	CObject* tmp = GetPlayer();
 	CSceneMgr::GetInstance()->RegisterPlayer(tmp);
-	int a = 0;
 
 	//나갈때 전부 삭제해줘야함.
-	if (GetPause()) {
+	if (GetPause() || m_bFailed) {
 		CTimeMgr::GetInstance()->SetTimeScale(1.f);
+		m_bFailed = false;
 	}
 
 	DeleteAll();
+
 	m_pPausePanel = nullptr;
+	m_pFailPanel = nullptr;
 	//충돌도 전부 초기화 해주기. 
 	CCollisionMgr::GetInstance()->Reset();
 
 	//웨이브가 멈춤. 
 	CWaveMgr::GetInstance()->WaveStart();
 	m_vecPauseObj.clear();
+	m_vecFailObj.clear();
 }
 
 void CScene_Start::CreateForce()
@@ -550,6 +559,7 @@ void CScene_Start::OffPause()
 	m_vecPauseObj.clear();
 	ChangePause(false);
 }
+
 
 
 void CScene_Start::CreateLeftBtns()
@@ -1155,4 +1165,45 @@ void CScene_Start::CreateInfoPanel()
 	m_vecPauseObj.push_back(speedCount);
 	AddObject(speedCount, GROUP_TYPE::UI);
 	////////////치명타율 % ////////////////////
+}
+
+
+void CScene_Start::SceneFailed()
+{
+	Vec2 vResolution = CCore::GetInstance()->GetResolution();
+	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+	CWaveMgr* waveMgr = CWaveMgr::GetInstance();
+
+	m_bFailed = true;
+	CTimeMgr::GetInstance()->SetTimeScale(0.f);
+
+	//////////////////뒷 판떼기///////////////////////
+	m_pFailPanel = new CPanelUI;
+	m_pFailPanel->SetObjType(GROUP_TYPE::IMAGE);
+	m_pFailPanel->SetPos(vResolution / 2.f);
+	m_pFailPanel->SetColor(ColorNormalize(0, 0, 0), ColorNormalize(0, 0, 0));
+	m_pFailPanel->SetNormalAlpha(0.0f);
+	m_pFailPanel->SetMouseOnAlpha(0.0f);
+	m_pFailPanel->SetScale(vResolution);
+	m_vecFailObj.push_back(m_pFailPanel);
+	AddObject(m_pFailPanel, GROUP_TYPE::IMAGE);
+	//////////////////뒷 판떼기///////////////////////
+
+
+	////////////중앙 달리기 패배////////////////////
+	CObject* runFailed = new CSpriteUI;
+	runFailed->SetName(L"runFailed");
+	runFailed->SetObjType(GROUP_TYPE::UI);
+	runFailed->SetPos(Vec2(vResolution.x / 2, 100.f));
+	runFailed->SetScale(Vec2(350.f, 75.f));
+
+
+	runFailed->CreateTextUI(L"달리기 패배", -(runFailed->GetScale() / 2.f), (runFailed->GetScale() / 2.f)
+		, 56, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	m_vecFailObj.push_back(runFailed);
+	AddObject(runFailed, GROUP_TYPE::UI);
+	////////////중앙 달리기 패배////////////////////
 }
