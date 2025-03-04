@@ -25,6 +25,8 @@ public:
     virtual void update();
     virtual void render(ID2D1HwndRenderTarget* _pRender);
 
+public:
+    void ReRollItem();
 
 public:
     void CreateInfoPanel();

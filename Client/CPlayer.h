@@ -88,8 +88,13 @@ public:
     //웨폰 리스트 전해주는 함수. 
     const list<CWeapon*>& GetPlayerWeapons() { return m_listWeapon; }
 
+
+public:
+
     void AddExp(int _iExp);
+
     void AddCoin(int _iCoin);
+    void DecreaseCoin(int _iCoin) { m_tPlayerInfo.m_iCoin -= _iCoin; }
 
 private:
     void PlayerLevelUp();
