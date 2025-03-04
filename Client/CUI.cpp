@@ -45,15 +45,6 @@ void CUI::update()
 
 void CUI::finalupdate()
 {
-	if (GetName().compare(L"Parent") == 0)
-	{
-
-		int a = 0;
-
-	}
-
-
-
 	CObject::finalupdate();
 	m_vFinalPos = GetPos();
 	//UI의 최종 좌표를 구한다.
@@ -64,7 +55,7 @@ void CUI::finalupdate()
 
 	//UI 마우스 체크
 	MouseOnCheck();
-	
+
 	finalupdate_child();
 }
 
@@ -192,6 +183,7 @@ void CUI::render_child(Gdiplus::Graphics* _pDGraphics)
 void CUI::render_child(ID2D1HwndRenderTarget* _pRender)
 {
 	for (auto& child : m_vecChildUI) {
+
 		child->render(_pRender);
 	}
 }

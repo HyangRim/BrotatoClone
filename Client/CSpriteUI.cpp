@@ -61,8 +61,6 @@ void CSpriteUI::update()
 
 }
 
-
-
 void CSpriteUI::render(ID2D1HwndRenderTarget* _pRender)
 {
     component_render(_pRender);
