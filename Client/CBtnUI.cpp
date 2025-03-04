@@ -70,6 +70,9 @@ void CBtnUI::MouseLbtnClicked()
 		((*m_pSceneInst).*m_pSceneFunc)();
 	}
 
+	if (nullptr != m_callback) {
+		m_callback();
+	}
 	
 	CSoundMgr::GetInstance()->Play(L"button_press");
 }
@@ -78,6 +81,10 @@ void CBtnUI::SetClickedCallBack(CScene* _pScene, SCENE_MEMFUNC _pSceneFunc)
 {
 	m_pSceneFunc = _pSceneFunc;
 	m_pSceneInst = _pScene;
+}
+
+void CBtnUI::SetClickedCallBack(const std::function<void()>& callback) {
+	m_callback = callback;
 }
 
 

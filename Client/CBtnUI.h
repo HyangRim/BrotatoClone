@@ -55,6 +55,9 @@ private:
     SCENE_MEMFUNC   m_pSceneFunc;
     CScene*         m_pSceneInst;
 
+    //콜백 함수
+    std::function<void()> m_callback;
+
     //이전 프레임에 포커스 되었는가?
     bool            m_bPrevFocus;
 
@@ -93,6 +96,7 @@ public:
     }
 
     void SetClickedCallBack(CScene* _pScene, SCENE_MEMFUNC _pSceneFunc);
+    void SetClickedCallBack(const std::function<void()>& callback);
     
 public:
     vector<CObject*>& GetTrashCan() { return m_vTempObjects; }

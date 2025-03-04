@@ -131,6 +131,8 @@ CPlayer::~CPlayer()
 	}
 }
 
+
+
 void CPlayer::update()
 {
 	if (CScene::GetPause()) return;
@@ -444,4 +446,40 @@ void CPlayer::PlayWalkSound()
 	//최적화를 위해 따로 만들어야 할듯. 
 	CSoundMgr::GetInstance()->PlayWalkSound();
 
+}
+
+void CPlayer::upgradeParameter(int upgradeIDX)
+{
+
+	if (upgradeIDX == 0) {
+		m_tPlayerInfo.m_fAttackSpeedCoef += 0.05f;
+		wprintf(L"Attack Speed Upgrade\n");
+	}
+	else if (upgradeIDX == 1) {
+		m_tPlayerInfo.m_iCriticalAcc += 3;
+		wprintf(L"Critical Acc Upgrade\n");
+	}
+	else if (upgradeIDX == 2) {
+		m_tPlayerInfo.m_AddMaxHP += 3;
+		m_tPlayerInfo.m_iMaxHP += 3;
+		m_tPlayerInfo.m_iCurHP += 3;
+		wprintf(L"MaxHP Upgrade\n");
+	}
+	else if (upgradeIDX == 3) {
+		m_tPlayerInfo.m_fMeleeCoef += 2;
+		wprintf(L"Melee Coef Upgrade\n");
+	}
+	else if (upgradeIDX == 4) {
+		m_tPlayerInfo.m_fDamageCoef += 0.05f;
+		m_tPlayerInfo.m_fRangeCoef += 1;
+		wprintf(L"Damage Coef Upgrade\n");
+	}
+	else if (upgradeIDX == 5) {
+		m_tPlayerInfo.m_fRangeCoef += 1;
+		wprintf(L"Range Coef Upgrade\n");
+	}
+	else if (upgradeIDX == 6) {
+		m_tPlayerInfo.m_fSpeed += 0.03f;
+		wprintf(L"Speed Upgrade\n");
+	}
 }

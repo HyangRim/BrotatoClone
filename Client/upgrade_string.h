@@ -26,11 +26,11 @@ const vector<wstring> upgrade_name_list = {
 constexpr const wchar_t upgrade_classifi[] = L"업그레이드";
 
 const vector<wstring> upgrade_text_list = {
-	L"+5 %% 공격속도",
-	L"+3 %% 치명타율",
+	L"+5 % 공격속도",
+	L"+3 % 치명타율",
 	L"+3 최대 HP",
 	L"+2 근거리 데미지",
-	L"+5 %% 데미지",
+	L"+5 % 데미지",
 	L"+1 원거리 데미지",
 	L"+3 % 속도",
 };

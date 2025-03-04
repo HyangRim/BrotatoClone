@@ -567,6 +567,7 @@ void CScene_Start::OffPause()
 
 
 
+
 void CScene_Start::CreateLeftBtns()
 {
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
@@ -1244,25 +1245,83 @@ void CScene_Start::CreateLevelUpShop()
 		CObject* upgradeNameText = new CSpriteUI;
 		upgradeNameText->SetName(L"upgradeNameText");
 		upgradeNameText->SetObjType(GROUP_TYPE::UI);
-		upgradeNameText->SetPos(vResolution / 2);
-		upgradeNameText->SetScale(Vec2(300.f, 100.f));
-		//upgrade_name_list[upgrade_numbers[upgradeIndex]]
+		upgradeNameText->SetPos(Vec2(120.f + upgradeIndex * (5.f + panelItemUI->GetScale().x), (vResolution.y / 2) - 45.f));
+		upgradeNameText->SetScale(Vec2(80.f, 15.f));
 
-		upgradeNameText->CreateTextUI(L"hihihi", -(upgradeNameText->GetScale() / 2.f), (upgradeNameText->GetScale() / 2.f)
-			, 30, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		upgradeNameText->CreateTextUI(upgrade_name_list[upgrade_numbers[upgradeIndex]], -(upgradeNameText->GetScale() / 2.f), (upgradeNameText->GetScale() / 2.f)
+			, 14, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 			, FONT_TYPE::KR
 			, TextUIMode::TEXT
 			, 0);
-		upgradeNameText->GetTextUI()->SetHorizontal(0);
+		upgradeNameText->GetTextUI()->SetHorizontal(1);
 		panelItemUI->AddChild((CUI*)upgradeNameText);
 		////////////Upgrade Name////////////////////
 
+
+		////////////Upgrade Classifi////////////////////
+		CObject* upgradeClassifi = new CSpriteUI;
+		upgradeClassifi->SetName(L"upgradeClassifi");
+		upgradeClassifi->SetObjType(GROUP_TYPE::UI);
+		upgradeClassifi->SetPos(Vec2(120.f + upgradeIndex * (5.f + panelItemUI->GetScale().x), (vResolution.y / 2) - 25.f));
+		upgradeClassifi->SetScale(Vec2(80.f, 15.f));
+
+		upgradeClassifi->CreateTextUI(upgrade_classifi, -(upgradeClassifi->GetScale() / 2.f), (upgradeClassifi->GetScale() / 2.f)
+			, 12, D2D1::ColorF::Yellow, true, 1.f, D2D1::ColorF::Black
+			, FONT_TYPE::KR
+			, TextUIMode::TEXT
+			, 0);
+		upgradeClassifi->GetTextUI()->SetHorizontal(1);
+		panelItemUI->AddChild((CUI*)upgradeClassifi);
+		////////////Upgrade Classifi////////////////////
+
+		////////////Upgrade Text////////////////////
+		CObject* upgradeText = new CSpriteUI;
+		upgradeText->SetName(L"upgradeText");
+		upgradeText->SetObjType(GROUP_TYPE::UI);
+		upgradeText->SetPos(Vec2(115.f + upgradeIndex * (5.f + panelItemUI->GetScale().x), (vResolution.y / 2) + 5.f));
+		upgradeText->SetScale(Vec2(176.f, 15.f));
+
+		upgradeText->CreateTextUI(upgrade_text_list[upgrade_numbers[upgradeIndex]], -(upgradeText->GetScale() / 2.f), (upgradeText->GetScale() / 2.f)
+			, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+			, FONT_TYPE::KR
+			, TextUIMode::TEXT
+			, 0);
+		upgradeText->GetTextUI()->SetHorizontal(1);
+		panelItemUI->AddChild((CUI*)upgradeText);
+		////////////Upgrade Name////////////////////
+
+		AddObject(panelItemUI, GROUP_TYPE::IMAGE);
+
+		/////////////////선택 버튼//////////////////////
+		CBtnUI* selectBtn = new CBtnUI;
+		selectBtn->SetName(L"selectBtn");
+		selectBtn->SetObjType(GROUP_TYPE::UI);
+		selectBtn->SetScale(Vec2(156.f, 30.f));
+		selectBtn->SetPos(Vec2(100.f + upgradeIndex * (5.f + panelItemUI->GetScale().x), vResolution.y / 2 + 40.f));
+		selectBtn->SetIsRound(true, 5.f, 5.f);
+		selectBtn->SetColor(ColorNormalize(237, 237, 237), ColorNormalize(36, 36, 36));
+
+		//콜백 함수로 구현. 
+		int callbackParam = upgrade_numbers[upgradeIndex];
+		selectBtn->SetClickedCallBack([this, callbackParam]() {
+			this->callPlayerUpgrade(callbackParam);
+		});
 		
-		AddObject(panelItemUI, GROUP_TYPE::UI);
+		selectBtn->CreateTextUI(L"선택", -(selectBtn->GetScale() / 2.f), (selectBtn->GetScale() / 2.f)
+			, 20, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+			, FONT_TYPE::KR
+			, TextUIMode::TEXT
+			, 0);
+		//panelItemUI->AddChild((CUI*)selectBtn);
+
+
+		//버튼 기능 추가.
+		//upgrade_numbers[upgradeIndex]
+		AddObject(selectBtn, GROUP_TYPE::UI);
+		/////////////////선택 버튼//////////////////////
 	}
 
 	////////////////////////가운데 아이템 패널 4개////////////////////////////////
-
 
 
 	CreateInfoPanel();
@@ -1309,4 +1368,10 @@ void CScene_Start::SceneFailed()
 	////////////중앙 달리기 패배////////////////////
 
 
+}
+
+void CScene_Start::callPlayerUpgrade(int upgradeIdx)
+{
+	static_cast<CPlayer*>(GetPlayer())->upgradeParameter(upgradeIdx);
+	ChangeScene(SCENE_TYPE::SHOP);
 }
