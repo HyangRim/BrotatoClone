@@ -8,6 +8,8 @@
 #include "CScene.h"
 #include "CTimeMgr.h"
 #include "CSceneMgr.h"
+#include "Direct2DMgr.h"
+#include "CSoundMgr.h"
 
 CSlingshot::CSlingshot()
 	: m_fCoolTime(0.f)
@@ -116,7 +118,10 @@ void CSlingshot::ShotMissile(Vec2 _vDir)
 		pMissile->SetCritical(true);
 	}
 	pMissile->SetDamage(default_damage);
-
+	pMissile->CreateImage();
+	pMissile->AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"slingshot_projectile"));
+	
+	CSoundMgr::GetInstance()->Play(L"SlingFire");
 	CreateObject(pMissile, GROUP_TYPE::PROJ_PLAYER);
 }
 

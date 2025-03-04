@@ -18,6 +18,6 @@ public:
     CLONE(CPistol)
 public:
     CPistol();
-    ~CPistol();
+    virtual ~CPistol();
 };
 

@@ -6,6 +6,7 @@
 #include "CMonster.h"
 #include "CMissile.h"
 #include "CTimeMgr.h"
+#include "Direct2DMgr.h"
 
 
 
@@ -55,6 +56,8 @@ void CRange_AttackState::CreateMissile()
 	pMissile->SetPos(m_vMonsterPos);
 	pMissile->SetScale(Vec2(20.f, 20.f));
 	pMissile->SetDir(m_vMissileDir);
+	pMissile->CreateImage();
+	pMissile->AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"bullet_enemy"));
 
 	CreateObject(pMissile, GROUP_TYPE::PROJ_MONSTER);
 }

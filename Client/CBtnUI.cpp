@@ -7,6 +7,7 @@
 #include "CPanelUI.h"
 #include "CSceneMgr.h"
 #include "Direct2DMgr.h"
+#include "CSoundMgr.h"
 #include "CSpriteUI.h"
 #include "CImage.h"
 #include "CUI.h"
@@ -21,6 +22,7 @@ CBtnUI::CBtnUI()
 	, m_pSceneFunc(nullptr)
 	, m_colorNormal(D2D1::ColorF::Black)
 	, m_colorMouseOn(D2D1::ColorF::White)
+	, m_bPrevFocus(false)
 {
 }
 
@@ -67,6 +69,7 @@ void CBtnUI::MouseLbtnClicked()
 	if (m_pSceneInst && m_pSceneFunc) {
 		((*m_pSceneInst).*m_pSceneFunc)();
 	}
+	CSoundMgr::GetInstance()->Play(L"button_press");
 }
 
 void CBtnUI::SetClickedCallBack(CScene* _pScene, SCENE_MEMFUNC _pSceneFunc) 
@@ -141,10 +144,16 @@ void CBtnUI::render(ID2D1HwndRenderTarget* _pRender)
 
 void CBtnUI::update()
 {
-	if (IsMouseOn() == true)
+	if (IsMouseOn() == true) {
 		MouseOn();
+
+		if (m_bPrevFocus == false) {
+			CSoundMgr::GetInstance()->Play(L"button_focus");
+			m_bPrevFocus = true;
+		}
+	}
 	else {
-		
+		m_bPrevFocus = false;
 		if (m_vTempObjects.size() != 0)
 		{
 			printf("OUT\n");

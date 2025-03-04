@@ -27,8 +27,8 @@ CPlayer::CPlayer()
 	, m_iDir(1)
 	, m_iPrevDir(1)
 	, m_tPlayerInfo{}
-	, m_fStepSoundDuration(0.4f)
-	, m_fStepSoundElapsed(0.f)
+	, m_fStepSoundDelay(0.2f)
+	, m_fUnderAttackSoundDelay(0.35f)
 {
 	//m_pTex = CResMgr::GetInstance()->LoadTexture(L"PlayerTex", L"texture\\Tenshi.bmp");
 
@@ -133,6 +133,9 @@ void CPlayer::update()
 {
 	if (CScene::GetPause()) return;
 
+	//피격음 딜레이. 
+	m_fUnderAttackSoundDelay -= fDT;
+
 	CObject::update();
 	update_move();
 	update_state();
@@ -167,12 +170,17 @@ void CPlayer::update()
 
 	//발걸음 소리 업데이트 관련
 	if (PLAYER_STATE::WALK == m_eCurState) {
-		m_fStepSoundElapsed += fDT;
+		m_fStepSoundDelay -= fDT;
+		if (m_fStepSoundDelay < 0.f) {
 
-		if (m_fStepSoundElapsed > m_fStepSoundDuration) {
+			//0.35초마다 초기화하기. 
 			CSoundMgr::GetInstance()->PlayWalkSound();
-			m_fStepSoundElapsed = 0.f;
+			m_fStepSoundDelay = 0.35f;
 		}
+	}
+	else {
+		//다른 상태일 때는 발걸음 초기화. 
+		m_fStepSoundDelay = 0.f;
 	}
 
 	//맨 뒤에 놔줘야 이전과 현재를 맞춰놔야 이후에 발생하는 상태가 적용가능. 
@@ -371,10 +379,32 @@ void CPlayer::OnCollisionEnter(CCollider* _pOther)
 {
 
 	CObject* pOtherObj = _pOther->GetObj();
-	if (L"Ground" == pOtherObj->GetName()) {
-		Vec2 vPos = GetPos();
-		if (vPos.y < pOtherObj->GetPos().y) {//내가 땅보다 위에 있을 때. 
+	if (L"Monster" == pOtherObj->GetName()) {
+		int randomRC = distribution(rng) % 4;
 
+		if (randomRC == 0) {
+			if (m_fUnderAttackSoundDelay < 0.f) {
+				CSoundMgr::GetInstance()->Play(L"underattack1");
+				m_fUnderAttackSoundDelay = 0.35f;
+			}
+		}
+		else if (randomRC == 1) {
+			if (m_fUnderAttackSoundDelay < 0.f) {
+				CSoundMgr::GetInstance()->Play(L"underattack2");
+				m_fUnderAttackSoundDelay = 0.35f;
+			}
+		}
+		else if (randomRC == 2) {
+			if (m_fUnderAttackSoundDelay < 0.f) {
+				CSoundMgr::GetInstance()->Play(L"underattack3");
+				m_fUnderAttackSoundDelay = 0.35f;
+			}
+		}
+		else if (randomRC == 3) {
+			if (m_fUnderAttackSoundDelay < 0.f) {
+				CSoundMgr::GetInstance()->Play(L"underattack4");
+				m_fUnderAttackSoundDelay = 0.35f;
+			}
 		}
 	}
 }

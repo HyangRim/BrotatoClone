@@ -28,6 +28,6 @@ public:
 
 public:
     CKnife();
-    ~CKnife();
+    virtual ~CKnife();
 };
 

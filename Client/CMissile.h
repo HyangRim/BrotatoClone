@@ -46,5 +46,5 @@ private:
 
 public:
     CMissile();
-    ~CMissile();
+    virtual ~CMissile();
 };

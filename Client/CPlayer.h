@@ -55,8 +55,9 @@ private:
 
     //Duration관련 
 private:
-    float m_fStepSoundDuration;
-    float m_fStepSoundElapsed;
+    float m_fStepSoundDelay;
+
+    float m_fUnderAttackSoundDelay;
 
 private:
     //무기 위치 고정된 offset값. 

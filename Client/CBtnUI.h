@@ -53,6 +53,9 @@ private:
     SCENE_MEMFUNC   m_pSceneFunc;
     CScene*         m_pSceneInst;
 
+    //이전 프레임에 포커스 되었는가?
+    bool            m_bPrevFocus;
+
 public:
     void SetIsRound(bool _bIsRoundedRect, float _fradiusX, float _fradiusY) 
     { 

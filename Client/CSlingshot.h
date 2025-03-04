@@ -18,7 +18,7 @@ public:
     CLONE(CSlingshot)
 public:
     CSlingshot();
-    ~CSlingshot();
+    virtual ~CSlingshot();
 };
 
 

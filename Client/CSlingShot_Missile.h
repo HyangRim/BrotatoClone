@@ -24,6 +24,6 @@ private:
 
 public:
     CSlingShot_Missile();
-    ~CSlingShot_Missile();
+    virtual ~CSlingShot_Missile();
 };
 

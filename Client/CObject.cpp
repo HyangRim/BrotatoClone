@@ -92,6 +92,7 @@ CObject::~CObject() {
 	if (m_pRigidBody != nullptr)delete m_pRigidBody;
 
 	Safe_Delete_Vec(m_pImages);
+	m_pImages.clear();
 
 	if (m_pTextUI != nullptr) delete m_pTextUI;
 }

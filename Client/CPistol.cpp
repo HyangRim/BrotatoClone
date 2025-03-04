@@ -7,6 +7,8 @@
 #include "CScene.h"
 #include "CTimeMgr.h"
 #include "CSceneMgr.h"
+#include "Direct2DMgr.h"
+#include "CSoundMgr.h"
 
 CPistol::CPistol()
 	: m_fCoolTime(0.f)
@@ -112,7 +114,22 @@ void CPistol::ShotMissile(Vec2 _vDir)
 		pMissile->SetCritical(true);
 	}
 	pMissile->SetDamage(default_damage);
+	pMissile->CreateImage();
+	pMissile->AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"bullet_player"));
 	
+
+	int randomRC = distribution(rng) % 3;
+	if (randomRC == 0) {
+		CSoundMgr::GetInstance()->Play(L"gun_pistol_shot_01");
+	}
+	else if (randomRC == 1) {
+		CSoundMgr::GetInstance()->Play(L"gun_pistol_shot_02");
+	}
+	else if (randomRC == 2) {
+		CSoundMgr::GetInstance()->Play(L"gun_pistol_shot_03");
+	}
+
+
 	CreateObject(pMissile, GROUP_TYPE::PROJ_PLAYER);
 }
 
