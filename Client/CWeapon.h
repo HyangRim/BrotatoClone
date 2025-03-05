@@ -47,7 +47,7 @@ public:
     virtual void ShotMissile(Vec2 _vDir);
 
     CObject* GetTarget() { return m_pTarget; }
-
+    void SetPlayer() { m_pPlayer = (CPlayer*)(CSceneMgr::GetInstance()->GetPlayer()); }
     void SetWeaponOffset(Vec2 _vWeaponOffset) { m_vWeaponOffset = _vWeaponOffset; }
 
 private:

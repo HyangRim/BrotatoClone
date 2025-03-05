@@ -143,6 +143,9 @@
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CScene_Tool.cpp"
 
 
+#include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CSliderUI.cpp"
+
+
 #include "C:\Users\c\source\repos\HyangRim\BrotatoClone\Client\CSlingshot.cpp"
 
 

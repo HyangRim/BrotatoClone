@@ -6,7 +6,9 @@
 #include "CSpriteUI.h"
 #include "CBtnUI.h"
 #include "CPanelUI.h"
+#include "CWeapon.h"
 #include "CImage.h"
+#include "CPlayer.h"
 
 #include "ItemMgr.h"
 #include "CSceneMgr.h"
@@ -204,11 +206,13 @@ void SelectWeapon(DWORD_PTR lParam, DWORD_PTR wParam)
 	// wParam -> x
 	wstring tag = *reinterpret_cast<wstring*>(lParam);
 
-	Item* basicWeapon = new Item(ITEM_TYPE::WEAPON);
-	basicWeapon->tag = tag;
-	basicWeapon->m_eItemType = ITEM_TYPE::WEAPON;
+	Item* selectedItem = ItemMgr::GetInstance()->GetItem(tag);
 
-	ItemMgr::GetInstance()->AddWeapons(basicWeapon);
+	/*
+	CWeapon* selectedWeapon = new CWeapon;
+	selectedWeapon->SetInfo(selectedItem->m_tWeaponInfo);
+	static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->AddWeapon(selectedWeapon);
+	*/
 
 	ChangeScene(SCENE_TYPE::START);
 }

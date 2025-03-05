@@ -53,6 +53,11 @@ void CScene_Shop::update()
 					swprintf_s(buffer, L"아이템 %d개", (int)ItemMgr::GetInstance()->GetPassiveItemssize());
 					vecObj[objIDX]->GetTextUI()->SetText(buffer);
 				}
+				if (vecObj[objIDX]->GetName().compare(L"WeaponInfoPanel") == 0)
+				{
+					swprintf_s(buffer, L"무기(%d/6)", (int)((CPlayer*)CSceneMgr::GetInstance()->GetPlayer())->GetWeaponCount());
+					vecObj[objIDX]->GetTextUI()->SetText(buffer);
+				}
 
 				vecObj[objIDX]->update();
 			}
@@ -64,6 +69,8 @@ void CScene_Shop::render(ID2D1HwndRenderTarget* _pRender)
 {
 	CScene::render(_pRender);
 	RenderScrollArea(_pRender);
+
+	
 }
 
 void CScene_Shop::Enter()
@@ -116,6 +123,7 @@ void CScene_Shop::Enter()
 
 	///////////////////////////무기 글자 UI///////////////////
 	CObject* panelTextWeapon = new CSpriteUI;
+	panelTextWeapon->SetName(L"WeaponInfoPanel");
 	panelTextWeapon->SetObjType(GROUP_TYPE::UI);
 	panelTextWeapon->SetPos(Vec2(608.f, 386.f));
 	panelTextWeapon->SetScale(Vec2(64.f, 3.f));
@@ -297,9 +305,24 @@ void CScene_Shop::Enter()
 	
 	////////////////////////가운데 아이템 패널 4개////////////////////////////////
 
+	const list<CWeapon*>& vPlayerWeaponList = static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->GetPlayerWeapons();
+	
+	for (auto iter = vPlayerWeaponList.begin(); iter != vPlayerWeaponList.end(); iter++)
+	{
+		CWeapon* weapon = *iter;
+		wstring iconTag = weapon->Getinfo().m_sIconImageKey;
+
+		CObject* weapons = new CSpriteUI;
+		weapons->SetName(L"Weapon");
+		weapons->SetPos(Vec2(592.f, 436.f));
+		weapons->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
+		weapons->SetObjType(GROUP_TYPE::UI);
+		weapons->SetScale(Vec2(50.f, 50.f));
+		AddObject(weapons, GROUP_TYPE::UI);
+	}
+
 
 	CreateInfoPanel();
-
 	CreateScrollArea();
 }
 
@@ -427,13 +450,20 @@ void CScene_Shop::PurchaseItem(DWORD_PTR lParam, DWORD_PTR wParam)
 		return;
 	}
 
-	static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->DecreaseCoin(itemPrice);
-
 	if (selectedItem->m_eItemType == ITEM_TYPE::WEAPON)
 	{
+		int curWeaponCnt = (int)((CPlayer*)CSceneMgr::GetInstance()->GetPlayer())->GetWeaponCount();
+
+		if (curWeaponCnt == 6) return;
+
 		//무기선택시 ...
-		//CWeapon* selectedWeapon = new CWeapon;
-	
+		CWeapon* selectedWeapon = new CWeapon;
+		selectedWeapon->SetInfo(selectedItem->m_tWeaponInfo);
+
+		selectedWeapon->SetPlayer();
+		static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->AddWeapon(selectedWeapon);
+
+
 	}
 	else
 	{
@@ -460,7 +490,7 @@ void CScene_Shop::PurchaseItem(DWORD_PTR lParam, DWORD_PTR wParam)
 		float contentHeight = (yCount + 1) * 54.f + 27.f; // 행 개수에 따라 높이를 계산
 		m_scrollArea.contentRect.bottom = max(m_scrollArea.contentRect.bottom, contentHeight);
 	}
-	
+	static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->DecreaseCoin(itemPrice);
 }
 
 
