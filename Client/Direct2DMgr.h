@@ -49,6 +49,7 @@ public:
 	void RenderText(const std::wstring& text, const D2D1_RECT_F& layoutRect, FONT_TYPE fontType, float fontSize, const D2D1_COLOR_F& color);
 	void RenderTextWithOutline(const std::wstring& text, const D2D1_RECT_F& layoutRect, FONT_TYPE fontType, float fontSize, const D2D1_COLOR_F& textColor, const D2D1_COLOR_F& outlineColor, float outlineThickness);
 	void RenderLeftTextWithOutline(const std::wstring& text, const D2D1_RECT_F& layoutRect, FONT_TYPE fontType, float fontSize, const D2D1_COLOR_F& textColor, const D2D1_COLOR_F& outlineColor, float outlineThickness);
+	void RenderRightTextWithOutline(const std::wstring& text, const D2D1_RECT_F& layoutRect, FONT_TYPE fontType, float fontSize, const D2D1_COLOR_F& textColor, const D2D1_COLOR_F& outlineColor, float outlineThickness);
 private:
 	HRESULT LoadBitmap(const wstring& filePath, ID2D1Bitmap** ppBitmap);
 	HRESULT SplitBitmap(ID2D1Bitmap* bitmap, const wstring& tag);

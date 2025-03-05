@@ -19,6 +19,9 @@ private:
 
     CPanelUI* m_pFailPanel;
     vector<CObject*> m_vecFailObj;
+
+    //옵션 Obj 모아놓는 벡터. 
+    vector<CObject*>    m_vecOptionObjs;
     
 
 private:
@@ -51,6 +54,15 @@ private:
     void CreateLevelUpShop();
     void OnPause();
     void OffPause();
+
+private:
+    void CreateOptionPanel();
+    void OffOptionPanel();
+    void OptionPanelupdate();
+
+    void ChangeMasterRatio();
+    void ChangeBGMRatio();
+    void ChangeSFXRatio();
 
 
 

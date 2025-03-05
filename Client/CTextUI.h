@@ -29,7 +29,7 @@ private:
 
     bool                m_bCamAffected;         //카메라 영향 받느냐, 안 받느냐.
 
-    int                 m_iHorizontal;          //0 : Center, 1 : Left, 2 : Right(미구현)
+    int                 m_iHorizontal;          //0 : Center, 1 : Left, 2 : Right
     int                 m_iVertical;
 
 public:

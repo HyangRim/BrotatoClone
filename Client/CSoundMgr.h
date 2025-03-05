@@ -5,6 +5,8 @@
 
 
 class CSound;
+class CObject;
+class CSliderUI;
 
 #define SOUNDBUFFERSIZE 64
 
@@ -17,6 +19,7 @@ float		   fWalkElapsed = 0.f;
 struct SoundInfo {
 	FMOD::Sound*	m_pSound = nullptr;
 	FMOD::Channel*	m_pChannel = nullptr;
+	bool			isBGM = false;
 };
 
 class CSoundMgr
@@ -29,11 +32,29 @@ private:
 	FMOD::System* m_pSystem;			//시스템 포인터
 	FMOD::Sound* m_pSound;			//사운드 1개. 
 	FMOD::Channel* m_pChannel;
+
+	FMOD::ChannelGroup* m_pBGMChannelGroup;
+	FMOD::ChannelGroup* m_pSFXChannelGroup;
+
+public:
+	CSliderUI*		m_pMasterSoundSlider;
+	CSliderUI*		m_pBGMSoundSlider;
+	CSliderUI*		m_pSFXSoundSlider;
+
+	CObject*		m_pMasterSoundRatio;
+	CObject*		m_pBGMSoundRatio;
+	CObject*		m_pSFXSoundRatio;
+
+	float			m_fMasterRatio;
+	float			m_fBGMRatio;
+	float			m_fSFXRatio;
 	 
 public:
 	HRESULT init();
 	void Release();
 	void update();			//반복해줘야 정상적 실행 가능.
+
+
 
 public:
 
@@ -48,6 +69,21 @@ public:
 	bool IsPlaySound(wstring& _keyName);
 	bool IsPauseSound(wstring _keyName);
 
+	void InitVolumePointer();
+	bool IsOptionPanel();
+
+	void SetMasterRatio(float _fRatio) { m_fMasterRatio = _fRatio; }
+	float GetMasterRatio() { return m_fMasterRatio; }
+
+	void SetBGMRatio(float _fRatio) { m_fBGMRatio = _fRatio; }
+	float GetBGMRatio() { return m_fBGMRatio; }
+
+	void SetSFXRatio(float _fRatio) { m_fSFXRatio = _fRatio; }
+	float GetSFXRatio() { return m_fSFXRatio; }
+
+
+	void SetBGMChannelVolume(float _fVolume);
+	void SetSFXChannelVolume(float _fVolume);
 
 public:
 };

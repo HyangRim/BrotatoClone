@@ -17,18 +17,30 @@ class CScene_Main :
 
 
 private:
-    mainPanel m_tMainPanel;
+    mainPanel           m_tMainPanel;
 
     //이건 메인 화면 Wave 전용.
-    float     m_fPanelMoveDuration;
-    float     m_fPanelMoveElapsed;
-    float     m_fPanelMoveWave;
+    float               m_fPanelMoveDuration;
+    float               m_fPanelMoveElapsed;
+    float               m_fPanelMoveWave;
 
     //이건 메인 화면 포테이토 Wave용도
-    float     m_fBrotatoDuration;
-    float     m_fBrotatoElased;
-    float     m_fBrotatoWave;
+    float               m_fBrotatoDuration;
+    float               m_fBrotatoElased;
+    float               m_fBrotatoWave;
 
+    //옵션 Obj 모아놓는 벡터. 
+    vector<CObject*>    m_vecOptionObjs;
+
+private:
+    void CreateOptionPanel();
+    void OffOptionPanel();
+    void OptionPanelupdate();
+
+    void ChangeMasterRatio();
+    void ChangeBGMRatio();
+    void ChangeSFXRatio();
+    
 public:
     void ClearPlayer();
 

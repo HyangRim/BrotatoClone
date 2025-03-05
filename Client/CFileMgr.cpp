@@ -85,7 +85,15 @@ void CFileMgr::ProcessFile(const std::wstring& filePath)
         // MP3 또는 WAV 파일 처리
         wstring key = GetFileNameWithoutExtension(fileName);
 
-        CSoundMgr::GetInstance()->AddSound(key, relativePath.c_str(), false, false);
+        if (L"main_title_bgm" == key) {
+            CSoundMgr::GetInstance()->AddSound(key, relativePath.c_str(), true, false);
+            wprintf(L"BGM: %s\n", key.c_str());
+        }
+        else {
+            CSoundMgr::GetInstance()->AddSound(key, relativePath.c_str(), false, false);
+        }
+
+        //CSoundMgr::GetInstance()->AddSound(key, relativePath.c_str(), false, false);
 
         wprintf(L"Loaded sound: %s\n", key.c_str());
     }

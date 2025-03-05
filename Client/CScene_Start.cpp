@@ -35,6 +35,7 @@
 #include "CPanelUI.h"
 #include "CBtnUI.h"
 #include "CSpriteUI.h"
+#include "CSliderUI.h"
 #include "CTextUI.h"
 #include "CWaveMgr.h"
 
@@ -217,6 +218,11 @@ void CScene_Start::update()
 	
 	if (KEY_TAP(KEY::ENTER)  ) {
 		ChangeScene(SCENE_TYPE::SHOP);
+	}
+
+	//음향 텍스트 바꾸는 곳. 
+	if (CSoundMgr::GetInstance()->IsOptionPanel()) {
+		OptionPanelupdate();
 	}
 }
 
@@ -515,7 +521,6 @@ void CScene_Start::Exit()
 		CTimeMgr::GetInstance()->SetTimeScale(1.f);
 		m_bFailed = false;
 	}
-
 	DeleteAll();
 
 	m_pPausePanel = nullptr;
@@ -525,8 +530,12 @@ void CScene_Start::Exit()
 
 	//웨이브가 멈춤. 
 	CWaveMgr::GetInstance()->WaveStart();
+
+	//사운드 매니저 포인터 초기화. 
+	CSoundMgr::GetInstance()->InitVolumePointer();
 	m_vecPauseObj.clear();
 	m_vecFailObj.clear();
+	m_vecOptionObjs.clear();
 }
 
 void CScene_Start::CreateForce()
@@ -561,9 +570,6 @@ void CScene_Start::OffPause()
 	m_vecPauseObj.clear();
 	ChangePause(false);
 }
-
-
-
 
 void CScene_Start::CreateLeftBtns()
 {
@@ -669,6 +675,8 @@ void CScene_Start::CreateLeftBtns()
 	optionBtn->SetIsRound(true, 10.f, 10.f);
 	optionBtn->SetColor(ColorNormalize(237, 237, 237), ColorNormalize(0, 0, 0));
 	//optionBtn->SetClickedCallBack(ChangeScene, (DWORD_PTR)SCENE_TYPE::MAIN, 0);
+	//optionBtn->SetClickedCallBack(this, )
+	optionBtn->SetClickedCallBack(this, (SCENE_MEMFUNC)&CScene_Start::CreateOptionPanel);
 	optionBtn->CreateTextUI(L"옵션", -(optionBtn->GetScale() / 2.f), (optionBtn->GetScale() / 2.f)
 		, 20, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR
@@ -913,7 +921,7 @@ void CScene_Start::CreateInfoPanel()
 	//740 + Alpha
 	FinalDMGCount->SetPos(Vec2(920.f, 230.f));
 	FinalDMGCount->SetScale(Vec2(35.f, 35.f));
-	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_fDamageCoef));
+	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_fDamageCoef * 100.f));
 
 
 	FinalDMGCount->CreateTextUI(buffer, -(FinalDMGCount->GetScale() / 2.f), (FinalDMGCount->GetScale() / 2.f)
@@ -1059,7 +1067,7 @@ void CScene_Start::CreateInfoPanel()
 	//740 + Alpha
 	attackSpeedCount->SetPos(Vec2(920.f, 320.f));
 	attackSpeedCount->SetScale(Vec2(35.f, 35.f));
-	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_fAttackSpeedCoef));
+	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_fAttackSpeedCoef * 100.f));
 
 
 	attackSpeedCount->CreateTextUI(buffer, -(attackSpeedCount->GetScale() / 2.f), (attackSpeedCount->GetScale() / 2.f)
@@ -1157,7 +1165,7 @@ void CScene_Start::CreateInfoPanel()
 	//740 + Alpha
 	speedCount->SetPos(Vec2(920.f, 380.f));
 	speedCount->SetScale(Vec2(35.f, 35.f));
-	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_fSpeed));
+	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_fSpeed * 100.f));
 
 
 	speedCount->CreateTextUI(buffer, -(speedCount->GetScale() / 2.f), (speedCount->GetScale() / 2.f)
@@ -1372,4 +1380,275 @@ void CScene_Start::callPlayerUpgrade(int upgradeIdx)
 	static_cast<CPlayer*>(GetPlayer())->upgradeParameter(upgradeIdx);
 	//static_cast<CPlayer*>(CSceneMgr)
 	ChangeScene(SCENE_TYPE::SHOP);
+}
+
+
+void CScene_Start::CreateOptionPanel()
+{
+	Vec2 vResolution = CCore::GetInstance()->GetResolution();
+	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+	CWaveMgr* waveMgr = CWaveMgr::GetInstance();
+
+	//////////////////뒷 판떼기///////////////////////
+	CPanelUI* optionPanel = new CPanelUI;
+	optionPanel->SetObjType(GROUP_TYPE::IMAGE);
+	optionPanel->SetPos(vResolution / 2.f);
+	optionPanel->SetScale(vResolution);
+	optionPanel->SetColor(ColorNormalize(0, 0, 0), ColorNormalize(0, 0, 0));
+	optionPanel->SetNormalAlpha(0.6f);
+	optionPanel->SetMouseOnAlpha(0.6f);
+	m_vecOptionObjs.push_back(optionPanel);
+	AddObject(optionPanel, GROUP_TYPE::UI);
+	//////////////////뒷 판떼기///////////////////////
+
+	////////////음향 텍스트 보여주는 곳////////////////////
+	CObject* soundText = new CSpriteUI;
+	soundText->SetName(L"soundText");
+	soundText->SetObjType(GROUP_TYPE::IMAGE);
+	soundText->SetPos(Vec2(vResolution.x / 2, vResolution.y / 2 - 150.f));
+	soundText->SetScale(Vec2(196.f, 38.f));
+
+
+	soundText->CreateTextUI(L"음향", -(soundText->GetScale() / 2.f), (soundText->GetScale() / 2.f)
+		, 38, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	m_vecOptionObjs.push_back(soundText);
+	AddObject(soundText, GROUP_TYPE::UI);
+	////////////음향 텍스트 보여주는 곳////////////////////
+
+
+	////////////마스터 텍스트 보여주는 곳////////////////////
+	CObject* masterSoundText = new CSpriteUI;
+	masterSoundText->SetName(L"masterSoundText");
+	masterSoundText->SetObjType(GROUP_TYPE::IMAGE);
+	masterSoundText->SetPos(Vec2(vResolution.x / 2 - 100.f, vResolution.y / 2 - 100.f));
+	masterSoundText->SetScale(Vec2(196.f, 24.f));
+
+
+	masterSoundText->CreateTextUI(L"마스터", -(masterSoundText->GetScale() / 2.f), (masterSoundText->GetScale() / 2.f)
+		, 24, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	masterSoundText->GetTextUI()->SetHorizontal(1);
+	m_vecOptionObjs.push_back(masterSoundText);
+	AddObject(masterSoundText, GROUP_TYPE::UI);
+	////////////마스터 텍스트 보여주는 곳////////////////////
+
+
+	////////////마스터 슬라이더////////////////////
+	CSliderUI* masterSoundSlider = new CSliderUI;
+	masterSoundSlider->SetName(L"masterSoundSlider");
+	masterSoundSlider->AddImage(pD2DMgr->GetStoredBitmap(L"ui_lifebar_bg"));
+	masterSoundSlider->AddImage(pD2DMgr->GetStoredBitmap(L"ui_soundbar_fill"));
+	masterSoundSlider->AddImage(pD2DMgr->GetStoredBitmap(L"ui_lifebar_frame"));
+	masterSoundSlider->SetObjType(GROUP_TYPE::UI);
+	masterSoundSlider->SetPos(Vec2(vResolution.x / 2, vResolution.y / 2 - 100.f));
+	masterSoundSlider->SetScale(Vec2(182.f, 33.f));
+	masterSoundSlider->SetSliderValue(CSoundMgr::GetInstance()->m_fMasterRatio);
+	CSoundMgr::GetInstance()->m_pMasterSoundSlider = masterSoundSlider;
+	masterSoundSlider->SetClickedCallBack(this, (SCENE_MEMFUNC)&CScene_Start::ChangeMasterRatio);
+	m_vecOptionObjs.push_back(masterSoundSlider);
+	AddObject(masterSoundSlider, GROUP_TYPE::UI);
+	////////////마스터 슬라이더////////////////////
+
+
+
+	////////////마스터 Ratio 보여주는 곳////////////////////
+	CObject* masterSoundRatio = new CSpriteUI;
+	masterSoundRatio->SetName(L"masterSoundRatio");
+	masterSoundRatio->SetObjType(GROUP_TYPE::IMAGE);
+	masterSoundRatio->SetPos(Vec2(vResolution.x / 2 + 150.f, vResolution.y / 2 - 100.f));
+	masterSoundRatio->SetScale(Vec2(96.f, 24.f));
+
+	int RatioView = static_cast<int>(CSoundMgr::GetInstance()->m_fMasterRatio * 100.f);
+	//static_cast<int>(masterSoundSlider->GetSliderValue() * 100.f);
+	wchar_t buffer[20];
+	swprintf_s(buffer, L"%d%%", RatioView);
+	masterSoundRatio->CreateTextUI(buffer, -(masterSoundRatio->GetScale() / 2.f), (masterSoundRatio->GetScale() / 2.f)
+		, 24, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	masterSoundRatio->GetTextUI()->SetHorizontal(2);
+	CSoundMgr::GetInstance()->m_pMasterSoundRatio = masterSoundRatio;
+	m_vecOptionObjs.push_back(masterSoundRatio);
+	AddObject(masterSoundRatio, GROUP_TYPE::UI);
+	////////////마스터 Ratio 보여주는 곳////////////////////
+
+	////////////음악 텍스트 보여주는 곳////////////////////
+	CObject* BGMSoundText = new CSpriteUI;
+	BGMSoundText->SetName(L"BGMSoundText");
+	BGMSoundText->SetObjType(GROUP_TYPE::IMAGE);
+	BGMSoundText->SetPos(Vec2(vResolution.x / 2 - 100.f, vResolution.y / 2 - 50.f));
+	BGMSoundText->SetScale(Vec2(196.f, 24.f));
+
+
+	BGMSoundText->CreateTextUI(L"음악", -(BGMSoundText->GetScale() / 2.f), (BGMSoundText->GetScale() / 2.f)
+		, 24, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	BGMSoundText->GetTextUI()->SetHorizontal(1);
+	m_vecOptionObjs.push_back(BGMSoundText);
+	AddObject(BGMSoundText, GROUP_TYPE::UI);
+	////////////음악 텍스트 보여주는 곳////////////////////
+
+
+	////////////음악 슬라이더////////////////////
+	CSliderUI* BGMSoundSlider = new CSliderUI;
+	BGMSoundSlider->SetName(L"BGMSoundSlider");
+	BGMSoundSlider->AddImage(pD2DMgr->GetStoredBitmap(L"ui_lifebar_bg"));
+	BGMSoundSlider->AddImage(pD2DMgr->GetStoredBitmap(L"ui_soundbar_fill"));
+	BGMSoundSlider->AddImage(pD2DMgr->GetStoredBitmap(L"ui_lifebar_frame"));
+	BGMSoundSlider->SetObjType(GROUP_TYPE::UI);
+	BGMSoundSlider->SetPos(Vec2(vResolution.x / 2, vResolution.y / 2 - 50.f));
+	BGMSoundSlider->SetScale(Vec2(182.f, 33.f));
+	BGMSoundSlider->SetSliderValue(CSoundMgr::GetInstance()->m_fBGMRatio);
+	CSoundMgr::GetInstance()->m_pBGMSoundSlider = BGMSoundSlider;
+	BGMSoundSlider->SetClickedCallBack(this, (SCENE_MEMFUNC)&CScene_Start::ChangeBGMRatio);
+
+	m_vecOptionObjs.push_back(BGMSoundSlider);
+	AddObject(BGMSoundSlider, GROUP_TYPE::UI);
+	////////////음악 슬라이더////////////////////
+
+	////////////음악 Ratio 보여주는 곳////////////////////
+	CObject* BGMSoundRatio = new CSpriteUI;
+	BGMSoundRatio->SetName(L"BGMSoundRatio");
+	BGMSoundRatio->SetObjType(GROUP_TYPE::IMAGE);
+	BGMSoundRatio->SetPos(Vec2(vResolution.x / 2 + 150.f, vResolution.y / 2 - 50.f));
+	BGMSoundRatio->SetScale(Vec2(96.f, 24.f));
+
+	RatioView = static_cast<int>(CSoundMgr::GetInstance()->m_fBGMRatio * 100.f);
+	swprintf_s(buffer, L"%d%%", RatioView);
+	BGMSoundRatio->CreateTextUI(buffer, -(BGMSoundRatio->GetScale() / 2.f), (BGMSoundRatio->GetScale() / 2.f)
+		, 24, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	BGMSoundRatio->GetTextUI()->SetHorizontal(2);
+	CSoundMgr::GetInstance()->m_pBGMSoundRatio = BGMSoundRatio;
+	m_vecOptionObjs.push_back(BGMSoundRatio);
+	AddObject(BGMSoundRatio, GROUP_TYPE::UI);
+	////////////음악 Ratio 보여주는 곳////////////////////
+
+
+	////////////SFX 텍스트 보여주는 곳////////////////////
+	CObject* SFXSoundText = new CSpriteUI;
+	SFXSoundText->SetName(L"SFXSoundText");
+	SFXSoundText->SetObjType(GROUP_TYPE::IMAGE);
+	SFXSoundText->SetPos(Vec2(vResolution.x / 2 - 100.f, vResolution.y / 2));
+	SFXSoundText->SetScale(Vec2(196.f, 24.f));
+
+
+	SFXSoundText->CreateTextUI(L"음향", -(SFXSoundText->GetScale() / 2.f), (SFXSoundText->GetScale() / 2.f)
+		, 24, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	SFXSoundText->GetTextUI()->SetHorizontal(1);
+	m_vecOptionObjs.push_back(SFXSoundText);
+	AddObject(SFXSoundText, GROUP_TYPE::UI);
+	////////////SFX 텍스트 보여주는 곳////////////////////
+
+	////////////SFX 슬라이더////////////////////
+	CSliderUI* SFXSoundSlider = new CSliderUI;
+	SFXSoundSlider->SetName(L"SFXSoundSlider");
+	SFXSoundSlider->AddImage(pD2DMgr->GetStoredBitmap(L"ui_lifebar_bg"));
+	SFXSoundSlider->AddImage(pD2DMgr->GetStoredBitmap(L"ui_soundbar_fill"));
+	SFXSoundSlider->AddImage(pD2DMgr->GetStoredBitmap(L"ui_lifebar_frame"));
+	SFXSoundSlider->SetObjType(GROUP_TYPE::UI);
+	SFXSoundSlider->SetPos(Vec2(vResolution.x / 2, vResolution.y / 2));
+	SFXSoundSlider->SetScale(Vec2(182.f, 33.f));
+	SFXSoundSlider->SetSliderValue(CSoundMgr::GetInstance()->m_fSFXRatio);
+	CSoundMgr::GetInstance()->m_pSFXSoundSlider = SFXSoundSlider;
+	SFXSoundSlider->SetClickedCallBack(this, (SCENE_MEMFUNC)&CScene_Start::ChangeSFXRatio);
+	m_vecOptionObjs.push_back(SFXSoundSlider);
+	AddObject(SFXSoundSlider, GROUP_TYPE::UI);
+	////////////SFX 슬라이더////////////////////
+
+
+	////////////SFX Ratio 보여주는 곳////////////////////
+	CObject* SFXSoundRatio = new CSpriteUI;
+	SFXSoundRatio->SetName(L"SFXSoundRatio");
+	SFXSoundRatio->SetObjType(GROUP_TYPE::IMAGE);
+	SFXSoundRatio->SetPos(Vec2(vResolution.x / 2 + 150.f, vResolution.y / 2));
+	SFXSoundRatio->SetScale(Vec2(96.f, 24.f));
+
+	RatioView = static_cast<int>(CSoundMgr::GetInstance()->m_fSFXRatio * 100.f);
+	swprintf_s(buffer, L"%d%%", RatioView);
+	SFXSoundRatio->CreateTextUI(buffer, -(SFXSoundRatio->GetScale() / 2.f), (SFXSoundRatio->GetScale() / 2.f)
+		, 24, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	SFXSoundRatio->GetTextUI()->SetHorizontal(2);
+	CSoundMgr::GetInstance()->m_pSFXSoundRatio = SFXSoundRatio;
+	m_vecOptionObjs.push_back(SFXSoundRatio);
+	AddObject(SFXSoundRatio, GROUP_TYPE::UI);
+	////////////SFX Ratio 보여주는 곳////////////////////
+
+	/////////////////뒤로 버튼//////////////////////
+	CBtnUI* backMain = new CBtnUI;
+	backMain->SetName(L"backMain");
+	backMain->SetObjType(GROUP_TYPE::UI);
+	backMain->SetPos(Vec2(vResolution.x / 2, vResolution.y / 2 + 50.f));
+	backMain->SetScale(Vec2(302.f, 37.f));
+	backMain->SetIsRound(true, 10.f, 10.f);
+	backMain->SetColor(ColorNormalize(237, 237, 237), ColorNormalize(0, 0, 0));
+	backMain->SetClickedCallBack(this, (SCENE_MEMFUNC)&CScene_Start::OffOptionPanel);
+	//pBtnOption->SetClickedCallBack(this, (SCENE_MEMFUNC)&CScene_Main::CreateOptionPanel);
+	backMain->CreateTextUI(L"뒤로", -(backMain->GetScale() / 2.f), (backMain->GetScale() / 2.f)
+		, 20, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	m_vecOptionObjs.push_back(backMain);
+	AddObject(backMain, GROUP_TYPE::UI);
+	/////////////////뒤로 버튼//////////////////////
+}
+
+void CScene_Start::OffOptionPanel()
+{
+	for (auto* OptionObj : m_vecOptionObjs) {
+		DeleteObject(OptionObj);
+	}
+	CUIMgr::GetInstance()->SetFocusedUI(nullptr);
+	m_vecOptionObjs.clear();
+	CSoundMgr::GetInstance()->InitVolumePointer();
+}
+
+void CScene_Start::OptionPanelupdate()
+{
+	wchar_t buffer[20];
+
+	swprintf_s(buffer, L"%d%%", static_cast<int>(CSoundMgr::GetInstance()->m_pMasterSoundSlider->GetSliderValue() * 100.f));
+	CSoundMgr::GetInstance()->m_pMasterSoundRatio->GetTextUI()->SetText(buffer);
+
+	swprintf_s(buffer, L"%d%%", static_cast<int>(CSoundMgr::GetInstance()->m_pBGMSoundSlider->GetSliderValue() * 100.f));
+	CSoundMgr::GetInstance()->m_pBGMSoundRatio->GetTextUI()->SetText(buffer);
+
+	swprintf_s(buffer, L"%d%%", static_cast<int>(CSoundMgr::GetInstance()->m_pSFXSoundSlider->GetSliderValue() * 100.f));
+	CSoundMgr::GetInstance()->m_pSFXSoundRatio->GetTextUI()->SetText(buffer);
+}
+
+void CScene_Start::ChangeMasterRatio()
+{
+	CSoundMgr::GetInstance()->m_fMasterRatio = CSoundMgr::GetInstance()->m_pMasterSoundSlider->GetSliderValue();
+	CSoundMgr::GetInstance()->SetBGMChannelVolume(CSoundMgr::GetInstance()->m_fMasterRatio * CSoundMgr::GetInstance()->m_pBGMSoundSlider->GetSliderValue());
+	CSoundMgr::GetInstance()->SetSFXChannelVolume(CSoundMgr::GetInstance()->m_fMasterRatio * CSoundMgr::GetInstance()->m_pSFXSoundSlider->GetSliderValue());
+}
+
+void CScene_Start::ChangeBGMRatio()
+{
+	CSoundMgr::GetInstance()->m_fBGMRatio = CSoundMgr::GetInstance()->m_pBGMSoundSlider->GetSliderValue();
+	CSoundMgr::GetInstance()->SetBGMChannelVolume(CSoundMgr::GetInstance()->m_fMasterRatio * CSoundMgr::GetInstance()->m_pBGMSoundSlider->GetSliderValue());
+}
+
+void CScene_Start::ChangeSFXRatio()
+{
+	CSoundMgr::GetInstance()->m_fSFXRatio = CSoundMgr::GetInstance()->m_pSFXSoundSlider->GetSliderValue();
+	CSoundMgr::GetInstance()->SetSFXChannelVolume(CSoundMgr::GetInstance()->m_fMasterRatio * CSoundMgr::GetInstance()->m_pSFXSoundSlider->GetSliderValue());
 }
