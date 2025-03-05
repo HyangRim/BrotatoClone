@@ -236,6 +236,7 @@ void CScene_Main::Exit()
 {
 	DeleteAll();
 	CSoundMgr::GetInstance()->InitVolumePointer();
+	m_vecOptionObjs.clear();
 }
 
 
@@ -582,11 +583,13 @@ void CScene_Main::OptionPanelupdate()
 void CScene_Main::ChangeMasterRatio()
 {
 	CSoundMgr::GetInstance()->m_fMasterRatio = CSoundMgr::GetInstance()->m_pMasterSoundSlider->GetSliderValue();
+	CSoundMgr::GetInstance()->SetBGMChannelVolume(CSoundMgr::GetInstance()->m_fMasterRatio * CSoundMgr::GetInstance()->m_pBGMSoundSlider->GetSliderValue());
+	CSoundMgr::GetInstance()->SetSFXChannelVolume(CSoundMgr::GetInstance()->m_fMasterRatio * CSoundMgr::GetInstance()->m_pSFXSoundSlider->GetSliderValue());
 }
 
 void CScene_Main::ChangeBGMRatio()
 {
-	wprintf(L"BGM Slider Value: %f\n", CSoundMgr::GetInstance()->m_pBGMSoundSlider->GetSliderValue());
+	//wprintf(L"BGM Slider Value: %f\n", CSoundMgr::GetInstance()->m_pBGMSoundSlider->GetSliderValue());
 	CSoundMgr::GetInstance()->m_fBGMRatio = CSoundMgr::GetInstance()->m_pBGMSoundSlider->GetSliderValue();
 	CSoundMgr::GetInstance()->SetBGMChannelVolume(CSoundMgr::GetInstance()->m_fMasterRatio * CSoundMgr::GetInstance()->m_pBGMSoundSlider->GetSliderValue());
 }
