@@ -233,6 +233,9 @@
     <Filter Include="Engine\05. Scene\Scene_Start">
       <UniqueIdentifier>{cd7aa06c-a106-4d7d-8ca9-209d752cf701}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\04. Object\UI\SliderUI">
+      <UniqueIdentifier>{0bd2e65d-f58b-4b00-9a22-0959ef13d450}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CCore.h">
@@ -470,6 +473,12 @@
     <ClInclude Include="item_string.h">
       <Filter>Engine\01. Header</Filter>
     </ClInclude>
+    <ClInclude Include="upgrade_string.h">
+      <Filter>Engine\01. Header</Filter>
+    </ClInclude>
+    <ClInclude Include="CSliderUI.h">
+      <Filter>Engine\04. Object\UI\SliderUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -695,6 +704,9 @@
     </ClCompile>
     <ClCompile Include="CScene_Shop.cpp">
       <Filter>Engine\05. Scene\Scene_Shop</Filter>
+    </ClCompile>
+    <ClCompile Include="CSliderUI.cpp">
+      <Filter>Engine\04. Object\UI\SliderUI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

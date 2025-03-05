@@ -471,7 +471,6 @@ void CPlayer::upgradeParameter(int upgradeIDX)
 	}
 	else if (upgradeIDX == 4) {
 		m_tPlayerInfo.m_fDamageCoef += 0.05f;
-		m_tPlayerInfo.m_fRangeCoef += 1;
 		wprintf(L"Damage Coef Upgrade\n");
 	}
 	else if (upgradeIDX == 5) {

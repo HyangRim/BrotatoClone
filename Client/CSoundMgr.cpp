@@ -10,7 +10,11 @@ CSoundMgr::CSoundMgr()
 	: m_pSystem(nullptr)
 	, m_pChannel(nullptr)
 	, m_pSound(nullptr)
+	, m_fMasterRatio(1.f)
+	, m_fBGMRatio(1.f)
+	, m_fSFXRatio(1.f)
 {
+	InitVolumePointer();
 }
 
 CSoundMgr::~CSoundMgr()
@@ -33,6 +37,15 @@ HRESULT CSoundMgr::init()
 		return E_FAIL;
 	}
 
+	ret = m_pSystem->createChannelGroup("BGM", &m_pBGMChannelGroup);
+	if (ret != FMOD_OK) {
+		return E_FAIL;
+	}
+
+	ret = m_pSystem->createChannelGroup("SFX", &m_pSFXChannelGroup);
+	if (ret != FMOD_OK) {
+		return E_FAIL;
+	}
 
 	return S_OK;
 }
@@ -45,6 +58,16 @@ void CSoundMgr::Release()
 		delete soundData.second;
 	}
 	m_mapSounds.clear();
+
+	if (m_pBGMChannelGroup) {
+		m_pBGMChannelGroup->release();
+		m_pBGMChannelGroup = nullptr;
+	}
+
+	if (m_pSFXChannelGroup) {
+		m_pSFXChannelGroup->release();
+		m_pSFXChannelGroup = nullptr;
+	}
 
 	if (nullptr != m_pSystem) {
 		m_pSystem->release();
@@ -68,6 +91,7 @@ void CSoundMgr::AddSound(wstring _keyName, wstring _fileName, bool _bgm, bool _l
 	}
 
 	SoundInfo* info = new SoundInfo;
+	info->isBGM = _bgm;
 
 	wstring strFilePath = CPathMgr::GetInstance()->GetContentPath();
 	strFilePath += _fileName;
@@ -103,9 +127,17 @@ void CSoundMgr::Play(wstring _keyName, float _volume)
 		assert(false);
 	}
 
-	m_pSystem->playSound(soundIter->second->m_pSound, nullptr, false, &soundIter->second->m_pChannel);
+	if (soundIter->second->isBGM) {
+		m_pSystem->playSound(soundIter->second->m_pSound, m_pBGMChannelGroup, false, &soundIter->second->m_pChannel);
 
-	soundIter->second->m_pChannel->setVolume(_volume);
+		soundIter->second->m_pChannel->setVolume(_volume);
+	}
+	else {
+		m_pSystem->playSound(soundIter->second->m_pSound, m_pSFXChannelGroup, false, &soundIter->second->m_pChannel);
+
+		soundIter->second->m_pChannel->setVolume(_volume);
+	}
+
 }
 
 void CSoundMgr::Stop(wstring _keyName)
@@ -160,6 +192,56 @@ bool CSoundMgr::IsPlaySound(wstring& _keyName)
 bool CSoundMgr::IsPauseSound(wstring _keyName)
 {
 	return false;
+}
+
+void CSoundMgr::InitVolumePointer()
+{
+	m_pMasterSoundSlider = nullptr;
+	m_pBGMSoundSlider = nullptr;
+	m_pSFXSoundSlider = nullptr;
+
+	m_pMasterSoundRatio = nullptr;
+	m_pBGMSoundRatio = nullptr;
+	m_pSFXSoundRatio = nullptr;
+}
+
+bool CSoundMgr::IsOptionPanel()
+{
+	if (nullptr != m_pMasterSoundSlider &&
+		nullptr != m_pMasterSoundRatio &&
+		nullptr != m_pBGMSoundSlider &&
+		nullptr != m_pBGMSoundRatio &&
+		nullptr != m_pSFXSoundSlider &&
+		nullptr != m_pSFXSoundRatio) {
+		return true;
+	}
+	return false;
+}
+
+void CSoundMgr::SetBGMChannelVolume(float _fVolume)
+{
+	if (m_pBGMChannelGroup) {
+		FMOD_RESULT result = m_pBGMChannelGroup->setVolume(_fVolume);
+		//wprintf(L"BGM Volume: %f\n", _fVolume);
+		if (result != FMOD_OK)
+		{
+			// 에러 처리: 필요시 로그 출력 또는 assert 처리
+			assert(false);
+		}
+	}
+}
+
+void CSoundMgr::SetSFXChannelVolume(float _fVolume)
+{
+	if (m_pSFXChannelGroup) {
+		FMOD_RESULT result = m_pSFXChannelGroup->setVolume(_fVolume);
+		//wprintf(L"SFX Volume: %f\n", _fVolume);
+		if (result != FMOD_OK)
+		{
+			// 에러 처리: 필요시 로그 출력 또는 assert 처리
+			assert(false);
+		}
+	}
 }
 
 void CSoundMgr::PlayWalkSound()

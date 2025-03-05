@@ -916,7 +916,7 @@ void CScene_Start::CreateInfoPanel()
 	//740 + Alpha
 	FinalDMGCount->SetPos(Vec2(920.f, 230.f));
 	FinalDMGCount->SetScale(Vec2(35.f, 35.f));
-	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_fDamageCoef));
+	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_fDamageCoef * 100.f));
 
 
 	FinalDMGCount->CreateTextUI(buffer, -(FinalDMGCount->GetScale() / 2.f), (FinalDMGCount->GetScale() / 2.f)
@@ -1062,7 +1062,7 @@ void CScene_Start::CreateInfoPanel()
 	//740 + Alpha
 	attackSpeedCount->SetPos(Vec2(920.f, 320.f));
 	attackSpeedCount->SetScale(Vec2(35.f, 35.f));
-	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_fAttackSpeedCoef));
+	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_fAttackSpeedCoef * 100.f));
 
 
 	attackSpeedCount->CreateTextUI(buffer, -(attackSpeedCount->GetScale() / 2.f), (attackSpeedCount->GetScale() / 2.f)
@@ -1160,7 +1160,7 @@ void CScene_Start::CreateInfoPanel()
 	//740 + Alpha
 	speedCount->SetPos(Vec2(920.f, 380.f));
 	speedCount->SetScale(Vec2(35.f, 35.f));
-	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_fSpeed));
+	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_fSpeed * 100.f));
 
 
 	speedCount->CreateTextUI(buffer, -(speedCount->GetScale() / 2.f), (speedCount->GetScale() / 2.f)

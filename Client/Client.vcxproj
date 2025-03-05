@@ -216,6 +216,7 @@
     <ClInclude Include="CScene_Start.h" />
     <ClInclude Include="CScene_Test.h" />
     <ClInclude Include="CScene_Tool.h" />
+    <ClInclude Include="CSliderUI.h" />
     <ClInclude Include="CSlingshot.h" />
     <ClInclude Include="CSlingShot_Missile.h" />
     <ClInclude Include="CSound.h" />
@@ -299,6 +300,7 @@
     <ClCompile Include="CScene_Start.cpp" />
     <ClCompile Include="CScene_Test.cpp" />
     <ClCompile Include="CScene_Tool.cpp" />
+    <ClCompile Include="CSliderUI.cpp" />
     <ClCompile Include="CSlingshot.cpp" />
     <ClCompile Include="CSlingShot_Missile.cpp" />
     <ClCompile Include="CSound.cpp" />
