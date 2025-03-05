@@ -306,15 +306,17 @@ void CScene_Shop::Enter()
 	////////////////////////가운데 아이템 패널 4개////////////////////////////////
 
 	const list<CWeapon*>& vPlayerWeaponList = static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->GetPlayerWeapons();
+	int curWeaponCnt = (int)((CPlayer*)CSceneMgr::GetInstance()->GetPlayer())->GetWeaponCount();
 	
-	for (auto iter = vPlayerWeaponList.begin(); iter != vPlayerWeaponList.end(); iter++)
+	int temp = 0;
+	for (auto iter = vPlayerWeaponList.begin(); iter != vPlayerWeaponList.end(); iter++, temp++)
 	{
 		CWeapon* weapon = *iter;
 		wstring iconTag = weapon->Getinfo().m_sIconImageKey;
 
 		CObject* weapons = new CSpriteUI;
 		weapons->SetName(L"Weapon");
-		weapons->SetPos(Vec2(592.f, 436.f));
+		weapons->SetPos(Vec2(592.f + (temp % 3) * 55.f, 436.f + (temp / 3) * 55.f)); // 기존 무기들 옆에 배치
 		weapons->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
 		weapons->SetObjType(GROUP_TYPE::UI);
 		weapons->SetScale(Vec2(50.f, 50.f));
@@ -456,14 +458,25 @@ void CScene_Shop::PurchaseItem(DWORD_PTR lParam, DWORD_PTR wParam)
 
 		if (curWeaponCnt == 6) return;
 
-		//무기선택시 ...
 		CWeapon* selectedWeapon = new CWeapon;
 		selectedWeapon->SetInfo(selectedItem->m_tWeaponInfo);
-
 		selectedWeapon->SetPlayer();
 		static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->AddWeapon(selectedWeapon);
 
+		// 새로 구매한 무기를 화면에 추가
+		Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+		wstring iconTag = selectedItem->tag + L"_icon";
 
+		size_t xCount = curWeaponCnt % 3; // 열 번호
+		size_t yCount = curWeaponCnt / 3; // 행 번호
+
+		CObject* newWeapon = new CSpriteUI;
+		newWeapon->SetName(L"Weapon");
+		newWeapon->SetPos(Vec2(592.f + xCount * 55.f, 436.f + yCount * 55.f)); // 기존 무기들 옆에 배치
+		newWeapon->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
+		newWeapon->SetObjType(GROUP_TYPE::UI);
+		newWeapon->SetScale(Vec2(50.f, 50.f));
+		AddObject(newWeapon, GROUP_TYPE::UI);
 	}
 	else
 	{
