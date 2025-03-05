@@ -60,6 +60,9 @@ public:
 
 	GROUP_TYPE GetObjType() { return m_ObjType; }
 	Vec2 GetPos() { return m_vPos; }
+
+	virtual Vec2 GetFinalPos() { return m_vPos; }
+
 	Vec2 GetScale() { return m_vScale; }
 	Vec2 GetRenderScale() { return m_vRenderScale; }
 

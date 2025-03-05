@@ -46,7 +46,7 @@ void CUI::update()
 void CUI::finalupdate()
 {
 	CObject::finalupdate();
-	m_vFinalPos = GetPos();
+	m_vFinalPos = GetPos() + m_vOffset;
 	//UI의 최종 좌표를 구한다.
 	if (GetParent()) {
 		Vec2 vParentPos = GetParent()->GetFinalPos();

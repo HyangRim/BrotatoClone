@@ -49,7 +49,7 @@ void CTextUI::render(ID2D1HwndRenderTarget* _pRender)
 {
     auto d2dManager = Direct2DMgr::GetInstance();
 
-    Vec2 vPos = m_pOwner->GetPos();
+    Vec2 vPos = m_pOwner->GetFinalPos(); //원래 GetPos()였음
 
     if (m_bCamAffected) {
         vPos = CCamera::GetInstance()->GetRenderPos(vPos);

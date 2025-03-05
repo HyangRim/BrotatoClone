@@ -20,6 +20,21 @@ CSpriteUI::~CSpriteUI()
 
 }
 
+void CSpriteUI::finalupdate()
+{
+    CUI::finalupdate();
+
+    if (GetParent())
+    {
+        Vec2 vParentPos = GetParent()->GetFinalPos();
+        m_vFinalPos = vParentPos + m_vOffset;
+    }
+    else
+    {
+        m_vFinalPos = GetPos() + m_vOffset;
+    }
+}
+
 void CSpriteUI::SetTexture(const wstring& _bgKey, const wstring& _bgPath 
     , const wstring& _fillKey, const wstring& _fillPath 
     , const wstring& _frameKey, const wstring& _framePath) {
@@ -35,6 +50,7 @@ void CSpriteUI::render(Graphics* _pDGraphics)
 
     // UI의 최종 위치와 크기 계산
     Vec2 vPos = GetFinalPos();
+
     Vec2 vScale = GetScale();
 
     // PNG 이미지를 화면에 렌더링
@@ -62,15 +78,47 @@ void CSpriteUI::update()
 {
 
 }
-
 void CSpriteUI::render(ID2D1HwndRenderTarget* _pRender)
 {
 
+    /*
+    Vec2 vOffset = GetOffset();
+    Vec2 vPos = GetFinalPos();
+    Vec2 vScale = GetScale();
+
+    if (m_bCamAffected) {
+        vPos = CCamera::GetInstance()->GetRenderPos(vPos);
+    }
+
+    // vPos와 vScale은 이미 계산된 좌표와 스케일 값입니다.
+    D2D1_RECT_F rect = D2D1::RectF(
+        vPos.x - vScale.x / 2.f,
+        vPos.y - vScale.y / 2.f,
+        vPos.x + vScale.x / 2.f,
+        vPos.y + vScale.y / 2.f
+    );
+
+    ID2D1SolidColorBrush* pBrush = nullptr;
+    HRESULT hr = _pRender->CreateSolidColorBrush(
+        m_bLbtnDown ? D2D1::ColorF(D2D1::ColorF::White)   // 마우스 왼쪽 버튼이 눌렸다면 녹색
+        : D2D1::ColorF(D2D1::ColorF::Black),  // 아니면 흰색
+        &pBrush
+    );
+
+    if (SUCCEEDED(hr))
+    {
+        _pRender->FillRectangle(rect, pBrush);
+        pBrush->Release();
+    }*/
     component_render(_pRender);
 }
-
 
 void CSpriteUI::SetHpRatio(float _ratio)
 {
     m_fHpRatio = max(0.0f, min(1.0f, _ratio)); // Clamp between 0 and 1
+}
+
+void CSpriteUI::MouseLbtnClicked()
+{
+    GetParent()->MouseLbtnClicked();
 }

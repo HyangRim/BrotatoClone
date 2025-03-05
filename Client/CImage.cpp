@@ -40,15 +40,21 @@ CImage::~CImage()
 
 void CImage::finalupdate()
 {
-	Vec2 vObjectPos = m_pOwner->GetPos();
-	m_vFinalPos = m_vOffSet + vObjectPos;
+	//Vec2 vObjectPos = m_pOwner->GetPos();
+	//m_vFinalPos = m_vOffSet + vObjectPos;
 
-	if (m_pOwner->GetName().compare(L"TEST1234") == 0)
+	//CImage를 쓴다는건 이미지를 한장 띄울 CSpriteUI를 쓴다. -> CUI*로 캐스팅해도 문제없지않을까?
+	//다른 클래스에서 이걸쓸까?
+	//그냥 CSpriteUI에 image컴포넌트 만들고 CSpriteUI객체를 child화 시키는게 더 낫지 않나해서
+
+	CUI* pOwnerUI = dynamic_cast<CUI*>(m_pOwner);
+	if (pOwnerUI)
 	{
-		Vec2 vPos = vObjectPos;
-		Vec2 vFinalPos = m_vFinalPos;
-
-		int a = 0;
+		m_vFinalPos = pOwnerUI->GetFinalPos() + m_vOffSet;
+	}
+	else
+	{
+		m_vFinalPos = m_pOwner->GetPos() + m_vOffSet;
 	}
 }
 
@@ -63,7 +69,7 @@ void CImage::render(ID2D1HwndRenderTarget* _renderTarget)
 	// 2. GetRenderPos -> 방향키로 이동하면 Image도 Camera에 맞게 이동됨
 	// 3. GetRealPos -> ????
 
-	Vec2 vPos = m_pOwner->GetPos();
+	Vec2 vPos = m_pOwner->GetFinalPos();
 	//m_vFinalPos
 	m_pOwner->GetRenderScale();
 

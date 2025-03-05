@@ -10,10 +10,18 @@ private:
     CTexture* m_pFrameTexture;  // 테두리 텍스처
     float m_fHpRatio;            // HP 비율 (0.0 ~ 1.0)
 
+    //Vec2 m_vOffset;
+
 public:
     CLONE(CSpriteUI);
 
 public:
+    //void SetOffset(Vec2 _vOffset) { m_vOffset = _vOffset; }
+    //Vec2 GetOffset() const { return m_vOffset; }
+
+public:
+    virtual void MouseLbtnClicked();    //클릭. 
+    void finalupdate();
     CSpriteUI();
     virtual ~CSpriteUI();
     void SetTexture(const wstring& _bgKey, const wstring& _bgPath

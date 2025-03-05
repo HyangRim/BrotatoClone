@@ -110,7 +110,7 @@ void CScene_Shop::Enter()
 	panelTextItem->SetName(L"ItemInfoPanel");
 	panelTextItem->SetObjType(GROUP_TYPE::UI);
 	panelTextItem->SetPos(Vec2(60.f, 386.f));
-	panelTextItem->SetScale(Vec2(64.f, 3.f));
+	panelTextItem->SetScale(Vec2(105.f, 30.f));
 
 	swprintf_s(buffer, L"아이템 %d개", (int)ItemMgr::GetInstance()->GetPassiveItemssize());
 	panelTextItem->CreateTextUI(buffer, Vec2(-150.f, -18.f), Vec2(150.f, 18.f)
@@ -126,7 +126,7 @@ void CScene_Shop::Enter()
 	panelTextWeapon->SetName(L"WeaponInfoPanel");
 	panelTextWeapon->SetObjType(GROUP_TYPE::UI);
 	panelTextWeapon->SetPos(Vec2(608.f, 386.f));
-	panelTextWeapon->SetScale(Vec2(64.f, 3.f));
+	panelTextWeapon->SetScale(Vec2(90.f, 30.f));
 
 	swprintf_s(buffer, L"무기(%d/6)", (int)((CPlayer*)CSceneMgr::GetInstance()->GetPlayer())->GetWeaponCount());
 	panelTextWeapon->CreateTextUI(buffer, Vec2(-150.f, -18.f), Vec2(150.f, 18.f)
@@ -154,16 +154,16 @@ void CScene_Shop::Enter()
 		, TextUIMode::TEXT
 		, 0);
 
-	CObject* coinImage = new CSpriteUI;
+	//CObject* coinImage = new CSpriteUI;
+	CSpriteUI* coinImage = resetBtn->AddChild<CSpriteUI>(Vec2(46.1f, 1.f));
 	coinImage->AddImage(pD2DMgr->GetStoredBitmap(L"harvesting_icon"));
-	coinImage->GetImage(0)->SetOffset(Vec2(46.f,1.f));
+	//coinImage->GetImage(0)->SetOffset(Vec2(46.f,1.f));
 	coinImage->SetObjType(GROUP_TYPE::UI);
 	coinImage->SetName(L"Child");
 	coinImage->SetScale(Vec2(24.f, 24.f));
 	coinImage->SetPos(resetBtn->GetPos());
 
-	resetBtn->AddChild((CUI*)coinImage);
-
+	
 	AddObject(resetBtn, GROUP_TYPE::UI);
 	/////////////////초기화 버튼/////////////////
 
@@ -226,20 +226,17 @@ void CScene_Shop::Enter()
 		panelItemUI->SetColor(ColorNormalize(0, 0, 0), ColorNormalize(0, 0, 0));
 
 		////////////////////아이템 이미지/////////////////////////////
-		CSpriteUI* itemImage = new CSpriteUI;
+		CSpriteUI* itemImage = panelItemUI->AddChild<CSpriteUI>(Vec2(35.f, 35.f) - (panelItemUI->GetScale() / 2.f));
 		itemImage->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
-		Vec2 vPos = Vec2(35.f, 35.f) - (panelItemUI->GetScale() / 2.f);
-		itemImage->GetImage(0)->SetOffset(vPos);
 		itemImage->SetObjType(GROUP_TYPE::UI);
 		itemImage->SetName(L"Child");
 		itemImage->SetScale(Vec2(48.f, 48.f));
-		itemImage->SetPos(panelItemUI->GetPos());
 		////////////////////아이템 이미지/////////////////////////////
 
 		/////////////////////구매 버튼/////////////////////////////////
-		CBtnUI* priceBtn = new CBtnUI;
+		CBtnUI* priceBtn = panelItemUI->AddChild<CBtnUI>(Vec2(0.f, panelItemUI->GetScale().y / 2.f - 8.f - 17.f));
 		priceBtn->SetName(L"PriceBtn");
-		priceBtn->SetPos(Vec2(0.f, panelItemUI->GetScale().y / 2.f - 8.f - 17.f));
+		//priceBtn->SetPos(Vec2(0.f, panelItemUI->GetScale().y / 2.f - 8.f - 17.f));
 		priceBtn->SetScale(Vec2(80.f, 34.f));
 		priceBtn->SetObjType(GROUP_TYPE::UI);
 		priceBtn->SetColor(ColorNormalize(255, 255, 255), ColorNormalize(30, 30, 30));
@@ -247,23 +244,24 @@ void CScene_Shop::Enter()
 		priceBtn->SetIsRound(true, 10.f, 10.f);
 
 		//구매버튼에 이미지//
-		CObject* priceBtnCoinImage = new CSpriteUI;
+		//CObject* priceBtnCoinImage = new CSpriteUI;
+		CSpriteUI* priceBtnCoinImage = priceBtn->AddChild<CSpriteUI>(Vec2(20.f, 0.f));  // priceBtn 내에서의 상대적인 위치
 		priceBtnCoinImage->SetName(L"TEST1234");
-		priceBtnCoinImage->SetPos(panelItemUI->GetPos());
+		//priceBtnCoinImage->SetPos(panelItemUI->GetPos());
 		priceBtnCoinImage->AddImage(pD2DMgr->GetStoredBitmap(L"harvesting_icon"));
-		priceBtnCoinImage->GetImage(0)->SetOffset(Vec2(20.f, panelItemUI->GetScale().y / 2.f - 8.f - 17.f));
-		priceBtnCoinImage->SetObjType(GROUP_TYPE::UI);
+		//priceBtnCoinImage->GetImage(0)->SetOffset(Vec2(20.f, panelItemUI->GetScale().y / 2.f - 8.f - 17.f));
+		priceBtnCoinImage->SetObjType(GROUP_TYPE::DEFAULT);
 		priceBtnCoinImage->SetScale(Vec2(24.f, 24.f));
 		//구매버튼에 이미지//
+		// priceBtnCoinImage의 위치를 priceBtn 내에서 조정
 		
 		//구매버튼에 가격 표시//
-		CObject* priceBtnShowPrice = new CSpriteUI;
+		//CObject* priceBtnShowPrice = new CSpriteUI;
+		CSpriteUI* priceBtnShowPrice = priceBtn->AddChild<CSpriteUI>(Vec2(-7.f, 0.f));
 		priceBtnShowPrice->SetName(L"PriceBtnShowPrice");
-		priceBtnShowPrice->SetObjType(GROUP_TYPE::UI);
-		priceBtnShowPrice->SetPos(Vec2(panelItemUI->GetPos().x - 7.f, 
-			panelItemUI->GetPos().y + panelItemUI->GetScale().y / 2.f - 28.f));
+		priceBtnShowPrice->SetObjType(GROUP_TYPE::DEFAULT);
+		//priceBtnShowPrice->SetPos(Vec2(panelItemUI->GetPos().x - 7.f, panelItemUI->GetPos().y + panelItemUI->GetScale().y / 2.f - 28.f));
 		priceBtnShowPrice->SetScale(Vec2(30.f, 30.f));
-		int a = ItemMgr::GetInstance()->GetItem(item_tag_list[item_numbers[i]])->m_iBasePrice;
 		swprintf_s(buffer, L"%d", ItemMgr::GetInstance()->GetItem(item_tag_list[item_numbers[i]])->m_iBasePrice);
 		priceBtnShowPrice->CreateTextUI(buffer, -(priceBtnShowPrice->GetScale() / 2.f), priceBtnShowPrice->GetScale() / 2.f
 			, 16, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
@@ -274,14 +272,13 @@ void CScene_Shop::Enter()
 		//구매버튼에 가격 표시//
 		
 		//아이템 이름//
-		CObject* panelTextItemName = new CSpriteUI;
+		//CObject* panelTextItemName = new CSpriteUI;
+		CSpriteUI* panelTextItemName = panelItemUI->AddChild<CSpriteUI>(Vec2(30.f,-100.f));
 		panelTextItemName->SetName(L"ShowItemNameText");
 		panelTextItemName->SetObjType(GROUP_TYPE::UI);
-		panelTextItemName->SetPos(Vec2(panelItemUI->GetPos().x + 30.f,
-			panelItemUI->GetPos().y - panelItemUI->GetScale().y / 2.f + 30.f));
+		//panelTextItemName->SetPos(Vec2(panelItemUI->GetPos().x + 30.f, panelItemUI->GetPos().y - panelItemUI->GetScale().y / 2.f + 30.f));
 		panelTextItemName->SetScale(Vec2(90.f, 22.f));
 		swprintf_s(buffer, L"%s", ItemMgr::GetInstance()->GetItem(item_tag_list[item_numbers[i]])->m_sName.c_str());
-
 		panelTextItemName->CreateTextUI(buffer, -(panelTextItemName->GetScale() / 2.f), panelTextItemName->GetScale() / 2.f
 			, 12, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 			, FONT_TYPE::KR
@@ -292,11 +289,11 @@ void CScene_Shop::Enter()
 		//아이템 이름//
 
 		/////////////////////구매 버튼/////////////////////////////////
-		panelItemUI->AddChild((CUI*)itemImage);
-		panelItemUI->AddChild((CUI*)priceBtn);				//구매버튼
-		panelItemUI->AddChild((CUI*)priceBtnShowPrice);		//가격
-		panelItemUI->AddChild((CUI*)priceBtnCoinImage);		//코인 이미지
-		panelItemUI->AddChild((CUI*)panelTextItemName);		//아이템 이름
+		//panelItemUI->AddChild((CUI*)itemImage);
+		//panelItemUI->AddChild((CUI*)priceBtn);				//구매버튼
+		//panelItemUI->AddChild((CUI*)priceBtnShowPrice);		//가격
+		//panelItemUI->AddChild((CUI*)priceBtnCoinImage);		//코인 이미지
+		//panelItemUI->AddChild((CUI*)panelTextItemName);		//아이템 이름
 
 		m_vItemPanels.push_back(panelItemUI);
 
@@ -414,23 +411,24 @@ void CScene_Shop::ReRollItem()
 
 	for (int i = 0; i < 4; i++)
 	{
-		Vec2 vPos = Vec2(35.f, 35.f) - (m_vItemPanels[i]->GetScale() / 2.f);
 		const vector<CUI*>& childs = m_vItemPanels[i]->GetChildsUI();
+
 
 		//이미지 변경
 		childs[0]->DeleteImage();
 		iconTag = item_tag_list[item_numbers[i]] + L"_icon";
 		childs[0]->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
-		childs[0]->GetImage(0)->SetOffset(vPos);
 
+		
 		//가격 변경
 		wchar_t buffer[20];
 		swprintf_s(buffer, L"%d", ItemMgr::GetInstance()->GetItem(item_tag_list[item_numbers[i]])->m_iBasePrice);
-		childs[2]->GetTextUI()->SetText(buffer);
+		//childs[1]->GetTextUI()->SetText(buffer);
+		childs[1]->GetChildsUI()[1]->GetTextUI()->SetText(buffer);
 
 		//이름 변경
 		swprintf_s(buffer, L"%s", ItemMgr::GetInstance()->GetItem(item_tag_list[item_numbers[i]])->m_sName.c_str());
-		childs[4]->GetTextUI()->SetText(buffer);
+		childs[2]->GetTextUI()->SetText(buffer);
 	}
 
 	static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->DecreaseCoin(1);
@@ -446,7 +444,7 @@ void CScene_Shop::PurchaseItem(DWORD_PTR lParam, DWORD_PTR wParam)
 	Item* selectedItem = ItemMgr::GetInstance()->GetItem(itemTag);
 	
 	//가진돈보다 비싸면 아무것도 안하고 return
-	int itemPrice = stoi(childs[2]->GetTextUI()->GetText());
+	int itemPrice = stoi(childs[1]->GetChildsUI()[1]->GetTextUI()->GetText());
 	if (itemPrice > static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->GetCharacterParam().m_iCoin)
 	{
 		return;
