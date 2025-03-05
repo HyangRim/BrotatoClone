@@ -10,6 +10,11 @@
 CSpriteUI::CSpriteUI()
 	:CUI(false)
 	, m_fHpRatio(1.0f)
+    , m_colorRoundedNormal(D2D1::ColorF::Black)
+    , m_colorRoundedMouseOn(D2D1::ColorF::Black)
+    , m_colorFillMouseOn(D2D1::ColorF::Black)
+    , m_colorFillNormal(D2D1::ColorF::Black)
+    , m_bBackGround(false)
 
 {
     
@@ -81,35 +86,77 @@ void CSpriteUI::update()
 void CSpriteUI::render(ID2D1HwndRenderTarget* _pRender)
 {
 
-    /*
-    Vec2 vOffset = GetOffset();
-    Vec2 vPos = GetFinalPos();
-    Vec2 vScale = GetScale();
-
-    if (m_bCamAffected) {
-        vPos = CCamera::GetInstance()->GetRenderPos(vPos);
-    }
-
-    // vPos와 vScale은 이미 계산된 좌표와 스케일 값입니다.
-    D2D1_RECT_F rect = D2D1::RectF(
-        vPos.x - vScale.x / 2.f,
-        vPos.y - vScale.y / 2.f,
-        vPos.x + vScale.x / 2.f,
-        vPos.y + vScale.y / 2.f
-    );
-
-    ID2D1SolidColorBrush* pBrush = nullptr;
-    HRESULT hr = _pRender->CreateSolidColorBrush(
-        m_bLbtnDown ? D2D1::ColorF(D2D1::ColorF::White)   // 마우스 왼쪽 버튼이 눌렸다면 녹색
-        : D2D1::ColorF(D2D1::ColorF::Black),  // 아니면 흰색
-        &pBrush
-    );
-
-    if (SUCCEEDED(hr))
+    
+    if (m_bBackGround)
     {
-        _pRender->FillRectangle(rect, pBrush);
-        pBrush->Release();
-    }*/
+        Vec2 vOffset = GetOffset();
+        Vec2 vPos = GetFinalPos();
+        Vec2 vScale = GetScale();
+
+        if (m_bCamAffected) {
+            vPos = CCamera::GetInstance()->GetRenderPos(vPos);
+        }
+
+        // vPos와 vScale은 이미 계산된 좌표와 스케일 값입니다.
+        D2D1_RECT_F rect = D2D1::RectF(
+            vPos.x - vScale.x / 2.f,
+            vPos.y - vScale.y / 2.f,
+            vPos.x + vScale.x / 2.f,
+            vPos.y + vScale.y / 2.f
+        ); 
+        D2D1_ROUNDED_RECT roundedRect = D2D1::RoundedRect(
+            D2D1::RectF(
+                vPos.x - vScale.x / 2.f,
+                vPos.y - vScale.y / 2.f,
+                vPos.x + vScale.x / 2.f,
+                vPos.y + vScale.y / 2.f), // 사각형의 좌표 (left, top, right, bottom)
+            m_fradiusX, // X축 반지름 (radiusX)
+            m_fradiusY  // Y축 반지름 (radiusY)
+        );
+
+        /**
+        ID2D1SolidColorBrush* pBrush = nullptr;
+        HRESULT hr = _pRender->CreateSolidColorBrush(
+            m_bLbtnDown ? m_colorBackGroundMouseOn : m_colorBackGroundNormal,  // 아니면 흰색
+            &pBrush
+        );*/
+
+        // 내부 색상 브러시 생성
+        ID2D1SolidColorBrush* pFillBrush = nullptr;
+        HRESULT hrFill = _pRender->CreateSolidColorBrush(
+            m_bLbtnDown ? m_colorFillMouseOn : m_colorFillNormal, // 내부 색상
+            &pFillBrush
+        );
+
+        // 외곽선 색상 브러시 생성
+        ID2D1SolidColorBrush* pOutlineBrush = nullptr;
+        HRESULT hrOutline = _pRender->CreateSolidColorBrush(
+            m_bLbtnDown ? m_colorRoundedMouseOn : m_colorRoundedNormal, // 외곽선 색상 (검정색 예시)
+            &pOutlineBrush
+        );
+
+        if (SUCCEEDED(hrFill) && SUCCEEDED(hrOutline)) {
+            // 내부 채우기
+            if (m_bIsRoundedRect) {
+                _pRender->FillRoundedRectangle(roundedRect, pFillBrush);
+            }
+            else {
+                _pRender->FillRectangle(rect, pFillBrush);
+            }
+
+            // 외곽선 그리기
+            if (m_bIsRoundedRect) {
+                _pRender->DrawRoundedRectangle(roundedRect, pOutlineBrush, 2.0f); // 두께 2.0f
+            }
+            else {
+                _pRender->DrawRectangle(rect, pOutlineBrush, 2.0f); // 두께 2.0f
+            }
+
+            // 브러시 해제
+            pFillBrush->Release();
+            pOutlineBrush->Release();
+        }
+    }
     component_render(_pRender);
 }
 
@@ -120,5 +167,6 @@ void CSpriteUI::SetHpRatio(float _ratio)
 
 void CSpriteUI::MouseLbtnClicked()
 {
-    GetParent()->MouseLbtnClicked();
+    if(GetParent())
+        GetParent()->MouseLbtnClicked();
 }

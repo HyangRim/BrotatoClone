@@ -231,6 +231,10 @@ void CScene_Shop::Enter()
 		itemImage->SetObjType(GROUP_TYPE::UI);
 		itemImage->SetName(L"Child");
 		itemImage->SetScale(Vec2(48.f, 48.f));
+		itemImage->SetBackGround(true);
+		itemImage->SetBackGroundColor(ColorNormalize(68,68,68), ColorNormalize(68, 68, 68)
+			, ColorNormalize(68, 68, 68), ColorNormalize(68, 68, 68));
+		itemImage->SetIsRound(true, 10.f, 10.f);
 		////////////////////아이템 이미지/////////////////////////////
 
 		/////////////////////구매 버튼/////////////////////////////////
@@ -311,16 +315,18 @@ void CScene_Shop::Enter()
 		CWeapon* weapon = *iter;
 		wstring iconTag = weapon->Getinfo().m_sIconImageKey;
 
-		CObject* weapons = new CSpriteUI;
+		CSpriteUI* weapons = new CSpriteUI;
 		weapons->SetName(L"Weapon");
-		weapons->SetPos(Vec2(592.f + (temp % 3) * 55.f, 436.f + (temp / 3) * 55.f)); // 기존 무기들 옆에 배치
+		weapons->SetPos(Vec2(600.f + (temp % 3) * 55.f, 436.f + (temp / 3) * 55.f)); // 기존 무기들 옆에 배치
 		weapons->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
 		weapons->SetObjType(GROUP_TYPE::UI);
 		weapons->SetScale(Vec2(50.f, 50.f));
+		weapons->SetBackGround(true);
+		weapons->SetBackGroundColor(ColorNormalize(30, 30, 30), ColorNormalize(0, 0, 0)
+									, ColorNormalize(30, 30, 30), ColorNormalize(0, 0, 0));
+		weapons->SetIsRound(true, 10.f, 10.f);
 		AddObject(weapons, GROUP_TYPE::UI);
 	}
-
-
 	CreateInfoPanel();
 	CreateScrollArea();
 }
@@ -347,7 +353,7 @@ void CScene_Shop::CreateScrollArea()
 	// 스크롤 내용 생성 (예: 여러 개의 아이템)
 	for (int i = 0; i < passiveItem.size(); ++i)
 	{
-		CObject* possessedItem = new CSpriteUI;
+		CSpriteUI* possessedItem = new CSpriteUI;
 		possessedItem->SetObjType(GROUP_TYPE::UI);
 
 		iconTag = passiveItem[i]->tag + L"_icon";
@@ -356,8 +362,13 @@ void CScene_Shop::CreateScrollArea()
 		int xCount = i % 9;
 		int yCount = i / 9;
 
-		possessedItem->SetPos(Vec2(27.f + xCount * 54.f, 27.f + yCount * 54.f));
+		possessedItem->SetPos(Vec2(35.f + xCount * 54.f, 27.f + yCount * 54.f));
 		possessedItem->SetScale(Vec2(50.f, 50.f));
+
+		possessedItem->SetBackGround(true);
+		possessedItem->SetBackGroundColor(ColorNormalize(30, 30, 30), ColorNormalize(0, 0, 0)
+										, ColorNormalize(30, 30, 30), ColorNormalize(0, 0, 0));
+		possessedItem->SetIsRound(true, 10.f, 10.f);
 		
 		m_scrollContent.push_back(possessedItem);
 	}
@@ -468,12 +479,16 @@ void CScene_Shop::PurchaseItem(DWORD_PTR lParam, DWORD_PTR wParam)
 		size_t xCount = curWeaponCnt % 3; // 열 번호
 		size_t yCount = curWeaponCnt / 3; // 행 번호
 
-		CObject* newWeapon = new CSpriteUI;
+		CSpriteUI* newWeapon = new CSpriteUI;
 		newWeapon->SetName(L"Weapon");
-		newWeapon->SetPos(Vec2(592.f + xCount * 55.f, 436.f + yCount * 55.f)); // 기존 무기들 옆에 배치
+		newWeapon->SetPos(Vec2(600.f + xCount * 55.f, 436.f + yCount * 55.f)); // 기존 무기들 옆에 배치
 		newWeapon->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
 		newWeapon->SetObjType(GROUP_TYPE::UI);
 		newWeapon->SetScale(Vec2(50.f, 50.f));
+		newWeapon->SetBackGround(true);
+		newWeapon->SetBackGroundColor(ColorNormalize(30, 30, 30), ColorNormalize(0, 0, 0)
+									, ColorNormalize(30, 30, 30), ColorNormalize(0, 0, 0));
+		newWeapon->SetIsRound(true, 10.f, 10.f);
 		AddObject(newWeapon, GROUP_TYPE::UI);
 	}
 	else
@@ -484,16 +499,21 @@ void CScene_Shop::PurchaseItem(DWORD_PTR lParam, DWORD_PTR wParam)
 		Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
 		wstring iconTag = itemTag + L"_icon";
 
-		CObject* newItem = new CSpriteUI;
+		CSpriteUI* newItem = new CSpriteUI;
 		newItem->SetObjType(GROUP_TYPE::UI);
 		newItem->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
+
 
 		// 새로운 아이템의 위치를 계산하여 설정
 		size_t xCount = m_scrollContent.size() % 9; // 열 번호
 		size_t yCount = m_scrollContent.size() / 9; // 행 번호
 		// 새로운 아이템의 위치를 계산하여 설정
-		newItem->SetPos(Vec2(xCount * 54.f + 24.f, yCount * 54.f + 27.f));
+		newItem->SetPos(Vec2(xCount * 54.f + 35.f, yCount * 54.f + 27.f));
 		newItem->SetScale(Vec2(50.f, 50.f));
+		newItem->SetBackGround(true);
+		newItem->SetBackGroundColor(ColorNormalize(30, 30, 30), ColorNormalize(0, 0, 0)
+								, ColorNormalize(30, 30, 30), ColorNormalize(0, 0, 0));
+		newItem->SetIsRound(true, 10.f, 10.f);
 
 		m_scrollContent.push_back(newItem);
 
