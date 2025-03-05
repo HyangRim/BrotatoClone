@@ -163,7 +163,7 @@ void CPlayer::update()
 	}
 	if (KEY_TAP(KEY::J))
 	{
-		m_tPlayerInfo.m_iCoin++;
+		m_tPlayerInfo.m_iCoin+=10;
 	}
 
 	if (KEY_TAP(KEY::ENTER)) {

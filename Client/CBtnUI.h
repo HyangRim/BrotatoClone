@@ -20,7 +20,7 @@ typedef void(*BTN_FUNC) (DWORD_PTR, DWORD_PTR);
 //이렇게 하면 SCENE이나, 오브젝트에서 파생된 것을 쓸 수 있음. 
 typedef void(CScene:: *SCENE_MEMFUNC)(void);
 typedef void(CObject::*OBJECT_MEMFUNC)(void);
-
+typedef void(CScene:: *SCENE_MEMFUNC2)(DWORD_PTR, DWORD_PTR);
 
 class CBtnUI :
     public CUI
@@ -52,8 +52,13 @@ private:
     vector<CObject*>    m_vTempObjects;
 
     //씬 멥버 함수를 얻기 위한 객체와, 호출 할 함수. 
-    SCENE_MEMFUNC   m_pSceneFunc;
-    CScene*         m_pSceneInst;
+    SCENE_MEMFUNC       m_pSceneFunc;
+    CScene*             m_pSceneInst;
+    //씬 멥버 함수를 얻기 위한 객체와, 호출 할 함수. 
+    SCENE_MEMFUNC2      m_pSceneFunc2;
+    CScene*             m_pSceneInst2;
+    DWORD_PTR           m_lParam;
+    DWORD_PTR           m_wParam;
 
     //콜백 함수
     std::function<void()> m_callback;
@@ -93,6 +98,14 @@ public:
         m_pFunc = _pFunc;
         m_param1 = _param1;
         m_param2 = _param2;
+    }
+
+    void SetClickedCallBack(CScene* _pScene, SCENE_MEMFUNC2 _pSceneFunc, DWORD_PTR _lParam, DWORD_PTR _wParam)
+    {
+        m_pSceneFunc2 = _pSceneFunc;
+        m_pSceneInst2 = _pScene;
+        m_lParam = _lParam;
+        m_wParam = _wParam;
     }
 
     void SetClickedCallBack(CScene* _pScene, SCENE_MEMFUNC _pSceneFunc);

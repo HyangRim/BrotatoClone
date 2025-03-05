@@ -30,6 +30,7 @@ public:
 
 	CObject* GetObj() { return m_pOwner; }
 	ID2D1Bitmap* GetBitmap() { return m_pBitmap; }
+	Vec2 GetFinalPos() { return m_vFinalPos; }
 	void		 SetBitmap(ID2D1Bitmap* _bitmap) { m_pBitmap = _bitmap; }
 
 	void SetRatio(float _ratio) { m_fRatio = _ratio; }

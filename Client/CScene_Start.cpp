@@ -1373,5 +1373,6 @@ void CScene_Start::SceneFailed()
 void CScene_Start::callPlayerUpgrade(int upgradeIdx)
 {
 	static_cast<CPlayer*>(GetPlayer())->upgradeParameter(upgradeIdx);
+	//static_cast<CPlayer*>(CSceneMgr)
 	ChangeScene(SCENE_TYPE::SHOP);
 }

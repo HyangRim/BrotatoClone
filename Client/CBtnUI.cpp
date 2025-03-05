@@ -69,6 +69,10 @@ void CBtnUI::MouseLbtnClicked()
 	if (m_pSceneInst && m_pSceneFunc) {
 		((*m_pSceneInst).*m_pSceneFunc)();
 	}
+	
+	if (m_pSceneInst2 && m_pSceneFunc2) {
+		((*m_pSceneInst2).*m_pSceneFunc2)(m_lParam, m_wParam);
+	}
 
 	if (nullptr != m_callback) {
 		m_callback();
