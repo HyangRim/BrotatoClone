@@ -10,6 +10,7 @@
 #include "CTextUI.h"
 
 #include "Direct2DMgr.h"
+#include "ItemMgr.h"
 #include "CWaveMgr.h"
 #include "CCore.h"
 #include "CSceneMgr.h"
@@ -29,7 +30,7 @@ CScene_Shop::~CScene_Shop()
 
 void CScene_Shop::update()
 {
-	//CScene::update();
+	CScene::update();
 
 	wchar_t buffer[20];
 	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; typeIDX++) 
@@ -157,7 +158,7 @@ void CScene_Shop::Enter()
 	panelTextCurCoin->SetScale(Vec2(32.f, 22.f));
 	swprintf_s(buffer, L"%d", ((CPlayer*)CSceneMgr::GetInstance()->GetPlayer())->GetCharacterParam().m_iCoin);
 	panelTextCurCoin->CreateTextUI(buffer, -(panelTextCurCoin->GetScale() / 2.f), panelTextCurCoin->GetScale() / 2.f
-		, 16, D2D1::ColorF::White, true, 2.f, D2D1::ColorF::Black
+		, 16, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR
 		, TextUIMode::TEXT
 		, 0);
@@ -193,7 +194,6 @@ void CScene_Shop::Enter()
 	/////////////////다음 웨이브 버튼/////////////////
 
 	////////////////////////가운데 아이템 패널 4개////////////////////////////////
-	vector<int> item_numbers;
 	for (int i = 0; i < 4; i++)
 	{
 		item_numbers.push_back(rand() % item_tag_list.size());
@@ -210,7 +210,7 @@ void CScene_Shop::Enter()
 		panelItemUI->SetColor(ColorNormalize(0, 0, 0), ColorNormalize(0, 0, 0));
 
 		////////////////////아이템 이미지/////////////////////////////
-		CObject* itemImage = new CSpriteUI;
+		CSpriteUI* itemImage = new CSpriteUI;
 		itemImage->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
 		Vec2 vPos = Vec2(35.f, 35.f) - (panelItemUI->GetScale() / 2.f);
 		itemImage->GetImage(0)->SetOffset(vPos);
@@ -227,6 +227,7 @@ void CScene_Shop::Enter()
 		priceBtn->SetScale(Vec2(80.f, 34.f));
 		priceBtn->SetObjType(GROUP_TYPE::UI);
 		priceBtn->SetColor(ColorNormalize(255, 255, 255), ColorNormalize(30, 30, 30));
+		priceBtn->SetClickedCallBack(this, static_cast<SCENE_MEMFUNC2>(&CScene_Shop::PurchaseItem), (DWORD_PTR)i, (DWORD_PTR)nullptr);
 		priceBtn->SetIsRound(true, 10.f, 10.f);
 
 		//구매버튼에 이미지//
@@ -238,17 +239,53 @@ void CScene_Shop::Enter()
 		priceBtnCoinImage->SetObjType(GROUP_TYPE::UI);
 		priceBtnCoinImage->SetScale(Vec2(24.f, 24.f));
 		//구매버튼에 이미지//
-	
+		
+		//구매버튼에 가격 표시//
+		CObject* priceBtnShowPrice = new CSpriteUI;
+		priceBtnShowPrice->SetName(L"PriceBtnShowPrice");
+		priceBtnShowPrice->SetObjType(GROUP_TYPE::UI);
+		priceBtnShowPrice->SetPos(Vec2(panelItemUI->GetPos().x - 7.f, 
+			panelItemUI->GetPos().y + panelItemUI->GetScale().y / 2.f - 28.f));
+		priceBtnShowPrice->SetScale(Vec2(30.f, 30.f));
+		swprintf_s(buffer, L"%d", ItemMgr::GetInstance()->GetItem(item_tag_list[item_numbers[i]])->m_iBasePrice);
+		priceBtnShowPrice->CreateTextUI(buffer, -(priceBtnShowPrice->GetScale() / 2.f), priceBtnShowPrice->GetScale() / 2.f
+			, 16, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+			, FONT_TYPE::KR
+			, TextUIMode::TEXT
+			, 0);
+		
+		//구매버튼에 가격 표시//
+		
+		//아이템 이름//
+		CObject* panelTextItemName = new CSpriteUI;
+		panelTextItemName->SetName(L"ShowItemNameText");
+		panelTextItemName->SetObjType(GROUP_TYPE::UI);
+		panelTextItemName->SetPos(Vec2(panelItemUI->GetPos().x + 30.f,
+			panelItemUI->GetPos().y - panelItemUI->GetScale().y / 2.f + 30.f));
+		panelTextItemName->SetScale(Vec2(90.f, 22.f));
+		swprintf_s(buffer, L"%s", ItemMgr::GetInstance()->GetItem(item_tag_list[item_numbers[i]])->m_sName.c_str());
+
+		panelTextItemName->CreateTextUI(buffer, -(panelTextItemName->GetScale() / 2.f), panelTextItemName->GetScale() / 2.f
+			, 12, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+			, FONT_TYPE::KR
+			, TextUIMode::TEXT
+			, 0);
+		panelTextItemName->GetTextUI()->SetHorizontal(1);
+		
+		//아이템 이름//
+
 		/////////////////////구매 버튼/////////////////////////////////
-		panelItemUI->AddChild((CUI*)priceBtn);
-		panelItemUI->AddChild((CUI*)priceBtnCoinImage);
 		panelItemUI->AddChild((CUI*)itemImage);
-	
+		panelItemUI->AddChild((CUI*)priceBtn);				//구매버튼
+		panelItemUI->AddChild((CUI*)priceBtnShowPrice);		//가격
+		panelItemUI->AddChild((CUI*)priceBtnCoinImage);		//코인 이미지
+		panelItemUI->AddChild((CUI*)panelTextItemName);		//아이템 이름
 
 		m_vItemPanels.push_back(panelItemUI);
+
 		AddObject(panelItemUI, GROUP_TYPE::UI);
 	}
-
+	
 	////////////////////////가운데 아이템 패널 4개////////////////////////////////
 
 
@@ -259,7 +296,7 @@ void CScene_Shop::Enter()
 
 void CScene_Shop::Exit()
 {
-	//Safe_Delete_Vec(m_scrollContent);
+	Safe_Delete_Vec(m_scrollContent);
 	//Safe_Delete_Vec(m_vItemPanels);
 	DeleteAll();
 }
@@ -274,16 +311,24 @@ void CScene_Shop::CreateScrollArea()
 	m_scrollArea.contentRect = D2D1::RectF(0.f, 0.f, 500.f, 800.f);
 	m_scrollArea.scrollPos = D2D1::Point2F(0, 0);
 
+	const vector<Item*>& passiveItem = ItemMgr::GetInstance()->GetPassiveItems();
+	wstring iconTag;
 	// 스크롤 내용 생성 (예: 여러 개의 아이템)
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < passiveItem.size(); ++i)
 	{
-		CObject* item = new CSpriteUI;
-		item->SetObjType(GROUP_TYPE::UI);
-		item->AddImage(pD2DMgr->GetStoredBitmap(L"well_rounded_icon")); // 적절한 아이템 아이콘으로 변경
-		item->SetPos(Vec2(24.f + i * (50.f), 27.f)); //contentRect기준 offset개념으로 접근
-		item->SetScale(Vec2(60.f, 60.f));
+		CObject* possessedItem = new CSpriteUI;
+		possessedItem->SetObjType(GROUP_TYPE::UI);
 
-		m_scrollContent.push_back(item);
+		iconTag = passiveItem[i]->tag + L"_icon";
+		possessedItem->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
+
+		int xCount = i % 9;
+		int yCount = i / 9;
+
+		possessedItem->SetPos(Vec2(24.f + xCount * 54.f, 27.f + yCount * 54.f));
+		possessedItem->SetScale(Vec2(60.f, 60.f));
+		
+		m_scrollContent.push_back(possessedItem);
 	}
 }
 
@@ -310,6 +355,7 @@ void CScene_Shop::RenderScrollArea(ID2D1HwndRenderTarget* _pRender)
 
 	for (auto& item : m_scrollContent)
 	{
+		//item->update();
 		item->finalupdate();
 		item->render(_pRender);
 	}
@@ -324,7 +370,8 @@ void CScene_Shop::ReRollItem()
 		return;
 
 	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
-	vector<int> item_numbers;
+
+	item_numbers.clear();
 	for (int i = 0; i < 4; i++)
 	{
 		item_numbers.push_back(rand() % item_tag_list.size());
@@ -335,15 +382,67 @@ void CScene_Shop::ReRollItem()
 	{
 		Vec2 vPos = Vec2(35.f, 35.f) - (m_vItemPanels[i]->GetScale() / 2.f);
 		const vector<CUI*>& childs = m_vItemPanels[i]->GetChildsUI();
+
+		//이미지 변경
 		childs[0]->DeleteImage();
 		iconTag = item_tag_list[item_numbers[i]] + L"_icon";
 		childs[0]->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
 		childs[0]->GetImage(0)->SetOffset(vPos);
+
+		//가격 변경
+		wchar_t buffer[20];
+		swprintf_s(buffer, L"%d", ItemMgr::GetInstance()->GetItem(item_tag_list[item_numbers[i]])->m_iBasePrice);
+		childs[2]->GetTextUI()->SetText(buffer);
+
+		//이름 변경
+		swprintf_s(buffer, L"%s", ItemMgr::GetInstance()->GetItem(item_tag_list[item_numbers[i]])->m_sName.c_str());
+		childs[4]->GetTextUI()->SetText(buffer);
 	}
 
 	static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->DecreaseCoin(1);
-	int a = static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->GetCharacterParam().m_iCoin;
-	int b = 0;
+}
+
+void CScene_Shop::PurchaseItem(DWORD_PTR lParam, DWORD_PTR wParam)
+{
+	int panelNumber = (int)lParam;
+
+	const vector<CUI*>& childs = m_vItemPanels[panelNumber]->GetChildsUI();
+	wstring itemTag = item_tag_list[item_numbers[panelNumber]];
+
+	Item* selectedItem = ItemMgr::GetInstance()->GetItem(itemTag);
+	
+	//가진돈보다 비싸면 아무것도 안하고 return
+	int itemPrice = stoi(childs[2]->GetTextUI()->GetText());
+	if (itemPrice > static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->GetCharacterParam().m_iCoin)
+	{
+		return;
+	}
+
+	static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->DecreaseCoin(itemPrice);
+
+	ItemMgr::GetInstance()->AddPassive(selectedItem);
+	
+	
+	// 스크롤 영역에 새로운 아이템 추가
+	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+	wstring iconTag = itemTag + L"_icon";
+
+	CObject* newItem = new CSpriteUI;
+	newItem->SetObjType(GROUP_TYPE::UI);
+	newItem->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
+
+	// 새로운 아이템의 위치를 계산하여 설정
+	newItem->SetPos(Vec2(m_scrollContent.size() % 9 * 54.f + 24.f, m_scrollContent.size() / 9 * 54.f + 27.f));
+	newItem->SetScale(Vec2(60.f, 60.f));
+
+	m_scrollContent.push_back(newItem);
+
+	// 스크롤 가능한 콘텐츠 영역 크기 업데이트
+	float contentHeight = m_scrollContent.size() * 54.f + 27.f; // 새로 추가된 높이 계산
+	m_scrollArea.contentRect.bottom = max(m_scrollArea.contentRect.bottom, contentHeight);
+
+	// 화면 갱신 요청
+	InvalidateRect(CCore::GetInstance()->GetMainHwnd(), NULL, FALSE); // 화면 다시 그리기 요청
 }
 
 

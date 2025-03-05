@@ -5,10 +5,12 @@
 #include "CResMgr.h"
 #include "CTexture.h"
 #include "CObject.h"
+#include "CImage.h"
 
 CSpriteUI::CSpriteUI()
 	:CUI(false)
 	, m_fHpRatio(1.0f)
+
 {
     
 }
@@ -63,6 +65,7 @@ void CSpriteUI::update()
 
 void CSpriteUI::render(ID2D1HwndRenderTarget* _pRender)
 {
+
     component_render(_pRender);
 }
 

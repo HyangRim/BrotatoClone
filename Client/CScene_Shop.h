@@ -8,7 +8,8 @@ class CScene_Shop :
     public CScene
 {
 private:
-    vector<CPanelUI*> m_vItemPanels;
+    vector<CPanelUI*>   m_vItemPanels;
+    vector<int>         item_numbers;
 
 private:
     ScrollArea m_scrollArea;                //구조체 정의는 Direct2DMgr에
@@ -26,6 +27,7 @@ public:
 
 public:
     void ReRollItem();
+    void PurchaseItem(DWORD_PTR lParam, DWORD_PTR wParam);
 
 public:
     void CreateInfoPanel();
