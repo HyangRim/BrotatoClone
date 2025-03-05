@@ -132,7 +132,7 @@ void CCore::progress() {
 
 	//UI 이벤트 체크
 	CUIMgr::GetInstance()->update();
-
+	ItemMgr::GetInstance()->update();
 
 	// ============
 	//	Rendering

@@ -3,6 +3,7 @@
 #include "Direct2DMgr.h"
 
 class CPanelUI;
+class CWeapon;
 
 class CScene_Shop :
     public CScene
@@ -12,8 +13,12 @@ private:
     vector<int>         item_numbers;
 
 private:
-    ScrollArea m_scrollArea;                //구조체 정의는 Direct2DMgr에
-    vector<CObject*> m_scrollContent;       //스크롤 영역에 정의할 객체들
+    ScrollArea          m_scrollArea;                //구조체 정의는 Direct2DMgr에
+    vector<CObject*>    m_scrollContent;       //스크롤 영역에 정의할 객체들
+
+private:
+
+    vector<CWeapon*>    m_vWeaponlist;
 
 public:
     void CreateScrollArea();

@@ -417,9 +417,6 @@ void CScene_Start::Enter()
 	AddObject(bottomWall, GROUP_TYPE::GROUND);
 	////////////////////////////////외부 벽/////////////////////////////////
 
-
-
-
 	//Object 추가.
 	//실제 생성된 객체는 플레이어, 주소를 받은 건 부모 클래스. 
 	CObject* pObj = new CPlayer;

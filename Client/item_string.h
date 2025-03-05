@@ -18,4 +18,7 @@ const vector<wstring> item_tag_list = {
 	L"alien_worm",
 	L"duct_tape",
 	L"cute_monkey",
+	L"knife",
+	L"pistol",
+	L"slingshot",
 };

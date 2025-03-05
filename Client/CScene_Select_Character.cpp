@@ -181,7 +181,7 @@ void SelectCharacter(DWORD_PTR lParam, DWORD_PTR wParam)
 	// lParam -> 이미지 태그
 	// wParam -> x
 	wstring tag = *reinterpret_cast<wstring*>(lParam);
-	Item* basicCharater = new Item;
+	Item* basicCharater = new Item(ITEM_TYPE::PASSIVE);
 	basicCharater->tag = tag;
 	basicCharater->m_eItemType = ITEM_TYPE::PASSIVE;
 
@@ -219,37 +219,37 @@ void CScene_Select_Character::CharacterMapping(CBtnUI* _btn, int i, int j, wstri
 	if (i == 0 && j == 0)
 	{
 		_btn->AddImage(pD2DMgr->GetStoredBitmap(L"random_icon"));
-		tag = L"random_icon";
+		tag = L"random";
 	}
 	else if (i == 0 && j == 1)
 	{
 		_btn->AddImage(pD2DMgr->GetStoredBitmap(L"well_rounded_icon"));
-		tag = L"well_rounded_icon";
+		tag = L"well_rounded";
 	}
 	else if (i == 0 && j == 2)
 	{
 		_btn->AddImage(pD2DMgr->GetStoredBitmap(L"brawler_icon"));
-		tag = L"brawler_icon";
+		tag = L"brawler";
 	}
 	else if (i == 0 && j == 3)
 	{
 		_btn->AddImage(pD2DMgr->GetStoredBitmap(L"crazy_icon"));
-		tag = L"crazy_icon";
+		tag = L"crazy";
 	}
 	else if (i == 0 && j == 4)
 	{
 		_btn->AddImage(pD2DMgr->GetStoredBitmap(L"ranger_icon"));
-		tag = L"ranger_icon";
+		tag = L"ranger";
 	}
 	else if (i == 0 && j == 5)
 	{
 		_btn->AddImage(pD2DMgr->GetStoredBitmap(L"mage_icon"));
-		tag = L"mage_icon";
+		tag = L"mage";
 	}
 	else if (i == 0 && j == 6)
 	{
 		_btn->AddImage(pD2DMgr->GetStoredBitmap(L"chunky_icon"));
-		tag = L"chunky_icon";
+		tag = L"chunky";
 	}
 	else _btn->AddImage(pD2DMgr->GetStoredBitmap(L"locked_icon"));
 }

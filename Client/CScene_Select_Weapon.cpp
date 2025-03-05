@@ -90,7 +90,8 @@ void CScene_Select_Weapon::Enter()
 	
 	ItemMgr* ItemMgr = ItemMgr::GetInstance();
 	CObject* characterImage = new CSpriteUI;
-	characterImage->AddImage(pD2DMgr->GetStoredBitmap(ItemMgr->GetBasicCharacter()->tag));
+	wstring iconTag = ItemMgr->GetBasicCharacter()->tag + L"_icon";
+	characterImage->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
 	Vec2 vPos = Vec2(35.f, 35.f) - (panel->GetScale() / 2.f);
 	characterImage->GetImage(0)->SetOffset(vPos);
 	characterImage->SetObjType(GROUP_TYPE::UI);
@@ -203,11 +204,11 @@ void SelectWeapon(DWORD_PTR lParam, DWORD_PTR wParam)
 	// wParam -> x
 	wstring tag = *reinterpret_cast<wstring*>(lParam);
 
-	Item* basicCharater = new Item;
-	basicCharater->tag = tag;
-	basicCharater->m_eItemType = ITEM_TYPE::WEAPON;
+	Item* basicWeapon = new Item(ITEM_TYPE::WEAPON);
+	basicWeapon->tag = tag;
+	basicWeapon->m_eItemType = ITEM_TYPE::WEAPON;
 
-	ItemMgr::GetInstance()->AddWeapons(basicCharater);
+	ItemMgr::GetInstance()->AddWeapons(basicWeapon);
 
 	ChangeScene(SCENE_TYPE::START);
 }
@@ -229,13 +230,13 @@ void CScene_Select_Weapon::WeaponMapping(CBtnUI* _btn, int i, int j, wstring& ta
 	}
 	else if (i == 0 && j == 2)
 	{
-		_btn->AddImage(pD2DMgr->GetStoredBitmap(L"stick_icon"));
-		tag = L"stick_icon";
+		_btn->AddImage(pD2DMgr->GetStoredBitmap(L"pistol_icon"));
+		tag = L"pistol_icon";
 	}
 	else if (i == 0 && j == 3)
 	{
-		_btn->AddImage(pD2DMgr->GetStoredBitmap(L"fist_icon"));
-		tag = L"fist_icon";
+		_btn->AddImage(pD2DMgr->GetStoredBitmap(L"slingshot_icon"));
+		tag = L"slingshot_icon";
 	}
 	else _btn->AddImage(pD2DMgr->GetStoredBitmap(L"locked_icon"));
 }

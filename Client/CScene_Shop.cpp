@@ -7,6 +7,7 @@
 #include "CImage.h"
 #include "CObject.h"
 #include "CPanelUI.h"
+#include "CWeapon.h"
 #include "CTextUI.h"
 
 #include "Direct2DMgr.h"
@@ -47,6 +48,12 @@ void CScene_Shop::update()
 					swprintf_s(buffer, L"%d", ((CPlayer*)CSceneMgr::GetInstance()->GetPlayer())->GetCharacterParam().m_iCoin);
 					vecObj[objIDX]->GetTextUI()->SetText(buffer);
 				}
+				if (vecObj[objIDX]->GetName().compare(L"ItemInfoPanel") == 0)
+				{
+					swprintf_s(buffer, L"아이템 %d개", (int)ItemMgr::GetInstance()->GetPassiveItemssize());
+					vecObj[objIDX]->GetTextUI()->SetText(buffer);
+				}
+
 				vecObj[objIDX]->update();
 			}
 		}
@@ -93,11 +100,13 @@ void CScene_Shop::Enter()
 
 	/////////////////아이템 글자 UI(우하단)///////////////////
 	CObject* panelTextItem= new CSpriteUI;
+	panelTextItem->SetName(L"ItemInfoPanel");
 	panelTextItem->SetObjType(GROUP_TYPE::UI);
-	panelTextItem->SetPos(Vec2(40.f, 386.f));
+	panelTextItem->SetPos(Vec2(60.f, 386.f));
 	panelTextItem->SetScale(Vec2(64.f, 3.f));
 
-	panelTextItem->CreateTextUI(L"아이템", Vec2(-150.f, -18.f), Vec2(150.f, 18.f)
+	swprintf_s(buffer, L"아이템 %d개", (int)ItemMgr::GetInstance()->GetPassiveItemssize());
+	panelTextItem->CreateTextUI(buffer, Vec2(-150.f, -18.f), Vec2(150.f, 18.f)
 		, 20, D2D1::ColorF::White, true, 2.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR
 		, TextUIMode::TEXT
@@ -174,7 +183,6 @@ void CScene_Shop::Enter()
 	AddObject(panelTextCurCoinImage, GROUP_TYPE::UI);
 	///////////////////////////남은 재화 표시 이미지///////////////////
 
-
 	/////////////////다음 웨이브 버튼/////////////////
 	CBtnUI* nextWaveBtn = new CBtnUI;
 	nextWaveBtn->SetName(L"NextWaveBtn");
@@ -247,6 +255,7 @@ void CScene_Shop::Enter()
 		priceBtnShowPrice->SetPos(Vec2(panelItemUI->GetPos().x - 7.f, 
 			panelItemUI->GetPos().y + panelItemUI->GetScale().y / 2.f - 28.f));
 		priceBtnShowPrice->SetScale(Vec2(30.f, 30.f));
+		int a = ItemMgr::GetInstance()->GetItem(item_tag_list[item_numbers[i]])->m_iBasePrice;
 		swprintf_s(buffer, L"%d", ItemMgr::GetInstance()->GetItem(item_tag_list[item_numbers[i]])->m_iBasePrice);
 		priceBtnShowPrice->CreateTextUI(buffer, -(priceBtnShowPrice->GetScale() / 2.f), priceBtnShowPrice->GetScale() / 2.f
 			, 16, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
@@ -325,8 +334,8 @@ void CScene_Shop::CreateScrollArea()
 		int xCount = i % 9;
 		int yCount = i / 9;
 
-		possessedItem->SetPos(Vec2(24.f + xCount * 54.f, 27.f + yCount * 54.f));
-		possessedItem->SetScale(Vec2(60.f, 60.f));
+		possessedItem->SetPos(Vec2(27.f + xCount * 54.f, 27.f + yCount * 54.f));
+		possessedItem->SetScale(Vec2(50.f, 50.f));
 		
 		m_scrollContent.push_back(possessedItem);
 	}
@@ -420,29 +429,38 @@ void CScene_Shop::PurchaseItem(DWORD_PTR lParam, DWORD_PTR wParam)
 
 	static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->DecreaseCoin(itemPrice);
 
-	ItemMgr::GetInstance()->AddPassive(selectedItem);
+	if (selectedItem->m_eItemType == ITEM_TYPE::WEAPON)
+	{
+		//무기선택시 ...
+		//CWeapon* selectedWeapon = new CWeapon;
 	
+	}
+	else
+	{
+		ItemMgr::GetInstance()->AddPassive(selectedItem);
+
+		// 스크롤 영역에 새로운 아이템 추가
+		Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+		wstring iconTag = itemTag + L"_icon";
+
+		CObject* newItem = new CSpriteUI;
+		newItem->SetObjType(GROUP_TYPE::UI);
+		newItem->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
+
+		// 새로운 아이템의 위치를 계산하여 설정
+		size_t xCount = m_scrollContent.size() % 9; // 열 번호
+		size_t yCount = m_scrollContent.size() / 9; // 행 번호
+		// 새로운 아이템의 위치를 계산하여 설정
+		newItem->SetPos(Vec2(xCount * 54.f + 24.f, yCount * 54.f + 27.f));
+		newItem->SetScale(Vec2(50.f, 50.f));
+
+		m_scrollContent.push_back(newItem);
+
+		// 스크롤 가능한 콘텐츠 영역 크기 업데이트
+		float contentHeight = (yCount + 1) * 54.f + 27.f; // 행 개수에 따라 높이를 계산
+		m_scrollArea.contentRect.bottom = max(m_scrollArea.contentRect.bottom, contentHeight);
+	}
 	
-	// 스크롤 영역에 새로운 아이템 추가
-	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
-	wstring iconTag = itemTag + L"_icon";
-
-	CObject* newItem = new CSpriteUI;
-	newItem->SetObjType(GROUP_TYPE::UI);
-	newItem->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
-
-	// 새로운 아이템의 위치를 계산하여 설정
-	newItem->SetPos(Vec2(m_scrollContent.size() % 9 * 54.f + 24.f, m_scrollContent.size() / 9 * 54.f + 27.f));
-	newItem->SetScale(Vec2(60.f, 60.f));
-
-	m_scrollContent.push_back(newItem);
-
-	// 스크롤 가능한 콘텐츠 영역 크기 업데이트
-	float contentHeight = m_scrollContent.size() * 54.f + 27.f; // 새로 추가된 높이 계산
-	m_scrollArea.contentRect.bottom = max(m_scrollArea.contentRect.bottom, contentHeight);
-
-	// 화면 갱신 요청
-	InvalidateRect(CCore::GetInstance()->GetMainHwnd(), NULL, FALSE); // 화면 다시 그리기 요청
 }
 
 
