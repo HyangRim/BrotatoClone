@@ -1247,14 +1247,15 @@ void CScene_Start::CreateLevelUpShop()
 		////////////////////////Upgrade 능력치 아이콘////////////////////////////////
 
 		////////////Upgrade Name////////////////////
-		CObject* upgradeNameText = new CSpriteUI;
+		//CObject* upgradeNameText = new CSpriteUI;
+		CObject* upgradeNameText = panelItemUI->AddChild<CSpriteUI>(Vec2(20.f, -50.f));
 		upgradeNameText->SetName(L"upgradeNameText");
 		upgradeNameText->SetObjType(GROUP_TYPE::UI);
-		upgradeNameText->SetPos(Vec2(120.f + upgradeIndex * (5.f + panelItemUI->GetScale().x), (vResolution.y / 2) - 45.f));
+		//upgradeNameText->SetPos(Vec2(120.f + upgradeIndex * (5.f + panelItemUI->GetScale().x), (vResolution.y / 2) - 45.f));
 		upgradeNameText->SetScale(Vec2(80.f, 15.f));
 
 		upgradeNameText->CreateTextUI(upgrade_name_list[upgrade_numbers[upgradeIndex]], -(upgradeNameText->GetScale() / 2.f), (upgradeNameText->GetScale() / 2.f)
-			, 14, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+			, 16, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 			, FONT_TYPE::KR
 			, TextUIMode::TEXT
 			, 0);
@@ -1264,10 +1265,11 @@ void CScene_Start::CreateLevelUpShop()
 
 
 		////////////Upgrade Classifi////////////////////
-		CObject* upgradeClassifi = new CSpriteUI;
+		//CObject* upgradeClassifi = new CSpriteUI;
+		CObject* upgradeClassifi = panelItemUI->AddChild<CSpriteUI>(Vec2(20.f, -25.f));
 		upgradeClassifi->SetName(L"upgradeClassifi");
 		upgradeClassifi->SetObjType(GROUP_TYPE::UI);
-		upgradeClassifi->SetPos(Vec2(120.f + upgradeIndex * (5.f + panelItemUI->GetScale().x), (vResolution.y / 2) - 25.f));
+		//upgradeClassifi->SetPos(Vec2(120.f + upgradeIndex * (5.f + panelItemUI->GetScale().x), (vResolution.y / 2) - 25.f));
 		upgradeClassifi->SetScale(Vec2(80.f, 15.f));
 
 		upgradeClassifi->CreateTextUI(upgrade_classifi, -(upgradeClassifi->GetScale() / 2.f), (upgradeClassifi->GetScale() / 2.f)
@@ -1280,10 +1282,11 @@ void CScene_Start::CreateLevelUpShop()
 		////////////Upgrade Classifi////////////////////
 
 		////////////Upgrade Text////////////////////
-		CObject* upgradeText = new CSpriteUI;
+		//CObject* upgradeText = new CSpriteUI;
+		CObject* upgradeText = panelItemUI->AddChild<CSpriteUI>(Vec2(15.f, 5.f));
 		upgradeText->SetName(L"upgradeText");
 		upgradeText->SetObjType(GROUP_TYPE::UI);
-		upgradeText->SetPos(Vec2(115.f + upgradeIndex * (5.f + panelItemUI->GetScale().x), (vResolution.y / 2) + 5.f));
+		//upgradeText->SetPos(Vec2(115.f + upgradeIndex * (5.f + panelItemUI->GetScale().x), (vResolution.y / 2) + 5.f));
 		upgradeText->SetScale(Vec2(176.f, 15.f));
 
 		upgradeText->CreateTextUI(upgrade_text_list[upgrade_numbers[upgradeIndex]], -(upgradeText->GetScale() / 2.f), (upgradeText->GetScale() / 2.f)
