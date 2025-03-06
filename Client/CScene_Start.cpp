@@ -274,10 +274,11 @@ void CScene_Start::render(Gdiplus::Graphics* _pDGraphics)
 }
 
 void CScene_Start::render(ID2D1HwndRenderTarget* _pRender)
-{
-	CScene::render(_pRender); 
+{ 
+	CScene::render(_pRender);
 	if(CScene::GetPause() == true)
-		RenderScrollArea(_pRender);
+		RenderScrollArea(_pRender); 
+	
 	if (!m_bUseForce) return;
 
 	m_fCurRadius += m_fForceRadius * 3.f * fDT;
@@ -790,7 +791,7 @@ void CScene_Start::CreateMiddleInfo()
 	itemCountText->SetName(L"itemCountText");
 	itemCountText->SetObjType(GROUP_TYPE::UI);
 	itemCountText->SetScale(Vec2(120.f, 34.f));
-	swprintf_s(buffer, L"아이템(%zd/6)", ItemMgr::GetInstance()->GetPassiveItemssize());
+	swprintf_s(buffer, L"아이템(%zd)", ItemMgr::GetInstance()->GetPassiveItemssize());
 	itemCountText->CreateTextUI(buffer, -(itemCountText->GetScale() / 2.f), (itemCountText->GetScale() / 2.f)
 		, 20, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR
@@ -1530,7 +1531,7 @@ void CScene_Start::CreateOptionPanel()
 	optionPanel->SetNormalAlpha(0.6f);
 	optionPanel->SetMouseOnAlpha(0.6f);
 	m_vecOptionObjs.push_back(optionPanel);
-	AddObject(optionPanel, GROUP_TYPE::UI);
+	AddObject(optionPanel, GROUP_TYPE::IMAGE);
 	//////////////////뒷 판떼기///////////////////////
 
 	////////////음향 텍스트 보여주는 곳////////////////////
