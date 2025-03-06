@@ -556,6 +556,8 @@ void CScene_Start::CreatePause()
 	CreateLeftBtns();
 	CreateMiddleInfo();
 	CreateInfoPanel();
+
+
 }
 
 
@@ -1410,7 +1412,7 @@ void CScene_Start::CreateOptionPanel()
 	optionPanel->SetNormalAlpha(0.6f);
 	optionPanel->SetMouseOnAlpha(0.6f);
 	m_vecOptionObjs.push_back(optionPanel);
-	AddObject(optionPanel, GROUP_TYPE::IMAGE);
+	AddObject(optionPanel, GROUP_TYPE::UI);
 	//////////////////뒷 판떼기///////////////////////
 
 	////////////음향 텍스트 보여주는 곳////////////////////
@@ -1427,7 +1429,7 @@ void CScene_Start::CreateOptionPanel()
 		, TextUIMode::TEXT
 		, 0);
 	m_vecOptionObjs.push_back(soundText);
-	AddObject(soundText, GROUP_TYPE::IMAGE);
+	AddObject(soundText, GROUP_TYPE::UI);
 	////////////음향 텍스트 보여주는 곳////////////////////
 
 
@@ -1446,7 +1448,7 @@ void CScene_Start::CreateOptionPanel()
 		, 0);
 	masterSoundText->GetTextUI()->SetHorizontal(1);
 	m_vecOptionObjs.push_back(masterSoundText);
-	AddObject(masterSoundText, GROUP_TYPE::IMAGE);
+	AddObject(masterSoundText, GROUP_TYPE::UI);
 	////////////마스터 텍스트 보여주는 곳////////////////////
 
 
@@ -1487,7 +1489,7 @@ void CScene_Start::CreateOptionPanel()
 	masterSoundRatio->GetTextUI()->SetHorizontal(2);
 	CSoundMgr::GetInstance()->m_pMasterSoundRatio = masterSoundRatio;
 	m_vecOptionObjs.push_back(masterSoundRatio);
-	AddObject(masterSoundRatio, GROUP_TYPE::IMAGE);
+	AddObject(masterSoundRatio, GROUP_TYPE::UI);
 	////////////마스터 Ratio 보여주는 곳////////////////////
 
 	////////////음악 텍스트 보여주는 곳////////////////////
@@ -1505,7 +1507,7 @@ void CScene_Start::CreateOptionPanel()
 		, 0);
 	BGMSoundText->GetTextUI()->SetHorizontal(1);
 	m_vecOptionObjs.push_back(BGMSoundText);
-	AddObject(BGMSoundText, GROUP_TYPE::IMAGE);
+	AddObject(BGMSoundText, GROUP_TYPE::UI);
 	////////////음악 텍스트 보여주는 곳////////////////////
 
 
@@ -1543,7 +1545,7 @@ void CScene_Start::CreateOptionPanel()
 	BGMSoundRatio->GetTextUI()->SetHorizontal(2);
 	CSoundMgr::GetInstance()->m_pBGMSoundRatio = BGMSoundRatio;
 	m_vecOptionObjs.push_back(BGMSoundRatio);
-	AddObject(BGMSoundRatio, GROUP_TYPE::IMAGE);
+	AddObject(BGMSoundRatio, GROUP_TYPE::UI);
 	////////////음악 Ratio 보여주는 곳////////////////////
 
 
@@ -1562,7 +1564,7 @@ void CScene_Start::CreateOptionPanel()
 		, 0);
 	SFXSoundText->GetTextUI()->SetHorizontal(1);
 	m_vecOptionObjs.push_back(SFXSoundText);
-	AddObject(SFXSoundText, GROUP_TYPE::IMAGE);
+	AddObject(SFXSoundText, GROUP_TYPE::UI);
 	////////////SFX 텍스트 보여주는 곳////////////////////
 
 	////////////SFX 슬라이더////////////////////
@@ -1599,7 +1601,7 @@ void CScene_Start::CreateOptionPanel()
 	SFXSoundRatio->GetTextUI()->SetHorizontal(2);
 	CSoundMgr::GetInstance()->m_pSFXSoundRatio = SFXSoundRatio;
 	m_vecOptionObjs.push_back(SFXSoundRatio);
-	AddObject(SFXSoundRatio, GROUP_TYPE::IMAGE);
+	AddObject(SFXSoundRatio, GROUP_TYPE::UI);
 	////////////SFX Ratio 보여주는 곳////////////////////
 
 	/////////////////뒤로 버튼//////////////////////
