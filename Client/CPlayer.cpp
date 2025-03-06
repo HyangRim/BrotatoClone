@@ -248,7 +248,13 @@ void CPlayer::PushSceneWeapons()
 {
 	//씬 시작할 때, 즉 StartScene으로 갈 대 이 함수 불러주면 됨. 
 	for (auto weaponIter : m_listWeapon) {
-		CreateObject((CObject*)weaponIter, GROUP_TYPE::WEAPON);
+		//CreateObject((CObject*)weaponIter, GROUP_TYPE::WEAPON);
+		//AddObject
+		//weaponIter
+		//AddObject(pGround, GROUP_TYPE::GROUND);
+		CScene* curScene = CSceneMgr::GetInstance()->GetCurScene();
+		weaponIter->SetCurScene(curScene);
+		curScene->AddObject(weaponIter, GROUP_TYPE::WEAPON);
 	}
 }
 

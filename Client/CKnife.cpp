@@ -8,6 +8,7 @@
 #include "CKnifeAI.h"
 #include "CDamageUI.h"
 #include "CTextUI.h"
+#include "Direct2DMgr.h"
 
 #include "CTimeMgr.h"
 
@@ -31,10 +32,13 @@ CKnife::CKnife()
 	tInfo.m_iDMG = 12;
 
 	SetInfo(tInfo);
-	SetScale(Vec2(10.f, 10.f));
+	SetScale(Vec2(40.f, 40.f));
 	CreateCollider();
 	GetCollider()->SetScale(GetScale());
-	m_pPlayer = (CPlayer*)CSceneMgr::GetInstance()->GetCurScene()->GetPlayer();
+	m_pPlayer = (CPlayer*)CSceneMgr::GetInstance()->GetPlayer();
+
+	CreateImage();
+	AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"knife"));
 }
 
 CKnife::~CKnife()
@@ -157,6 +161,8 @@ void CKnife::render(ID2D1HwndRenderTarget* _pRender)
 		_pRender->DrawEllipse(ellipse, pBrush, 2.0f);
 		pBrush->Release();
 	}
+
+	CWeapon::render(_pRender);
 }
 
 

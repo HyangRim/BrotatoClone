@@ -293,6 +293,9 @@ void CScene::DeleteAll()
 			m_arrObj[(UINT)GROUP_TYPE::PLAYER].clear();
 			continue;
 		}
+		else if (GroupIdx == (UINT)GROUP_TYPE::WEAPON) {
+			m_arrObj[(UINT)GROUP_TYPE::WEAPON].clear();
+		}
 		DeleteGroup((GROUP_TYPE)GroupIdx);
 	}
 }

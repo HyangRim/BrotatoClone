@@ -7,6 +7,9 @@
 #include "CBtnUI.h"
 #include "CPanelUI.h"
 #include "CWeapon.h"
+#include "CPistol.h"
+#include "CSlingshot.h"
+#include "CKnife.h"
 #include "CImage.h"
 #include "CPlayer.h"
 
@@ -214,8 +217,18 @@ void SelectWeapon(DWORD_PTR lParam, DWORD_PTR wParam)
 
 	Item* selectedItem = ItemMgr::GetInstance()->GetItem(tag);
 	
-	CWeapon* selectedWeapon = new CWeapon;
-	selectedWeapon->SetInfo(selectedItem->m_tWeaponInfo);
+	//CWeapon* selectedWeapon = new CWeapon;
+	CWeapon* selectedWeapon = nullptr;
+	if (tag == L"pistol") {
+		selectedWeapon = new CPistol;
+	}
+	else if (tag == L"knife") {
+		selectedWeapon = new CKnife;
+	}
+	else if (tag == L"slingshot") {
+		selectedWeapon = new CSlingshot;
+	}
+	//selectedWeapon->SetInfo(selectedItem->m_tWeaponInfo);
 	static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->AddWeapon(selectedWeapon);
 
 	ChangeScene(SCENE_TYPE::START);

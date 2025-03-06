@@ -27,8 +27,11 @@ CSlingshot::CSlingshot()
 	tInfo.m_iDMG = 10;
 
 	SetInfo(tInfo);
-	SetScale(Vec2(10.f, 10.f));
-	m_pPlayer = (CPlayer*)CSceneMgr::GetInstance()->GetCurScene()->GetPlayer();
+	SetScale(Vec2(40.f, 40.f));
+	m_pPlayer = (CPlayer*)CSceneMgr::GetInstance()->GetPlayer();
+
+	CreateImage();
+	AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"slingshot"));
 }
 
 CSlingshot::~CSlingshot()
@@ -100,6 +103,7 @@ void CSlingshot::render(ID2D1HwndRenderTarget* _pRender)
 		_pRender->DrawEllipse(ellipse, pBrush, 2.0f);
 		pBrush->Release();
 	}
+	CWeapon::render(_pRender);
 }
 
 void CSlingshot::ShotMissile(Vec2 _vDir)

@@ -520,6 +520,9 @@ void CScene_Start::Enter()
 	m_bFailed = false;
 	m_vecPauseObj.clear();
 	m_vecFailObj.clear();
+	CScene* tempScene = CSceneMgr::GetInstance()->GetCurScene();
+	//웨이브에 들어오면 플레이어의 무기를 Scene에 추가. 
+	static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->PushSceneWeapons();
 	start();
 }
 

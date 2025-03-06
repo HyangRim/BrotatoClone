@@ -50,6 +50,8 @@ public:
     void SetPlayer() { m_pPlayer = (CPlayer*)(CSceneMgr::GetInstance()->GetPlayer()); }
     void SetWeaponOffset(Vec2 _vWeaponOffset) { m_vWeaponOffset = _vWeaponOffset; }
 
+    void SetCurScene(CScene* _pScene) { m_pCurScene = _pScene; }
+
 private:
     CObject* SpecTarget();
     

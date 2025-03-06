@@ -13,7 +13,8 @@ CWeapon::CWeapon()
 	, m_pCurScene(nullptr)
 	, m_pTarget(nullptr)
 {
-	m_pCurScene = CSceneMgr::GetInstance()->GetCurScene();
+	//m_pCurScene = CSceneMgr::GetInstance()->GetCurScene();
+	m_pPlayer = static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer());
 }
 
 CWeapon::~CWeapon()
@@ -38,7 +39,7 @@ void CWeapon::render(Gdiplus::Graphics* _pDGraphics)
 
 void CWeapon::render(ID2D1HwndRenderTarget* _pRender)
 {
-
+	component_render(_pRender);
 }
 
 void CWeapon::ShotMissile(Vec2 _vDir)

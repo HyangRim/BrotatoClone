@@ -61,6 +61,9 @@ void CEventMgr::Excute(const tEvent& _eve)
 		CObject* pNewObj = (CObject*)_eve.lParam;
 		GROUP_TYPE eType = (GROUP_TYPE)_eve.wParam;
 		
+		if (eType == GROUP_TYPE::WEAPON) {
+			int a = 0;
+		}
 
 		CSceneMgr::GetInstance()->GetCurScene()->AddObject(pNewObj, eType);
 	}

@@ -21,13 +21,17 @@ CPistol::CPistol()
 	tInfo.m_fCooldown = 1.2f;
 	tInfo.m_fCritialDMG = 2.f;
 	tInfo.m_fCritialAcc = 5;
-	tInfo.m_fRecogRange = 400;
+	tInfo.m_fRecogRange = 600;
 	tInfo.m_iPenet = 1;
 	tInfo.m_iDMG = 12;
 
 	SetInfo(tInfo);
-	SetScale(Vec2(10.f, 10.f));
-	m_pPlayer = (CPlayer*)CSceneMgr::GetInstance()->GetCurScene()->GetPlayer();
+	SetScale(Vec2(40.f, 40.f));
+	m_pPlayer = (CPlayer*)CSceneMgr::GetInstance()->GetPlayer();
+
+	CreateImage();
+	AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"pistol"));
+
 }
 
 CPistol::~CPistol()
@@ -97,6 +101,8 @@ void CPistol::render(ID2D1HwndRenderTarget* _pRender)
 		_pRender->DrawEllipse(ellipse, pBrush, 2.0f);
 		pBrush->Release();
 	}
+
+	CWeapon::render(_pRender);
 }
 
 void CPistol::ShotMissile(Vec2 _vDir)
@@ -105,7 +111,7 @@ void CPistol::ShotMissile(Vec2 _vDir)
 
 	pMissile->SetName(L"Missile_Player");
 	pMissile->SetPos(GetPos());
-	pMissile->SetScale(Vec2(5.f, 5.f));
+	pMissile->SetScale(Vec2(20.f, 20.f));
 	pMissile->SetDir(_vDir);
 
 	//무기 데미지 값 넘겨주기
