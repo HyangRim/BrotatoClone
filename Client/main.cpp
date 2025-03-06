@@ -10,6 +10,7 @@
 #include "CScene_Run_End.h"
 #include "CScene.h"
 #include "CSceneMgr.h"
+#include "CScene_Start.h"
 #include "CkeyMgr.h"
 
 #include <crtdbg.h>
@@ -284,6 +285,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         if (pCurScene->GetSceneType() == SCENE_TYPE::RUN_END) {
             CScene_Run_End* pShopScene = dynamic_cast<CScene_Run_End*>(pCurScene);
+            if (pShopScene) {
+
+                Vec2 vMPos = MOUSE_POS;
+                D2D1_RECT_F viewRect = pShopScene->GetScrollArea().viewRect;
+                if (vMPos.x >= viewRect.left && vMPos.x <= viewRect.right &&
+                    vMPos.y >= viewRect.top && vMPos.y <= viewRect.bottom) {
+                    // 스크롤 영역 내부일 때만 스크롤 적용
+                    pShopScene->UpdateScrollPosition(scrollDelta);
+                    //InvalidateRect(hWnd, NULL, FALSE);
+                }
+
+            }
+        }
+
+        if (pCurScene->GetSceneType() == SCENE_TYPE::START) {
+            CScene_Start* pShopScene = dynamic_cast<CScene_Start*>(pCurScene);
             if (pShopScene) {
 
                 Vec2 vMPos = MOUSE_POS;

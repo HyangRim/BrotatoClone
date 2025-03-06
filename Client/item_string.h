@@ -22,3 +22,18 @@ const vector<wstring> item_tag_list = {
 	L"pistol",
 	L"slingshot",
 };
+
+const vector<wstring> weapon_tag_list = {
+	L"knife",
+	L"pistol",
+	L"slingshot",
+};
+
+const vector<wstring> character_tag_list = {
+	L"well_rounded",
+	L"ranger",
+	L"mage",
+	L"crazy",
+	L"chunky",
+	L"brawler",
+};

@@ -194,6 +194,13 @@ void SelectCharacter(DWORD_PTR lParam, DWORD_PTR wParam)
 	// lParam -> 이미지 태그
 	// wParam -> x
 	wstring tag = *reinterpret_cast<wstring*>(lParam);
+
+	if (tag.compare(L"random") == 0)
+	{
+		int random_character_index = rand() % character_tag_list.size();
+		tag = character_tag_list[random_character_index];
+	}
+
 	Item* basicCharater = new Item(ITEM_TYPE::PASSIVE);
 	basicCharater->tag = tag;
 	basicCharater->m_eItemType = ITEM_TYPE::PASSIVE;

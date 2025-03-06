@@ -31,6 +31,7 @@
 #include "CImage.h"
 
 #include "Direct2DMgr.h"
+#include "ItemMgr.h"
 #include "CUIMgr.h"
 #include "CPanelUI.h"
 #include "CBtnUI.h"
@@ -275,7 +276,8 @@ void CScene_Start::render(Gdiplus::Graphics* _pDGraphics)
 void CScene_Start::render(ID2D1HwndRenderTarget* _pRender)
 {
 	CScene::render(_pRender); 
-
+	if(CScene::GetPause() == true)
+		RenderScrollArea(_pRender);
 	if (!m_bUseForce) return;
 
 	m_fCurRadius += m_fForceRadius * 3.f * fDT;
@@ -309,16 +311,18 @@ void CScene_Start::render(ID2D1HwndRenderTarget* _pRender)
 
 void CScene_Start::Enter()
 {
+	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+	Vec2 vResolution = CCore::GetInstance()->GetResolution();
 	if (static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer()))
 	{
-		RegisterPlayer(static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer()));
-		AddObject(static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer()), GROUP_TYPE::PLAYER);
+		CPlayer* player = static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer());
+		RegisterPlayer(player);
+		AddObject(player, GROUP_TYPE::PLAYER);
+		player->SetPos(Vec2(576.f,576.f));
 	}
 
 
 	ChangePause(false);
-	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
-	Vec2 vResolution = CCore::GetInstance()->GetResolution();
 	
 	////////////////////////////맵생성///////////////////////////////////////
 	int randV = rand() % 7;
@@ -556,10 +560,7 @@ void CScene_Start::CreatePause()
 	CreateLeftBtns();
 	CreateMiddleInfo();
 	CreateInfoPanel();
-
-
 }
-
 
 void CScene_Start::OnPause()
 {
@@ -720,43 +721,158 @@ void CScene_Start::CreateMiddleInfo()
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
 	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
 	CWaveMgr* waveMgr = CWaveMgr::GetInstance();
-
 	wchar_t buffer[20];
+
+	CPanelUI* panelWeaponInfo = new CPanelUI;
+	panelWeaponInfo->SetName(L"WeaponInfoPanel");
+	panelWeaponInfo->SetPos(Vec2(542.f,200.f));
+	panelWeaponInfo->SetScale(Vec2(376.f,96.f));
+	panelWeaponInfo->SetMouseOnAlpha(0.f);
+	panelWeaponInfo->SetNormalAlpha(0.f);
+	m_vecPauseObj.push_back(panelWeaponInfo);
+	
 	////////////중앙 무기 텍스트 보여주는 곳////////////////////
-	CObject* weaponCountText = new CSpriteUI;
+	CSpriteUI* weaponCountText = panelWeaponInfo->AddChild<CSpriteUI>
+		(Vec2(-panelWeaponInfo->GetScale().x/2.f + 50.f, -panelWeaponInfo->GetScale().y/2.f + 17.f));
+
 	weaponCountText->SetName(L"weaponCountText");
 	weaponCountText->SetObjType(GROUP_TYPE::UI);
-	weaponCountText->SetPos(Vec2(410.f, 170.f));
-	weaponCountText->SetScale(Vec2(196.f, 35.f));
+	weaponCountText->SetScale(Vec2(100.f, 34.f));
 	swprintf_s(buffer, L"무기(%zd/6)", static_cast<CPlayer*>((CSceneMgr::GetInstance()->GetCurScene()->GetPlayer()))->GetWeaponCount());
-
-
 	weaponCountText->CreateTextUI(buffer, -(weaponCountText->GetScale() / 2.f), (weaponCountText->GetScale() / 2.f)
 		, 20, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR
 		, TextUIMode::TEXT
 		, 0);
-	m_vecPauseObj.push_back(weaponCountText);
-	AddObject(weaponCountText, GROUP_TYPE::UI);
+	weaponCountText->GetTextUI()->SetHorizontal(1);
 	////////////중앙 무기 텍스트 보여주는 곳////////////////////
+
+	////////////중앙 무기 출력///////////////////////////////////
+	const list<CWeapon*>& vPlayerWeaponList = static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->GetPlayerWeapons();
+	CPlayer* tmp = static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer());
+	int curWeaponCnt = (int)((CPlayer*)CSceneMgr::GetInstance()->GetPlayer())->GetWeaponCount();
+
+	CPanelUI* weaponImages = panelWeaponInfo->AddChild<CPanelUI>(Vec2(0.f, panelWeaponInfo->GetScale().y / 2.f - 30.f - 7.f));
+	weaponImages->SetColor(ColorNormalize(0, 0, 0), ColorNormalize(0, 0, 0));
+	weaponImages->SetScale(Vec2(376.f, 60.f));
+	weaponImages->SetMouseOnAlpha(0.f);
+	weaponImages->SetNormalAlpha(0.f);
+	
+	int temp = 0;
+	for (auto iter = vPlayerWeaponList.begin(); iter != vPlayerWeaponList.end(); iter++, temp++)
+	{
+		CWeapon* weapon = *iter;
+		wstring iconTag = weapon->Getinfo().m_sIconImageKey;
+
+		CSpriteUI* weapons = weaponImages->AddChild<CSpriteUI>(Vec2(-155.f + temp * 55.f, 0.f));
+		weapons->SetName(L"Weapon");
+		weapons->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
+		weapons->SetObjType(GROUP_TYPE::UI);
+		weapons->SetScale(Vec2(50.f, 50.f));
+		weapons->SetBackGround(true);
+		weapons->SetBackGroundColor(ColorNormalize(30, 30, 30), ColorNormalize(0, 0, 0)
+			, ColorNormalize(30, 30, 30), ColorNormalize(0, 0, 0));
+		weapons->SetIsRound(true, 10.f, 10.f);
+	}
+	////////////중앙 무기 출력///////////////////////////////////
+
+	CPanelUI* panelItemInfo = new CPanelUI;
+	panelItemInfo->SetName(L"ItemInfoPanel");
+	panelItemInfo->SetPos(Vec2(542.f,400.f));
+	panelItemInfo->SetScale(Vec2(376.f,260.f));
+	m_vecPauseObj.push_back(panelItemInfo);
+	panelItemInfo->SetMouseOnAlpha(0.f);
+	panelItemInfo->SetNormalAlpha(0.f);
+
 	////////////중앙 아이템 텍스트 보여주는 곳////////////////////
-	CObject* itemCountText = new CSpriteUI;
+	CSpriteUI* itemCountText = panelItemInfo->AddChild<CSpriteUI>
+		(Vec2(-panelItemInfo->GetScale().x / 2.f + 60.f, -panelItemInfo->GetScale().y / 2.f + 17.f));
 	itemCountText->SetName(L"itemCountText");
 	itemCountText->SetObjType(GROUP_TYPE::UI);
-	itemCountText->SetPos(Vec2(420.f, 270.f));
-	itemCountText->SetScale(Vec2(196.f, 35.f));
-	swprintf_s(buffer, L"아이템(1/6)");
-
-
+	itemCountText->SetScale(Vec2(120.f, 34.f));
+	swprintf_s(buffer, L"아이템(%zd/6)", ItemMgr::GetInstance()->GetPassiveItemssize());
 	itemCountText->CreateTextUI(buffer, -(itemCountText->GetScale() / 2.f), (itemCountText->GetScale() / 2.f)
 		, 20, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR
 		, TextUIMode::TEXT
 		, 0);
-	m_vecPauseObj.push_back(itemCountText);
-	AddObject(itemCountText, GROUP_TYPE::UI);
+	itemCountText->GetTextUI()->SetHorizontal(1);
 	////////////중앙 아이템 텍스트 보여주는 곳////////////////////
+
+	//중앙 스크롤 영역///
+	CreateScrollArea();
+	//중앙 스크롤 영역///
+	
+	AddObject(panelWeaponInfo, GROUP_TYPE::UI);
+	AddObject(panelItemInfo, GROUP_TYPE::UI);
 }
+
+void CScene_Start::CreateScrollArea()
+{
+	Vec2 vResolution = CCore::GetInstance()->GetResolution();
+	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+
+	// 스크롤 영역 설정
+	m_scrollArea.viewRect = D2D1::RectF(354.f, 310.f, 730.f, 530.f);
+	m_scrollArea.contentRect = D2D1::RectF(0.f, 0.f, 500.f, 800.f);
+	m_scrollArea.scrollPos = D2D1::Point2F(0, 0);
+
+	const vector<Item*>& passiveItem = ItemMgr::GetInstance()->GetPassiveItems();
+	wstring iconTag;
+	// 스크롤 내용 생성 (예: 여러 개의 아이템)
+	for (int i = 0; i < passiveItem.size(); ++i)
+	{
+		CSpriteUI* possessedItem = new CSpriteUI;
+		possessedItem->SetObjType(GROUP_TYPE::UI);
+
+		iconTag = passiveItem[i]->tag + L"_icon";
+		possessedItem->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
+
+		int xCount = i % 6;
+		int yCount = i / 6;
+
+		possessedItem->SetPos(Vec2(35.f + xCount * 55.f, 27.f + yCount * 55.f));
+		possessedItem->SetScale(Vec2(50.f, 50.f));
+
+		possessedItem->SetBackGround(true);
+		possessedItem->SetBackGroundColor(ColorNormalize(30, 30, 30), ColorNormalize(0, 0, 0)
+			, ColorNormalize(30, 30, 30), ColorNormalize(0, 0, 0));
+		possessedItem->SetIsRound(true, 10.f, 10.f);
+
+		m_scrollContent.push_back(possessedItem);
+	}
+}
+void CScene_Start::UpdateScrollPosition(float deltaY)
+{
+	m_scrollArea.scrollPos.y += deltaY;
+	m_scrollArea.scrollPos.y = max(0.f, min(m_scrollArea.scrollPos.y,
+		m_scrollArea.contentRect.bottom - (m_scrollArea.viewRect.bottom - m_scrollArea.viewRect.top)));
+}
+void CScene_Start::RenderScrollArea(ID2D1HwndRenderTarget* _pRender)
+{
+	if (!_pRender) return;
+
+	//외부영역은 안 그리게
+	_pRender->PushAxisAlignedClip(m_scrollArea.viewRect, D2D1_ANTIALIAS_MODE_PER_PRIMITIVE);
+
+	//변환 행렬
+	D2D1::Matrix3x2F transform = D2D1::Matrix3x2F::Translation(
+		m_scrollArea.viewRect.left - m_scrollArea.scrollPos.x,
+		m_scrollArea.viewRect.top - m_scrollArea.scrollPos.y
+	);
+	_pRender->SetTransform(transform);
+
+	for (auto& item : m_scrollContent)
+	{
+		//item->update();
+		item->finalupdate();
+		item->render(_pRender);
+	}
+
+	_pRender->SetTransform(D2D1::Matrix3x2F::Identity());
+	_pRender->PopAxisAlignedClip();
+}
+
 
 void CScene_Start::CreateInfoPanel()
 {
@@ -1395,6 +1511,8 @@ void CScene_Start::callPlayerUpgrade(int upgradeIdx)
 	//static_cast<CPlayer*>(CSceneMgr)
 	ChangeScene(SCENE_TYPE::SHOP);
 }
+
+
 
 
 void CScene_Start::CreateOptionPanel()

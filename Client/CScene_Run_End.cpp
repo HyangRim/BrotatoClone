@@ -75,14 +75,14 @@ void CScene_Run_End::Enter()
 	rerunBtn->SetScale(Vec2(152.f, 34.f));
 	rerunBtn->SetIsRound(true, 10.f, 10.f);
 	rerunBtn->SetColor(ColorNormalize(237, 237, 237), ColorNormalize(0, 0, 0));
-
+	rerunBtn->SetClickedCallBack(ChangeScene, (DWORD_PTR)SCENE_TYPE::START, 0);
 	rerunBtn->CreateTextUI(L"재시작", -(rerunBtn->GetScale()/2.f), (rerunBtn->GetScale() / 2.f)
 		, 20, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR
 		, TextUIMode::TEXT
 		, 0);
 	rerunBtn->SetPos(Vec2(244.f, 506.f));
-	AddObject(rerunBtn, GROUP_TYPE::DEFAULT);
+	AddObject(rerunBtn, GROUP_TYPE::UI);
 	/////////////////재시작 버튼//////////////////////
 
 	/////////////////새로달리기 버튼//////////////////
@@ -163,6 +163,7 @@ void CScene_Run_End::Enter()
 
 void CScene_Run_End::Exit()
 {
+	Safe_Delete_Vec(m_scrollContent);
 	DeleteAll();
 }
 
@@ -210,7 +211,7 @@ void CScene_Run_End::CreateInfoPanel(CPanelUI* _backPanel)
 	parameterPanel->SetColor(ColorNormalize(0, 0, 0), ColorNormalize(0, 0, 0));
 	parameterPanel->SetScale(Vec2(200.f, 300.f));
 
-	AddObject(parameterPanel, GROUP_TYPE::IMAGE);
+	//AddObject(parameterPanel, GROUP_TYPE::IMAGE);
 	//////////////////우측 능력치 보여주는 곳///////////////////////
 	
 	////////////우측 능력치 보여주는 곳////////////////////
@@ -607,8 +608,6 @@ void CScene_Run_End::CreateWeaponInfoPanel(CPanelUI* _backPanel)
 	{
 		CWeapon* weapon = *iter;
 		wstring iconTag = weapon->Getinfo().m_sIconImageKey;
-
-		//CSpriteUI* weapons = new CSpriteUI;
 		CSpriteUI* weapons = weaponImages->AddChild<CSpriteUI>(Vec2(-155.f + temp*55.f ,0.f));
 		weapons->SetName(L"Weapon");
 		weapons->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
@@ -619,7 +618,6 @@ void CScene_Run_End::CreateWeaponInfoPanel(CPanelUI* _backPanel)
 			, ColorNormalize(30, 30, 30), ColorNormalize(0, 0, 0));
 		weapons->SetIsRound(true, 10.f, 10.f);
 	}
-	int a = 0;
 }
 
 void CScene_Run_End::CreateScrollArea()

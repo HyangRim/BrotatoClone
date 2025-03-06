@@ -206,6 +206,12 @@ void SelectWeapon(DWORD_PTR lParam, DWORD_PTR wParam)
 	// wParam -> x
 	wstring tag = *reinterpret_cast<wstring*>(lParam);
 
+	if (tag.compare(L"random") == 0)
+	{
+		int random_weapon = rand() % weapon_tag_list.size();
+		tag = weapon_tag_list[random_weapon];
+	}
+
 	Item* selectedItem = ItemMgr::GetInstance()->GetItem(tag);
 	
 	CWeapon* selectedWeapon = new CWeapon;

@@ -23,6 +23,9 @@ private:
     //옵션 Obj 모아놓는 벡터. 
     vector<CObject*>    m_vecOptionObjs;
     
+private:
+    ScrollArea          m_scrollArea;                //구조체 정의는 Direct2DMgr에
+    vector<CObject*>    m_scrollContent;       //스크롤 영역에 정의할 객체들
 
 private:
     float       m_fFailDuration; 
@@ -42,6 +45,12 @@ public:
 
 
 public:
+    void CreateScrollArea();
+    void UpdateScrollPosition(float deltaY);
+    void RenderScrollArea(ID2D1HwndRenderTarget* _pRender);
+    ScrollArea& GetScrollArea() { return m_scrollArea; }
+
+public:
     void CreateForce();
     void SceneFailed();
     void callPlayerUpgrade(int upgradeIdx);
@@ -52,6 +61,7 @@ private:
     void CreateMiddleInfo();
     void CreateInfoPanel();
     void CreateLevelUpShop();
+
     void OnPause();
     void OffPause();
 
