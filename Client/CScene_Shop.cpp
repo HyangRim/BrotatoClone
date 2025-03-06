@@ -12,6 +12,7 @@
 
 #include "Direct2DMgr.h"
 #include "ItemMgr.h"
+#include "CkeyMgr.h"
 #include "CWaveMgr.h"
 #include "CCore.h"
 #include "CSceneMgr.h"
@@ -62,6 +63,11 @@ void CScene_Shop::update()
 				vecObj[objIDX]->update();
 			}
 		}
+	}
+
+
+	if (KEY_TAP(KEY::H)) {
+		ChangeScene(SCENE_TYPE::RUN_END);
 	}
 }
 
@@ -327,7 +333,7 @@ void CScene_Shop::Enter()
 		weapons->SetIsRound(true, 10.f, 10.f);
 		AddObject(weapons, GROUP_TYPE::UI);
 	}
-	CreateInfoPanel();
+	CreateInfoPanel(Vec2(852.f,204.f));
 	CreateScrollArea();
 }
 
@@ -526,15 +532,15 @@ void CScene_Shop::PurchaseItem(DWORD_PTR lParam, DWORD_PTR wParam)
 
 
 
-void CScene_Shop::CreateInfoPanel()
+void CScene_Shop::CreateInfoPanel(Vec2 _panelPos)
 {
+	/*
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
 	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
 	CWaveMgr* waveMgr = CWaveMgr::GetInstance();
 	wchar_t buffer[20];
 	//플레이어 Info 출력. 
 	const playerParameter playerInfo = static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->GetPlayerInfo();
-
 
 	//////////////////우측 능력치 보여주는 곳///////////////////////
 	CPanelUI* parameterPanel = new CPanelUI;
@@ -956,4 +962,372 @@ void CScene_Shop::CreateInfoPanel()
 	
 	AddObject(speedCount, GROUP_TYPE::UI);
 	////////////치명타율 % ////////////////////
+
+
+	*/
+
+
+
+	Vec2 vResolution = CCore::GetInstance()->GetResolution();
+	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+	CWaveMgr* waveMgr = CWaveMgr::GetInstance();
+	wchar_t buffer[20];
+	//플레이어 Info 출력. 
+	const playerParameter playerInfo = static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->GetPlayerInfo();
+
+	//////////////////우측 능력치 보여주는 곳///////////////////////
+	CPanelUI* parameterPanel = new CPanelUI;
+	parameterPanel->SetName(L"parameterPanel");
+	parameterPanel->SetObjType(GROUP_TYPE::IMAGE);
+	parameterPanel->SetPos(_panelPos);
+	parameterPanel->SetNormalAlpha(0.5f);
+	parameterPanel->SetMouseOnAlpha(0.5f);
+	parameterPanel->SetColor(ColorNormalize(0, 0, 0), ColorNormalize(0, 0, 0));
+	parameterPanel->SetScale(Vec2(200.f, 300.f));
+
+	AddObject(parameterPanel, GROUP_TYPE::IMAGE);
+	//////////////////우측 능력치 보여주는 곳///////////////////////
+
+	////////////우측 능력치 보여주는 곳////////////////////
+	CSpriteUI* abilityText = parameterPanel->AddChild<CSpriteUI>(Vec2(0.f, -130.f));
+	abilityText->SetName(L"abilityText");
+	abilityText->SetObjType(GROUP_TYPE::UI);
+	abilityText->SetScale(Vec2(196.f, 26.f));
+	abilityText->CreateTextUI(L"능력치", -(abilityText->GetScale() / 2.f), (abilityText->GetScale() / 2.f)
+		, 22, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	////////////우측 능력치 보여주는 곳////////////////////
+
+
+	////////////현재 레벨 ////////////////////
+	CPanelUI* statLevelPanel = parameterPanel->AddChild<CPanelUI>(Vec2(0.f, -80.f));
+	statLevelPanel->SetScale(Vec2(180.f, 15.f));
+	statLevelPanel->SetColor(D2D1::ColorF(0, 0, 0, 0), D2D1::ColorF(0, 0, 0, 0));
+	statLevelPanel->SetNormalAlpha(0.f);
+	statLevelPanel->SetMouseOnAlpha(0.f);
+
+	//레벨 아이콘
+	CSpriteUI* nowLevelIcon = statLevelPanel->AddChild<CSpriteUI>(Vec2(-statLevelPanel->GetScale().x / 2.f + 10.f, 0.f));
+	nowLevelIcon->SetName(L"nowLevelIcon");
+	nowLevelIcon->SetObjType(GROUP_TYPE::UI);
+	nowLevelIcon->AddImage(pD2DMgr->GetStoredBitmap(L"brotato_icon"));
+	nowLevelIcon->SetScale(Vec2(15.f, 15.f));
+
+	//현재레벨 text
+	CSpriteUI* nowLevelText = statLevelPanel->AddChild<CSpriteUI>(Vec2(0.f, 0.f));
+	nowLevelText->SetName(L"nowLevelText");
+	nowLevelText->SetObjType(GROUP_TYPE::UI);
+	nowLevelText->SetScale(Vec2(110.f, 35.f));
+	swprintf_s(buffer, L"현재 레벨");
+	nowLevelText->CreateTextUI(buffer, -(nowLevelText->GetScale() / 2.f), (nowLevelText->GetScale() / 2.f)
+		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	nowLevelText->GetTextUI()->SetHorizontal(1);
+
+	//현재레벨 숫자
+	CSpriteUI* nowLevelCount = statLevelPanel->AddChild<CSpriteUI>(Vec2(statLevelPanel->GetScale().x / 2.f - 10.f, 0.f));
+	nowLevelCount->SetName(L"nowLevelCount");
+	nowLevelCount->SetObjType(GROUP_TYPE::UI);
+	nowLevelCount->SetScale(Vec2(35.f, 35.f));
+	swprintf_s(buffer, L"%d", playerInfo.m_iLevel);
+	nowLevelCount->CreateTextUI(buffer, -(nowLevelCount->GetScale() / 2.f), (nowLevelCount->GetScale() / 2.f)
+		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	////////////현재 레벨 ////////////////////
+
+
+	////////////최대 HP ////////////////////
+	CPanelUI* statMaxHpPanel = parameterPanel->AddChild<CPanelUI>(Vec2(0.f, -55.f));
+	statMaxHpPanel->SetScale(Vec2(180.f, 15.f));
+	statMaxHpPanel->SetColor(D2D1::ColorF(0, 0, 0, 0), D2D1::ColorF(0, 0, 0, 0));
+	statMaxHpPanel->SetNormalAlpha(0.f);
+	statMaxHpPanel->SetMouseOnAlpha(0.f);
+
+	//현재 최대hp 아이콘
+	CSpriteUI* maxHPIcon = statMaxHpPanel->AddChild<CSpriteUI>(Vec2(-statMaxHpPanel->GetScale().x / 2.f + 10.f, 0.f));
+	maxHPIcon->SetName(L"maxHPIcon");
+	maxHPIcon->SetObjType(GROUP_TYPE::UI);
+	maxHPIcon->AddImage(pD2DMgr->GetStoredBitmap(L"max_hp"));
+	maxHPIcon->SetScale(Vec2(15.f, 15.f));
+
+	//현재 최대hp text
+	CSpriteUI* maxHPText = statMaxHpPanel->AddChild<CSpriteUI>(Vec2(0.f, 0.f));
+	maxHPText->SetName(L"maxHPText");
+	maxHPText->SetObjType(GROUP_TYPE::UI);
+	maxHPText->SetScale(Vec2(110.f, 35.f));
+	swprintf_s(buffer, L"최대 HP");
+	maxHPText->CreateTextUI(buffer, -(maxHPText->GetScale() / 2.f), (maxHPText->GetScale() / 2.f)
+		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	maxHPText->GetTextUI()->SetHorizontal(1);
+
+	//현재 최대hp 숫자
+	CSpriteUI* maxHPCount = statMaxHpPanel->AddChild<CSpriteUI>(Vec2(statMaxHpPanel->GetScale().x / 2.f - 10.f, 0.f));
+	maxHPCount->SetName(L"maxHPCount");
+	maxHPCount->SetObjType(GROUP_TYPE::UI);
+	maxHPCount->SetScale(Vec2(35.f, 35.f));
+	swprintf_s(buffer, L"%d", playerInfo.m_iMaxHP);
+	maxHPCount->CreateTextUI(buffer, -(maxHPCount->GetScale() / 2.f), (maxHPCount->GetScale() / 2.f)
+		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	////////////최대 HP ////////////////////
+
+
+
+	////////////데미지 % ////////////////////
+	CPanelUI* statDamagePanel = parameterPanel->AddChild<CPanelUI>(Vec2(0.f, -30.f));
+	statDamagePanel->SetScale(Vec2(180.f, 15.f));
+	statDamagePanel->SetColor(D2D1::ColorF(0, 0, 0, 0), D2D1::ColorF(0, 0, 0, 0));
+	statDamagePanel->SetNormalAlpha(0.f);
+	statDamagePanel->SetMouseOnAlpha(0.f);
+
+	//
+	CSpriteUI* FinalDMGIcon = statDamagePanel->AddChild<CSpriteUI>(Vec2(-statDamagePanel->GetScale().x / 2.f + 10.f, 0.f));
+	FinalDMGIcon->SetName(L"FinalDMGIcon");
+	FinalDMGIcon->SetObjType(GROUP_TYPE::UI);
+	FinalDMGIcon->AddImage(pD2DMgr->GetStoredBitmap(L"percent_damage"));
+	FinalDMGIcon->SetScale(Vec2(15.f, 15.f));
+
+	// 
+	CSpriteUI* FinalDMGText = statDamagePanel->AddChild<CSpriteUI>(Vec2(0.f, 0.f));
+	FinalDMGText->SetName(L"FinalDMGText");
+	FinalDMGText->SetObjType(GROUP_TYPE::UI);
+	FinalDMGText->SetScale(Vec2(110.f, 35.f));
+	swprintf_s(buffer, L"%% 데미지");
+	FinalDMGText->CreateTextUI(buffer, -(FinalDMGText->GetScale() / 2.f), (FinalDMGText->GetScale() / 2.f)
+		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	FinalDMGText->GetTextUI()->SetHorizontal(1);
+
+	//
+	CSpriteUI* FinalDMGCount = statDamagePanel->AddChild<CSpriteUI>(Vec2(statDamagePanel->GetScale().x / 2.f - 10.f, 0.f));
+	FinalDMGCount->SetName(L"FinalDMGCount");
+	FinalDMGCount->SetObjType(GROUP_TYPE::UI);
+	FinalDMGCount->SetScale(Vec2(35.f, 35.f));
+	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_fDamageCoef));
+	FinalDMGCount->CreateTextUI(buffer, -(FinalDMGCount->GetScale() / 2.f), (FinalDMGCount->GetScale() / 2.f)
+		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	////////////데미지 % ////////////////////
+
+
+	////////////근거리 데미지 % ////////////////////
+	CPanelUI* statMeleeDMGPanel = parameterPanel->AddChild<CPanelUI>(Vec2(0.f, -5.f));
+	statMeleeDMGPanel->SetScale(Vec2(180.f, 15.f));
+	statMeleeDMGPanel->SetColor(D2D1::ColorF(0, 0, 0, 0), D2D1::ColorF(0, 0, 0, 0));
+	statMeleeDMGPanel->SetNormalAlpha(0.f);
+	statMeleeDMGPanel->SetMouseOnAlpha(0.f);
+
+	//
+	CSpriteUI* MeleeDMGIcon = statMeleeDMGPanel->AddChild<CSpriteUI>(Vec2(-statMeleeDMGPanel->GetScale().x / 2.f + 10.f, 0.f));
+	MeleeDMGIcon->SetName(L"MeleeDMGIcon");
+	MeleeDMGIcon->SetObjType(GROUP_TYPE::UI);
+	MeleeDMGIcon->AddImage(pD2DMgr->GetStoredBitmap(L"melee_damage"));
+	MeleeDMGIcon->SetScale(Vec2(15.f, 15.f));
+
+	// 
+	CSpriteUI* MeleeText = statMeleeDMGPanel->AddChild<CSpriteUI>(Vec2(0.f, 0.f));
+	MeleeText->SetName(L"MeleeText");
+	MeleeText->SetObjType(GROUP_TYPE::UI);
+	MeleeText->SetScale(Vec2(110.f, 35.f));
+	swprintf_s(buffer, L"근거리 데미지");
+	MeleeText->CreateTextUI(buffer, -(MeleeText->GetScale() / 2.f), (MeleeText->GetScale() / 2.f)
+		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	MeleeText->GetTextUI()->SetHorizontal(1);
+
+	//
+	CSpriteUI* MeleeCount = statMeleeDMGPanel->AddChild<CSpriteUI>(Vec2(statMeleeDMGPanel->GetScale().x / 2.f - 10.f, 0.f));
+	MeleeCount->SetName(L"MeleeCount");
+	MeleeCount->SetObjType(GROUP_TYPE::UI);
+	MeleeCount->SetScale(Vec2(35.f, 35.f));
+	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_fMeleeCoef));
+	MeleeCount->CreateTextUI(buffer, -(MeleeCount->GetScale() / 2.f), (MeleeCount->GetScale() / 2.f)
+		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	////////////근거리 데미지 % ////////////////////
+
+	////////////원거리 데미지 % ////////////////////
+	CPanelUI* statRangedDMGPanel = parameterPanel->AddChild<CPanelUI>(Vec2(0.f, 20.f));
+	statRangedDMGPanel->SetScale(Vec2(180.f, 15.f));
+	statRangedDMGPanel->SetColor(D2D1::ColorF(0, 0, 0, 0), D2D1::ColorF(0, 0, 0, 0));
+	statRangedDMGPanel->SetNormalAlpha(0.f);
+	statRangedDMGPanel->SetMouseOnAlpha(0.f);
+
+	//
+	CSpriteUI* rangedDMGIcon = statRangedDMGPanel->AddChild<CSpriteUI>(Vec2(-statRangedDMGPanel->GetScale().x / 2.f + 10.f, 0.f));
+	rangedDMGIcon->SetName(L"rangedDMGIcon");
+	rangedDMGIcon->SetObjType(GROUP_TYPE::UI);
+	rangedDMGIcon->AddImage(pD2DMgr->GetStoredBitmap(L"ranged_damage"));
+	rangedDMGIcon->SetScale(Vec2(15.f, 15.f));
+
+	// 
+	CSpriteUI* rangedText = statRangedDMGPanel->AddChild<CSpriteUI>(Vec2(0.f, 0.f));
+	rangedText->SetObjType(GROUP_TYPE::UI);
+	rangedText->SetScale(Vec2(110.f, 35.f));
+	swprintf_s(buffer, L"원거리 데미지");
+	rangedText->CreateTextUI(buffer, -(rangedText->GetScale() / 2.f), (rangedText->GetScale() / 2.f)
+		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	rangedText->GetTextUI()->SetHorizontal(1);
+
+	//
+	CSpriteUI* rangedCount = statRangedDMGPanel->AddChild<CSpriteUI>(Vec2(statRangedDMGPanel->GetScale().x / 2.f - 10.f, 0.f));
+	rangedCount->SetName(L"rangedCount");
+	rangedCount->SetObjType(GROUP_TYPE::UI);
+	rangedCount->SetScale(Vec2(35.f, 35.f));
+	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_fRangeCoef));
+	rangedCount->CreateTextUI(buffer, -(rangedCount->GetScale() / 2.f), (rangedCount->GetScale() / 2.f)
+		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	////////////원거리 데미지 % ////////////////////
+
+
+	////////////공격속도  % ////////////////////
+	CPanelUI* statAttackSpeedPanel = parameterPanel->AddChild<CPanelUI>(Vec2(0.f, 45.f));
+	statAttackSpeedPanel->SetScale(Vec2(180.f, 15.f));
+	statAttackSpeedPanel->SetColor(D2D1::ColorF(0, 0, 0, 0), D2D1::ColorF(0, 0, 0, 0));
+	statAttackSpeedPanel->SetNormalAlpha(0.f);
+	statAttackSpeedPanel->SetMouseOnAlpha(0.f);
+
+	//
+	CSpriteUI* attackSpeedIcon = statAttackSpeedPanel->AddChild<CSpriteUI>(Vec2(-statAttackSpeedPanel->GetScale().x / 2.f + 10.f, 0.f));
+	attackSpeedIcon->SetName(L"attackSpeedIcon");
+	attackSpeedIcon->SetObjType(GROUP_TYPE::UI);
+	attackSpeedIcon->AddImage(pD2DMgr->GetStoredBitmap(L"attack_speed"));
+	attackSpeedIcon->SetScale(Vec2(15.f, 15.f));
+
+	// 
+	CSpriteUI* attackSpeedText = statAttackSpeedPanel->AddChild<CSpriteUI>(Vec2(0.f, 0.f));
+	attackSpeedText->SetName(L"attackSpeedText");
+	attackSpeedText->SetObjType(GROUP_TYPE::UI);
+	attackSpeedText->SetScale(Vec2(110.f, 35.f));
+	swprintf_s(buffer, L"%% 공격 속도");
+	attackSpeedText->CreateTextUI(buffer, -(attackSpeedText->GetScale() / 2.f), (attackSpeedText->GetScale() / 2.f)
+		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	attackSpeedText->GetTextUI()->SetHorizontal(1);
+
+	//
+	CSpriteUI* attackSpeedCount = statAttackSpeedPanel->AddChild<CSpriteUI>(Vec2(statAttackSpeedPanel->GetScale().x / 2.f - 10.f, 0.f));
+	attackSpeedCount->SetName(L"attackSpeedCount");
+	attackSpeedCount->SetObjType(GROUP_TYPE::UI);
+	attackSpeedCount->SetScale(Vec2(35.f, 35.f));
+	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_fAttackSpeedCoef));
+	attackSpeedCount->CreateTextUI(buffer, -(attackSpeedCount->GetScale() / 2.f), (attackSpeedCount->GetScale() / 2.f)
+		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	////////////공격속도 % ////////////////////
+
+
+	////////////치명타율  % ////////////////////
+	CPanelUI* statCritChancePanel = parameterPanel->AddChild<CPanelUI>(Vec2(0.f, 70.f));
+	statCritChancePanel->SetScale(Vec2(180.f, 15.f));
+	statCritChancePanel->SetColor(D2D1::ColorF(0, 0, 0, 0), D2D1::ColorF(0, 0, 0, 0));
+	statCritChancePanel->SetNormalAlpha(0.f);
+	statCritChancePanel->SetMouseOnAlpha(0.f);
+
+	//C
+	CSpriteUI* critChanceIcon = statCritChancePanel->AddChild<CSpriteUI>(Vec2(-statCritChancePanel->GetScale().x / 2.f + 10.f, 0.f));
+	critChanceIcon->SetName(L"critChanceIcon");
+	critChanceIcon->SetObjType(GROUP_TYPE::UI);
+	critChanceIcon->AddImage(pD2DMgr->GetStoredBitmap(L"crit_chance"));
+	critChanceIcon->SetScale(Vec2(15.f, 15.f));
+
+	// 
+	CSpriteUI* critChanceText = statCritChancePanel->AddChild<CSpriteUI>(Vec2(0.f, 0.f));
+	critChanceText->SetName(L"critChanceText");
+	critChanceText->SetObjType(GROUP_TYPE::UI);
+	critChanceText->SetScale(Vec2(110.f, 35.f));
+	swprintf_s(buffer, L"%% 치명타율");
+	critChanceText->CreateTextUI(buffer, -(critChanceText->GetScale() / 2.f), (critChanceText->GetScale() / 2.f)
+		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	critChanceText->GetTextUI()->SetHorizontal(1);
+
+	//
+	CSpriteUI* critChanceCount = statCritChancePanel->AddChild<CSpriteUI>(Vec2(statCritChancePanel->GetScale().x / 2.f - 10.f, 0.f));
+	critChanceCount->SetName(L"critChanceCount");
+	critChanceCount->SetObjType(GROUP_TYPE::UI);
+	//740 + Alpha
+	critChanceCount->SetPos(Vec2(920.f, 350.f));
+	critChanceCount->SetScale(Vec2(35.f, 35.f));
+	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_iCriticalAcc));
+	critChanceCount->CreateTextUI(buffer, -(critChanceCount->GetScale() / 2.f), (critChanceCount->GetScale() / 2.f)
+		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	////////////치명타율 % ////////////////////
+
+
+	////////////속도  % ////////////////////
+	CPanelUI* statSpeedPanel = parameterPanel->AddChild<CPanelUI>(Vec2(0.f, 95.f));
+	statSpeedPanel->SetScale(Vec2(180.f, 15.f));
+	statSpeedPanel->SetColor(D2D1::ColorF(0, 0, 0, 0), D2D1::ColorF(0, 0, 0, 0));
+	statSpeedPanel->SetNormalAlpha(0.f);
+	statSpeedPanel->SetMouseOnAlpha(0.f);
+
+	//
+	CSpriteUI* speedIcon = statSpeedPanel->AddChild<CSpriteUI>(Vec2(-statSpeedPanel->GetScale().x / 2.f + 10.f, 0.f));
+	speedIcon->SetName(L"speedIcon");
+	speedIcon->SetObjType(GROUP_TYPE::UI);
+	speedIcon->AddImage(pD2DMgr->GetStoredBitmap(L"speed"));
+	speedIcon->SetScale(Vec2(15.f, 15.f));
+
+	// 
+	CSpriteUI* speedText = statSpeedPanel->AddChild<CSpriteUI>(Vec2(0.f, 0.f));
+	speedText->SetName(L"speedText");
+	speedText->SetObjType(GROUP_TYPE::UI);
+	speedText->SetScale(Vec2(110.f, 35.f));
+	swprintf_s(buffer, L"%% 속도");
+	speedText->CreateTextUI(buffer, -(speedText->GetScale() / 2.f), (speedText->GetScale() / 2.f)
+		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	speedText->GetTextUI()->SetHorizontal(1);
+
+	//	
+	CSpriteUI* speedCount = statSpeedPanel->AddChild<CSpriteUI>(Vec2(statSpeedPanel->GetScale().x / 2.f - 10.f, 0.f));
+	speedCount->SetName(L"speedCount");
+	speedCount->SetObjType(GROUP_TYPE::UI);
+	speedCount->SetScale(Vec2(35.f, 35.f));
+	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_fSpeed));
+	speedCount->CreateTextUI(buffer, -(speedCount->GetScale() / 2.f), (speedCount->GetScale() / 2.f)
+		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+		, FONT_TYPE::KR
+		, TextUIMode::TEXT
+		, 0);
+	////////////치명타율 % ////////////////////
+
+
 }

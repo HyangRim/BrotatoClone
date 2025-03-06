@@ -37,7 +37,7 @@ CPlayer::CPlayer()
 	//플레이어 Info초기화
 	m_tPlayerInfo.m_iCoin = 0;
 	m_tPlayerInfo.m_iLevel = 1;
-	m_tPlayerInfo.m_iMaxHP = 10;
+	m_tPlayerInfo.m_iMaxHP = 3;
 	m_tPlayerInfo.m_iMaxEXP = 20;
 	m_tPlayerInfo.m_iCurEXP = 0;
 	m_tPlayerInfo.m_iCurHP = m_tPlayerInfo.m_iMaxHP;

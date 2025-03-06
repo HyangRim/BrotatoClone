@@ -151,6 +151,7 @@ void ItemMgr::init_weapon()
 	knife->tag = L"knife";
 	knife->m_eItemType = ITEM_TYPE::WEAPON;
 	knife->m_iBasePrice = 10;
+	knife->m_tWeaponInfo.m_sIconImageKey = L"knife_icon";
 	m_sItems.insert(make_pair(L"knife", knife));
 
 	Item* pistol = new Item(ITEM_TYPE::WEAPON);

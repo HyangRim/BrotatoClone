@@ -43,6 +43,10 @@ public:
 		return Vec2(x + _vOther.x, y + _vOther.y);
 	}
 
+	Vec2 operator + (float _fvalue) {
+		return Vec2(x + _fvalue, y + _fvalue);
+	}
+
 	void operator += (Vec2 _vOther) {
 		x += _vOther.x;
 		y += _vOther.y;
