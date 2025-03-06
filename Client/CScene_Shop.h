@@ -35,7 +35,7 @@ public:
     void PurchaseItem(DWORD_PTR lParam, DWORD_PTR wParam);
 
 public:
-    void CreateInfoPanel();
+    void CreateInfoPanel(Vec2 _panelPos);
 
 public:
     virtual void Enter();		//해당 Scene에 진입 시 호출.

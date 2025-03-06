@@ -1365,7 +1365,6 @@ void CScene_Start::SceneFailed()
 	runFailed->SetPos(Vec2(vResolution.x / 2, 100.f));
 	runFailed->SetScale(Vec2(350.f, 75.f));
 
-
 	runFailed->CreateTextUI(L"달리기 패배", -(runFailed->GetScale() / 2.f), (runFailed->GetScale() / 2.f)
 		, 56, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR

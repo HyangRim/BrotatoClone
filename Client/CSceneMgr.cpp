@@ -40,21 +40,27 @@ void CSceneMgr::init()
 	
 	m_arrScene[(UINT)SCENE_TYPE::MAIN] = new CScene_Main;
 	m_arrScene[(UINT)SCENE_TYPE::MAIN]->SetName(L"Main Title Scene");
+	m_arrScene[(UINT)SCENE_TYPE::MAIN]->SetSceneType(SCENE_TYPE::MAIN);
 
 	m_arrScene[(UINT)SCENE_TYPE::START] = new CScene_Start;
 	m_arrScene[(UINT)SCENE_TYPE::START]->SetName(L"Start Scene");
+	m_arrScene[(UINT)SCENE_TYPE::START]->SetSceneType(SCENE_TYPE::START);
 
 	m_arrScene[(UINT)SCENE_TYPE::TOOL] = new CScene_Tool;
 	m_arrScene[(UINT)SCENE_TYPE::TOOL]->SetName(L"Tool Scene");
+	m_arrScene[(UINT)SCENE_TYPE::TOOL]->SetSceneType(SCENE_TYPE::TOOL);
 
 	m_arrScene[(UINT)SCENE_TYPE::TEST] = new CScene_Test;
 	m_arrScene[(UINT)SCENE_TYPE::TEST]->SetName(L"Test Scene");
+	m_arrScene[(UINT)SCENE_TYPE::TEST]->SetSceneType(SCENE_TYPE::TEST);
 
 	m_arrScene[(UINT)SCENE_TYPE::SELECT_CHARACTER] = new CScene_Select_Character;
 	m_arrScene[(UINT)SCENE_TYPE::SELECT_CHARACTER]->SetName(L"Select Character Scene");
+	m_arrScene[(UINT)SCENE_TYPE::SELECT_CHARACTER]->SetSceneType(SCENE_TYPE::SELECT_CHARACTER);
 
 	m_arrScene[(UINT)SCENE_TYPE::SELECT_WEAPON] = new CScene_Select_Weapon;
 	m_arrScene[(UINT)SCENE_TYPE::SELECT_WEAPON]->SetName(L"Select Weapon Scene");
+	m_arrScene[(UINT)SCENE_TYPE::SELECT_WEAPON]->SetSceneType(SCENE_TYPE::SELECT_WEAPON);
 
 	m_arrScene[(UINT)SCENE_TYPE::SHOP] = new CScene_Shop;
 	m_arrScene[(UINT)SCENE_TYPE::SHOP]->SetName(L"Shop Scene");
@@ -62,6 +68,7 @@ void CSceneMgr::init()
 
 	m_arrScene[(UINT)SCENE_TYPE::RUN_END] = new CScene_Run_End;
 	m_arrScene[(UINT)SCENE_TYPE::RUN_END]->SetName(L"Run End");
+	m_arrScene[(UINT)SCENE_TYPE::RUN_END]->SetSceneType(SCENE_TYPE::RUN_END);
 
 	//m_arrScene[(UINT)SCENE_TYPE::STAGE_01] = new CScene_Stage01;
 	//m_arrScene[(UINT)SCENE_TYPE::STAGE_02] = new CScene_Stage02;
