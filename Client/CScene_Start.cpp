@@ -108,6 +108,7 @@ CScene_Start::~CScene_Start()
 
 void CScene_Start::update()
 {
+
 	//게임 도중에 Pause관련. 
 
 	if (KEY_TAP(KEY::ESC)) {
@@ -153,7 +154,7 @@ void CScene_Start::update()
 				////////////////////체력바 업뎃//////////////////////////////////
 				if (vecObj[objIDX]->GetName().compare(L"Lifebar") == 0)
 				{
-					CPlayer* player = (CPlayer*)GetPlayer();
+					CPlayer* player = static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer());
 					playerParameter playerInfo = player->GetPlayerInfo();
 
 					wchar_t buffer[20];
@@ -169,7 +170,7 @@ void CScene_Start::update()
 				////////////////////경험치바 업뎃//////////////////////////////////
 				if (vecObj[objIDX]->GetName().compare(L"Xpbar") == 0)
 				{
-					CPlayer* player = (CPlayer*)GetPlayer();
+					CPlayer* player = static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer());
 					playerParameter playerInfo = player->GetPlayerInfo();
 
 					wchar_t buffer[20];
@@ -185,7 +186,7 @@ void CScene_Start::update()
 				////////////////////재화갯수 업뎃//////////////////////////////////
 				if (vecObj[objIDX]->GetName().compare(L"HarvestingText") == 0)
 				{
-					CPlayer* player = (CPlayer*)GetPlayer();
+					CPlayer* player = static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer());
 					playerParameter playerInfo = player->GetPlayerInfo();
 
 					wchar_t buffer[20];
@@ -308,6 +309,13 @@ void CScene_Start::render(ID2D1HwndRenderTarget* _pRender)
 
 void CScene_Start::Enter()
 {
+	if (static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer()))
+	{
+		RegisterPlayer(static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer()));
+		AddObject(static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer()), GROUP_TYPE::PLAYER);
+	}
+
+
 	ChangePause(false);
 	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
@@ -423,6 +431,7 @@ void CScene_Start::Enter()
 	AddObject(bottomWall, GROUP_TYPE::GROUND);
 	////////////////////////////////외부 벽/////////////////////////////////
 
+	/*
 	//Object 추가.
 	//실제 생성된 객체는 플레이어, 주소를 받은 건 부모 클래스. 
 	CObject* pObj = new CPlayer;
@@ -430,10 +439,10 @@ void CScene_Start::Enter()
 	pObj->SetScale(Vec2(65.f, 65.f));
 	pObj->SetName(L"Player");
 	AddObject(pObj, GROUP_TYPE::PLAYER);
-	RegisterPlayer(pObj);
+	RegisterPlayer(pObj);*/
 	
 
-	CCamera::GetInstance()->SetTarget(pObj);
+	CCamera::GetInstance()->SetTarget(static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer()));
 
 	CWeapon* pWeapon = nullptr;
 	CMonster* pMon = nullptr;
@@ -512,9 +521,7 @@ void CScene_Start::Enter()
 
 void CScene_Start::Exit()
 {
-	//나갈때 CSceneMgr쪽에 Player등록 요청
-	CObject* tmp = GetPlayer();
-	CSceneMgr::GetInstance()->RegisterPlayer(tmp);
+	
 
 	//나갈때 전부 삭제해줘야함.
 	if (GetPause() || m_bFailed) {
@@ -1228,22 +1235,23 @@ void CScene_Start::CreateLevelUpShop()
 	for (int upgradeIndex = 0; upgradeIndex < 4; upgradeIndex++)
 	{
 		CPanelUI* panelItemUI = new CPanelUI;
+		panelItemUI->SetObjType(GROUP_TYPE::IMAGE);
+		panelItemUI->SetName(L"이거다");
 		panelItemUI->SetScale(Vec2(176.f, 132.f));
 		panelItemUI->SetPos(Vec2(100.f + upgradeIndex * (5.f + panelItemUI->GetScale().x), vResolution.y / 2));
 		panelItemUI->SetColor(ColorNormalize(0, 0, 0), ColorNormalize(0, 0, 0));
 
 		////////////////////////Upgrade 능력치 아이콘////////////////////////////////
 		wstring iconTag = upgrade_tag_list[upgrade_numbers[upgradeIndex]];
-		CObject* itemImage = new CSpriteUI;
-		itemImage->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
+		//CObject* itemImage = new CSpriteUI;
 		Vec2 vPos = Vec2(35.f, 35.f) - (panelItemUI->GetScale() / 2.f);
-		itemImage->GetImage(0)->SetOffset(vPos);
+		CSpriteUI* itemImage = panelItemUI->AddChild<CSpriteUI>(vPos);
+		itemImage->SetName(L"ICON");
+		itemImage->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
+		//itemImage->GetImage(0)->SetOffset(vPos);
 		itemImage->SetObjType(GROUP_TYPE::UI);
 		itemImage->SetName(L"Child");
 		itemImage->SetScale(Vec2(48.f, 48.f));
-		itemImage->SetPos(panelItemUI->GetPos());
-
-		panelItemUI->AddChild((CUI*)itemImage);
 		////////////////////////Upgrade 능력치 아이콘////////////////////////////////
 
 		////////////Upgrade Name////////////////////
@@ -1260,7 +1268,7 @@ void CScene_Start::CreateLevelUpShop()
 			, TextUIMode::TEXT
 			, 0);
 		upgradeNameText->GetTextUI()->SetHorizontal(1);
-		panelItemUI->AddChild((CUI*)upgradeNameText);
+		//panelItemUI->AddChild((CUI*)upgradeNameText);
 		////////////Upgrade Name////////////////////
 
 
@@ -1278,7 +1286,7 @@ void CScene_Start::CreateLevelUpShop()
 			, TextUIMode::TEXT
 			, 0);
 		upgradeClassifi->GetTextUI()->SetHorizontal(1);
-		panelItemUI->AddChild((CUI*)upgradeClassifi);
+		//panelItemUI->AddChild((CUI*)upgradeClassifi);
 		////////////Upgrade Classifi////////////////////
 
 		////////////Upgrade Text////////////////////
@@ -1295,7 +1303,7 @@ void CScene_Start::CreateLevelUpShop()
 			, TextUIMode::TEXT
 			, 0);
 		upgradeText->GetTextUI()->SetHorizontal(1);
-		panelItemUI->AddChild((CUI*)upgradeText);
+		//panelItemUI->AddChild((CUI*)upgradeText);
 		////////////Upgrade Name////////////////////
 
 		AddObject(panelItemUI, GROUP_TYPE::IMAGE);
@@ -1379,7 +1387,9 @@ void CScene_Start::SceneFailed()
 
 void CScene_Start::callPlayerUpgrade(int upgradeIdx)
 {
-	static_cast<CPlayer*>(GetPlayer())->upgradeParameter(upgradeIdx);
+	//static_cast<CPlayer*>(GetPlayer())->upgradeParameter(upgradeIdx);
+	static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->upgradeParameter(upgradeIdx);
+	// 
 	//static_cast<CPlayer*>(CSceneMgr)
 	ChangeScene(SCENE_TYPE::SHOP);
 }
@@ -1400,7 +1410,7 @@ void CScene_Start::CreateOptionPanel()
 	optionPanel->SetNormalAlpha(0.6f);
 	optionPanel->SetMouseOnAlpha(0.6f);
 	m_vecOptionObjs.push_back(optionPanel);
-	AddObject(optionPanel, GROUP_TYPE::UI);
+	AddObject(optionPanel, GROUP_TYPE::IMAGE);
 	//////////////////뒷 판떼기///////////////////////
 
 	////////////음향 텍스트 보여주는 곳////////////////////
@@ -1417,7 +1427,7 @@ void CScene_Start::CreateOptionPanel()
 		, TextUIMode::TEXT
 		, 0);
 	m_vecOptionObjs.push_back(soundText);
-	AddObject(soundText, GROUP_TYPE::UI);
+	AddObject(soundText, GROUP_TYPE::IMAGE);
 	////////////음향 텍스트 보여주는 곳////////////////////
 
 
@@ -1436,7 +1446,7 @@ void CScene_Start::CreateOptionPanel()
 		, 0);
 	masterSoundText->GetTextUI()->SetHorizontal(1);
 	m_vecOptionObjs.push_back(masterSoundText);
-	AddObject(masterSoundText, GROUP_TYPE::UI);
+	AddObject(masterSoundText, GROUP_TYPE::IMAGE);
 	////////////마스터 텍스트 보여주는 곳////////////////////
 
 
@@ -1477,7 +1487,7 @@ void CScene_Start::CreateOptionPanel()
 	masterSoundRatio->GetTextUI()->SetHorizontal(2);
 	CSoundMgr::GetInstance()->m_pMasterSoundRatio = masterSoundRatio;
 	m_vecOptionObjs.push_back(masterSoundRatio);
-	AddObject(masterSoundRatio, GROUP_TYPE::UI);
+	AddObject(masterSoundRatio, GROUP_TYPE::IMAGE);
 	////////////마스터 Ratio 보여주는 곳////////////////////
 
 	////////////음악 텍스트 보여주는 곳////////////////////
@@ -1495,7 +1505,7 @@ void CScene_Start::CreateOptionPanel()
 		, 0);
 	BGMSoundText->GetTextUI()->SetHorizontal(1);
 	m_vecOptionObjs.push_back(BGMSoundText);
-	AddObject(BGMSoundText, GROUP_TYPE::UI);
+	AddObject(BGMSoundText, GROUP_TYPE::IMAGE);
 	////////////음악 텍스트 보여주는 곳////////////////////
 
 
@@ -1533,7 +1543,7 @@ void CScene_Start::CreateOptionPanel()
 	BGMSoundRatio->GetTextUI()->SetHorizontal(2);
 	CSoundMgr::GetInstance()->m_pBGMSoundRatio = BGMSoundRatio;
 	m_vecOptionObjs.push_back(BGMSoundRatio);
-	AddObject(BGMSoundRatio, GROUP_TYPE::UI);
+	AddObject(BGMSoundRatio, GROUP_TYPE::IMAGE);
 	////////////음악 Ratio 보여주는 곳////////////////////
 
 
@@ -1552,7 +1562,7 @@ void CScene_Start::CreateOptionPanel()
 		, 0);
 	SFXSoundText->GetTextUI()->SetHorizontal(1);
 	m_vecOptionObjs.push_back(SFXSoundText);
-	AddObject(SFXSoundText, GROUP_TYPE::UI);
+	AddObject(SFXSoundText, GROUP_TYPE::IMAGE);
 	////////////SFX 텍스트 보여주는 곳////////////////////
 
 	////////////SFX 슬라이더////////////////////
@@ -1589,7 +1599,7 @@ void CScene_Start::CreateOptionPanel()
 	SFXSoundRatio->GetTextUI()->SetHorizontal(2);
 	CSoundMgr::GetInstance()->m_pSFXSoundRatio = SFXSoundRatio;
 	m_vecOptionObjs.push_back(SFXSoundRatio);
-	AddObject(SFXSoundRatio, GROUP_TYPE::UI);
+	AddObject(SFXSoundRatio, GROUP_TYPE::IMAGE);
 	////////////SFX Ratio 보여주는 곳////////////////////
 
 	/////////////////뒤로 버튼//////////////////////

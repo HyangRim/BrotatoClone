@@ -151,7 +151,7 @@ void CScene_Main::Enter()
 	pStartBtn->SetPos(Vec2(51.f,348.f));
 	pStartBtn->SetIsRound(true, 10.f, 10.f);
 	pStartBtn->SetColor(ColorNormalize(237, 237, 237), ColorNormalize(0, 0, 0));
-	pStartBtn->SetClickedCallBack(ChangeScene, (DWORD_PTR)SCENE_TYPE::START, 0);
+	pStartBtn->SetClickedCallBack(ChangeScene, (DWORD_PTR)SCENE_TYPE::SELECT_CHARACTER, 0);
 	pStartBtn->CreateTextUI(L"Ω√¿€", Vec2(-26.f, -17.f), Vec2(26.f, 17.f)
 		, 20, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR

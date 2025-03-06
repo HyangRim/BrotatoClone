@@ -207,12 +207,10 @@ void SelectWeapon(DWORD_PTR lParam, DWORD_PTR wParam)
 	wstring tag = *reinterpret_cast<wstring*>(lParam);
 
 	Item* selectedItem = ItemMgr::GetInstance()->GetItem(tag);
-
-	/*
+	
 	CWeapon* selectedWeapon = new CWeapon;
 	selectedWeapon->SetInfo(selectedItem->m_tWeaponInfo);
 	static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->AddWeapon(selectedWeapon);
-	*/
 
 	ChangeScene(SCENE_TYPE::START);
 }
@@ -225,22 +223,22 @@ void CScene_Select_Weapon::WeaponMapping(CBtnUI* _btn, int i, int j, wstring& ta
 	if (i == 0 && j == 0)
 	{
 		_btn->AddImage(pD2DMgr->GetStoredBitmap(L"random_icon"));
-		tag = L"random_icon";
+		tag = L"random";
 	}
 	else if (i == 0 && j == 1)
 	{
 		_btn->AddImage(pD2DMgr->GetStoredBitmap(L"knife_icon"));
-		tag = L"random_icon";
+		tag = L"knife";
 	}
 	else if (i == 0 && j == 2)
 	{
 		_btn->AddImage(pD2DMgr->GetStoredBitmap(L"pistol_icon"));
-		tag = L"pistol_icon";
+		tag = L"pistol";
 	}
 	else if (i == 0 && j == 3)
 	{
 		_btn->AddImage(pD2DMgr->GetStoredBitmap(L"slingshot_icon"));
-		tag = L"slingshot_icon";
+		tag = L"slingshot";
 	}
 	else _btn->AddImage(pD2DMgr->GetStoredBitmap(L"locked_icon"));
 }

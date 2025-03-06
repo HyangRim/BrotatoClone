@@ -47,6 +47,15 @@ void CScene_Select_Character::Enter()
 	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
 
+	//Object 추가.
+	//실제 생성된 객체는 플레이어, 주소를 받은 건 부모 클래스. 
+	CObject* pObj = new CPlayer;
+	pObj->SetPos(Vec2(640.f, 384.f));
+	pObj->SetScale(Vec2(65.f, 65.f));
+	pObj->SetName(L"Player");
+	//AddObject(pObj, GROUP_TYPE::PLAYER);
+	RegisterPlayer(pObj);
+
 	/////////////////뒷 배경 오브젝트/////////////////
 	CObject* backGround = new CSpriteUI;
 	backGround->SetObjType(GROUP_TYPE::DEFAULT);
@@ -135,6 +144,10 @@ void CScene_Select_Character::Enter()
 
 void CScene_Select_Character::Exit()
 {
+	//나갈때 CSceneMgr쪽에 Player등록 요청
+	CObject* tmp = GetPlayer();
+	CSceneMgr::GetInstance()->RegisterPlayer(tmp);
+
 	DeleteAll();
 }
 

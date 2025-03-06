@@ -182,10 +182,10 @@ void CScene_Run_End::CreateMainPanel()
 	AddObject(backPanel, GROUP_TYPE::DEFAULT);
 
 	//정보창
-	//CreateInfoPanel(backPanel);
+	CreateInfoPanel(backPanel);
 
 	//무기
-	//CreateWeaponInfoPanel(backPanel);
+	CreateWeaponInfoPanel(backPanel);
 
 	//아이템
 	CreateItemInfoPanel(backPanel);
@@ -577,8 +577,8 @@ void CScene_Run_End::CreateWeaponInfoPanel(CPanelUI* _backPanel)
 	panelWeaponArea->SetObjType(GROUP_TYPE::IMAGE);
 	panelWeaponArea->SetColor(ColorNormalize(0, 0, 0), ColorNormalize(0, 0, 0));
 	panelWeaponArea->SetScale(Vec2(376.f, 104.f));
-	//panelWeaponArea->SetMouseOnAlpha(0.f);
-	//panelWeaponArea->SetNormalAlpha(0.f);
+	panelWeaponArea->SetMouseOnAlpha(0.f);
+	panelWeaponArea->SetNormalAlpha(0.f);
 	
 	CSpriteUI* weaponText = 
 		panelWeaponArea->AddChild<CSpriteUI>(Vec2(-panelWeaponArea->GetScale().x / 2.f + 22.f + 5.f
@@ -597,10 +597,10 @@ void CScene_Run_End::CreateWeaponInfoPanel(CPanelUI* _backPanel)
 	int curWeaponCnt = (int)((CPlayer*)CSceneMgr::GetInstance()->GetPlayer())->GetWeaponCount();
 
 	CPanelUI* weaponImages = panelWeaponArea->AddChild<CPanelUI>(Vec2(0.f, 15.f));
-	weaponImages->SetColor(ColorNormalize(255, 0, 0), ColorNormalize(255, 0, 0));
+	weaponImages->SetColor(ColorNormalize(0, 0, 0), ColorNormalize(0, 0, 0));
 	weaponImages->SetScale(Vec2(376.f, 60.f));
-	//weaponImages->SetMouseOnAlpha(0.f);
-	//weaponImages->SetNormalAlpha(0.f);
+	weaponImages->SetMouseOnAlpha(0.f);
+	weaponImages->SetNormalAlpha(0.f);
 
 	int temp = 0;
 	for (auto iter = vPlayerWeaponList.begin(); iter != vPlayerWeaponList.end(); iter++, temp++)
@@ -609,7 +609,7 @@ void CScene_Run_End::CreateWeaponInfoPanel(CPanelUI* _backPanel)
 		wstring iconTag = weapon->Getinfo().m_sIconImageKey;
 
 		//CSpriteUI* weapons = new CSpriteUI;
-		CSpriteUI* weapons = weaponImages->AddChild<CSpriteUI>(Vec2(-15.f ,0.f));
+		CSpriteUI* weapons = weaponImages->AddChild<CSpriteUI>(Vec2(-155.f + temp*55.f ,0.f));
 		weapons->SetName(L"Weapon");
 		weapons->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
 		weapons->SetObjType(GROUP_TYPE::UI);

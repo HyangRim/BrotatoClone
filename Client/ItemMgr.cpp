@@ -159,6 +159,7 @@ void ItemMgr::init_weapon()
 	pistol->tag = L"pistol";
 	pistol->m_eItemType = ITEM_TYPE::WEAPON;
 	pistol->m_iBasePrice = 11;
+	pistol->m_tWeaponInfo.m_sIconImageKey = L"pistol_icon";
 	m_sItems.insert(make_pair(L"pistol", pistol));
 
 	Item* slingshot = new Item(ITEM_TYPE::WEAPON);
@@ -166,5 +167,6 @@ void ItemMgr::init_weapon()
 	slingshot->tag = L"slingshot";
 	slingshot->m_eItemType = ITEM_TYPE::WEAPON;
 	slingshot->m_iBasePrice = 12;
+	slingshot->m_tWeaponInfo.m_sIconImageKey = L"slingshot_icon";
 	m_sItems.insert(make_pair(L"slingshot", slingshot));
 }
