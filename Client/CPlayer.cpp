@@ -221,7 +221,7 @@ bool CPlayer::AddWeapon(CWeapon* _pWeapon)
 		weaponIter->SetWeaponOffset(weaponOffsetPos[weaponOffsetPosIdx]);
 		weaponOffsetPosIdx++;
 	}
-	CreateObject((CObject*)_pWeapon, GROUP_TYPE::WEAPON);
+	//CreateObject((CObject*)_pWeapon, GROUP_TYPE::WEAPON);
 
 	return true;
 }
@@ -242,6 +242,14 @@ bool CPlayer::DeleteWeapon(CWeapon* _pWeapon)
 	//동적 할당한 무기 해제. DeleteObject로 해야할수도?
 	delete *targetWeaponIter;
 	return true;
+}
+
+void CPlayer::PushSceneWeapons()
+{
+	//씬 시작할 때, 즉 StartScene으로 갈 대 이 함수 불러주면 됨. 
+	for (auto weaponIter : m_listWeapon) {
+		CreateObject((CObject*)weaponIter, GROUP_TYPE::WEAPON);
+	}
 }
 
 
@@ -419,6 +427,8 @@ void CPlayer::OnCollisionEnter(CCollider* _pOther)
 		m_fUnderAttackSoundDelay = 0.35f;
 	}
 }
+
+
 
 void CPlayer::AddExp(int _iExp)
 {
