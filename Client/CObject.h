@@ -82,8 +82,10 @@ public:
 	CGravity* GetGravity() { return m_pGravity; }
 
 	vector<CImage*>& GetImages() { return m_pImages; }
+	size_t GetImageCount() { return m_pImages.size(); }
 	CImage* GetImage(int _Idx);
 	void DeleteImage() { Safe_Delete_Vec(m_pImages); }
+	void SetImage(CImage* _image, int _idx) { m_pImages[_idx] = _image; }
 	//void AddImage(const wstring& tag);
 	//void AddImage(const wstring& tag, ID2D1Bitmap* _bitmap);
 	void AddImage(ID2D1Bitmap* _bitmap);

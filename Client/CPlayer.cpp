@@ -7,7 +7,9 @@
 #include "CkeyMgr.h"
 #include "CTimeMgr.h"
 #include "CResMgr.h"
+#include "ItemMgr.h"
 #include "Direct2DMgr.h"
+
 
 #include "CWeapon.h"
 
@@ -119,6 +121,9 @@ CPlayer::CPlayer()
 	//1¹ø
 	AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"potato"));
 
+	//2¹ø ´«
+	//3¹ø ÀÔ
+
 	//AddImage(L"PlayerLegs");
 
 	//GetImage()->SetBitmap(Direct2DMgr::GetInstance()->GetStoredBitmap(L"PlayerBody"));
@@ -137,11 +142,23 @@ void CPlayer::update()
 {
 	if (CScene::GetPause()) return;
 
-
 	//ÇÇ°ÝÀ½ µô·¹ÀÌ. 
 	m_fUnderAttackSoundDelay -= fDT;
 
 	CObject::update();
+
+	//ÀÌ¹ÌÁö ¾÷µ« 
+	if (ItemMgr::GetInstance()->GetBasicCharacter() != nullptr && GetImageCount() <= 2)
+	{
+		Item* baseCharacter = ItemMgr::GetInstance()->GetBasicCharacter();
+
+		wstring eyesTag = baseCharacter->tag + L"_eyes";
+		wstring mouthTag = baseCharacter->tag + L"_mouth";
+
+		AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(eyesTag));
+		AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(mouthTag));
+	}
+
 	update_move();
 	update_state();
 	update_animation();

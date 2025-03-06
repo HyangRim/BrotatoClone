@@ -55,6 +55,8 @@ void CScene_Select_Character::Enter()
 	pObj->SetName(L"Player");
 	//AddObject(pObj, GROUP_TYPE::PLAYER);
 	RegisterPlayer(pObj);
+	CObject* tmp = GetPlayer();
+	CSceneMgr::GetInstance()->RegisterPlayer(tmp);
 
 	/////////////////뒷 배경 오브젝트/////////////////
 	CObject* backGround = new CSpriteUI;
@@ -145,8 +147,8 @@ void CScene_Select_Character::Enter()
 void CScene_Select_Character::Exit()
 {
 	//나갈때 CSceneMgr쪽에 Player등록 요청
-	CObject* tmp = GetPlayer();
-	CSceneMgr::GetInstance()->RegisterPlayer(tmp);
+	//CObject* tmp = GetPlayer();
+	//CSceneMgr::GetInstance()->RegisterPlayer(tmp);
 
 	DeleteAll();
 }
@@ -194,7 +196,7 @@ void SelectCharacter(DWORD_PTR lParam, DWORD_PTR wParam)
 	// lParam -> 이미지 태그
 	// wParam -> x
 	wstring tag = *reinterpret_cast<wstring*>(lParam);
-
+	
 	if (tag.compare(L"random") == 0)
 	{
 		int random_character_index = rand() % character_tag_list.size();
