@@ -2,6 +2,8 @@
 #include "CCollider.h"
 #include "CDropItem.h"
 #include "CSoundMgr.h"
+#include "CPlayer.h"
+#include "CSceneMgr.h"
 
 
 
@@ -32,6 +34,8 @@ void CDropItem::OnCollisionEnter(CCollider* _pOther)
 		int randomDropSound = sound_rand(rng);
 		wstring SoundKey = dropItemKey + std::to_wstring(randomDropSound);
 		CSoundMgr::GetInstance()->Play(SoundKey);
+
+		static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->AddCoin(1);
 		DeleteObject(this);
 	}
 }
