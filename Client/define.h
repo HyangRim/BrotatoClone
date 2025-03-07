@@ -159,5 +159,6 @@ enum class ITEM_TYPE
 {
 	WEAPON,
 	PASSIVE,
+	CHARACTER,
 	END,
 };

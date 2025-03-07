@@ -2,6 +2,9 @@
 #include "CScene.h"
 #include "CharacterInfoMgr.h"
 
+class CBtnUI;
+class Direct2DMgr;
+
 class CScene_Select_Weapon :
     public CScene
 {
@@ -21,6 +24,16 @@ public:
     virtual void Enter();		//해당 Scene에 진입 시 호출.
     virtual void Exit();		//해당 Scene에 탈출 시 호출.
     
+public:
+    void BackBtnCallBack();
+
+public:
+    void CreateBackGround(Direct2DMgr* _pD2DMgr, Vec2 _vResolution);
+    void CreateBackBtn();
+    void CreateWeaponSelectText(Vec2 _vResolution);
+    void CreateSelectedCharacterInfoPanel(Direct2DMgr* _pD2DMgr, Vec2 _vResolution);
+    void CreateWeaponItemBtn();
+
 public:
     CScene_Select_Weapon();
     ~CScene_Select_Weapon();

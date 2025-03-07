@@ -32,7 +32,7 @@ struct playerParameter {
     float			m_fMeleeCoef;		//근거리 최종뎀 %
     float			m_fRangeCoef;		//원거리 최종뎀 %
     float			m_fAttackSpeedCoef; // 공격속도 %
-    float			m_iCriticalAcc;		// 크확 %
+    int			    m_iCriticalAcc;		// 크확 %
     float			m_fSpeed;			// 속도 계수.
 };
 class CPlayer :

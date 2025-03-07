@@ -18,7 +18,7 @@ struct Item
 
         struct {
             float   m_fDefaultSpeed;    // 기본 스피드
-            int     m_AddMaxHP;         // + 최대 체력
+            int     m_iAddMaxHP;         // + 최대 체력
             float   m_fDamageCoef;      // 최종 데미지 %
             float   m_fMeleeCoef;       // 근거리 최종 데미지 %
             float   m_fRangeCoef;       // 원거리 최종 데미지 %
@@ -111,7 +111,10 @@ public:
 
 public:
 	void init();
+    void init_character();
 	void init_passive();
 	void init_weapon();
+
+    friend class CScene_Select_Weapon;
 };
 

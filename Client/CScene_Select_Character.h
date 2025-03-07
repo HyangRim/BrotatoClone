@@ -21,6 +21,13 @@ public:
     virtual void Exit();		//해당 Scene에 탈출 시 호출.
 
 public:
+    void CreatePlayerObject();
+    void CreateBackGround(Direct2DMgr* _pD2DMgr, Vec2 _vResolution);
+    void CreateBackBtn();
+    void CreateItemSelectText(Vec2 _vResolution);
+    void CreateCharacterItemBtn();
+
+public:
     CScene_Select_Character();
     ~CScene_Select_Character();
 };

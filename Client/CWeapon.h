@@ -5,10 +5,10 @@ struct tWeaponInfo {
     wstring         m_sName;            //무기 이름
     wstring         m_sIconImageKey;    //무기 이미지 Key값. 
     WEAPON_TYPE     m_eType;            //무기 타입
-    int             m_iDMG;             //무기 기본 데미지
 
-    float           m_iMeleeCoef;       //근거리 데미지 계수
-    float           m_iRangeCoef;       //원거리 데미지 계수
+    int             m_iDMG;             //무기 기본 데미지
+    float           m_fMeleeCoef;       //근거리 데미지 계수
+    float           m_fRangeCoef;       //원거리 데미지 계수
     float           m_fCritialDMG;      //크리티컬 데미지 계수
     float           m_fCritialAcc;      //크리티컬 데미지 확률
     float           m_fCooldown;        //무기 공격 쿨다운

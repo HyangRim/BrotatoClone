@@ -19,6 +19,10 @@
 
 #include "CScene_Shop.h"
 
+constexpr const wchar_t RestCoinString[20] = L"RestCoin";
+constexpr const wchar_t ItemInfoPanelString[20] = L"ItemInfoPanel";
+constexpr const wchar_t WeaponInfoPanelString[20] = L"WeaponInfoPanel";
+
 CScene_Shop::CScene_Shop()
 {
 
@@ -28,7 +32,6 @@ CScene_Shop::~CScene_Shop()
 {
 
 }
-
 
 void CScene_Shop::update()
 {
@@ -44,17 +47,17 @@ void CScene_Shop::update()
 		{
 			if (!vecObj[objIDX]->IsDead()) 
 			{
-				if (vecObj[objIDX]->GetName().compare(L"RestCoin") == 0)
+				if (vecObj[objIDX]->GetName().compare(RestCoinString) == 0)
 				{
 					swprintf_s(buffer, L"%d", ((CPlayer*)CSceneMgr::GetInstance()->GetPlayer())->GetCharacterParam().m_iCoin);
 					vecObj[objIDX]->GetTextUI()->SetText(buffer);
 				}
-				if (vecObj[objIDX]->GetName().compare(L"ItemInfoPanel") == 0)
+				if (vecObj[objIDX]->GetName().compare(ItemInfoPanelString) == 0)
 				{
 					swprintf_s(buffer, L"아이템 %d개", (int)ItemMgr::GetInstance()->GetPassiveItemssize());
 					vecObj[objIDX]->GetTextUI()->SetText(buffer);
 				}
-				if (vecObj[objIDX]->GetName().compare(L"WeaponInfoPanel") == 0)
+				if (vecObj[objIDX]->GetName().compare(WeaponInfoPanelString) == 0)
 				{
 					swprintf_s(buffer, L"무기(%d/6)", (int)((CPlayer*)CSceneMgr::GetInstance()->GetPlayer())->GetWeaponCount());
 					vecObj[objIDX]->GetTextUI()->SetText(buffer);
@@ -64,19 +67,12 @@ void CScene_Shop::update()
 			}
 		}
 	}
-
-
-	if (KEY_TAP(KEY::H)) {
-		ChangeScene(SCENE_TYPE::RUN_END);
-	}
 }
 
 void CScene_Shop::render(ID2D1HwndRenderTarget* _pRender)
 {
 	CScene::render(_pRender);
 	RenderScrollArea(_pRender);
-
-	
 }
 
 void CScene_Shop::Enter()
@@ -86,15 +82,77 @@ void CScene_Shop::Enter()
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
 	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
 	wchar_t buffer[20];
+	size_t bufferSize = sizeof(buffer) / sizeof(wchar_t);
 
+	/////////////////뒷 배경 오브젝트/////////////////
+	CreateBackGround(pD2DMgr, vResolution);
+	/////////////////뒷 배경 오브젝트/////////////////
+
+	/////////////////상점 웨이브 글자 UI(좌상단)///////////////////
+	CreateShopWaveTextUI(buffer, bufferSize);
+	/////////////////상점 웨이브 글자 UI(좌상단)///////////////////
+
+	/////////////////아이템 글자 UI(우하단)///////////////////
+	CreateItemTextUI(buffer, bufferSize);
+	/////////////////아이템 글자 UI(우하단)///////////////////
+
+	///////////////////////////무기 글자 UI///////////////////
+	CreateWeaponTextUI(buffer, bufferSize);
+	///////////////////////////무기 글자 UI///////////////////
+
+	/////////////////초기화 버튼/////////////////
+	CreateResetBtn(pD2DMgr);
+	/////////////////초기화 버튼/////////////////
+
+	///////////////////////////남은 재화 표시///////////////////
+	CreateRemainingCoinText(buffer, bufferSize);
+	///////////////////////////남은 재화 표시///////////////////
+
+	///////////////////////////남은 재화 표시 이미지///////////////////
+	CreateRemainingCoinImage(pD2DMgr);
+	///////////////////////////남은 재화 표시 이미지///////////////////
+
+	/////////////////다음 웨이브 버튼/////////////////
+	CreateNextWaveBtn(buffer, bufferSize);
+	/////////////////다음 웨이브 버튼/////////////////
+
+	////////////////////////가운데 아이템 패널 4개////////////////////////////////
+	CreateShowItemPanels(pD2DMgr, buffer, bufferSize);
+	////////////////////////가운데 아이템 패널 4개////////////////////////////////
+
+	//////보유무기//////////
+	CreatePossessedWeapons(pD2DMgr);
+	//////보유무기//////////
+
+	//////스텟창///////////
+	CreateInfoPanel(Vec2(852.f, 204.f));
+	//////스텟창///////////
+
+	/////보유아이템 영역/////////
+	CreateScrollArea();
+	/////보유아이템 영역/////////
+}
+
+void CScene_Shop::Exit()
+{
+	Safe_Delete_Vec(m_scrollContent);
+	DeleteAll();
+}
+
+void CScene_Shop::CreateBackGround(Direct2DMgr* _pD2DMgr, Vec2 _vResolution)
+{
 	/////////////////뒷 배경 오브젝트/////////////////
 	CObject* backGround = new CSpriteUI;
 	backGround->SetObjType(GROUP_TYPE::DEFAULT);
-	backGround->AddImage(pD2DMgr->GetStoredBitmap(L"shop_background"));
-	backGround->SetPos(vResolution / 2.f);
-	backGround->SetScale(vResolution);
+	backGround->AddImage(_pD2DMgr->GetStoredBitmap(L"shop_background"));
+	backGround->SetPos(_vResolution / 2.f);
+	backGround->SetScale(_vResolution);
 	AddObject(backGround, GROUP_TYPE::DEFAULT);
 	/////////////////뒷 배경 오브젝트/////////////////
+}
+
+void CScene_Shop::CreateShopWaveTextUI(wchar_t* buffer, size_t bufferSize)
+{
 
 	/////////////////상점 웨이브 글자 UI(좌상단)///////////////////
 	CObject* panelTextShopAndWave = new CSpriteUI;
@@ -102,31 +160,38 @@ void CScene_Shop::Enter()
 	panelTextShopAndWave->SetPos(Vec2(78.f, 32.f));
 	panelTextShopAndWave->SetScale(Vec2(130.f, 32.f));
 
-	swprintf_s(buffer, L"상점(웨이브 %d)", CWaveMgr::GetInstance()->GetLevel() - 1);
+	swprintf_s(buffer, bufferSize, L"상점(웨이브 %d)", CWaveMgr::GetInstance()->GetLevel() - 1);
 	panelTextShopAndWave->CreateTextUI(buffer, Vec2(-150.f, -18.f), Vec2(150.f, 18.f)
-		, 20, D2D1::ColorF::White, true, 2.f, D2D1::ColorF::Black
+		, 20, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR
 		, TextUIMode::TEXT
 		, 0);
 	AddObject(panelTextShopAndWave, GROUP_TYPE::UI);
 	/////////////////상점 웨이브 글자 UI(좌상단)///////////////////
+}
 
+void CScene_Shop::CreateItemTextUI(wchar_t* buffer, size_t bufferSize)
+{
+	
 	/////////////////아이템 글자 UI(우하단)///////////////////
-	CObject* panelTextItem= new CSpriteUI;
+	CObject* panelTextItem = new CSpriteUI;
 	panelTextItem->SetName(L"ItemInfoPanel");
 	panelTextItem->SetObjType(GROUP_TYPE::UI);
 	panelTextItem->SetPos(Vec2(60.f, 386.f));
 	panelTextItem->SetScale(Vec2(105.f, 30.f));
 
-	swprintf_s(buffer, L"아이템 %d개", (int)ItemMgr::GetInstance()->GetPassiveItemssize());
+	swprintf_s(buffer, bufferSize, L"아이템 %d개", (int)ItemMgr::GetInstance()->GetPassiveItemssize());
 	panelTextItem->CreateTextUI(buffer, Vec2(-150.f, -18.f), Vec2(150.f, 18.f)
-		, 20, D2D1::ColorF::White, true, 2.f, D2D1::ColorF::Black
+		, 20, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR
 		, TextUIMode::TEXT
 		, 0);
 	AddObject(panelTextItem, GROUP_TYPE::UI);
 	/////////////////아이템 글자 UI(우하단)///////////////////
+}
 
+void CScene_Shop::CreateWeaponTextUI(wchar_t* buffer, size_t bufferSize)
+{
 	///////////////////////////무기 글자 UI///////////////////
 	CObject* panelTextWeapon = new CSpriteUI;
 	panelTextWeapon->SetName(L"WeaponInfoPanel");
@@ -134,15 +199,18 @@ void CScene_Shop::Enter()
 	panelTextWeapon->SetPos(Vec2(608.f, 386.f));
 	panelTextWeapon->SetScale(Vec2(90.f, 30.f));
 
-	swprintf_s(buffer, L"무기(%d/6)", (int)((CPlayer*)CSceneMgr::GetInstance()->GetPlayer())->GetWeaponCount());
+	swprintf_s(buffer, bufferSize, L"무기(%d/6)", (int)((CPlayer*)CSceneMgr::GetInstance()->GetPlayer())->GetWeaponCount());
 	panelTextWeapon->CreateTextUI(buffer, Vec2(-150.f, -18.f), Vec2(150.f, 18.f)
-		, 20, D2D1::ColorF::White, true, 2.f, D2D1::ColorF::Black
+		, 20, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR
 		, TextUIMode::TEXT
 		, 0);
 	AddObject(panelTextWeapon, GROUP_TYPE::UI);
 	///////////////////////////무기 글자 UI///////////////////
+}
 
+void CScene_Shop::CreateResetBtn(Direct2DMgr* _pD2DMgr)
+{
 	/////////////////초기화 버튼/////////////////
 	CBtnUI* resetBtn = new CBtnUI;
 	resetBtn->SetName(L"ResetBtn");
@@ -151,8 +219,6 @@ void CScene_Shop::Enter()
 	resetBtn->SetPos(Vec2(662.f, 32.f));
 	resetBtn->SetIsRound(true, 10.f, 10.f);
 	resetBtn->SetColor(ColorNormalize(237, 237, 237), ColorNormalize(0, 0, 0));
-
-	//returnToGameBtn->SetClickedCallBack(this, (SCENE_MEMFUNC)&CScene_Start::OffPause);
 	resetBtn->SetClickedCallBack(this, static_cast<SCENE_MEMFUNC>(&CScene_Shop::ReRollItem));
 	resetBtn->CreateTextUI(L"초기화 -1", -(resetBtn->GetScale() / 2.f), resetBtn->GetScale() / 2.f
 		, 16, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
@@ -160,26 +226,26 @@ void CScene_Shop::Enter()
 		, TextUIMode::TEXT
 		, 0);
 
-	//CObject* coinImage = new CSpriteUI;
 	CSpriteUI* coinImage = resetBtn->AddChild<CSpriteUI>(Vec2(46.1f, 1.f));
-	coinImage->AddImage(pD2DMgr->GetStoredBitmap(L"harvesting_icon"));
-	//coinImage->GetImage(0)->SetOffset(Vec2(46.f,1.f));
+	coinImage->AddImage(_pD2DMgr->GetStoredBitmap(L"harvesting_icon"));
 	coinImage->SetObjType(GROUP_TYPE::UI);
 	coinImage->SetName(L"Child");
 	coinImage->SetScale(Vec2(24.f, 24.f));
 	coinImage->SetPos(resetBtn->GetPos());
 
-	
 	AddObject(resetBtn, GROUP_TYPE::UI);
 	/////////////////초기화 버튼/////////////////
+}
 
+void CScene_Shop::CreateRemainingCoinText(wchar_t* buffer, size_t bufferSize)
+{
 	///////////////////////////남은 재화 표시///////////////////
 	CObject* panelTextCurCoin = new CSpriteUI;
 	panelTextCurCoin->SetName(L"RestCoin");
 	panelTextCurCoin->SetObjType(GROUP_TYPE::UI);
 	panelTextCurCoin->SetPos(Vec2(386.f, 32.f));
 	panelTextCurCoin->SetScale(Vec2(32.f, 22.f));
-	swprintf_s(buffer, L"%d", ((CPlayer*)CSceneMgr::GetInstance()->GetPlayer())->GetCharacterParam().m_iCoin);
+	swprintf_s(buffer, bufferSize, L"%d", ((CPlayer*)CSceneMgr::GetInstance()->GetPlayer())->GetCharacterParam().m_iCoin);
 	panelTextCurCoin->CreateTextUI(buffer, -(panelTextCurCoin->GetScale() / 2.f), panelTextCurCoin->GetScale() / 2.f
 		, 16, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR
@@ -187,16 +253,22 @@ void CScene_Shop::Enter()
 		, 0);
 	AddObject(panelTextCurCoin, GROUP_TYPE::UI);
 	///////////////////////////남은 재화 표시///////////////////
+}
 
+void CScene_Shop::CreateRemainingCoinImage(Direct2DMgr* _pD2DMgr)
+{
 	///////////////////////////남은 재화 표시 이미지///////////////////
 	CObject* panelTextCurCoinImage = new CSpriteUI;
 	panelTextCurCoinImage->SetObjType(GROUP_TYPE::UI);
-	panelTextCurCoinImage->AddImage(pD2DMgr->GetStoredBitmap(L"harvesting_icon"));
+	panelTextCurCoinImage->AddImage(_pD2DMgr->GetStoredBitmap(L"harvesting_icon"));
 	panelTextCurCoinImage->SetPos(Vec2(356.f, 32.f));
 	panelTextCurCoinImage->SetScale(Vec2(24.f, 24.f));
 	AddObject(panelTextCurCoinImage, GROUP_TYPE::UI);
 	///////////////////////////남은 재화 표시 이미지///////////////////
+}
 
+void CScene_Shop::CreateNextWaveBtn(wchar_t* buffer, size_t bufferSize)
+{
 	/////////////////다음 웨이브 버튼/////////////////
 	CBtnUI* nextWaveBtn = new CBtnUI;
 	nextWaveBtn->SetName(L"NextWaveBtn");
@@ -206,7 +278,7 @@ void CScene_Shop::Enter()
 	nextWaveBtn->SetIsRound(true, 10.f, 10.f);
 	nextWaveBtn->SetColor(ColorNormalize(237, 237, 237), ColorNormalize(0, 0, 0));
 	nextWaveBtn->SetClickedCallBack(ChangeScene, (DWORD_PTR)SCENE_TYPE::START, 0);
-	swprintf_s(buffer, L"이동(웨이브%d)", CWaveMgr::GetInstance()->GetLevel());
+	swprintf_s(buffer, bufferSize, L"이동(웨이브%d)", CWaveMgr::GetInstance()->GetLevel());
 	nextWaveBtn->CreateTextUI(buffer, -(nextWaveBtn->GetScale() / 2.f), nextWaveBtn->GetScale() / 2.f
 		, 16, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR
@@ -214,8 +286,10 @@ void CScene_Shop::Enter()
 		, 0);
 	AddObject(nextWaveBtn, GROUP_TYPE::UI);
 	/////////////////다음 웨이브 버튼/////////////////
+}
 
-	////////////////////////가운데 아이템 패널 4개////////////////////////////////
+void CScene_Shop::CreateShowItemPanels(Direct2DMgr* _pD2DMgr, wchar_t* buffer, size_t bufferSize)
+{
 	for (int i = 0; i < 4; i++)
 	{
 		item_numbers.push_back(rand() % item_tag_list.size());
@@ -224,6 +298,7 @@ void CScene_Shop::Enter()
 	for (int i = 0; i < 4; i++)
 	{
 		wstring iconTag = item_tag_list[item_numbers[i]] + L"_icon";
+		Item* item = ItemMgr::GetInstance()->GetItem(item_tag_list[item_numbers[i]]);
 
 		CPanelUI* panelItemUI = new CPanelUI;
 		panelItemUI->SetName(iconTag);
@@ -233,12 +308,12 @@ void CScene_Shop::Enter()
 
 		////////////////////아이템 이미지/////////////////////////////
 		CSpriteUI* itemImage = panelItemUI->AddChild<CSpriteUI>(Vec2(35.f, 35.f) - (panelItemUI->GetScale() / 2.f));
-		itemImage->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
+		itemImage->AddImage(_pD2DMgr->GetStoredBitmap(iconTag));
 		itemImage->SetObjType(GROUP_TYPE::UI);
 		itemImage->SetName(L"Child");
 		itemImage->SetScale(Vec2(48.f, 48.f));
 		itemImage->SetBackGround(true);
-		itemImage->SetBackGroundColor(ColorNormalize(68,68,68), ColorNormalize(68, 68, 68)
+		itemImage->SetBackGroundColor(ColorNormalize(68, 68, 68), ColorNormalize(68, 68, 68)
 			, ColorNormalize(68, 68, 68), ColorNormalize(68, 68, 68));
 		itemImage->SetIsRound(true, 10.f, 10.f);
 		////////////////////아이템 이미지/////////////////////////////
@@ -246,7 +321,6 @@ void CScene_Shop::Enter()
 		/////////////////////구매 버튼/////////////////////////////////
 		CBtnUI* priceBtn = panelItemUI->AddChild<CBtnUI>(Vec2(0.f, panelItemUI->GetScale().y / 2.f - 8.f - 17.f));
 		priceBtn->SetName(L"PriceBtn");
-		//priceBtn->SetPos(Vec2(0.f, panelItemUI->GetScale().y / 2.f - 8.f - 17.f));
 		priceBtn->SetScale(Vec2(80.f, 34.f));
 		priceBtn->SetObjType(GROUP_TYPE::UI);
 		priceBtn->SetColor(ColorNormalize(255, 255, 255), ColorNormalize(30, 30, 30));
@@ -254,67 +328,216 @@ void CScene_Shop::Enter()
 		priceBtn->SetIsRound(true, 10.f, 10.f);
 
 		//구매버튼에 이미지//
-		//CObject* priceBtnCoinImage = new CSpriteUI;
 		CSpriteUI* priceBtnCoinImage = priceBtn->AddChild<CSpriteUI>(Vec2(20.f, 0.f));  // priceBtn 내에서의 상대적인 위치
 		priceBtnCoinImage->SetName(L"TEST1234");
-		//priceBtnCoinImage->SetPos(panelItemUI->GetPos());
-		priceBtnCoinImage->AddImage(pD2DMgr->GetStoredBitmap(L"harvesting_icon"));
-		//priceBtnCoinImage->GetImage(0)->SetOffset(Vec2(20.f, panelItemUI->GetScale().y / 2.f - 8.f - 17.f));
+		priceBtnCoinImage->AddImage(_pD2DMgr->GetStoredBitmap(L"harvesting_icon"));
 		priceBtnCoinImage->SetObjType(GROUP_TYPE::DEFAULT);
 		priceBtnCoinImage->SetScale(Vec2(24.f, 24.f));
 		//구매버튼에 이미지//
 		// priceBtnCoinImage의 위치를 priceBtn 내에서 조정
-		
+
 		//구매버튼에 가격 표시//
-		//CObject* priceBtnShowPrice = new CSpriteUI;
 		CSpriteUI* priceBtnShowPrice = priceBtn->AddChild<CSpriteUI>(Vec2(-7.f, 0.f));
 		priceBtnShowPrice->SetName(L"PriceBtnShowPrice");
 		priceBtnShowPrice->SetObjType(GROUP_TYPE::DEFAULT);
-		//priceBtnShowPrice->SetPos(Vec2(panelItemUI->GetPos().x - 7.f, panelItemUI->GetPos().y + panelItemUI->GetScale().y / 2.f - 28.f));
 		priceBtnShowPrice->SetScale(Vec2(30.f, 30.f));
-		swprintf_s(buffer, L"%d", ItemMgr::GetInstance()->GetItem(item_tag_list[item_numbers[i]])->m_iBasePrice);
+		swprintf_s(buffer, bufferSize, L"%d", ItemMgr::GetInstance()->GetItem(item_tag_list[item_numbers[i]])->m_iBasePrice);
 		priceBtnShowPrice->CreateTextUI(buffer, -(priceBtnShowPrice->GetScale() / 2.f), priceBtnShowPrice->GetScale() / 2.f
 			, 16, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 			, FONT_TYPE::KR
 			, TextUIMode::TEXT
 			, 0);
-		
 		//구매버튼에 가격 표시//
-		
+
+		/*
 		//아이템 이름//
-		//CObject* panelTextItemName = new CSpriteUI;
-		CSpriteUI* panelTextItemName = panelItemUI->AddChild<CSpriteUI>(Vec2(30.f,-100.f));
+		CSpriteUI* panelTextItemName = panelItemUI->AddChild<CSpriteUI>(Vec2(30.f, -100.f));
 		panelTextItemName->SetName(L"ShowItemNameText");
 		panelTextItemName->SetObjType(GROUP_TYPE::UI);
-		//panelTextItemName->SetPos(Vec2(panelItemUI->GetPos().x + 30.f, panelItemUI->GetPos().y - panelItemUI->GetScale().y / 2.f + 30.f));
 		panelTextItemName->SetScale(Vec2(90.f, 22.f));
-		swprintf_s(buffer, L"%s", ItemMgr::GetInstance()->GetItem(item_tag_list[item_numbers[i]])->m_sName.c_str());
+		swprintf_s(buffer, bufferSize, L"%s", ItemMgr::GetInstance()->GetItem(item_tag_list[item_numbers[i]])->m_sName.c_str());
 		panelTextItemName->CreateTextUI(buffer, -(panelTextItemName->GetScale() / 2.f), panelTextItemName->GetScale() / 2.f
 			, 12, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 			, FONT_TYPE::KR
 			, TextUIMode::TEXT
 			, 0);
 		panelTextItemName->GetTextUI()->SetHorizontal(1);
-		
 		//아이템 이름//
+		*/
+		/////////////////////////캐릭터 이름//////////////////////////
+		CSpriteUI* characterName = panelItemUI->AddChild<CSpriteUI>(Vec2(35.f, -(panelItemUI->GetScale().y / 2.f) + 11.f + 10.f));
+		characterName->SetScale(Vec2(116.f, 20.f));
+		swprintf_s(buffer, bufferSize, L"%s", item->m_sName.c_str());
+		characterName->CreateTextUI(buffer, -(characterName->GetScale() / 2.f), characterName->GetScale() / 2.f
+			, 12, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+			, FONT_TYPE::KR
+			, TextUIMode::TEXT
+			, 0);
+		characterName->GetTextUI()->SetHorizontal(1);
+		/////////////////////////캐릭터 이름//////////////////////////
+
+		/////////////////////////캐릭터 타입(캐릭터or무기)//////////////////////////
+		//y축 offset설명 11->panel과의 마진 , 10->characterName 절반크기, 5->위에 객체와 간격, 10->이 객체 크기 절반
+		CSpriteUI* itemType = panelItemUI->AddChild<CSpriteUI>(Vec2(35.f, -(panelItemUI->GetScale().y / 2.f) + 11.f + 10.f + 5.f + 10.f));
+		itemType->SetScale(Vec2(116.f, 20.f));
+		swprintf_s(buffer, bufferSize, L"아이템");
+		itemType->CreateTextUI(buffer, -(itemType->GetScale() / 2.f), itemType->GetScale() / 2.f
+			, 12, ColorNormalize(202, 195, 152), true, 1.f, D2D1::ColorF::Black
+			, FONT_TYPE::KR
+			, TextUIMode::TEXT
+			, 0);
+		itemType->GetTextUI()->SetHorizontal(1);
+		/////////////////////////캐릭터 이름//////////////////////////
+		/////////////////////////캐릭터 정보(스탯)/////////////////////////////////
+		/*
+		struct tWeaponInfo {
+			wstring         m_sName;            //무기 이름
+			wstring         m_sIconImageKey;    //무기 이미지 Key값. 
+			WEAPON_TYPE     m_eType;            //무기 타입
+
+			int             m_iDMG;             //무기 기본 데미지
+			float           m_iMeleeCoef;       //근거리 데미지 계수
+			float           m_iRangeCoef;       //원거리 데미지 계수
+			float           m_fCritialDMG;      //크리티컬 데미지 계수
+			float           m_fCritialAcc;      //크리티컬 데미지 확률
+			float           m_fCooldown;        //무기 공격 쿨다운
+			float           m_fRecogRange;      //무기 적 인식범위
+			int             m_iPenet;           //무기 튕김 수치. 
+		};*/
+		int tmp = 0;
+		int maxStatCount;
+		if (item->m_eItemType == ITEM_TYPE::WEAPON) maxStatCount = 8;
+		else if (item->m_eItemType == ITEM_TYPE::PASSIVE) maxStatCount = 8;
+		for (int i = 0; i < maxStatCount; i++)
+		{
+			if (item->m_eItemType == ITEM_TYPE::PASSIVE)
+			{
+				if (i == 0 && item->PassiveStats.m_fDefaultSpeed == 0.f) continue;
+				else if (i == 1 && item->PassiveStats.m_iAddMaxHP == 0) continue;
+				else if (i == 2 && item->PassiveStats.m_fDamageCoef == 0.f) continue;
+				else if (i == 3 && item->PassiveStats.m_fMeleeCoef == 0.f) continue;
+				else if (i == 4 && item->PassiveStats.m_fRangeCoef == 0.f) continue;
+				else if (i == 5 && item->PassiveStats.m_fAttackSpeedCoef == 0.f) continue;
+				else if (i == 6 && item->PassiveStats.m_iCriticalAcc == 0) continue;
+				else if (i == 7 && item->PassiveStats.m_fSpeed == 0.f) continue;
+
+				CPanelUI* statpanel = panelItemUI->AddChild<CPanelUI>(Vec2(0.f, -50.f + tmp * 21.f));
+				statpanel->SetScale(Vec2(154.f, 16.f));
+				statpanel->SetRadius(0.f, 0.f);
+				//statpanel->SetColor(ColorNormalize(255, 255, 255), ColorNormalize(255, 255, 255));
+				statpanel->SetMouseOnAlpha(0.f);
+				statpanel->SetNormalAlpha(0.f);
+
+				CSpriteUI* statNumber = statpanel->AddChild<CSpriteUI>(Vec2(-statpanel->GetScale().x / 2.f + 8.f, 0.f));
+				statNumber->SetScale(Vec2(26.f, 16.f));
+				if (i == 0) { swprintf_s(buffer, bufferSize, L"+%d", (int)item->PassiveStats.m_fDefaultSpeed); }
+				else if (i == 1) { swprintf_s(buffer, bufferSize, L"+%d", item->PassiveStats.m_iAddMaxHP); }
+				else if (i == 2) { swprintf_s(buffer, bufferSize, L"+%d%%", (int)item->PassiveStats.m_fDamageCoef); }
+				else if (i == 3) { swprintf_s(buffer, bufferSize, L"+%d%%", (int)item->PassiveStats.m_fMeleeCoef); }
+				else if (i == 4) { swprintf_s(buffer, bufferSize, L"+%d%%", (int)item->PassiveStats.m_fRangeCoef); }
+				else if (i == 5) { swprintf_s(buffer, bufferSize, L"+%d%%", (int)item->PassiveStats.m_fAttackSpeedCoef); }
+				else if (i == 6) { swprintf_s(buffer, bufferSize, L"+%d", item->PassiveStats.m_iCriticalAcc); }
+				else if (i == 7) { swprintf_s(buffer, bufferSize, L"+%d", (int)item->PassiveStats.m_fSpeed); }
+				statNumber->CreateTextUI(buffer, -(statNumber->GetScale() / 2.f), statNumber->GetScale() / 2.f
+					, 10, D2D1::ColorF::Green, true, 1.f, D2D1::ColorF::Black
+					, FONT_TYPE::KR
+					, TextUIMode::TEXT
+					, 0);
+				statNumber->GetTextUI()->SetHorizontal(1);
+
+				CSpriteUI* statText = statpanel->AddChild<CSpriteUI>(Vec2(0.f, 0.f));
+				statText->SetScale(Vec2(120.f, 16.f));
+				if (i == 0) { swprintf_s(buffer, bufferSize, L"기본속도"); }
+				else if (i == 1) { swprintf_s(buffer, bufferSize, L"최대체력"); }
+				else if (i == 2) { swprintf_s(buffer, bufferSize, L"최종데미지"); }
+				else if (i == 3) { swprintf_s(buffer, bufferSize, L"근거리 최종데미지"); }
+				else if (i == 4) { swprintf_s(buffer, bufferSize, L"원거리 최종데미지"); }
+				else if (i == 5) { swprintf_s(buffer, bufferSize, L"공격속도"); }
+				else if (i == 6) { swprintf_s(buffer, bufferSize, L"치명타 확률"); }
+				else if (i == 7) { swprintf_s(buffer, bufferSize, L"속도계수"); }
+				statText->CreateTextUI(buffer, -(statText->GetScale() / 2.f), statText->GetScale() / 2.f
+					, 10, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+					, FONT_TYPE::KR
+					, TextUIMode::TEXT
+					, 0);
+				statText->GetTextUI()->SetHorizontal(1);
+
+
+			}
+			else if (item->m_eItemType == ITEM_TYPE::WEAPON)
+			{
+				if		(i == 0 && item->m_tWeaponInfo.m_iDMG == 0) continue;
+				else if (i == 1 && item->m_tWeaponInfo.m_fMeleeCoef == 0.f) continue;
+				else if (i == 2 && item->m_tWeaponInfo.m_fRangeCoef == 0) continue;
+				else if (i == 3 && item->m_tWeaponInfo.m_fCritialDMG == 0.f) continue;
+				else if (i == 4 && item->m_tWeaponInfo.m_fCritialAcc == 0.f) continue;
+				else if (i == 5 && item->m_tWeaponInfo.m_fCooldown == 0.f) continue;
+				else if (i == 6 && item->m_tWeaponInfo.m_fRecogRange == 0.f) continue;
+				else if (i == 7 && item->m_tWeaponInfo.m_iPenet == 0) continue;
+
+				CPanelUI* statpanel = panelItemUI->AddChild<CPanelUI>(Vec2(0.f, -50.f + tmp * 21.f));
+				statpanel->SetScale(Vec2(154.f, 16.f));
+				statpanel->SetRadius(0.f, 0.f);
+				//statpanel->SetColor(ColorNormalize(255, 255, 255), ColorNormalize(255, 255, 255));
+				statpanel->SetMouseOnAlpha(0.f);
+				statpanel->SetNormalAlpha(0.f);
+
+				CSpriteUI* statNumber = statpanel->AddChild<CSpriteUI>(Vec2(-statpanel->GetScale().x / 2.f + 8.f, 0.f));
+				statNumber->SetScale(Vec2(26.f, 16.f));
+				if		(i == 0) { swprintf_s(buffer, bufferSize, L"+%d", item->m_tWeaponInfo.m_iDMG); }
+				else if (i == 1) { swprintf_s(buffer, bufferSize, L"+%d", (int)item->m_tWeaponInfo.m_fMeleeCoef); }
+				else if (i == 2) { swprintf_s(buffer, bufferSize, L"+%d", (int)item->m_tWeaponInfo.m_fRangeCoef); }
+				else if (i == 3) { swprintf_s(buffer, bufferSize, L"+%d%%", (int)item->m_tWeaponInfo.m_fCritialDMG); }
+				else if (i == 4) { swprintf_s(buffer, bufferSize, L"+%d%%", (int)item->m_tWeaponInfo.m_fCritialAcc); }
+				else if (i == 5) { swprintf_s(buffer, bufferSize, L"+%d%%", (int)item->m_tWeaponInfo.m_fCooldown); }
+				else if (i == 6) { swprintf_s(buffer, bufferSize, L"+%d%%", (int)item->m_tWeaponInfo.m_fRecogRange); }
+				else if (i == 7) { swprintf_s(buffer, bufferSize, L"+%d", item->m_tWeaponInfo.m_iPenet); }
+				
+				statNumber->CreateTextUI(buffer, -(statNumber->GetScale() / 2.f), statNumber->GetScale() / 2.f
+					, 10, D2D1::ColorF::Green, true, 1.f, D2D1::ColorF::Black
+					, FONT_TYPE::KR
+					, TextUIMode::TEXT
+					, 0);
+				statNumber->GetTextUI()->SetHorizontal(1);
+
+				CSpriteUI* statText = statpanel->AddChild<CSpriteUI>(Vec2(0.f, 0.f));
+				statText->SetScale(Vec2(120.f, 16.f));
+				if		(i == 0) { swprintf_s(buffer, bufferSize, L"데미지"); }
+				else if (i == 1) { swprintf_s(buffer, bufferSize, L"근거리 데미지"); }
+				else if (i == 2) { swprintf_s(buffer, bufferSize, L"원거리 데미지"); }
+				else if (i == 3) { swprintf_s(buffer, bufferSize, L"치명타 데미지"); }
+				else if (i == 4) { swprintf_s(buffer, bufferSize, L"치명타 확률"); }
+				else if (i == 5) { swprintf_s(buffer, bufferSize, L"공격속도"); }
+				else if (i == 6) { swprintf_s(buffer, bufferSize, L"범위"); }
+				else if (i == 7) { swprintf_s(buffer, bufferSize, L"튕기는 횟수"); }
+				
+				statText->CreateTextUI(buffer, -(statText->GetScale() / 2.f), statText->GetScale() / 2.f
+					, 10, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
+					, FONT_TYPE::KR
+					, TextUIMode::TEXT
+					, 0);
+				statText->GetTextUI()->SetHorizontal(1);
+
+
+			}
+			tmp++;
+		}
+		/////////////////////////캐릭터 정보(스탯)/////////////////////////////////
+
 
 		/////////////////////구매 버튼/////////////////////////////////
-		//panelItemUI->AddChild((CUI*)itemImage);
-		//panelItemUI->AddChild((CUI*)priceBtn);				//구매버튼
-		//panelItemUI->AddChild((CUI*)priceBtnShowPrice);		//가격
-		//panelItemUI->AddChild((CUI*)priceBtnCoinImage);		//코인 이미지
-		//panelItemUI->AddChild((CUI*)panelTextItemName);		//아이템 이름
 
 		m_vItemPanels.push_back(panelItemUI);
 
 		AddObject(panelItemUI, GROUP_TYPE::UI);
 	}
-	
-	////////////////////////가운데 아이템 패널 4개////////////////////////////////
+}
 
+void CScene_Shop::CreatePossessedWeapons(Direct2DMgr* _pD2DMgr)
+{
 	const list<CWeapon*>& vPlayerWeaponList = static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->GetPlayerWeapons();
 	int curWeaponCnt = (int)((CPlayer*)CSceneMgr::GetInstance()->GetPlayer())->GetWeaponCount();
-	
+
 	int temp = 0;
 	for (auto iter = vPlayerWeaponList.begin(); iter != vPlayerWeaponList.end(); iter++, temp++)
 	{
@@ -324,24 +547,15 @@ void CScene_Shop::Enter()
 		CSpriteUI* weapons = new CSpriteUI;
 		weapons->SetName(L"Weapon");
 		weapons->SetPos(Vec2(600.f + (temp % 3) * 55.f, 436.f + (temp / 3) * 55.f)); // 기존 무기들 옆에 배치
-		weapons->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
+		weapons->AddImage(_pD2DMgr->GetStoredBitmap(iconTag));
 		weapons->SetObjType(GROUP_TYPE::UI);
 		weapons->SetScale(Vec2(50.f, 50.f));
 		weapons->SetBackGround(true);
 		weapons->SetBackGroundColor(ColorNormalize(30, 30, 30), ColorNormalize(0, 0, 0)
-									, ColorNormalize(30, 30, 30), ColorNormalize(0, 0, 0));
+			, ColorNormalize(30, 30, 30), ColorNormalize(0, 0, 0));
 		weapons->SetIsRound(true, 10.f, 10.f);
 		AddObject(weapons, GROUP_TYPE::UI);
 	}
-	CreateInfoPanel(Vec2(852.f,204.f));
-	CreateScrollArea();
-}
-
-void CScene_Shop::Exit()
-{
-	Safe_Delete_Vec(m_scrollContent);
-	//Safe_Delete_Vec(m_vItemPanels);
-	DeleteAll();
 }
 
 void CScene_Shop::CreateScrollArea()
@@ -418,7 +632,19 @@ void CScene_Shop::ReRollItem()
 		return;
 
 	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+	wchar_t buffer[20];
+	size_t bufferSize = sizeof(buffer) / sizeof(wchar_t);
 
+	for (int i = 0; i < 4; i++)
+	{
+		DeleteObject(m_vItemPanels[i]);
+	}
+	m_vItemPanels.clear();
+	item_numbers.clear();
+	CreateShowItemPanels(pD2DMgr, buffer, bufferSize);
+
+	/*
+	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
 	item_numbers.clear();
 	for (int i = 0; i < 4; i++)
 	{
@@ -429,14 +655,11 @@ void CScene_Shop::ReRollItem()
 	for (int i = 0; i < 4; i++)
 	{
 		const vector<CUI*>& childs = m_vItemPanels[i]->GetChildsUI();
-
-
 		//이미지 변경
 		childs[0]->DeleteImage();
 		iconTag = item_tag_list[item_numbers[i]] + L"_icon";
 		childs[0]->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
 
-		
 		//가격 변경
 		wchar_t buffer[20];
 		swprintf_s(buffer, L"%d", ItemMgr::GetInstance()->GetItem(item_tag_list[item_numbers[i]])->m_iBasePrice);
@@ -447,7 +670,7 @@ void CScene_Shop::ReRollItem()
 		swprintf_s(buffer, L"%s", ItemMgr::GetInstance()->GetItem(item_tag_list[item_numbers[i]])->m_sName.c_str());
 		childs[2]->GetTextUI()->SetText(buffer);
 	}
-
+	*/
 	static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->DecreaseCoin(1);
 }
 
@@ -509,6 +732,59 @@ void CScene_Shop::PurchaseItem(DWORD_PTR lParam, DWORD_PTR wParam)
 		newItem->SetObjType(GROUP_TYPE::UI);
 		newItem->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
 
+		CPlayer* player = static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer());
+		playerParameter& tmp = player->GetCharacterParam();
+
+		/*
+		float			m_fDefaultSpeed;	// 기본 스피드.
+		int				m_AddMaxHP;			// + 최대 체력
+		float			m_fDamageCoef;		//최종뎀 %
+		float			m_fMeleeCoef;		//근거리 최종뎀 %
+		float			m_fRangeCoef;		//원거리 최종뎀 %
+		float			m_fAttackSpeedCoef; // 공격속도 %
+		float			m_fCriticalAcc;		// 크확 %
+		float			m_fSpeed;			// 속도 계수.
+		*/
+
+		printf("플레이어스텟 전\n");
+		printf("%d\n", (int)tmp.m_fDefaultSpeed);
+		printf("%d\n", tmp.m_AddMaxHP);
+		printf("%d\n", (int)tmp.m_fDamageCoef);
+		printf("%d\n", (int)tmp.m_fMeleeCoef);
+		printf("%d\n", (int)tmp.m_fRangeCoef);
+		printf("%d\n", (int)tmp.m_fAttackSpeedCoef);
+		printf("%d\n", tmp.m_iCriticalAcc);
+		printf("%d\n", (int)tmp.m_fSpeed);
+
+		printf("===========================\n");
+		printf("아이템 스텟 \n");
+		printf("%d\n", (int)selectedItem->PassiveStats.m_fDefaultSpeed);
+		printf("%d\n", selectedItem->PassiveStats.m_iAddMaxHP);
+		printf("%d\n", (int)selectedItem->PassiveStats.m_fDamageCoef);
+		printf("%d\n", (int)selectedItem->PassiveStats.m_fMeleeCoef);
+		printf("%d\n", (int)selectedItem->PassiveStats.m_fRangeCoef);
+		printf("%d\n", (int)selectedItem->PassiveStats.m_fAttackSpeedCoef);
+		printf("%d\n", selectedItem->PassiveStats.m_iCriticalAcc);
+		printf("%d\n", (int)selectedItem->PassiveStats.m_fSpeed);
+
+		tmp.m_fDefaultSpeed		+= selectedItem->PassiveStats.m_fDefaultSpeed;
+		tmp.m_AddMaxHP			+= selectedItem->PassiveStats.m_iAddMaxHP;
+		tmp.m_fDamageCoef		+= selectedItem->PassiveStats.m_fDamageCoef;
+		tmp.m_fMeleeCoef		+= selectedItem->PassiveStats.m_fMeleeCoef;
+		tmp.m_fRangeCoef		+= selectedItem->PassiveStats.m_fRangeCoef;
+		tmp.m_fAttackSpeedCoef	+= selectedItem->PassiveStats.m_fAttackSpeedCoef;
+		tmp.m_iCriticalAcc		+= selectedItem->PassiveStats.m_iCriticalAcc;
+		tmp.m_fSpeed			+= selectedItem->PassiveStats.m_fSpeed;
+
+		printf("플레이어스텟 후\n");
+		printf("%d\n", (int)static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->GetCharacterParam().m_fDefaultSpeed);
+		printf("%d\n", static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->GetCharacterParam().m_AddMaxHP);
+		printf("%d\n", (int)static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->GetCharacterParam().m_fDamageCoef);
+		printf("%d\n", (int)static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->GetCharacterParam().m_fMeleeCoef);
+		printf("%d\n", (int)static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->GetCharacterParam().m_fRangeCoef);
+		printf("%d\n", (int)static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->GetCharacterParam().m_fAttackSpeedCoef);
+		printf("%d\n", static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->GetCharacterParam().m_iCriticalAcc);
+		printf("%d\n", (int)static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->GetCharacterParam().m_fSpeed);
 
 		// 새로운 아이템의 위치를 계산하여 설정
 		size_t xCount = m_scrollContent.size() % 9; // 열 번호
@@ -527,447 +803,20 @@ void CScene_Shop::PurchaseItem(DWORD_PTR lParam, DWORD_PTR wParam)
 		float contentHeight = (yCount + 1) * 54.f + 27.f; // 행 개수에 따라 높이를 계산
 		m_scrollArea.contentRect.bottom = max(m_scrollArea.contentRect.bottom, contentHeight);
 	}
+
+	if (m_statPanel != nullptr)
+	{
+		DeleteObject(m_statPanel);
+		CreateInfoPanel(Vec2(852.f, 204.f));
+	}
+
+
+
 	static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->DecreaseCoin(itemPrice);
 }
 
-
-
 void CScene_Shop::CreateInfoPanel(Vec2 _panelPos)
 {
-	/*
-	Vec2 vResolution = CCore::GetInstance()->GetResolution();
-	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
-	CWaveMgr* waveMgr = CWaveMgr::GetInstance();
-	wchar_t buffer[20];
-	//플레이어 Info 출력. 
-	const playerParameter playerInfo = static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->GetPlayerInfo();
-
-	//////////////////우측 능력치 보여주는 곳///////////////////////
-	CPanelUI* parameterPanel = new CPanelUI;
-	parameterPanel->SetName(L"parameterPanel");
-	parameterPanel->SetObjType(GROUP_TYPE::IMAGE);
-	parameterPanel->SetPos(Vec2(840.f, vResolution.y / 2));
-	parameterPanel->SetColor(ColorNormalize(0, 0, 0), ColorNormalize(0, 0, 0));
-	parameterPanel->SetNormalAlpha(0.5f);
-	parameterPanel->SetMouseOnAlpha(0.5f);
-	parameterPanel->SetScale(Vec2(200.f, 300.f));
-	
-	AddObject(parameterPanel, GROUP_TYPE::IMAGE);
-	//////////////////우측 능력치 보여주는 곳///////////////////////
-
-
-	////////////우측 능력치 보여주는 곳////////////////////
-	CObject* abilityText = new CSpriteUI;
-	abilityText->SetName(L"abilityText");
-	abilityText->SetObjType(GROUP_TYPE::UI);
-	abilityText->SetPos(Vec2(840.f, 140.f));
-	abilityText->SetScale(Vec2(196.f, 26.f));
-
-
-	abilityText->CreateTextUI(L"능력치", -(abilityText->GetScale() / 2.f), (abilityText->GetScale() / 2.f)
-		, 22, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
-		, FONT_TYPE::KR
-		, TextUIMode::TEXT
-		, 0);
-	
-	AddObject(abilityText, GROUP_TYPE::UI);
-	////////////우측 능력치 보여주는 곳////////////////////
-
-
-	
-	////////////현재 레벨 ////////////////////
-	CObject* nowLevelIcon = new CSpriteUI;
-	nowLevelIcon->SetName(L"nowLevelIcon");
-	nowLevelIcon->SetObjType(GROUP_TYPE::UI);
-	nowLevelIcon->AddImage(pD2DMgr->GetStoredBitmap(L"brotato_icon"));
-	nowLevelIcon->SetPos(Vec2(760.f, 170.f));
-	nowLevelIcon->SetScale(Vec2(15.f, 15.f));
-	
-	AddObject(nowLevelIcon, GROUP_TYPE::UI);
-
-	// 
-	CObject* nowLevelText = new CSpriteUI;
-	nowLevelText->SetName(L"nowLevelText");
-	nowLevelText->SetObjType(GROUP_TYPE::UI);
-	//740 + Alpha
-	nowLevelText->SetPos(Vec2(800.f, 170.f));
-	nowLevelText->SetScale(Vec2(196.f, 35.f));
-	swprintf_s(buffer, L"현재 레벨");
-
-
-	nowLevelText->CreateTextUI(buffer, -(nowLevelText->GetScale() / 2.f), (nowLevelText->GetScale() / 2.f)
-		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
-		, FONT_TYPE::KR
-		, TextUIMode::TEXT
-		, 0);
-	
-	AddObject(nowLevelText, GROUP_TYPE::UI);
-
-	//
-
-	CObject* nowLevelCount = new CSpriteUI;
-	nowLevelCount->SetName(L"nowLevelCount");
-	nowLevelCount->SetObjType(GROUP_TYPE::UI);
-	//740 + Alpha
-	nowLevelCount->SetPos(Vec2(920.f, 170.f));
-	nowLevelCount->SetScale(Vec2(35.f, 35.f));
-	swprintf_s(buffer, L"%d", playerInfo.m_iLevel);
-
-
-	nowLevelCount->CreateTextUI(buffer, -(nowLevelCount->GetScale() / 2.f), (nowLevelCount->GetScale() / 2.f)
-		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
-		, FONT_TYPE::KR
-		, TextUIMode::TEXT
-		, 0);
-	
-	AddObject(nowLevelCount, GROUP_TYPE::UI);
-	////////////현재 레벨 ////////////////////
-
-	////////////최대 HP ////////////////////
-	CObject* maxHPIcon = new CSpriteUI;
-	maxHPIcon->SetName(L"maxHPIcon");
-	maxHPIcon->SetObjType(GROUP_TYPE::UI);
-	maxHPIcon->AddImage(pD2DMgr->GetStoredBitmap(L"max_hp"));
-	maxHPIcon->SetPos(Vec2(760.f, 200.f));
-	maxHPIcon->SetScale(Vec2(15.f, 15.f));
-	
-	AddObject(maxHPIcon, GROUP_TYPE::UI);
-
-	// 
-	CObject* maxHPText = new CSpriteUI;
-	maxHPText->SetName(L"maxHPText");
-	maxHPText->SetObjType(GROUP_TYPE::UI);
-	//740 + Alpha
-	maxHPText->SetPos(Vec2(796.f, 200.f));
-	maxHPText->SetScale(Vec2(196.f, 35.f));
-	swprintf_s(buffer, L"최대 HP");
-
-
-	maxHPText->CreateTextUI(buffer, -(maxHPText->GetScale() / 2.f), (maxHPText->GetScale() / 2.f)
-		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
-		, FONT_TYPE::KR
-		, TextUIMode::TEXT
-		, 0);
-	
-	AddObject(maxHPText, GROUP_TYPE::UI);
-
-	//
-
-	CObject* maxHPCount = new CSpriteUI;
-	maxHPCount->SetName(L"maxHPCount");
-	maxHPCount->SetObjType(GROUP_TYPE::UI);
-	//740 + Alpha
-	maxHPCount->SetPos(Vec2(920.f, 200.f));
-	maxHPCount->SetScale(Vec2(35.f, 35.f));
-	swprintf_s(buffer, L"%d", playerInfo.m_iMaxHP);
-
-
-	maxHPCount->CreateTextUI(buffer, -(maxHPCount->GetScale() / 2.f), (maxHPCount->GetScale() / 2.f)
-		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
-		, FONT_TYPE::KR
-		, TextUIMode::TEXT
-		, 0);
-	
-	AddObject(maxHPCount, GROUP_TYPE::UI);
-	////////////최대 HP ////////////////////
-
-	////////////데미지 % ////////////////////
-	CObject* FinalDMGIcon = new CSpriteUI;
-	FinalDMGIcon->SetName(L"FinalDMGIcon");
-	FinalDMGIcon->SetObjType(GROUP_TYPE::UI);
-	FinalDMGIcon->AddImage(pD2DMgr->GetStoredBitmap(L"percent_damage"));
-	FinalDMGIcon->SetPos(Vec2(760.f, 230.f));
-	FinalDMGIcon->SetScale(Vec2(15.f, 15.f));
-	
-	AddObject(FinalDMGIcon, GROUP_TYPE::UI);
-
-	// 
-	CObject* FinalDMGText = new CSpriteUI;
-	FinalDMGText->SetName(L"FinalDMGText");
-	FinalDMGText->SetObjType(GROUP_TYPE::UI);
-	//740 + Alpha
-	FinalDMGText->SetPos(Vec2(800.f, 230.f));
-	FinalDMGText->SetScale(Vec2(196.f, 35.f));
-	swprintf_s(buffer, L"%% 데미지");
-
-
-	FinalDMGText->CreateTextUI(buffer, -(FinalDMGText->GetScale() / 2.f), (FinalDMGText->GetScale() / 2.f)
-		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
-		, FONT_TYPE::KR
-		, TextUIMode::TEXT
-		, 0);
-	
-	AddObject(FinalDMGText, GROUP_TYPE::UI);
-
-	//
-
-	CObject* FinalDMGCount = new CSpriteUI;
-	FinalDMGCount->SetName(L"FinalDMGCount");
-	FinalDMGCount->SetObjType(GROUP_TYPE::UI);
-	//740 + Alpha
-	FinalDMGCount->SetPos(Vec2(920.f, 230.f));
-	FinalDMGCount->SetScale(Vec2(35.f, 35.f));
-	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_fDamageCoef));
-
-
-	FinalDMGCount->CreateTextUI(buffer, -(FinalDMGCount->GetScale() / 2.f), (FinalDMGCount->GetScale() / 2.f)
-		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
-		, FONT_TYPE::KR
-		, TextUIMode::TEXT
-		, 0);
-	
-	AddObject(FinalDMGCount, GROUP_TYPE::UI);
-	////////////데미지 % ////////////////////
-
-
-	////////////근거리 데미지 % ////////////////////
-	CObject* MeleeDMGIcon = new CSpriteUI;
-	MeleeDMGIcon->SetName(L"MeleeDMGIcon");
-	MeleeDMGIcon->SetObjType(GROUP_TYPE::UI);
-	MeleeDMGIcon->AddImage(pD2DMgr->GetStoredBitmap(L"melee_damage"));
-	MeleeDMGIcon->SetPos(Vec2(760.f, 260.f));
-	MeleeDMGIcon->SetScale(Vec2(15.f, 15.f));
-
-	AddObject(MeleeDMGIcon, GROUP_TYPE::UI);
-
-	// 
-	CObject* MeleeText = new CSpriteUI;
-	MeleeText->SetName(L"MeleeText");
-	MeleeText->SetObjType(GROUP_TYPE::UI);
-	//740 + Alpha
-	MeleeText->SetPos(Vec2(810.f, 260.f));
-	MeleeText->SetScale(Vec2(196.f, 35.f));
-	swprintf_s(buffer, L"근거리 데미지");
-
-
-	MeleeText->CreateTextUI(buffer, -(MeleeText->GetScale() / 2.f), (MeleeText->GetScale() / 2.f)
-		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
-		, FONT_TYPE::KR
-		, TextUIMode::TEXT
-		, 0);
-	
-	AddObject(MeleeText, GROUP_TYPE::UI);
-
-	//
-
-	CObject* MeleeCount = new CSpriteUI;
-	MeleeCount->SetName(L"MeleeCount");
-	MeleeCount->SetObjType(GROUP_TYPE::UI);
-	//740 + Alpha
-	MeleeCount->SetPos(Vec2(920.f, 260.f));
-	MeleeCount->SetScale(Vec2(35.f, 35.f));
-	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_fMeleeCoef));
-
-
-	MeleeCount->CreateTextUI(buffer, -(MeleeCount->GetScale() / 2.f), (MeleeCount->GetScale() / 2.f)
-		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
-		, FONT_TYPE::KR
-		, TextUIMode::TEXT
-		, 0);
-	
-	AddObject(MeleeCount, GROUP_TYPE::UI);
-	////////////근거리 데미지 % ////////////////////
-
-
-	////////////원거리 데미지 % ////////////////////
-	CObject* rangedDMGIcon = new CSpriteUI;
-	rangedDMGIcon->SetName(L"rangedDMGIcon");
-	rangedDMGIcon->SetObjType(GROUP_TYPE::UI);
-	rangedDMGIcon->AddImage(pD2DMgr->GetStoredBitmap(L"ranged_damage"));
-	rangedDMGIcon->SetPos(Vec2(760.f, 290.f));
-	rangedDMGIcon->SetScale(Vec2(15.f, 15.f));
-	
-	AddObject(rangedDMGIcon, GROUP_TYPE::UI);
-
-	// 
-	CObject* rangedText = new CSpriteUI;
-	rangedText->SetObjType(GROUP_TYPE::UI);
-	//740 + Alpha
-	rangedText->SetPos(Vec2(810.f, 290.f));
-	rangedText->SetScale(Vec2(196.f, 35.f));
-	swprintf_s(buffer, L"원거리 데미지");
-
-
-	rangedText->CreateTextUI(buffer, -(rangedText->GetScale() / 2.f), (rangedText->GetScale() / 2.f)
-		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
-		, FONT_TYPE::KR
-		, TextUIMode::TEXT
-		, 0);
-	
-	AddObject(rangedText, GROUP_TYPE::UI);
-
-	//
-
-	CObject* rangedCount = new CSpriteUI;
-	rangedCount->SetName(L"rangedCount");
-	rangedCount->SetObjType(GROUP_TYPE::UI);
-	//740 + Alpha
-	rangedCount->SetPos(Vec2(920.f, 290.f));
-	rangedCount->SetScale(Vec2(35.f, 35.f));
-	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_fRangeCoef));
-
-
-	rangedCount->CreateTextUI(buffer, -(rangedCount->GetScale() / 2.f), (rangedCount->GetScale() / 2.f)
-		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
-		, FONT_TYPE::KR
-		, TextUIMode::TEXT
-		, 0);
-	
-	AddObject(rangedCount, GROUP_TYPE::UI);
-	////////////원거리 데미지 % ////////////////////
-
-
-	////////////공격속도  % ////////////////////
-	CObject* attackSpeedIcon = new CSpriteUI;
-	attackSpeedIcon->SetName(L"attackSpeedIcon");
-	attackSpeedIcon->SetObjType(GROUP_TYPE::UI);
-	attackSpeedIcon->AddImage(pD2DMgr->GetStoredBitmap(L"attack_speed"));
-	attackSpeedIcon->SetPos(Vec2(760.f, 320.f));
-	attackSpeedIcon->SetScale(Vec2(15.f, 15.f));
-	
-	AddObject(attackSpeedIcon, GROUP_TYPE::UI);
-
-	// 
-	CObject* attackSpeedText = new CSpriteUI;
-	attackSpeedText->SetName(L"attackSpeedText");
-	attackSpeedText->SetObjType(GROUP_TYPE::UI);
-	//740 + Alpha
-	attackSpeedText->SetPos(Vec2(805.f, 320.f));
-	attackSpeedText->SetScale(Vec2(196.f, 35.f));
-	swprintf_s(buffer, L"%% 공격 속도");
-
-
-	attackSpeedText->CreateTextUI(buffer, -(attackSpeedText->GetScale() / 2.f), (attackSpeedText->GetScale() / 2.f)
-		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
-		, FONT_TYPE::KR
-		, TextUIMode::TEXT
-		, 0);
-	
-	AddObject(attackSpeedText, GROUP_TYPE::UI);
-
-	//
-
-	CObject* attackSpeedCount = new CSpriteUI;
-	attackSpeedCount->SetName(L"attackSpeedCount");
-	attackSpeedCount->SetObjType(GROUP_TYPE::UI);
-	//740 + Alpha
-	attackSpeedCount->SetPos(Vec2(920.f, 320.f));
-	attackSpeedCount->SetScale(Vec2(35.f, 35.f));
-	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_fAttackSpeedCoef));
-
-
-	attackSpeedCount->CreateTextUI(buffer, -(attackSpeedCount->GetScale() / 2.f), (attackSpeedCount->GetScale() / 2.f)
-		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
-		, FONT_TYPE::KR
-		, TextUIMode::TEXT
-		, 0);
-	
-	AddObject(attackSpeedCount, GROUP_TYPE::UI);
-	////////////공격속도 % ////////////////////
-
-
-	////////////치명타율  % ////////////////////
-	CObject* critChanceIcon = new CSpriteUI;
-	critChanceIcon->SetName(L"critChanceIcon");
-	critChanceIcon->SetObjType(GROUP_TYPE::UI);
-	critChanceIcon->AddImage(pD2DMgr->GetStoredBitmap(L"crit_chance"));
-	critChanceIcon->SetPos(Vec2(760.f, 350.f));
-	critChanceIcon->SetScale(Vec2(15.f, 15.f));
-	
-	AddObject(critChanceIcon, GROUP_TYPE::UI);
-
-	// 
-	CObject* critChanceText = new CSpriteUI;
-	critChanceText->SetName(L"critChanceText");
-	critChanceText->SetObjType(GROUP_TYPE::UI);
-	//740 + Alpha
-	critChanceText->SetPos(Vec2(803.f, 350.f));
-	critChanceText->SetScale(Vec2(196.f, 35.f));
-	swprintf_s(buffer, L"%% 치명타율");
-
-
-	critChanceText->CreateTextUI(buffer, -(critChanceText->GetScale() / 2.f), (critChanceText->GetScale() / 2.f)
-		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
-		, FONT_TYPE::KR
-		, TextUIMode::TEXT
-		, 0);
-	
-	AddObject(critChanceText, GROUP_TYPE::UI);
-
-	//
-
-	CObject* critChanceCount = new CSpriteUI;
-	critChanceCount->SetName(L"critChanceCount");
-	critChanceCount->SetObjType(GROUP_TYPE::UI);
-	//740 + Alpha
-	critChanceCount->SetPos(Vec2(920.f, 350.f));
-	critChanceCount->SetScale(Vec2(35.f, 35.f));
-	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_iCriticalAcc));
-
-
-	critChanceCount->CreateTextUI(buffer, -(critChanceCount->GetScale() / 2.f), (critChanceCount->GetScale() / 2.f)
-		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
-		, FONT_TYPE::KR
-		, TextUIMode::TEXT
-		, 0);
-
-	AddObject(critChanceCount, GROUP_TYPE::UI);
-	////////////치명타율 % ////////////////////
-
-	////////////속도  % ////////////////////
-	CObject* speedIcon = new CSpriteUI;
-	speedIcon->SetName(L"speedIcon");
-	speedIcon->SetObjType(GROUP_TYPE::UI);
-	speedIcon->AddImage(pD2DMgr->GetStoredBitmap(L"speed"));
-	speedIcon->SetPos(Vec2(760.f, 380.f));
-	speedIcon->SetScale(Vec2(15.f, 15.f));
-	
-	AddObject(speedIcon, GROUP_TYPE::UI);
-
-	// 
-	CObject* speedText = new CSpriteUI;
-	speedText->SetName(L"speedText");
-	speedText->SetObjType(GROUP_TYPE::UI);
-	//740 + Alpha
-	speedText->SetPos(Vec2(792.f, 380.f));
-	speedText->SetScale(Vec2(196.f, 35.f));
-
-	swprintf_s(buffer, L"%% 속도");
-
-
-	speedText->CreateTextUI(buffer, -(speedText->GetScale() / 2.f), (speedText->GetScale() / 2.f)
-		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
-		, FONT_TYPE::KR
-		, TextUIMode::TEXT
-		, 0);
-	
-	AddObject(speedText, GROUP_TYPE::UI);
-
-	//
-
-	CObject* speedCount = new CSpriteUI;
-	speedCount->SetName(L"speedCount");
-	speedCount->SetObjType(GROUP_TYPE::UI);
-	//740 + Alpha
-	speedCount->SetPos(Vec2(920.f, 380.f));
-	speedCount->SetScale(Vec2(35.f, 35.f));
-	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_fSpeed));
-
-
-	speedCount->CreateTextUI(buffer, -(speedCount->GetScale() / 2.f), (speedCount->GetScale() / 2.f)
-		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
-		, FONT_TYPE::KR
-		, TextUIMode::TEXT
-		, 0);
-	
-	AddObject(speedCount, GROUP_TYPE::UI);
-	////////////치명타율 % ////////////////////
-
-
-	*/
-
-
-
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
 	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
 	CWaveMgr* waveMgr = CWaveMgr::GetInstance();
@@ -985,6 +834,7 @@ void CScene_Shop::CreateInfoPanel(Vec2 _panelPos)
 	parameterPanel->SetColor(ColorNormalize(0, 0, 0), ColorNormalize(0, 0, 0));
 	parameterPanel->SetScale(Vec2(200.f, 300.f));
 
+	m_statPanel = parameterPanel;
 	AddObject(parameterPanel, GROUP_TYPE::IMAGE);
 	//////////////////우측 능력치 보여주는 곳///////////////////////
 
@@ -1074,7 +924,7 @@ void CScene_Shop::CreateInfoPanel(Vec2 _panelPos)
 	maxHPCount->SetName(L"maxHPCount");
 	maxHPCount->SetObjType(GROUP_TYPE::UI);
 	maxHPCount->SetScale(Vec2(35.f, 35.f));
-	swprintf_s(buffer, L"%d", playerInfo.m_iMaxHP);
+	swprintf_s(buffer, L"%d", playerInfo.m_iMaxHP + playerInfo.m_AddMaxHP);
 	maxHPCount->CreateTextUI(buffer, -(maxHPCount->GetScale() / 2.f), (maxHPCount->GetScale() / 2.f)
 		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR
@@ -1321,7 +1171,7 @@ void CScene_Shop::CreateInfoPanel(Vec2 _panelPos)
 	speedCount->SetName(L"speedCount");
 	speedCount->SetObjType(GROUP_TYPE::UI);
 	speedCount->SetScale(Vec2(35.f, 35.f));
-	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_fSpeed));
+	swprintf_s(buffer, L"%d", static_cast<int>(playerInfo.m_fSpeed) + (int)playerInfo.m_fDefaultSpeed);
 	speedCount->CreateTextUI(buffer, -(speedCount->GetScale() / 2.f), (speedCount->GetScale() / 2.f)
 		, 11, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR

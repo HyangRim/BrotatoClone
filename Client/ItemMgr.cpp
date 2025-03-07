@@ -30,8 +30,99 @@ void ItemMgr::Clear()
 
 void ItemMgr::init()
 {
+	init_character();
 	init_passive();
 	init_weapon();
+}
+
+
+void ItemMgr::init_character()
+{
+	/*
+	struct {
+		float   m_fDefaultSpeed;    // 기본 스피드
+		int     m_iAddMaxHP;         // + 최대 체력
+		float   m_fDamageCoef;      // 최종 데미지 %
+		float   m_fMeleeCoef;       // 근거리 최종 데미지 %
+		float   m_fRangeCoef;       // 원거리 최종 데미지 %
+		float   m_fAttackSpeedCoef; // 공격 속도 %
+		int     m_iCriticalAcc;     // 크리티컬 확률 %
+		float   m_fSpeed;           // 속도 계수
+	} PassiveStats;                 // 패시브 아이템 관련 정보 (PASSIVE 타입일 때 사용)
+	*/
+
+	//////////////////////다재다능///////////////////////////////////
+	Item* well_rounded = new Item(ITEM_TYPE::CHARACTER);
+	well_rounded->m_sName = L"다재다능";
+	well_rounded->tag = L"well_rounded";
+	well_rounded->m_eItemType = ITEM_TYPE::CHARACTER;
+
+	well_rounded->PassiveStats.m_iAddMaxHP = 3;
+	well_rounded->PassiveStats.m_fDamageCoef = 1.f;
+	well_rounded->PassiveStats.m_fMeleeCoef = 1.f;
+	well_rounded->PassiveStats.m_fRangeCoef = 1.f;
+
+	m_sItems.insert(make_pair(L"well_rounded", well_rounded));
+	//////////////////////다재다능///////////////////////////////////
+
+	//////////////////////레인저///////////////////////////////////
+	Item* ranger = new Item(ITEM_TYPE::CHARACTER);
+	ranger->m_sName = L"레인저";
+	ranger->tag = L"ranger";
+	ranger->m_eItemType = ITEM_TYPE::CHARACTER;
+
+	ranger->PassiveStats.m_fAttackSpeedCoef = 5.f;
+
+	m_sItems.insert(make_pair(L"ranger", ranger));
+	//////////////////////레인저///////////////////////////////////
+	
+	//////////////////////마법사///////////////////////////////////
+	Item* mage = new Item(ITEM_TYPE::CHARACTER);
+	mage->m_sName = L"마법사";
+	mage->tag = L"mage";
+	mage->m_eItemType = ITEM_TYPE::CHARACTER;
+
+	mage->PassiveStats.m_fRangeCoef = 30.f;
+
+	m_sItems.insert(make_pair(L"mage", mage));
+	//////////////////////마법사///////////////////////////////////
+
+	//////////////////////광인///////////////////////////////////
+	Item* crazy = new Item(ITEM_TYPE::CHARACTER);
+	crazy->m_sName = L"광인";
+	crazy->tag = L"crazy";
+	crazy->m_eItemType = ITEM_TYPE::CHARACTER;
+
+	crazy->PassiveStats.m_fDefaultSpeed = 10.f;
+	crazy->PassiveStats.m_fMeleeCoef = 8.f;
+	crazy->PassiveStats.m_fRangeCoef = 8.f;
+
+	m_sItems.insert(make_pair(L"crazy", crazy));
+	//////////////////////광인///////////////////////////////////
+
+	//////////////////////뚱뚱이///////////////////////////////////
+	Item* chunky = new Item(ITEM_TYPE::CHARACTER);
+	chunky->m_sName = L"뚱뚱이";
+	chunky->tag = L"chunky";
+	chunky->m_eItemType = ITEM_TYPE::CHARACTER;
+
+	chunky->PassiveStats.m_iAddMaxHP = 30;
+	chunky->PassiveStats.m_fMeleeCoef = 5.f;
+
+	m_sItems.insert(make_pair(L"chunky", chunky));
+	//////////////////////뚱뚱이///////////////////////////////////
+
+	//////////////////////검투사///////////////////////////////////
+	Item* brawler = new Item(ITEM_TYPE::CHARACTER);
+	brawler->m_sName = L"검투사";
+	brawler->tag = L"brawler";
+	brawler->m_eItemType = ITEM_TYPE::CHARACTER;
+
+	brawler->PassiveStats.m_iAddMaxHP = 10;
+	brawler->PassiveStats.m_fMeleeCoef = 20.f;
+
+	m_sItems.insert(make_pair(L"brawler", brawler));
+	//////////////////////검투사///////////////////////////////////
 }
 
 void ItemMgr::init_passive()
@@ -41,6 +132,8 @@ void ItemMgr::init_passive()
 	tree->tag = L"tree";
 	tree->m_eItemType = ITEM_TYPE::PASSIVE;
 	tree->m_iBasePrice = 5;
+
+	tree->PassiveStats.m_iAddMaxHP = 3;
 	m_sItems.insert(make_pair(L"tree", tree));
 
 	Item* lumberjack_shirt = new Item(ITEM_TYPE::PASSIVE);
@@ -48,6 +141,8 @@ void ItemMgr::init_passive()
 	lumberjack_shirt->tag = L"lumberjack_shirt";
 	lumberjack_shirt->m_eItemType = ITEM_TYPE::PASSIVE;
 	lumberjack_shirt->m_iBasePrice = 6;
+
+	lumberjack_shirt->PassiveStats.m_iAddMaxHP = 3;
 	m_sItems.insert(make_pair(L"lumberjack_shirt", lumberjack_shirt));
 
 	Item* propeller_hat = new Item(ITEM_TYPE::PASSIVE);
@@ -55,6 +150,8 @@ void ItemMgr::init_passive()
 	propeller_hat->tag = L"propeller_hat";
 	propeller_hat->m_eItemType = ITEM_TYPE::PASSIVE;
 	propeller_hat->m_iBasePrice = 7;
+
+	propeller_hat->PassiveStats.m_fDamageCoef = 1.f;
 	m_sItems.insert(make_pair(L"propeller_hat", propeller_hat));
 
 	Item* butterfly = new Item(ITEM_TYPE::PASSIVE);
@@ -62,6 +159,9 @@ void ItemMgr::init_passive()
 	butterfly->tag = L"butterfly";
 	butterfly->m_eItemType = ITEM_TYPE::PASSIVE;
 	butterfly->m_iBasePrice = 8;
+
+	butterfly->PassiveStats.m_fDefaultSpeed = 5.f;
+	butterfly->PassiveStats.m_iCriticalAcc = 5;
 	m_sItems.insert(make_pair(L"butterfly", butterfly));
 
 	Item* mushroom = new Item(ITEM_TYPE::PASSIVE);
@@ -69,6 +169,9 @@ void ItemMgr::init_passive()
 	mushroom->tag = L"mushroom";
 	mushroom->m_eItemType = ITEM_TYPE::PASSIVE;
 	mushroom->m_iBasePrice = 9;
+
+	mushroom->PassiveStats.m_fAttackSpeedCoef = 10.f;
+	mushroom->PassiveStats.m_fDamageCoef = 3.f;
 	m_sItems.insert(make_pair(L"mushroom", mushroom));
 
 	Item* toxic_sludge = new Item(ITEM_TYPE::PASSIVE);
@@ -76,6 +179,8 @@ void ItemMgr::init_passive()
 	toxic_sludge->tag = L"toxic_sludge";
 	toxic_sludge->m_eItemType = ITEM_TYPE::PASSIVE;
 	toxic_sludge->m_iBasePrice = 10;
+
+	toxic_sludge->PassiveStats.m_fMeleeCoef = 5.f;
 	m_sItems.insert(make_pair(L"toxic_sludge", toxic_sludge));
 
 	Item* hedgehog = new Item(ITEM_TYPE::PASSIVE);
@@ -83,6 +188,10 @@ void ItemMgr::init_passive()
 	hedgehog->tag = L"hedgehog";
 	hedgehog->m_eItemType = ITEM_TYPE::PASSIVE;
 	hedgehog->m_iBasePrice = 11;
+
+	hedgehog->PassiveStats.m_fMeleeCoef = 2.f;
+	hedgehog->PassiveStats.m_fRangeCoef = 1.f;
+	hedgehog->PassiveStats.m_iAddMaxHP = 1;
 	m_sItems.insert(make_pair(L"hedgehog", hedgehog));
 
 	Item* charcoal = new Item(ITEM_TYPE::PASSIVE);
@@ -90,6 +199,9 @@ void ItemMgr::init_passive()
 	charcoal->tag = L"charcoal";
 	charcoal->m_eItemType = ITEM_TYPE::PASSIVE;
 	charcoal->m_iBasePrice = 12;
+
+	charcoal->PassiveStats.m_fDamageCoef = 1.f;
+	charcoal->PassiveStats.m_fRangeCoef = 1.f;
 	m_sItems.insert(make_pair(L"charcoal", charcoal));
 
 	Item* scared_sausage = new Item(ITEM_TYPE::PASSIVE);
@@ -97,6 +209,8 @@ void ItemMgr::init_passive()
 	scared_sausage->tag = L"scared_sausage";
 	scared_sausage->m_eItemType = ITEM_TYPE::PASSIVE;
 	scared_sausage->m_iBasePrice = 13;
+
+	scared_sausage->PassiveStats.m_fDamageCoef = 5.f;
 	m_sItems.insert(make_pair(L"scared_sausage", scared_sausage));
 
 
@@ -105,6 +219,8 @@ void ItemMgr::init_passive()
 	weird_ghost->tag = L"weird_ghost";
 	weird_ghost->m_eItemType = ITEM_TYPE::PASSIVE;
 	weird_ghost->m_iBasePrice = 14;
+
+	weird_ghost->PassiveStats.m_iAddMaxHP = 5;
 	m_sItems.insert(make_pair(L"weird_ghost", weird_ghost));
 
 	Item* head_injury = new Item(ITEM_TYPE::PASSIVE);
@@ -112,6 +228,9 @@ void ItemMgr::init_passive()
 	head_injury->tag = L"head_injury";
 	head_injury->m_eItemType = ITEM_TYPE::PASSIVE;
 	head_injury->m_iBasePrice = 15;
+
+	head_injury->PassiveStats.m_fDamageCoef = 10.f;
+	head_injury->PassiveStats.m_iAddMaxHP = 10;
 	m_sItems.insert(make_pair(L"head_injury", head_injury));
 
 	Item* baby_elephant = new Item(ITEM_TYPE::PASSIVE);
@@ -119,6 +238,8 @@ void ItemMgr::init_passive()
 	baby_elephant->tag = L"baby_elephant";
 	baby_elephant->m_eItemType = ITEM_TYPE::PASSIVE;
 	baby_elephant->m_iBasePrice = 16;
+
+	baby_elephant->PassiveStats.m_fDefaultSpeed = 5.f;
 	m_sItems.insert(make_pair(L"baby_elephant", baby_elephant));
 
 
@@ -127,6 +248,9 @@ void ItemMgr::init_passive()
 	alien_worm->tag = L"alien_worm";
 	alien_worm->m_eItemType = ITEM_TYPE::PASSIVE;
 	alien_worm->m_iBasePrice = 17;
+
+	alien_worm->PassiveStats.m_iAddMaxHP = 2;
+	alien_worm->PassiveStats.m_fDefaultSpeed = 3.f;
 	m_sItems.insert(make_pair(L"alien_worm", alien_worm));
 
 	Item* duct_tape = new Item(ITEM_TYPE::PASSIVE);
@@ -134,6 +258,8 @@ void ItemMgr::init_passive()
 	duct_tape->tag = L"duct_tape";
 	duct_tape->m_eItemType = ITEM_TYPE::PASSIVE;;
 	duct_tape->m_iBasePrice = 1;
+
+	duct_tape->PassiveStats.m_iCriticalAcc = 5;
 	m_sItems.insert(make_pair(L"duct_tape", duct_tape));
 
 	Item* cute_monkey = new Item(ITEM_TYPE::PASSIVE);
@@ -141,6 +267,9 @@ void ItemMgr::init_passive()
 	cute_monkey->tag = L"cute_monkey";
 	cute_monkey->m_eItemType = ITEM_TYPE::PASSIVE;
 	cute_monkey->m_iBasePrice = 999;
+
+	cute_monkey->PassiveStats.m_fMeleeCoef = 3.f;
+	cute_monkey->PassiveStats.m_fRangeCoef = 3.f;
 	m_sItems.insert(make_pair(L"cute_monkey", cute_monkey));
 }
 
@@ -152,6 +281,7 @@ void ItemMgr::init_weapon()
 	knife->m_eItemType = ITEM_TYPE::WEAPON;
 	knife->m_iBasePrice = 10;
 	knife->m_tWeaponInfo.m_sIconImageKey = L"knife_icon";
+	knife->m_tWeaponInfo.m_iDMG = 10;
 	m_sItems.insert(make_pair(L"knife", knife));
 
 	Item* pistol = new Item(ITEM_TYPE::WEAPON);
@@ -160,6 +290,7 @@ void ItemMgr::init_weapon()
 	pistol->m_eItemType = ITEM_TYPE::WEAPON;
 	pistol->m_iBasePrice = 11;
 	pistol->m_tWeaponInfo.m_sIconImageKey = L"pistol_icon";
+	pistol->m_tWeaponInfo.m_iDMG = 12;
 	m_sItems.insert(make_pair(L"pistol", pistol));
 
 	Item* slingshot = new Item(ITEM_TYPE::WEAPON);
@@ -168,5 +299,6 @@ void ItemMgr::init_weapon()
 	slingshot->m_eItemType = ITEM_TYPE::WEAPON;
 	slingshot->m_iBasePrice = 12;
 	slingshot->m_tWeaponInfo.m_sIconImageKey = L"slingshot_icon";
+	slingshot->m_tWeaponInfo.m_iDMG = 5;
 	m_sItems.insert(make_pair(L"slingshot", slingshot));
 }

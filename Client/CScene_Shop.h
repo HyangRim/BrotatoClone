@@ -13,11 +13,13 @@ private:
     vector<int>         item_numbers;
 
 private:
+    CPanelUI*           m_statPanel;
+
+private:
     ScrollArea          m_scrollArea;                //구조체 정의는 Direct2DMgr에
     vector<CObject*>    m_scrollContent;       //스크롤 영역에 정의할 객체들
 
 private:
-
     vector<CWeapon*>    m_vWeaponlist;
 
 public:
@@ -40,6 +42,21 @@ public:
 public:
     virtual void Enter();		//해당 Scene에 진입 시 호출.
     virtual void Exit();		//해당 Scene에 탈출 시 호출.
+
+
+public:
+    void CreateBackGround(Direct2DMgr* _pD2DMgr, Vec2 _vResolution);
+    void CreateShopWaveTextUI(wchar_t* buffer, size_t bufferSize);
+    void CreateItemTextUI(wchar_t* buffer, size_t bufferSize);
+    void CreateWeaponTextUI(wchar_t* buffer, size_t bufferSize);
+    void CreateResetBtn(Direct2DMgr* _pD2DMgr);
+    void CreateRemainingCoinText(wchar_t* buffer, size_t bufferSize);
+    void CreateRemainingCoinImage(Direct2DMgr* _pD2DMgr);
+    void CreateNextWaveBtn(wchar_t* buffer, size_t bufferSize);
+    void CreateShowItemPanels(Direct2DMgr* _pD2DMgr, wchar_t* buffer, size_t bufferSize);
+    void CreatePossessedWeapons(Direct2DMgr* _pD2DMgr);
+
+
 
 public:
     CScene_Shop();
