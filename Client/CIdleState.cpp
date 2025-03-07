@@ -18,7 +18,7 @@ CIdleState::~CIdleState()
 
 void CIdleState::update()
 {
-	CPlayer* pPlayer = (CPlayer*)CSceneMgr::GetInstance()->GetCurScene()->GetPlayer();
+	CPlayer* pPlayer = (CPlayer*)CSceneMgr::GetInstance()->GetPlayer();
 	// 가만히 있는다. 
 
 	Vec2 vPlayerPos = pPlayer->GetPos();

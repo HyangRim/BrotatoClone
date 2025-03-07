@@ -5,6 +5,7 @@
 #include "CMonFactory.h"
 //전방선언하는 이유는 컴파일 속도에 영향을 주지 않기 위해. 
 class CObject;
+class CMonster;
 
 
 
@@ -80,11 +81,16 @@ public:
 
 	static void ChangePause(bool _bPause);
 	static bool GetPause() { return isPause; }
+	void AllDropItemRetrieve();
+
+
 public:
 	CScene();
 
 	//소멸자의 가상함수 해줘야함. 씬 매니저가 모든 Scene을 부모 포인터로 관리함.
 	// CSceneMgr에서 씬을 소멸시킬때, 소멸자는 부모인 CScene만 호출됨.  
 	virtual ~CScene();
+
+	friend class CMonster;
 };
 

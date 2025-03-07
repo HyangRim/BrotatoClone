@@ -9,6 +9,7 @@
 #include "CResMgr.h"
 #include "ItemMgr.h"
 #include "Direct2DMgr.h"
+#include "CWaveMgr.h"
 
 
 #include "CWeapon.h"
@@ -317,17 +318,32 @@ void CPlayer::update_move()
 		//pRigid->AddForce(Vec2(200.f, 0.f));
 	}
 
+	float speedValue = 1.f + m_tPlayerInfo.m_fSpeed;
+
+	if (nullptr != m_tPlayerInfo.m_stCharacterInfo) {
+		speedValue -= 1.f;
+		speedValue += m_tPlayerInfo.m_stCharacterInfo->m_fSpeed;
+	}
+
 	if (KEY_TAP(KEY::W)) {
-		pRigid->AddVelocity(Vec2(pRigid->GetVelocity().x, -100.f));
+		Vec2 moveVec = Vec2(pRigid->GetVelocity().x, -100.f) * speedValue;
+		pRigid->AddVelocity(moveVec);
+		//pRigid->AddVelocity(Vec2(pRigid->GetVelocity().x, -100.f));
 	}
 	if (KEY_TAP(KEY::S)) {
-		pRigid->AddVelocity(Vec2(pRigid->GetVelocity().x, 100.f));
+		Vec2 moveVec = Vec2(pRigid->GetVelocity().x, 100.f) * speedValue;
+		pRigid->AddVelocity(moveVec);
+		//pRigid->AddVelocity(Vec2(pRigid->GetVelocity().x, 100.f));
 	}
 	if (KEY_TAP(KEY::A)) {
-		pRigid->AddVelocity(Vec2(-100.f, pRigid->GetVelocity().y));
+		Vec2 moveVec = Vec2(-100.f, pRigid->GetVelocity().y) * speedValue;
+		pRigid->AddVelocity(moveVec);
+		//pRigid->AddVelocity(Vec2(-100.f, pRigid->GetVelocity().y));
 	}
 	if (KEY_TAP(KEY::D)) {
-		pRigid->AddVelocity(Vec2(100.f, pRigid->GetVelocity().y));
+		Vec2 moveVec = Vec2(100.f, pRigid->GetVelocity().y) * speedValue;
+		pRigid->AddVelocity(moveVec);
+		//pRigid->AddVelocity(Vec2(100.f, pRigid->GetVelocity().y));
 	}
 
 	SetPos(vPos);
@@ -470,8 +486,11 @@ void CPlayer::AddCoin(int _iCoin)
 void CPlayer::PlayerLevelUp()
 {
 	m_tPlayerInfo.m_iCurEXP -= m_tPlayerInfo.m_iMaxEXP;
+	m_tPlayerInfo.m_iMaxEXP += 10;
 	m_tPlayerInfo.m_iMaxHP += 1;
 	m_tPlayerInfo.m_iCurHP += 1;
+
+	CWaveMgr::GetInstance()->PlayerLevelUp();
 }
 
 void CPlayer::PlayWalkSound()

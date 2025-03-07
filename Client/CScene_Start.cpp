@@ -44,6 +44,10 @@
 
 
 
+constexpr const wchar_t LifebarString[20] = L"Lifebar";
+constexpr const wchar_t XpbarString[20] = L"Xpbar";
+constexpr const wchar_t HarvestingTextString[20] = L"HarvestingText";
+
 
 CScene_Start::CScene_Start()
 	: m_bUseForce(false)
@@ -143,22 +147,21 @@ void CScene_Start::update()
 		}
 	}
 
-
+	UINT typeIDX = (UINT)GROUP_TYPE::UI;
 	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; typeIDX++) {
 		const vector<CObject*>& vecObj = GetGroupObject((GROUP_TYPE)typeIDX);
-
+		wchar_t buffer[20];
 		///////////////////////////////////////////
 		if (typeIDX == (UINT)GROUP_TYPE::UI)
 		{
 			for (size_t objIDX = 0; objIDX < vecObj.size(); objIDX++) 
 			{
 				////////////////////체력바 업뎃//////////////////////////////////
-				if (vecObj[objIDX]->GetName().compare(L"Lifebar") == 0)
+				if (vecObj[objIDX]->GetName().compare(LifebarString) == 0)
 				{
 					CPlayer* player = static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer());
 					playerParameter playerInfo = player->GetPlayerInfo();
 
-					wchar_t buffer[20];
 					swprintf_s(buffer, L"%d / %d", playerInfo.m_iCurHP, playerInfo.m_iMaxHP);
 
 					vecObj[objIDX]->GetTextUI()->SetText(buffer);
@@ -169,12 +172,11 @@ void CScene_Start::update()
 				}
 				///////////////////////////////////////////////////////////////////
 				////////////////////경험치바 업뎃//////////////////////////////////
-				if (vecObj[objIDX]->GetName().compare(L"Xpbar") == 0)
+				if (vecObj[objIDX]->GetName().compare(XpbarString) == 0)
 				{
 					CPlayer* player = static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer());
 					playerParameter playerInfo = player->GetPlayerInfo();
 
-					wchar_t buffer[20];
 					swprintf_s(buffer, L"%d / %d", playerInfo.m_iCurEXP, playerInfo.m_iMaxEXP);
 
 					vecObj[objIDX]->GetTextUI()->SetText(buffer);
@@ -185,12 +187,11 @@ void CScene_Start::update()
 				}
 				///////////////////////////////////////////////////////////////////
 				////////////////////재화갯수 업뎃//////////////////////////////////
-				if (vecObj[objIDX]->GetName().compare(L"HarvestingText") == 0)
+				if (vecObj[objIDX]->GetName().compare(HarvestingTextString) == 0)
 				{
 					CPlayer* player = static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer());
 					playerParameter playerInfo = player->GetPlayerInfo();
 
-					wchar_t buffer[20];
 					swprintf_s(buffer, L"%d", playerInfo.m_iCoin);
 
 					vecObj[objIDX]->GetTextUI()->SetText(buffer);
@@ -199,6 +200,7 @@ void CScene_Start::update()
 			}
 		}
 		///////////////////////////////////////////
+		//이 부분이 물리 처리하는 부분. 
 		for (size_t objIDX = 0; objIDX < vecObj.size(); objIDX++) {
 			if (!vecObj[objIDX]->IsDead()) {
 				if (m_bUseForce && vecObj[objIDX]->GetRigidbody()) {
@@ -551,6 +553,7 @@ void CScene_Start::Exit()
 	m_vecPauseObj.clear();
 	m_vecFailObj.clear();
 	m_vecOptionObjs.clear();
+
 }
 
 void CScene_Start::CreateForce()
@@ -1362,6 +1365,7 @@ void CScene_Start::CreateLevelUpShop()
 		panelItemUI->SetScale(Vec2(176.f, 132.f));
 		panelItemUI->SetPos(Vec2(100.f + upgradeIndex * (5.f + panelItemUI->GetScale().x), vResolution.y / 2));
 		panelItemUI->SetColor(ColorNormalize(0, 0, 0), ColorNormalize(0, 0, 0));
+
 
 		////////////////////////Upgrade 능력치 아이콘////////////////////////////////
 		wstring iconTag = upgrade_tag_list[upgrade_numbers[upgradeIndex]];

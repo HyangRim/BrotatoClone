@@ -35,7 +35,8 @@ void CDropItem::OnCollisionEnter(CCollider* _pOther)
 		wstring SoundKey = dropItemKey + std::to_wstring(randomDropSound);
 		CSoundMgr::GetInstance()->Play(SoundKey);
 
-		static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->AddCoin(1);
+		static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->AddCoin(m_iCoin);
+		static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->AddExp(m_iExp);
 		DeleteObject(this);
 	}
 }

@@ -25,6 +25,8 @@ public:
     void SetAI(AI* _AI);
     const tMonInfo& Getinfo() { return m_tInfo; }
 
+    void SetRecogRange(float _fRecogRange) { m_tInfo.m_fRecogRange = _fRecogRange; }
+
     void TakeDamaged(int _iDamage);
 
 

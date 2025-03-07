@@ -95,7 +95,7 @@ CMonster* CMonFactory::CreateMonster(MON_TYPE _eType, Vec2 _vPos)
 	case MON_TYPE::DROP_ITEM:
 		pMon = new CDropItem;
 		pMon->SetPos(_vPos);
-		pMon->SetScale(Vec2(20.f, 20.f));
+		pMon->SetScale(Vec2(25.f, 25.f));
 
 		tMonInfo info = {};
 		info.m_eMonType = _eType;

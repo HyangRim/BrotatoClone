@@ -11,6 +11,7 @@
 CMissile::CMissile()
 	: m_vDir(Vec2(1.f, 0.f))
 	, m_fTheta(PI / 4.f)
+	, m_fSpeed(1000.f)
 	, m_fLifeTime(5.f)
 	, m_iDamage(12)
 	, m_bIsCritial(false)
@@ -29,9 +30,10 @@ CMissile::~CMissile()
 void CMissile::update()
 {
 	Vec2 vPos = GetPos();
-	//일시정지, 중단점 걸었을 때 정상적으로 가기. 
-	vPos.x += 500.f * fDT * m_vDir.x;
-	vPos.y += 500.f * fDT * m_vDir.y;
+	//일시정지, 중단점 걸었을 때 정상적으로 가기.
+
+	vPos.x += m_fSpeed * fDT * m_vDir.x;
+	vPos.y += m_fSpeed * fDT * m_vDir.y;
 
 	m_fLifeElapsedTime += fDT;
 

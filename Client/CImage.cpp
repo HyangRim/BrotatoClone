@@ -2,6 +2,7 @@
 #include "CImage.h"
 #include "CObject.h"
 #include "Direct2DMgr.h"
+#include "CWeapon.h"
 #include "CUI.h"
 
 
@@ -121,30 +122,70 @@ void CImage::render(ID2D1HwndRenderTarget* _renderTarget)
 		bitmapSize.height            // 원본 이미지의 Y 끝점
 	);
 
-	D2D1_MATRIX_3X2_F originalMaxrix;
-	_renderTarget->GetTransform(&originalMaxrix);
 
-	if (m_pOwner->GetFlipX()) {
-		float centerX = (left + right) / 2.f;
-		D2D1_MATRIX_3X2_F flipMatrix =
-			D2D1::Matrix3x2F::Translation(-centerX, 0) *
-			D2D1::Matrix3x2F::Scale(-1.f, 1.f) *
-			D2D1::Matrix3x2F::Translation(centerX, 0);
+	//이 부분은 무기 전용 렌더링 코드
+	CWeapon* pWeapon = dynamic_cast<CWeapon*>(m_pOwner);
+	float weaponAngle = 0.f;
 
-		_renderTarget->SetTransform(flipMatrix * originalMaxrix);
-	}
-	
-	//_renderTarget->DrawBitmap(m_pBitmap, rect);
-	_renderTarget->DrawBitmap(
-		m_pBitmap,
-		fillRect,                // 렌더링할 대상 영역 (HP 비율 적용)
-		1.0f,                    // 불투명도
-		D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
-		&sourceRect              // 원본 이미지에서 잘라낼 영역 (HP 비율 적용)
-	);
-	
-	if (m_pOwner->GetFlipX()) {
+	if (nullptr != pWeapon) {
+		CObject* pTarget = pWeapon->SpecTarget();
+
+		if (nullptr != pTarget) {
+			Vec2 WeaponPos = m_vFinalPos;
+			Vec2 targetPos = pTarget->GetPos();
+			targetPos = CCamera::GetInstance()->GetRenderPos(targetPos);
+
+			Vec2 dir = targetPos - WeaponPos;
+
+			if (dir.Length() > 0.f) {
+				dir.Normalize();
+				weaponAngle = std::atan2(dir.y, dir.x);
+			}
+		}
+
+		D2D1_MATRIX_3X2_F originalMaxrix;
+		_renderTarget->GetTransform(&originalMaxrix);
+
+		D2D1_POINT_2F center = D2D1::Point2F(m_vFinalPos.x, m_vFinalPos.y);
+		D2D1_MATRIX_3X2_F rotationMatrix = D2D1::Matrix3x2F::Rotation(weaponAngle * (180.f / PI), center);
+
+		_renderTarget->SetTransform(rotationMatrix * originalMaxrix);
+
+		if (m_pBitmap) {
+			_renderTarget->DrawBitmap(m_pBitmap, rect);
+		}
+
 		_renderTarget->SetTransform(originalMaxrix);
 	}
+	else {
+
+		//Weapon이 아닐 때 적용되는 렌더링 코드. EX)몬스터, 캐릭터 등등. 
+		D2D1_MATRIX_3X2_F originalMaxrix;
+		_renderTarget->GetTransform(&originalMaxrix);
+
+		if (m_pOwner->GetFlipX()) {
+			float centerX = (left + right) / 2.f;
+			D2D1_MATRIX_3X2_F flipMatrix =
+				D2D1::Matrix3x2F::Translation(-centerX, 0) *
+				D2D1::Matrix3x2F::Scale(-1.f, 1.f) *
+				D2D1::Matrix3x2F::Translation(centerX, 0);
+
+			_renderTarget->SetTransform(flipMatrix * originalMaxrix);
+		}
+
+		//_renderTarget->DrawBitmap(m_pBitmap, rect);
+		_renderTarget->DrawBitmap(
+			m_pBitmap,
+			fillRect,                // 렌더링할 대상 영역 (HP 비율 적용)
+			1.0f,                    // 불투명도
+			D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
+			&sourceRect              // 원본 이미지에서 잘라낼 영역 (HP 비율 적용)
+		);
+
+		if (m_pOwner->GetFlipX()) {
+			_renderTarget->SetTransform(originalMaxrix);
+		}
+	}
+
 }
 

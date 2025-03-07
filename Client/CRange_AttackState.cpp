@@ -58,6 +58,7 @@ void CRange_AttackState::CreateMissile()
 	pMissile->SetDir(m_vMissileDir);
 	pMissile->CreateImage();
 	pMissile->AddImage(Direct2DMgr::GetInstance()->GetStoredBitmap(L"bullet_enemy"));
+	pMissile->SetSpeed(350.f);
 
 	CreateObject(pMissile, GROUP_TYPE::PROJ_MONSTER);
 }

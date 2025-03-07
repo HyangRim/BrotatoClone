@@ -65,6 +65,8 @@ void CMonster::SetAI(AI* _AI)
 	m_pAI->m_pOwner = this;
 }
 
+
+
 void CMonster::TakeDamaged(int _iDamage)
 {
 }

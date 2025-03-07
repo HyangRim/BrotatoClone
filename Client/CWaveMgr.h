@@ -17,6 +17,9 @@ private:
 
 	CObject*	m_pWaveComplete;
 
+	int			m_iLevelUpCount;
+	bool		m_bLevelUpFlag;
+
 
 private:
 	//스테이지 별 근접, 원거리 확률. 총 100.
@@ -46,7 +49,11 @@ public:
 	
 	void SetWabing(bool _bWave) { m_bWaving = _bWave; }
 	int GetLevel() const { return m_iWaveLevel; }
+	void DecreaseLevelCount() { m_iWaveLevel--; }
 	float GetWaveDuration() const { return m_fWaveDuration; }
+
+	int GetLevelUpCount() { return m_iLevelUpCount; }
+	void PlayerLevelUp() { m_iLevelUpCount++; }
 
 private:
 	void SpawnMob();

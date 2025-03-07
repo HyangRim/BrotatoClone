@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CWeapon.h"
 #include "CPlayer.h"
+#include "CMonster.h"
 #include "CScene.h"
 #include "CSceneMgr.h"
 
@@ -27,9 +28,10 @@ CWeapon::~CWeapon()
 void CWeapon::update()
 {
 	m_pTarget = SpecTarget();
-	//무기는 임시로 플레이어 옆에 있어요. 
+	//무기의 Pos가 플레이어 옆에 있도록 하는 update
 	Vec2 vPlayerPos = m_pPlayer->GetPos();
 	SetPos(vPlayerPos + m_vWeaponOffset);
+
 }
 
 void CWeapon::render(Gdiplus::Graphics* _pDGraphics)
@@ -51,7 +53,6 @@ CObject* CWeapon::SpecTarget()
 	float proximateDistance = 999999999.f;
 	CObject* pObj = nullptr;
 	const vector<CObject*>& vecMonObj = m_pCurScene->GetGroupObject(GROUP_TYPE::MONSTER);
-
 	for (const auto MonObj : vecMonObj) {
 		if (MonObj->IsDead()) continue;
 		Vec2 vPos = GetPos();

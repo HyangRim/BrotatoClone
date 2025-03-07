@@ -19,6 +19,7 @@ private:
 
     CPanelUI* m_pFailPanel;
     vector<CObject*> m_vecFailObj;
+    vector<CObject*> m_vecUpgradeObj;
 
     //옵션 Obj 모아놓는 벡터. 
     vector<CObject*>    m_vecOptionObjs;
@@ -49,18 +50,17 @@ public:
     void UpdateScrollPosition(float deltaY);
     void RenderScrollArea(ID2D1HwndRenderTarget* _pRender);
     ScrollArea& GetScrollArea() { return m_scrollArea; }
-
 public:
     void CreateForce();
     void SceneFailed();
     void callPlayerUpgrade(int upgradeIdx);
+    void CreateLevelUpShop();
 
 private:
     void CreatePause();
     void CreateLeftBtns();
     void CreateMiddleInfo();
     void CreateInfoPanel();
-    void CreateLevelUpShop();
 
     void OnPause();
     void OffPause();

@@ -47,7 +47,7 @@ public:
     CLONE(CPanelUI)
 public:
     CPanelUI();
-    ~CPanelUI();
+    virtual ~CPanelUI();
 };
 
 

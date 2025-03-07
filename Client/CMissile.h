@@ -8,6 +8,7 @@ private:
     float    m_fTheta;
     Vec2     m_vDir;//미사일 방향
     int      m_iDamage;
+    float    m_fSpeed;
     float    m_fLifeTime;
     float    m_fLifeElapsedTime;
     bool     m_bIsCritial;
@@ -18,6 +19,8 @@ public:
     virtual void render(HDC _dc);
     virtual void render(Gdiplus::Graphics* _pDGraphics);
     virtual void render(ID2D1HwndRenderTarget* _pRender);
+
+    void SetSpeed(float _fSpeed) { m_fSpeed = _fSpeed; }
 
     void SetDir(float _fTheta) { m_fTheta = _fTheta; }
     void SetDir(Vec2 _vDir) 

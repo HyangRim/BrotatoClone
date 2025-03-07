@@ -66,5 +66,7 @@ public:
     virtual ~CWeapon();
 
     CLONE(CWeapon)
+
+    friend class CImage;
 };
 

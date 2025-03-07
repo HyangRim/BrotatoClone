@@ -4,6 +4,7 @@
 #include "CTimeMgr.h"
 #include "CScene.h"
 #include "CSceneMgr.h"
+#include "CScene_Start.h"
 #include "CMobSpawner.h"
 #include "CMonFactory.h"
 #include "CObject.h"
@@ -17,6 +18,7 @@ CWaveMgr::CWaveMgr()
 	, m_bWaving(false)
 	, m_fWaveSpawnTime(2.f)
 	, m_fWaveSpawnElapsed(0.f)
+	, m_iLevelUpCount(0)
 {
 
 }
@@ -46,8 +48,16 @@ void CWaveMgr::update()
 	else if (CSceneMgr::GetInstance()->IsWaveScene() && !m_bWaving) {
 		
 		if ((CSceneMgr::GetInstance()->GetCurScene()->GetGroupObject(GROUP_TYPE::DROP_ITEM).size() == 0)
-			&& (CSceneMgr::GetInstance()->GetCurScene()->GetGroupObject(GROUP_TYPE::MONSTER).size() == 0)) {
-			ChangeScene(SCENE_TYPE::SHOP);
+			&& (CSceneMgr::GetInstance()->GetCurScene()->GetGroupObject(GROUP_TYPE::MONSTER).size() == 0) && !m_bLevelUpFlag) {
+			m_bLevelUpFlag = true;
+			if (m_iLevelUpCount == 0) {
+				ChangeScene(SCENE_TYPE::SHOP);
+			}
+			else {
+				static_cast<CScene_Start*>(CSceneMgr::GetInstance()->GetCurScene())->CreateLevelUpShop();
+			}
+			//static_cast<CScene_Start*>(CSceneMgr::GetInstance()->GetCurScene())->CreateLevelUpShop();
+			//ChangeScene(SCENE_TYPE::SHOP);
 		}
 	}
 }
@@ -59,6 +69,8 @@ void CWaveMgr::WaveStart()
 	CMonFactory::SetDropItemRecog(250.f);
 	CMonFactory::SetDropItemSpeed(250.f);
 	m_fWaveSpawnTime = (2.f - (m_iWaveLevel * 0.07f)) + float_distribution(rng);
+	m_iLevelUpCount = 0;
+	m_bLevelUpFlag = false;
 
 }
 
@@ -88,6 +100,9 @@ void CWaveMgr::WaveClear()
 	CMonFactory::SetDropItemSpeed(500.f);
 	WaveLevelUp();
 	CSceneMgr::GetInstance()->GetCurScene()->DeleteGroup(GROUP_TYPE::MONSTER);
+
+	//기존에 떨어져있던 모든 DropItem들 흡수하도록. 
+	CSceneMgr::GetInstance()->GetCurScene()->AllDropItemRetrieve();
 }
 
 void CWaveMgr::WaveInit()

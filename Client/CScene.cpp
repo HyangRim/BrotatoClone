@@ -10,6 +10,7 @@
 #include "CCore.h"
 #include "CTexture.h"
 #include "Direct2DMgr.h"
+#include "CMonster.h"
 #include "CGround.h"
 #include "CImage.h"
 
@@ -35,6 +36,20 @@ CScene::~CScene()
 		
 		//씬이 사라지면, 그 씬의 벡터들도 다 사라짐. 
 		//STL의 RAII가 알아서 삭제하기 때문. 
+	}
+}
+
+void CScene::AllDropItemRetrieve()
+{
+	UINT typeIDX = (UINT)GROUP_TYPE::DROP_ITEM;
+	for (size_t objIDX = 0; objIDX < m_arrObj[typeIDX].size(); objIDX++) {
+
+		CMonster* dropItem = static_cast<CMonster*>(m_arrObj[typeIDX][objIDX]);
+
+		if (dropItem->Getinfo().m_eMonType == MON_TYPE::DROP_ITEM) {
+			dropItem->SetRecogRange(9999.f);
+			dropItem->SetSpeed(500.f);
+		}
 	}
 }
 
