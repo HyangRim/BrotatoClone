@@ -50,11 +50,13 @@ void CWeapon::ShotMissile(Vec2 _vDir)
 
 CObject* CWeapon::SpecTarget()
 {
-	float proximateDistance = 999999999.f;
+	float proximateDistance = 999999.f;
 	CObject* pObj = nullptr;
+	m_pTarget = nullptr;
 	const vector<CObject*>& vecMonObj = m_pCurScene->GetGroupObject(GROUP_TYPE::MONSTER);
 	for (const auto MonObj : vecMonObj) {
 		if (MonObj->IsDead()) continue;
+		//if (MonObj->GetIn)
 		Vec2 vPos = GetPos();
 		Vec2 vMonPos = MonObj->GetPos();
 

@@ -278,9 +278,6 @@
     <ClInclude Include="CScene_Start.h">
       <Filter>Engine\05. Scene\Scene_Start</Filter>
     </ClInclude>
-    <ClInclude Include="CPlayer.h">
-      <Filter>Engine\04. Object\Player</Filter>
-    </ClInclude>
     <ClInclude Include="CMissile.h">
       <Filter>Engine\04. Object\Missile</Filter>
     </ClInclude>
@@ -478,6 +475,12 @@
     </ClInclude>
     <ClInclude Include="CSliderUI.h">
       <Filter>Engine\04. Object\UI\SliderUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayer.h">
+      <Filter>Engine\04. Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CWalkEffect.h">
+      <Filter>Engine\04. Object\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -707,6 +710,9 @@
     </ClCompile>
     <ClCompile Include="CSliderUI.cpp">
       <Filter>Engine\04. Object\UI\SliderUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CWalkEffect.cpp">
+      <Filter>Engine\04. Object\Player</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

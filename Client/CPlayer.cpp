@@ -10,7 +10,7 @@
 #include "ItemMgr.h"
 #include "Direct2DMgr.h"
 #include "CWaveMgr.h"
-
+#include "CWalkEffect.h"
 
 #include "CWeapon.h"
 
@@ -33,7 +33,7 @@ CPlayer::CPlayer()
 	, m_iPrevDir(1)
 	, m_tPlayerInfo{}
 	, m_fStepSoundDelay(0.2f)
-	, m_fUnderAttackSoundDelay(0.35f)
+	, m_fUnderAttackSoundDelay(0.02f)
 {
 	//m_pTex = CResMgr::GetInstance()->LoadTexture(L"PlayerTex", L"texture\\Tenshi.bmp");
 
@@ -197,8 +197,9 @@ void CPlayer::update()
 		if (m_fStepSoundDelay < 0.f) {
 
 			//0.35초마다 초기화하기. 
-			CSoundMgr::GetInstance()->PlayWalkSound();
-			m_fStepSoundDelay = 0.35f;
+			//CSoundMgr::GetInstance()->PlayWalkSound();
+			PlayWalkSound();
+			m_fStepSoundDelay = 0.3f;
 		}
 	}
 	else {
@@ -302,19 +303,19 @@ void CPlayer::update_move()
 	Vec2 vPos = GetPos();
 
 	if (KEY_HOLD(KEY::W)) {
-		vPos.y -= 200.f * fDT;
+		vPos.y -= 100.f * fDT;
 		//pRigid->AddForce(Vec2(0.f, -200.f));
 	}
 	if (KEY_HOLD(KEY::S)) {
-		vPos.y += 200.f * fDT;
+		vPos.y += 100.f * fDT;
 		//pRigid->AddForce(Vec2(0.f, 200.f));
 	}
 	if (KEY_HOLD(KEY::A)) {
-		vPos.x -= 200.f * fDT;
+		vPos.x -= 100.f * fDT;
 		//pRigid->AddForce(Vec2(-200.f, 0.f));
 	}
 	if (KEY_HOLD(KEY::D)) {
-		vPos.x += 200.f * fDT;
+		vPos.x += 100.f * fDT;
 		//pRigid->AddForce(Vec2(200.f, 0.f));
 	}
 
@@ -325,23 +326,23 @@ void CPlayer::update_move()
 		speedValue += m_tPlayerInfo.m_stCharacterInfo->m_fSpeed;
 	}
 
-	if (KEY_TAP(KEY::W)) {
-		Vec2 moveVec = Vec2(pRigid->GetVelocity().x, -100.f) * speedValue;
+	if (KEY_HOLD(KEY::W)) {
+		Vec2 moveVec = Vec2(pRigid->GetVelocity().x, -50.f) * speedValue;
 		pRigid->AddVelocity(moveVec);
 		//pRigid->AddVelocity(Vec2(pRigid->GetVelocity().x, -100.f));
 	}
-	if (KEY_TAP(KEY::S)) {
-		Vec2 moveVec = Vec2(pRigid->GetVelocity().x, 100.f) * speedValue;
+	if (KEY_HOLD(KEY::S)) {
+		Vec2 moveVec = Vec2(pRigid->GetVelocity().x, 50.f) * speedValue;
 		pRigid->AddVelocity(moveVec);
 		//pRigid->AddVelocity(Vec2(pRigid->GetVelocity().x, 100.f));
 	}
-	if (KEY_TAP(KEY::A)) {
-		Vec2 moveVec = Vec2(-100.f, pRigid->GetVelocity().y) * speedValue;
+	if (KEY_HOLD(KEY::A)) {
+		Vec2 moveVec = Vec2(-50.f, pRigid->GetVelocity().y) * speedValue;
 		pRigid->AddVelocity(moveVec);
 		//pRigid->AddVelocity(Vec2(-100.f, pRigid->GetVelocity().y));
 	}
-	if (KEY_TAP(KEY::D)) {
-		Vec2 moveVec = Vec2(100.f, pRigid->GetVelocity().y) * speedValue;
+	if (KEY_HOLD(KEY::D)) {
+		Vec2 moveVec = Vec2(50.f, pRigid->GetVelocity().y) * speedValue;
 		pRigid->AddVelocity(moveVec);
 		//pRigid->AddVelocity(Vec2(100.f, pRigid->GetVelocity().y));
 	}
@@ -498,6 +499,11 @@ void CPlayer::PlayWalkSound()
 	//최적화를 위해 따로 만들어야 할듯. 
 	CSoundMgr::GetInstance()->PlayWalkSound();
 
+
+	CObject* walkEffect = new CWalkEffect;
+	walkEffect->SetPos(GetPos());
+	walkEffect->SetName(L"walkEffect");
+	CreateObject(walkEffect, GROUP_TYPE::GROUND);
 }
 
 void CPlayer::upgradeParameter(int upgradeIDX)

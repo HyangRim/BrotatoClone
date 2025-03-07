@@ -41,6 +41,9 @@ public:
 
 	UINT GetID() { return m_iID; }
 
+	void SetActive(bool _bActive) { _bActive = m_bActive; }
+	bool GetActive() { return m_bActive; }
+
 public:
 
 	void finalupdate();

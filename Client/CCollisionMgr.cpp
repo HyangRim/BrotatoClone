@@ -62,6 +62,10 @@ void CCollisionMgr::CollisionGroupUpdate(GROUP_TYPE _eLeft, GROUP_TYPE _eRight)
 			if (nullptr == vecRight[rightIDX]->GetCollider() || vecLeft[leftIDX] == vecRight[rightIDX]) continue;
 
 
+			//둘 중 하나라도 충돌 판정이 false일 경우 continue
+			if (false == vecRight[rightIDX]->GetCollider()->GetActive() || false == vecLeft[leftIDX]->GetCollider()->GetActive()) continue;
+
+
 			CCollider* pLeftCollider = vecLeft[leftIDX]->GetCollider();
 			CCollider* pRightCollider = vecRight[rightIDX]->GetCollider();
 

@@ -27,7 +27,7 @@ CKnife::CKnife()
 	tInfo.m_fCooldown = 1.01f;
 	tInfo.m_fCritialDMG = 2.5f;
 	tInfo.m_fCritialAcc = 20;
-	tInfo.m_fRecogRange = 150;
+	tInfo.m_fRecogRange = 300;
 	tInfo.m_iPenet = 1;
 	tInfo.m_iDMG = 12;
 
@@ -50,7 +50,7 @@ void CKnife::update()
 	if (nullptr == m_pAI) {
 		//타겟 몬스터 선정하기.
 		CWeapon::update();
-
+		GetCollider()->SetActive(false);
 
 		m_fCoolTime += fDT;
 
@@ -58,7 +58,7 @@ void CKnife::update()
 			Vec2 targetPos = GetTarget()->GetPos();
 			Vec2 direction = targetPos - GetPos();
 			Vec2 thisPos = GetPos();
-
+			GetCollider()->SetActive(true);
 			//또한 사거리 안에 있을 때. 
 			if (direction.Length() <= Getinfo().m_fRecogRange) {
 				direction.Normalize();

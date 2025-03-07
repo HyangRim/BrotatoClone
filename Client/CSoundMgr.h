@@ -48,6 +48,8 @@ public:
 	float			m_fMasterRatio;
 	float			m_fBGMRatio;
 	float			m_fSFXRatio;
+
+	int				m_iStepIdx;
 	 
 public:
 	HRESULT init();

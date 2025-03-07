@@ -13,6 +13,7 @@ CSoundMgr::CSoundMgr()
 	, m_fMasterRatio(1.f)
 	, m_fBGMRatio(1.f)
 	, m_fSFXRatio(1.f)
+	, m_iStepIdx(0)
 {
 	InitVolumePointer();
 }
@@ -246,6 +247,8 @@ void CSoundMgr::SetSFXChannelVolume(float _fVolume)
 
 void CSoundMgr::PlayWalkSound()
 {
-	Play(walkSoundKey[distribution(rng) % 4], 0.05f);
+	//Play(walkSoundKey[0], 1.f);
+	Play(walkSoundKey[m_iStepIdx], 0.3f);
+	m_iStepIdx = (m_iStepIdx + 1) % 4;
 }
 
