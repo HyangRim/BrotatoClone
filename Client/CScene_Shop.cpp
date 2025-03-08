@@ -380,7 +380,10 @@ void CScene_Shop::CreateShowItemPanels(Direct2DMgr* _pD2DMgr, wchar_t* buffer, s
 		//y축 offset설명 11->panel과의 마진 , 10->characterName 절반크기, 5->위에 객체와 간격, 10->이 객체 크기 절반
 		CSpriteUI* itemType = panelItemUI->AddChild<CSpriteUI>(Vec2(35.f, -(panelItemUI->GetScale().y / 2.f) + 11.f + 10.f + 5.f + 10.f));
 		itemType->SetScale(Vec2(116.f, 20.f));
-		swprintf_s(buffer, bufferSize, L"아이템");
+		if(item->m_eItemType == ITEM_TYPE::PASSIVE)
+			swprintf_s(buffer, bufferSize, L"아이템");
+		else if(item->m_eItemType == ITEM_TYPE::WEAPON)
+			swprintf_s(buffer, bufferSize, L"무기");
 		itemType->CreateTextUI(buffer, -(itemType->GetScale() / 2.f), itemType->GetScale() / 2.f
 			, 12, ColorNormalize(202, 195, 152), true, 1.f, D2D1::ColorF::Black
 			, FONT_TYPE::KR
@@ -482,7 +485,26 @@ void CScene_Shop::CreateShowItemPanels(Direct2DMgr* _pD2DMgr, wchar_t* buffer, s
 				statpanel->SetMouseOnAlpha(0.f);
 				statpanel->SetNormalAlpha(0.f);
 
-				CSpriteUI* statNumber = statpanel->AddChild<CSpriteUI>(Vec2(-statpanel->GetScale().x / 2.f + 8.f, 0.f));
+				CSpriteUI* statText = statpanel->AddChild<CSpriteUI>(Vec2(-statpanel->GetScale().x / 2.f + 50.f, 0.f));
+				statText->SetScale(Vec2(100.f, 16.f));
+				if (i == 0) { swprintf_s(buffer, bufferSize, L"데미지:"); }
+				else if (i == 1) { swprintf_s(buffer, bufferSize, L"근거리 데미지:"); }
+				else if (i == 2) { swprintf_s(buffer, bufferSize, L"원거리 데미지:"); }
+				else if (i == 3) { swprintf_s(buffer, bufferSize, L"치명타 데미지:"); }
+				else if (i == 4) { swprintf_s(buffer, bufferSize, L"치명타 확률:"); }
+				else if (i == 5) { swprintf_s(buffer, bufferSize, L"공격속도:"); }
+				else if (i == 6) { swprintf_s(buffer, bufferSize, L"범위:"); }
+				else if (i == 7) { swprintf_s(buffer, bufferSize, L"튕기는 횟수:"); }
+
+				statText->CreateTextUI(buffer, -(statText->GetScale() / 2.f), statText->GetScale() / 2.f
+					, 10, ColorNormalize(202, 195, 152), true, 1.f, D2D1::ColorF::Black
+					, FONT_TYPE::KR
+					, TextUIMode::TEXT
+					, 0);
+				statText->GetTextUI()->SetHorizontal(1);
+
+
+				CSpriteUI* statNumber = statpanel->AddChild<CSpriteUI>(Vec2(10.f, -1.f));
 				statNumber->SetScale(Vec2(26.f, 16.f));
 				if		(i == 0) { swprintf_s(buffer, bufferSize, L"+%d", item->m_tWeaponInfo.m_iDMG); }
 				else if (i == 1) { swprintf_s(buffer, bufferSize, L"+%d", (int)item->m_tWeaponInfo.m_fMeleeCoef); }
@@ -500,24 +522,7 @@ void CScene_Shop::CreateShowItemPanels(Direct2DMgr* _pD2DMgr, wchar_t* buffer, s
 					, 0);
 				statNumber->GetTextUI()->SetHorizontal(1);
 
-				CSpriteUI* statText = statpanel->AddChild<CSpriteUI>(Vec2(0.f, 0.f));
-				statText->SetScale(Vec2(120.f, 16.f));
-				if		(i == 0) { swprintf_s(buffer, bufferSize, L"데미지"); }
-				else if (i == 1) { swprintf_s(buffer, bufferSize, L"근거리 데미지"); }
-				else if (i == 2) { swprintf_s(buffer, bufferSize, L"원거리 데미지"); }
-				else if (i == 3) { swprintf_s(buffer, bufferSize, L"치명타 데미지"); }
-				else if (i == 4) { swprintf_s(buffer, bufferSize, L"치명타 확률"); }
-				else if (i == 5) { swprintf_s(buffer, bufferSize, L"공격속도"); }
-				else if (i == 6) { swprintf_s(buffer, bufferSize, L"범위"); }
-				else if (i == 7) { swprintf_s(buffer, bufferSize, L"튕기는 횟수"); }
 				
-				statText->CreateTextUI(buffer, -(statText->GetScale() / 2.f), statText->GetScale() / 2.f
-					, 10, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
-					, FONT_TYPE::KR
-					, TextUIMode::TEXT
-					, 0);
-				statText->GetTextUI()->SetHorizontal(1);
-
 
 			}
 			tmp++;

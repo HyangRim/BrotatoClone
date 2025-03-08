@@ -378,8 +378,6 @@ void ShowWeaponInfo(DWORD_PTR lParam, DWORD_PTR wParam)
 	else if (weaponInfo->m_eItemType == ITEM_TYPE::PASSIVE) maxStatCount = 8;
 	for (int i = 0; i < maxStatCount; i++)
 	{
-		
-		
 		if (i == 0 && weaponInfo->m_tWeaponInfo.m_iDMG == 0) continue;
 		else if (i == 1 && weaponInfo->m_tWeaponInfo.m_fMeleeCoef == 0.f) continue;
 		else if (i == 2 && weaponInfo->m_tWeaponInfo.m_fRangeCoef == 0) continue;
@@ -396,7 +394,27 @@ void ShowWeaponInfo(DWORD_PTR lParam, DWORD_PTR wParam)
 		statpanel->SetMouseOnAlpha(0.f);
 		statpanel->SetNormalAlpha(0.f);
 
-		CSpriteUI* statNumber = statpanel->AddChild<CSpriteUI>(Vec2(-statpanel->GetScale().x / 2.f + 8.f, 0.f));
+		CSpriteUI* statText = statpanel->AddChild<CSpriteUI>(Vec2(-statpanel->GetScale().x / 2.f + 50.f, 0.f));
+		statText->SetScale(Vec2(100.f, 16.f));
+		if (i == 0) { swprintf_s(buffer, L"데미지:"); }
+		else if (i == 1) { swprintf_s(buffer, L"근거리 데미지:"); }
+		else if (i == 2) { swprintf_s(buffer, L"원거리 데미지:"); }
+		else if (i == 3) { swprintf_s(buffer, L"치명타 데미지:"); }
+		else if (i == 4) { swprintf_s(buffer, L"치명타 확률:"); }
+		else if (i == 5) { swprintf_s(buffer, L"공격속도:"); }
+		else if (i == 6) { swprintf_s(buffer, L"범위:"); }
+		else if (i == 7) { swprintf_s(buffer, L"튕기는 횟수:"); }
+		statText->CreateTextUI(buffer, -(statText->GetScale() / 2.f), statText->GetScale() / 2.f
+			, 10, ColorNormalize(202, 195, 152), true, 1.f, D2D1::ColorF::Black
+			, FONT_TYPE::KR
+			, TextUIMode::TEXT
+			, 0);
+		//statText->SetBackGround(true);
+		//statText->SetBackGroundColor(ColorNormalize(255, 255, 255), ColorNormalize(255, 255, 255)
+		//	, ColorNormalize(255, 255, 255), ColorNormalize(255, 255, 255));
+		statText->GetTextUI()->SetHorizontal(1);
+		
+		CSpriteUI* statNumber = statpanel->AddChild<CSpriteUI>(Vec2(10.f, -1.f));
 		statNumber->SetScale(Vec2(26.f, 16.f));
 		if (i == 0)		 { swprintf_s(buffer, L"+%d", weaponInfo->m_tWeaponInfo.m_iDMG); }
 		else if (i == 1) { swprintf_s(buffer, L"+%d", (int)weaponInfo->m_tWeaponInfo.m_fMeleeCoef); }
@@ -406,34 +424,17 @@ void ShowWeaponInfo(DWORD_PTR lParam, DWORD_PTR wParam)
 		else if (i == 5) { swprintf_s(buffer, L"+%d%%", (int)weaponInfo->m_tWeaponInfo.m_fCooldown); }
 		else if (i == 6) { swprintf_s(buffer, L"+%d%%", (int)weaponInfo->m_tWeaponInfo.m_fRecogRange); }
 		else if (i == 7) { swprintf_s(buffer, L"+%d", weaponInfo->m_tWeaponInfo.m_iPenet); }
-
 		statNumber->CreateTextUI(buffer, -(statNumber->GetScale() / 2.f), statNumber->GetScale() / 2.f
 			, 10, D2D1::ColorF::Green, true, 1.f, D2D1::ColorF::Black
 			, FONT_TYPE::KR
 			, TextUIMode::TEXT
 			, 0);
+		//statNumber->SetBackGround(true);
+		//statNumber->SetBackGroundColor(ColorNormalize(255, 0, 0), ColorNormalize(255, 0, 0)
+		//	, ColorNormalize(255, 0, 0), ColorNormalize(255, 0, 0));
 		statNumber->GetTextUI()->SetHorizontal(1);
-
-		CSpriteUI* statText = statpanel->AddChild<CSpriteUI>(Vec2(0.f, 0.f));
-		statText->SetScale(Vec2(120.f, 16.f));
-		if (i == 0)		 { swprintf_s(buffer, L"데미지"); }
-		else if (i == 1) { swprintf_s(buffer, L"근거리 데미지"); }
-		else if (i == 2) { swprintf_s(buffer, L"원거리 데미지"); }
-		else if (i == 3) { swprintf_s(buffer, L"치명타 데미지"); }
-		else if (i == 4) { swprintf_s(buffer, L"치명타 확률"); }
-		else if (i == 5) { swprintf_s(buffer, L"공격속도"); }
-		else if (i == 6) { swprintf_s(buffer, L"범위"); }
-		else if (i == 7) { swprintf_s(buffer, L"튕기는 횟수"); }
-
-		statText->CreateTextUI(buffer, -(statText->GetScale() / 2.f), statText->GetScale() / 2.f
-			, 10, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
-			, FONT_TYPE::KR
-			, TextUIMode::TEXT
-			, 0);
-		statText->GetTextUI()->SetHorizontal(1);
-
-
 		
+	
 		tmp++;
 	}
 	/////////////////////////캐릭터 정보(스탯)/////////////////////////////////

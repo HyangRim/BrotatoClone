@@ -282,6 +282,7 @@ void ItemMgr::init_weapon()
 	knife->m_iBasePrice = 10;
 	knife->m_tWeaponInfo.m_sIconImageKey = L"knife_icon";
 	knife->m_tWeaponInfo.m_iDMG = 10;
+	knife->m_tWeaponInfo.m_fMeleeCoef = 20.f;
 	m_sItems.insert(make_pair(L"knife", knife));
 
 	Item* pistol = new Item(ITEM_TYPE::WEAPON);
@@ -291,6 +292,8 @@ void ItemMgr::init_weapon()
 	pistol->m_iBasePrice = 11;
 	pistol->m_tWeaponInfo.m_sIconImageKey = L"pistol_icon";
 	pistol->m_tWeaponInfo.m_iDMG = 12;
+	pistol->m_tWeaponInfo.m_fRangeCoef = 20.f;
+	pistol->m_tWeaponInfo.m_fCritialAcc = 5.f;
 	m_sItems.insert(make_pair(L"pistol", pistol));
 
 	Item* slingshot = new Item(ITEM_TYPE::WEAPON);
@@ -300,5 +303,8 @@ void ItemMgr::init_weapon()
 	slingshot->m_iBasePrice = 12;
 	slingshot->m_tWeaponInfo.m_sIconImageKey = L"slingshot_icon";
 	slingshot->m_tWeaponInfo.m_iDMG = 5;
+	slingshot->m_tWeaponInfo.m_fRangeCoef = 20.f;
+	slingshot->m_tWeaponInfo.m_fCritialAcc = 5.f;
+	slingshot->m_tWeaponInfo.m_iPenet = 2;
 	m_sItems.insert(make_pair(L"slingshot", slingshot));
 }
