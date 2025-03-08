@@ -32,6 +32,13 @@ public:
     void CreateItemInfoPanel(CPanelUI* _backPanel);
     void CreateWeaponInfoPanel(CPanelUI* _backPanel);
 
+    void CreateBackGround(Direct2DMgr* _pD2DMgr, Vec2 _vResolution);
+    void CreateReRunBtn();
+    void CreateNewRunBtn();
+    void CreateReturnMainMenuBtn();
+    void CreateWaveInfoTextPanel(int _wave);
+    void CreateWaveInfoNumberPanel(wchar_t* buffer, size_t bufferSize, int _wave);
+
 
 public:
     CScene_Run_End();
