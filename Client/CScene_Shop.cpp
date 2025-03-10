@@ -774,6 +774,7 @@ void CScene_Shop::PurchaseItem(DWORD_PTR lParam, DWORD_PTR wParam)
 
 		tmp.m_fDefaultSpeed		+= selectedItem->PassiveStats.m_fDefaultSpeed;
 		tmp.m_AddMaxHP			+= selectedItem->PassiveStats.m_iAddMaxHP;
+	
 		tmp.m_fDamageCoef		+= selectedItem->PassiveStats.m_fDamageCoef;
 		tmp.m_fMeleeCoef		+= selectedItem->PassiveStats.m_fMeleeCoef;
 		tmp.m_fRangeCoef		+= selectedItem->PassiveStats.m_fRangeCoef;

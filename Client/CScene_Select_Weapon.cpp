@@ -71,9 +71,9 @@ void CScene_Select_Weapon::Exit()
 
 void CScene_Select_Weapon::BackBtnCallBack()
 {
-	ItemMgr::GetInstance()->SetBasicCharacter(nullptr);
-	ItemMgr::GetInstance()->m_vPassiveItems.pop_back();
-	ItemMgr::GetInstance()->m_bBaseCharacterIsAdded = false;
+	//ItemMgr::GetInstance()->SetBasicCharacter(nullptr);
+	//ItemMgr::GetInstance()->m_vPassiveItems.pop_back();
+	//ItemMgr::GetInstance()->m_bBaseCharacterIsAdded = false;
 	ChangeScene(SCENE_TYPE::SELECT_CHARACTER);
 }
 
@@ -99,7 +99,7 @@ void CScene_Select_Weapon::CreateBackBtn()
 	backBtn->SetPos(Vec2(71.f, 38.f));
 	backBtn->SetIsRound(true, 10.f, 10.f);
 	backBtn->SetColor(ColorNormalize(237, 237, 237), ColorNormalize(28, 28, 28));
-	backBtn->SetClickedCallBack(this, static_cast<SCENE_MEMFUNC>(&CScene_Select_Weapon::BackBtnCallBack));
+	backBtn->SetClickedCallBack(ChangeScene, (DWORD_PTR)SCENE_TYPE::SELECT_CHARACTER, 0);
 	backBtn->CreateTextUI(L"µÚ·Î", Vec2(-47.f, -14.f), Vec2(47.f, 14.f)
 		, 12, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR

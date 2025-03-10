@@ -163,13 +163,13 @@ void CScene_Start::update()
 					CPlayer* player = static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer());
 					playerParameter playerInfo = player->GetPlayerInfo();
 
-					swprintf_s(buffer, L"%d / %d", playerInfo.m_iCurHP, playerInfo.m_iMaxHP);
+					swprintf_s(buffer, L"%d / %d", playerInfo.m_iCurHP, playerInfo.m_iMaxHP + playerInfo.m_AddMaxHP);
 
 					vecObj[objIDX]->GetTextUI()->SetText(buffer);
 
 					//체력바 비율변경
 					CImage* image = (CImage*)vecObj[objIDX]->GetImage(1);
-					image->SetRatio((float)playerInfo.m_iCurHP/ (float)playerInfo.m_iMaxHP);
+					image->SetRatio((float)playerInfo.m_iCurHP/ ((float)playerInfo.m_iMaxHP + (float)playerInfo.m_AddMaxHP));
 				}
 				///////////////////////////////////////////////////////////////////
 				////////////////////경험치바 업뎃//////////////////////////////////
@@ -323,6 +323,8 @@ void CScene_Start::Enter()
 		RegisterPlayer(player);
 		AddObject(player, GROUP_TYPE::PLAYER);
 		player->SetPos(Vec2(576.f,576.f));
+
+		player->GetCharacterParam().m_iCurHP = player->GetCharacterParam().m_iMaxHP + player->GetCharacterParam().m_AddMaxHP;
 	}
 
 

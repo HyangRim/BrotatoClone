@@ -164,6 +164,7 @@ void CPlayer::update()
 	update_state();
 	update_animation();
 
+
 	Vec2 vPos = GetPos();
 
 

@@ -39,6 +39,14 @@ void CScene_Select_Character::render(ID2D1HwndRenderTarget* _pRender)
 
 void CScene_Select_Character::Enter()
 {
+	if (ItemMgr::GetInstance()->m_basicCharacter != nullptr)
+	{
+		ItemMgr::GetInstance()->SetBasicCharacter(nullptr);
+		ItemMgr::GetInstance()->m_vPassiveItems.pop_back();
+		ItemMgr::GetInstance()->m_bBaseCharacterIsAdded = false;
+	}
+
+
 	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
 

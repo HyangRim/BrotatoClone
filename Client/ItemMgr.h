@@ -115,6 +115,6 @@ public:
 	void init_passive();
 	void init_weapon();
 
-    friend class CScene_Select_Weapon;
+    friend class CScene_Select_Character;
 };
 
