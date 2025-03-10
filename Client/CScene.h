@@ -6,6 +6,7 @@
 //전방선언하는 이유는 컴파일 속도에 영향을 주지 않기 위해. 
 class CObject;
 class CMonster;
+//class ID2D1Bitmap;
 
 
 
@@ -76,6 +77,7 @@ public:
 	void CreateTile(UINT _IXCount, UINT _IYCount);
 
 	void MakeTile(const wstring& tag);
+	ID2D1Bitmap* CreateCompositeMapBitmap(const wstring &tag);
 
 	void LoadTile(const wstring& _strRelativePath);
 

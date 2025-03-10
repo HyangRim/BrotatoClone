@@ -19,6 +19,8 @@
 
 #pragma comment(lib, "d2d1.lib")
 #pragma comment(lib, "windowscodecs.lib")
+#include <wrl.h>
+using namespace Microsoft::WRL;
 
 #include <vector>
 using std::vector;

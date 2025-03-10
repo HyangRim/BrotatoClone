@@ -35,6 +35,8 @@ public:
 public:
 	HRESULT init(HWND hwnd);									//초기화함수
 
+
+	HRESULT StoreCreateMap(ID2D1Bitmap* bitmap, const wstring& tag);
 	HRESULT LoadAndStoreBitmap(const wstring& filePath, const wstring& tag, bool split);
 	ID2D1Bitmap* GetStoredBitmap(const wstring& tag);
 	vector<ID2D1Bitmap*> GetSplitBitmaps(const wstring& tag);

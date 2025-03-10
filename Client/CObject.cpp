@@ -136,6 +136,7 @@ void CObject::render(Gdiplus::Graphics* _pDGraphics)
 {
 	//ÁøÂ¥ ÁÂÇ¥.
 	Vec2 vRenderPos = CCamera::GetInstance()->GetRenderPos(m_vPos);
+	
 	Gdiplus::Pen pen(Gdiplus::Color(255, 0, 0, 0), 1.0f);
 	Gdiplus::Rect rect(
 		(int)(vRenderPos.x - m_vRenderScale.x / 2.f),
@@ -143,8 +144,9 @@ void CObject::render(Gdiplus::Graphics* _pDGraphics)
 		(int)m_vRenderScale.x,
 		(int)m_vRenderScale.y
 	);
-
+	
 	_pDGraphics->DrawRectangle(&pen, rect);
+	
 	component_render(_pDGraphics);
 }
 

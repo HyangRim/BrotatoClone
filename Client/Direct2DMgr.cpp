@@ -281,6 +281,20 @@ HRESULT Direct2DMgr::SplitBitmap(ID2D1Bitmap* bitmap, const wstring& tag) {
     return S_OK;
 }
 
+HRESULT Direct2DMgr::StoreCreateMap(ID2D1Bitmap* bitmap, const wstring& tag)
+{
+    // 이미 로드된 비트맵이 있다면 그 맵 삭제.
+    if (bitmapMap.find(tag) != bitmapMap.end()) {
+        //return S_OK; // 이미 로드됨
+        bitmapMap[tag]->Release();
+    }
+
+    bitmapMap[tag] = bitmap; // 맵에 저장
+   
+
+    return S_OK;
+}
+
 void Direct2DMgr::Cleanup() {
     for (auto& pair : bitmapMap) {
         if (pair.second) pair.second->Release();

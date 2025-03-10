@@ -41,6 +41,7 @@
 #include "CWaveMgr.h"
 
 #include "CMobSpawner.h"
+#include "CTile.h"
 
 
 
@@ -333,7 +334,20 @@ void CScene_Start::Enter()
 	wstring mapPath = L"texture\\tiles\\tiles_" + std::to_wstring(randV) + L".png";
 	MakeMapTile(L"texture\\tiles\\tiles_outline.png", mapPath.c_str(), L"texture\\tiles\\map\\",50, 1);
 	pD2DMgr->StoreBitmapsFromFolder(L"texture\\tiles\\map\\", L"Map");
-	MakeTile(L"Map");
+	//MakeTile(L"Map");
+
+	//새로운 맵 생성 알고리즘
+	pD2DMgr->StoreCreateMap(CreateCompositeMapBitmap(L"Map"), L"startSceneMap");
+	CObject* pMapObj = new CTile;
+	//584
+	pMapObj->SetPos(Vec2(569.f, 569.f));
+	//1168
+	pMapObj->SetScale(Vec2(1138.f, 1138.f));
+	pMapObj->SetName(L"MapSprite");
+	pMapObj->CreateImage();
+	pMapObj->AddImage(pD2DMgr->GetStoredBitmap(L"startSceneMap"));
+	AddObject(pMapObj, GROUP_TYPE::TILE);
+	
 	////////////////////////////////////////////////////////////////////////
 
 	/////////////////////////////체력바,경험치바////////////////////////////

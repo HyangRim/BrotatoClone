@@ -17,6 +17,7 @@
 
 
 bool CScene::isPause = false;
+const float tile_Devide = 0.15625;
 
 CScene::CScene()
 
@@ -25,6 +26,7 @@ CScene::CScene()
 	, m_pPlayer(nullptr)
 {
 }
+
 
 CScene::~CScene()
 {
@@ -216,7 +218,7 @@ void CScene::render_tile(HDC _dc)
 
 void CScene::render_tile(Gdiplus::Graphics* _pDGraphics)
 {
-	const vector<CObject*> vecTile = GetGroupObject(GROUP_TYPE::TILE);
+	const vector<CObject*>& vecTile = GetGroupObject(GROUP_TYPE::TILE);
 	//화면 안에 들어오는 애들의 범위를 잡아내어, 들어오는 애들만 렌더링 해준다. 
 	Vec2 vCamLook = CCamera::GetInstance()->GetLookAt();
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
@@ -238,9 +240,10 @@ void CScene::render_tile(Gdiplus::Graphics* _pDGraphics)
 	for (int iCurRow = iLTRow; iCurRow < (iLTRow + iClientHeight); iCurRow++) {
 
 		for (int iCurcol = iLTCol; iCurcol < (iLTCol + iClientWidth); iCurcol++) {
+			
 			if (iCurcol < 0 || m_iTileX <= (UINT)iCurcol ||
 				iCurRow < 0 || m_iTileY <= (UINT)iCurRow) continue;
-
+				
 			int iIdx = (m_iTileX * iCurRow) + iCurcol;
 
 			vecTile[iIdx]->render(_pDGraphics);
@@ -255,8 +258,8 @@ void CScene::render_tile(ID2D1HwndRenderTarget* _pRender)
 	Vec2 vCamLook = CCamera::GetInstance()->GetLookAt();
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
 
-	Vec2 vLeftTop = vCamLook - vResolution / 2.f;
-	Vec2 vRightDown = vCamLook + vResolution / 2.f;
+	Vec2 vLeftTop = vCamLook - vResolution * 0.5f;
+	Vec2 vRightDown = vCamLook + vResolution * 0.5f;
 
 	int iTileSize = TILE_SIZE;
 
@@ -264,6 +267,7 @@ void CScene::render_tile(ID2D1HwndRenderTarget* _pRender)
 	int iLTCol = (int)vLeftTop.x / iTileSize;
 	int iLTRow = (int)vLeftTop.y / iTileSize;
 
+	
 	int iLTIdx = (m_iTileX * iLTRow) + iLTCol;
 
 	int iClientWidth = (int)vResolution.x / iTileSize + 1;
@@ -454,6 +458,125 @@ void CScene::MakeTile(const wstring &tag)
 		}
 	}
 }
+
+ID2D1Bitmap* CScene::CreateCompositeMapBitmap(const wstring &tag)
+{
+	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
+	auto splitBitmaps = Direct2DMgr::GetInstance()->GetSplitBitmaps(tag);
+
+	const int gridCount = 36;
+	// 각 타일는 원래 MakeTile에서 다음과 같이 배치됨:
+	// 위치: (TILE_SIZE/4 + (TILE_SIZE/2 * tileX), TILE_SIZE/4 + (TILE_SIZE/2 * tileY))
+	// 크기: TILE_SIZE/2 × TILE_SIZE/2
+	// (TILE_SIZE = 64 → offset = 16, tileDrawSize = 32)
+	const float offset = 16.0f;
+	const float tileDrawSize = 32.0f;
+
+	// 전체 합성 비트맵의 크기 계산: 
+	// 좌측 여백 offset에서 시작해 gridCount * tileDrawSize 만큼 확장.
+	const UINT compositeWidth = (UINT)(offset + tileDrawSize * gridCount);
+	const UINT compositeHeight = compositeWidth; // 정사각형
+
+	// 3. 오프스크린 렌더 타겟(비트맵 렌더 타겟) 생성
+	ID2D1Bitmap* pCompositeBitmap = nullptr;
+	ComPtr<ID2D1BitmapRenderTarget> pBitmapRT = nullptr;
+	HRESULT hr = Direct2DMgr::GetInstance()->GetRenderTarget()->CreateCompatibleRenderTarget(
+		D2D1::SizeF((FLOAT)compositeWidth, (FLOAT)compositeHeight),
+		&pBitmapRT
+	);
+	if (FAILED(hr))
+		return nullptr;
+
+	pBitmapRT->BeginDraw();
+	// 배경색 (예: 흰색)으로 클리어
+	pBitmapRT->Clear(D2D1::ColorF(D2D1::ColorF::Black));
+
+	// 4. 그리드 순회: 각 타일의 서브 비트맵 인덱스 결정 후 합성
+	for (int tileY = 0; tileY < gridCount; tileY++)
+	{
+		for (int tileX = 0; tileX < gridCount; tileX++)
+		{
+			int tileIdx = 0;
+			int rest = 0;
+			// 모서리 타일 처리
+			if (tileY == 0 && tileX == 0)	tileIdx = 0;
+			else if (tileY == 0 && tileX == 35)	tileIdx = 7;
+			else if (tileY == 35 && tileX == 0)	tileIdx = 56;
+			else if (tileY == 35 && tileX == 35)tileIdx = 63;
+			// 상단 테두리
+			else if (tileY == 0 && (tileX >= 1 && tileX <= 34))
+			{
+				rest = tileX % 7;
+				if (rest == 0) rest++;
+				tileIdx = rest;
+			}
+			// 하단 테두리
+			else if (tileY == 35 && (tileX >= 1 && tileX <= 34))
+			{
+				rest = tileX % 7;
+				if (rest == 0) rest++;
+				tileIdx = rest + 56;
+			}
+			// 좌측 테두리
+			else if (tileX == 0 && (tileY >= 1 && tileY <= 34))
+			{
+				rest = tileY % 7;
+				if (rest == 0) rest++;
+				tileIdx = rest * 8;
+			}
+			// 우측 테두리
+			else if (tileX == 35 && (tileY >= 1 && tileY <= 34))
+			{
+				rest = tileY % 7;
+				if (rest == 0) rest++;
+				tileIdx = rest * 8 + 7;
+			}
+			// 내부 타일: 테두리 제외하고 랜덤하게 (테두리 인덱스 제외)
+			else
+			{
+				int randX = rand() % 7;
+				if (randX == 0) randX = 1;
+				int randY = rand() % 7;
+				if (randY == 0) randY = 1;
+
+				tileIdx = randY * 8 + randX;
+			}
+
+			// 5. 타일의 배치 위치 계산
+			// MakeTile에서의 위치: X = offset + tileX * tileDrawSize, Y = offset + tileY * tileDrawSize
+			float destLeft = offset + tileX * tileDrawSize;
+			float destTop = offset + tileY * tileDrawSize;
+			D2D1_RECT_F destRect = D2D1::RectF(destLeft, destTop, destLeft + tileDrawSize, destTop + tileDrawSize);
+
+			// 6. 서브 비트맵의 원본 영역: 여기서는 전체 서브 이미지 (크기 TILE_SIZE×TILE_SIZE)
+			D2D1_RECT_F srcRect = D2D1::RectF(0, 0, (FLOAT)TILE_SIZE, (FLOAT)TILE_SIZE);
+
+			// 7. 타일 텍스처에서 해당 서브 이미지를 DrawBitmap (타일 이미지가 64x64에서 32x32로 축소됨)
+			if (tileIdx >= 0 && tileIdx < (int)splitBitmaps.size())
+			{
+				pBitmapRT->DrawBitmap(
+					splitBitmaps[tileIdx],   // 해당 서브 비트맵
+					destRect,                // 합성될 위치 및 크기
+					1.0f,                    // 불투명도
+					D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
+					srcRect                  // 원본 영역
+				);
+			}
+		}
+	}
+
+	hr = pBitmapRT->EndDraw();
+	if (FAILED(hr))
+		return nullptr;
+
+	// 8. 오프스크린 렌더 타겟에서 최종 커다란 비트맵 추출
+	hr = pBitmapRT->GetBitmap(&pCompositeBitmap);
+	if (FAILED(hr))
+		return nullptr;
+
+	return pCompositeBitmap;
+}
+
 
 void CScene::LoadTile(const wstring& _strRelativePath)
 {
