@@ -92,56 +92,6 @@ void CTile::render(Gdiplus::Graphics* _pDGraphics)
 void CTile::render(ID2D1HwndRenderTarget* _pRender)
 {
 	component_render(_pRender);
-	/*
-	if (m_pTileTex == nullptr || -1 == m_iImgIdx) {
-		return;
-	}
-
-	D2D1_SIZE_F bitmapSize = m_pTileBit->GetSize();
-
-	UINT iWidth = static_cast<UINT>(bitmapSize.width);
-	UINT iHeight = static_cast<UINT>(bitmapSize.height);
-
-	UINT IMaxCol = iWidth / TILE_SIZE;
-	UINT IMaxRow = iHeight / TILE_SIZE;
-
-	UINT iCurRow = m_iImgIdx / IMaxCol;
-	UINT iCurCol = m_iImgIdx % IMaxCol;
-
-	if (iCurRow >= IMaxRow) {
-		assert(false);
-		return;
-	}
-
-	// 렌더링할 위치와 크기 계산
-	Vec2 vRenderPos = CCamera::GetInstance()->GetRenderPos(GetPos());
-	Vec2 vScale = GetScale();
-
-	// 소스 사각형: 비트맵에서 가져올 영역
-	D2D1_RECT_F srcRect = D2D1::RectF(
-		static_cast<FLOAT>(iCurCol * TILE_SIZE),
-		static_cast<FLOAT>(iCurRow * TILE_SIZE),
-		static_cast<FLOAT>((iCurCol + 1) * TILE_SIZE),
-		static_cast<FLOAT>((iCurRow + 1) * TILE_SIZE)
-	);
-
-	// 대상 사각형: 화면에 그릴 위치와 크기
-	D2D1_RECT_F destRect = D2D1::RectF(
-		vRenderPos.x - vScale.x / 2.f,
-		vRenderPos.y - vScale.y / 2.f,
-		vRenderPos.x + vScale.x / 2.f,
-		vRenderPos.y + vScale.y / 2.f
-	);
-
-	// 비트맵 그리기
-	_pRender->DrawBitmap(
-		m_pTileBit,
-		destRect,
-		1.0f, // 불투명도
-		D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
-		srcRect
-	);
-	*/
 }
 
 void CTile::Save(FILE* _pFile)

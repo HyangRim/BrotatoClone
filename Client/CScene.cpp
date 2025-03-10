@@ -94,12 +94,7 @@ void CScene::render(HDC _dc)
 			render_tile(_dc);
 			continue;
 		}
-		/*
-		if ((UINT)GROUP_TYPE::MONSTER == typeIDX) {
-			render_monster(_dc);
-			continue;
-		}
-		*/
+
 
 		auto ObjVecIter = m_arrObj[typeIDX].begin();
 
@@ -121,17 +116,6 @@ void CScene::render(Gdiplus::Graphics* _pDGraphics)
 {
 	
 	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; typeIDX++) {
-		/*
-		if ((UINT)GROUP_TYPE::TILE == typeIDX && (GetGroupObject(GROUP_TYPE::TILE).size() > 0)) {
-			render_tile(_pDGraphics);
-			continue;
-		}*/
-		/*
-		if ((UINT)GROUP_TYPE::MONSTER == typeIDX) {
-			render_monster(_dc);
-			continue;
-		}
-		*/
 
 		auto ObjVecIter = m_arrObj[typeIDX].begin();
 
@@ -152,18 +136,6 @@ void CScene::render(Gdiplus::Graphics* _pDGraphics)
 void CScene::render(ID2D1HwndRenderTarget* _pRender)
 {
 	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; typeIDX++) {
-		/*
-		if ((UINT)GROUP_TYPE::TILE == typeIDX && (GetGroupObject(GROUP_TYPE::TILE).size() > 0)) {
-			render_tile(_pDGraphics);
-			continue;
-		}*/
-		/*
-		if ((UINT)GROUP_TYPE::MONSTER == typeIDX) {
-			render_monster(_dc);
-			continue;
-		}
-		*/
-
 		auto ObjVecIter = m_arrObj[typeIDX].begin();
 
 		for (; ObjVecIter != m_arrObj[typeIDX].end();) {

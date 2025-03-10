@@ -32,35 +32,12 @@ void CGround::render(ID2D1HwndRenderTarget* _pRender)
 
 void CGround::OnCollisionEnter(CCollider* _pOther)
 {
-	//굳이 없어도 될 거 같은데 Rigidbody로는. 
-	/*
-	CObject* pOtherObj = _pOther->GetObj();
-	if (pOtherObj->GetName() == L"Player") {
-		//pOtherObj->GetGravity()->SetGround(true);
-
-		//파고 들었을 경우에 중심 위치에서. 
-		Vec2 vObjPos = _pOther->GetFinalPos();
-		Vec2 vObjScale = _pOther->GetScale();
-
-		Vec2 vPos = GetCollider()->GetFinalPos();
-		Vec2 vScale = GetCollider()->GetScale();
-
-		float fLen = abs(vObjPos.y - vPos.y);
-		float fInterpolValue = (vObjScale.y / 2.f + vScale.y / 2.f) - fLen;
-
-		vObjPos = pOtherObj->GetPos();
-		vObjPos.y -= fInterpolValue;
-
-		pOtherObj->SetPos(vObjPos);
-	}
-	*/
 }
 
 void CGround::OnCollision(CCollider* _pOther)
 {
 	CObject* pOtherObj = _pOther->GetObj();
 	if (pOtherObj->GetName() == L"Player") {
-		//pOtherObj->GetGravity()->SetGround(true);
 
 		//파고 들었을 경우에 중심 위치에서. 
 		Vec2 vObjPos = _pOther->GetFinalPos();
@@ -127,11 +104,4 @@ void CGround::OnCollision(CCollider* _pOther)
 
 void CGround::OnCollisionExit(CCollider* _pOther)
 {
-	//Exit에서 위치에 따라 Velocity값을 바꿔줘야하나? 부딪힌 곳 기준으로.
-	//아니면 Enter? 
-	CObject* pOtherObj = _pOther->GetObj();
-	if (pOtherObj->GetName() == L"Player") {
-		//그라운드 체크 해체. 우리 게임은 중력 설정 없어서..
-		//pOtherObj->GetGravity()->SetGround(false);
-	}
 }

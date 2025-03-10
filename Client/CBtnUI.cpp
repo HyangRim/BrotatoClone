@@ -136,14 +136,8 @@ void CBtnUI::render(ID2D1HwndRenderTarget* _pRender)
 		if (m_bIsRoundedRect)
 		{
 			_pRender->FillRoundedRectangle(roundedRect, pBrush);
-			//_pRender->DrawRoundedRectangle(roundedRect, pBrush, 2.0f);
-			//_pRender->FillRoundedRectangle(roundedRect, pBrush2);
 		}
 		else _pRender->FillRectangle(rect, pBrush);
-
-		// 둥근 사각형 그리기
-		//_pRender->DrawRoundedRectangle(roundedRect, pBrush, 2.0f); // 윤곽선 그리기
-		//_pRender->FillRoundedRectangle(roundedRect, pBrush);
 
 		pBrush->Release();
 	}
@@ -152,8 +146,6 @@ void CBtnUI::render(ID2D1HwndRenderTarget* _pRender)
 	render_child(_pRender);
 }
 
-//과제, 패널 UI안에 이미지를 출력할 수 있는 버튼들을 넣음.
-//각각 타일들의 이미지를 넣음. 
 
 //다 넣을 수 없으면 다음 페이지 이미지로. 
 

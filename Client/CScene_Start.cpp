@@ -58,52 +58,7 @@ CScene_Start::CScene_Start()
 	, m_fFailDuration(0.f)
 	, m_bFailed(false)
 {
-	/*
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\enemies\\baby_alien.png", L"NormalEnemy", false);
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\enemies\\spitter.png", L"RangeEnemy", false);
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\enemies\\entity_birth.png", L"BirthEnemy", false);
-	*/
-	/*
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\ui\\hud\\ui_lifebar_bg.png", L"LifebarBackGround", false);
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\ui\\hud\\ui_lifebar_fill.png", L"LifebarFill", false);
 
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\ui\\hud\\ui_xp_bg.png", L"XpBackGround", false);
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\ui\\hud\\ui_xp_fill.png", L"XpFill", false);
-
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\ui\\hud\\ui_lifebar_frame.png", L"LifebarFrame", false);
-
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\harvesting_icon.png", L"HarvestingIcon", false);
-	*/
-	//Drop_ITEM들
-	/*
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0000.png", L"drop_item0", false);
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0001.png", L"drop_item1", false);
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0002.png", L"drop_item2", false);
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0003.png", L"drop_item3", false);
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0004.png", L"drop_item4", false);
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0005.png", L"drop_item5", false);
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0006.png", L"drop_item6", false);
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0007.png", L"drop_item7", false);
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0008.png", L"drop_item8", false);
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0009.png", L"drop_item9", false);
-	Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"items\\materials\\material_0010.png", L"drop_item10", false);
-	*/
-	//사운드 관련 등록
-	//사운드 관련 Instance 가져오기. 
-
-	/*
-	CSoundMgr::GetInstance()->AddSound(L"drop_item1", L"sound\\materials\\drop_item1.wav", false, false);
-	CSoundMgr::GetInstance()->AddSound(L"drop_item2", L"sound\\materials\\drop_item2.wav", false, false);
-	CSoundMgr::GetInstance()->AddSound(L"drop_item3", L"sound\\materials\\drop_item3.wav", false, false);
-	CSoundMgr::GetInstance()->AddSound(L"drop_item4", L"sound\\materials\\drop_item4.wav", false, false);
-	CSoundMgr::GetInstance()->AddSound(L"drop_item5", L"sound\\materials\\drop_item5.wav", false, false);
-	*/
-	/*
-	CSoundMgr::GetInstance()->AddSound(L"step1", L"sound\\step\\Step1.mp3", false, false);
-	CSoundMgr::GetInstance()->AddSound(L"step2", L"sound\\step\\Step2.mp3", false, false);
-	CSoundMgr::GetInstance()->AddSound(L"step3", L"sound\\step\\Step3.mp3", false, false);
-	CSoundMgr::GetInstance()->AddSound(L"step4", L"sound\\step\\Step4.mp3", false, false);
-	*/
 
 }
 
@@ -453,70 +408,9 @@ void CScene_Start::Enter()
 	bottomWall->SetScale(Vec2(1152.f - 64.f, 32.f));
 	AddObject(bottomWall, GROUP_TYPE::GROUND);
 	////////////////////////////////외부 벽/////////////////////////////////
-
-	/*
-	//Object 추가.
-	//실제 생성된 객체는 플레이어, 주소를 받은 건 부모 클래스. 
-	CObject* pObj = new CPlayer;
-	pObj->SetPos(Vec2(640.f, 384.f));
-	pObj->SetScale(Vec2(65.f, 65.f));
-	pObj->SetName(L"Player");
-	AddObject(pObj, GROUP_TYPE::PLAYER);
-	RegisterPlayer(pObj);*/
 	
 
 	CCamera::GetInstance()->SetTarget(static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer()));
-
-	CWeapon* pWeapon = nullptr;
-	CMonster* pMon = nullptr;
-	/*
-	//무기 권총 추가. 
-	pWeapon = new CPistol;
-	((CPlayer*)GetPlayer())->AddWeapon(pWeapon);
-
-	//무기 단검 추가. 
-	pWeapon = new CKnife;
-	((CPlayer*)GetPlayer())->AddWeapon(pWeapon);
-
-	//무기 새총 추가.
-	pWeapon = new CSlingshot;
-	((CPlayer*)GetPlayer())->AddWeapon(pWeapon);
-
-	pMon = CMonFactory::CreateMonster(MON_TYPE::NORMAL, vResolution / 2.f - Vec2(0.f, 300.f));
-	AddObject(pMon, GROUP_TYPE::MONSTER);
-
-	//pMon = CMonFactory::CreateMonster(MON_TYPE::NORMAL, vResolution / 2.f - Vec2(-200.f, 300.f));
-	//AddObject(pMon, GROUP_TYPE::MONSTER);
-	*/
-
-	
-	/*
-	pMon = CMonFactory::CreateMonster(MON_TYPE::RANGE, vResolution / 2.f - Vec2(-400.f, 300.f));
-	pMon->SetScale(Vec2(45.f, 45.f));
-	pMon->SetWaveDuration(1.f);
-	AddObject(pMon, GROUP_TYPE::MONSTER);*/
-
-	//Enter은 몰라고 update에서는 CreateObject로 해야함...
-	//CreateObject(pMon, Object_type::MONSTER):
-	
-	
-	
-	//땅 물체 배치
-	/*
-	CObject* pGround = new CGround;
-	pGround->SetName(L"Ground");
-	pGround->SetPos(Vec2(640.f, 584.f));
-	pGround->SetScale(Vec2(200.f, 60.f));
-	AddObject(pGround, GROUP_TYPE::GROUND);
-	*/
-	//충돌 지점. 
-	//Player 그룹과 Monster그룹간의 충돌 체크 
-	//update에서 로직, finalupdate에서 최종 움직임 완료
-
-
-
-	//사운드 추가
-	//CSoundMgr::GetInstance()->AddSound(L"extend", L"sound\\extend.wav", false, false);
 
 	//이제 새로운 충돌이 발생할수도 있음. 
 	CCollisionMgr::GetInstance()->CheckGroup(GROUP_TYPE::PLAYER, GROUP_TYPE::MONSTER);
@@ -528,12 +422,6 @@ void CScene_Start::Enter()
 	//Camera Look 지점.
 	CCamera::GetInstance()->SetLookAt(vResolution / 2.f);
 
-	/*
-	//Camera 효과 지점. 
-	CCamera::GetInstance()->FadeOut(1.f);
-	CCamera::GetInstance()->FadeIn(1.f);
-	*/
-	//웨이브 가능하도록 세팅.(Scene_Start에 들어오면 무조건 그 때 시작이니까.)
 	CWaveMgr::GetInstance()->WaveStart();
 	m_fFailDuration = 0.f;
 	m_bFailed = false;
@@ -1385,23 +1273,19 @@ void CScene_Start::CreateLevelUpShop()
 
 		////////////////////////Upgrade 능력치 아이콘////////////////////////////////
 		wstring iconTag = upgrade_tag_list[upgrade_numbers[upgradeIndex]];
-		//CObject* itemImage = new CSpriteUI;
 		Vec2 vPos = Vec2(35.f, 35.f) - (panelItemUI->GetScale() / 2.f);
 		CSpriteUI* itemImage = panelItemUI->AddChild<CSpriteUI>(vPos);
 		itemImage->SetName(L"ICON");
 		itemImage->AddImage(pD2DMgr->GetStoredBitmap(iconTag));
-		//itemImage->GetImage(0)->SetOffset(vPos);
 		itemImage->SetObjType(GROUP_TYPE::UI);
 		itemImage->SetName(L"Child");
 		itemImage->SetScale(Vec2(48.f, 48.f));
 		////////////////////////Upgrade 능력치 아이콘////////////////////////////////
 
 		////////////Upgrade Name////////////////////
-		//CObject* upgradeNameText = new CSpriteUI;
 		CObject* upgradeNameText = panelItemUI->AddChild<CSpriteUI>(Vec2(20.f, -50.f));
 		upgradeNameText->SetName(L"upgradeNameText");
 		upgradeNameText->SetObjType(GROUP_TYPE::UI);
-		//upgradeNameText->SetPos(Vec2(120.f + upgradeIndex * (5.f + panelItemUI->GetScale().x), (vResolution.y / 2) - 45.f));
 		upgradeNameText->SetScale(Vec2(80.f, 15.f));
 
 		upgradeNameText->CreateTextUI(upgrade_name_list[upgrade_numbers[upgradeIndex]], -(upgradeNameText->GetScale() / 2.f), (upgradeNameText->GetScale() / 2.f)
@@ -1410,16 +1294,13 @@ void CScene_Start::CreateLevelUpShop()
 			, TextUIMode::TEXT
 			, 0);
 		upgradeNameText->GetTextUI()->SetHorizontal(1);
-		//panelItemUI->AddChild((CUI*)upgradeNameText);
 		////////////Upgrade Name////////////////////
 
 
 		////////////Upgrade Classifi////////////////////
-		//CObject* upgradeClassifi = new CSpriteUI;
 		CObject* upgradeClassifi = panelItemUI->AddChild<CSpriteUI>(Vec2(20.f, -25.f));
 		upgradeClassifi->SetName(L"upgradeClassifi");
 		upgradeClassifi->SetObjType(GROUP_TYPE::UI);
-		//upgradeClassifi->SetPos(Vec2(120.f + upgradeIndex * (5.f + panelItemUI->GetScale().x), (vResolution.y / 2) - 25.f));
 		upgradeClassifi->SetScale(Vec2(80.f, 15.f));
 
 		upgradeClassifi->CreateTextUI(upgrade_classifi, -(upgradeClassifi->GetScale() / 2.f), (upgradeClassifi->GetScale() / 2.f)
@@ -1428,7 +1309,6 @@ void CScene_Start::CreateLevelUpShop()
 			, TextUIMode::TEXT
 			, 0);
 		upgradeClassifi->GetTextUI()->SetHorizontal(1);
-		//panelItemUI->AddChild((CUI*)upgradeClassifi);
 		////////////Upgrade Classifi////////////////////
 
 		////////////Upgrade Text////////////////////
@@ -1445,7 +1325,6 @@ void CScene_Start::CreateLevelUpShop()
 			, TextUIMode::TEXT
 			, 0);
 		upgradeText->GetTextUI()->SetHorizontal(1);
-		//panelItemUI->AddChild((CUI*)upgradeText);
 		////////////Upgrade Name////////////////////
 
 		AddObject(panelItemUI, GROUP_TYPE::IMAGE);
@@ -1470,11 +1349,9 @@ void CScene_Start::CreateLevelUpShop()
 			, FONT_TYPE::KR
 			, TextUIMode::TEXT
 			, 0);
-		//panelItemUI->AddChild((CUI*)selectBtn);
 
 
 		//버튼 기능 추가.
-		//upgrade_numbers[upgradeIndex]
 		AddObject(selectBtn, GROUP_TYPE::UI);
 		/////////////////선택 버튼//////////////////////
 	}
@@ -1529,10 +1406,7 @@ void CScene_Start::SceneFailed()
 
 void CScene_Start::callPlayerUpgrade(int upgradeIdx)
 {
-	//static_cast<CPlayer*>(GetPlayer())->upgradeParameter(upgradeIdx);
 	static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->upgradeParameter(upgradeIdx);
-	// 
-	//static_cast<CPlayer*>(CSceneMgr)
 	ChangeScene(SCENE_TYPE::SHOP);
 }
 

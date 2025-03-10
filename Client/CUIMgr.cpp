@@ -107,13 +107,6 @@ CUI* CUIMgr::GetFocusedUI()
 	if (vecUI.end() == targetIter) {
 		return nullptr;
 	}
-	/*
-	CUI* tmp = (CUI*)*targetIter;
-	if (tmp->GetUIType() == UI_TYPE::BTN)
-	{
-		pFocusedUI = (CUI*)*targetIter;
-	}
-	else return nullptr;*/
 	pFocusedUI = (CUI*)*targetIter;
 
 	//계속 위에서 교체되다가 보면, 최종적인 Focus를 가져가는 UI가 된다. 

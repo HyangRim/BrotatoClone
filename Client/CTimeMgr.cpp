@@ -31,6 +31,8 @@ void CTimeMgr::init()
 	QueryPerformanceFrequency(&m_llFrequency);
 	SetTimeScale(1.f);
 
+	SetWindowText(CCore::GetInstance()->GetMainHwnd(), L"Brotato");
+
 }
 
 void CTimeMgr::update()
@@ -54,6 +56,8 @@ void CTimeMgr::update()
 
 void CTimeMgr::render()
 {
+
+	return;
 	m_iCallCount++;
 	m_dAcc += m_dDT;	//DT ´©Àû. 
 	if (m_dAcc >= 1.) {

@@ -51,65 +51,6 @@ CPlayer::CPlayer()
 
 	CreateRigidBody();
 	
-	/////////////////
-	
-	///////////////////
-
-	//CTexture* m_pTex = CResMgr::GetInstance()->LoadTexture(L"PlayerTex", L"texture\\link_0.bmp");
-	//Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\link_0.bmp",L"PlayerTex", false);
-	//Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\player\\potato.png", L"PlayerBody", false);
-	//Direct2DMgr::GetInstance()->LoadAndStoreBitmap(L"texture\\entities\\player\\legs.png", L"PlayerLegs", false);
-	//ID2D1Bitmap* m_pBit = Direct2DMgr::GetInstance()->GetStoredBitmap(L"PlayerTex");
-
-
-	//우리 텍스쳐가 완벽하게 편집이 되어 있어서 저렇게 수월하게 할 수 있었음...
-	//근데 그렇지 않은 경우가 정말 많음. 
-
-	
-	//CreateAnimator();
-
-	
-	//GetAnimator()->LoadAnimation(L"animation\\player_idle_down.anim");
-	//GetAnimator()->LoadAnimation(L"animation\\player_idle_left.anim");
-	//GetAnimator()->LoadAnimation(L"animation\\player_idle_up.anim");
-	//GetAnimator()->LoadAnimation(L"animation\\player_idle_right.anim");
-
-	//GetAnimator()->LoadAnimation(L"animation\\player_walk_down.anim");
-	//GetAnimator()->LoadAnimation(L"animation\\player_walk_left.anim");
-	//GetAnimator()->LoadAnimation(L"animation\\player_walk_up.anim");
-	//GetAnimator()->LoadAnimation(L"animation\\player_walk_right.anim");
-	
-
-	//IDLE 애니메이션 추가
-	
-	/*
-	GetAnimator()->CreateAnimation(L"IDLE_DOWN", m_pTex, m_pBit,Vec2(0.f, 0.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 3);
-	GetAnimator()->CreateAnimation(L"IDLE_LEFT", m_pTex, m_pBit,Vec2(0.f, 65.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 3);
-	GetAnimator()->CreateAnimation(L"IDLE_UP", m_pTex, m_pBit,Vec2(0.f, 130.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 1);
-	GetAnimator()->CreateAnimation(L"IDLE_RIGHT", m_pTex, m_pBit, Vec2(0.f, 195.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 3);
-	
-	//걷기 애니메이션 추가
-	GetAnimator()->CreateAnimation(L"WALK_DOWN", m_pTex, m_pBit, Vec2(0.f, 260.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 10);
-	GetAnimator()->CreateAnimation(L"WALK_LEFT", m_pTex, m_pBit, Vec2(0.f, 325.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 10);
-	GetAnimator()->CreateAnimation(L"WALK_UP", m_pTex, m_pBit, Vec2(0.f, 390.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 10);
-	GetAnimator()->CreateAnimation(L"WALK_RIGHT", m_pTex, m_pBit, Vec2(0.f, 455.f), Vec2(60.f, 65.f), Vec2(60.f, 0.f), 0.1f, 10);
-	
-	
-	//Animation 저장해보기
-	GetAnimator()->Play(L"IDLE_DOWN", true);
-
-	
-	GetAnimator()->FindAnimation(L"IDLE_DOWN")->Save(L"animation\\player_idle_down.anim");
-	GetAnimator()->FindAnimation(L"IDLE_LEFT")->Save(L"animation\\player_idle_left.anim");
-	GetAnimator()->FindAnimation(L"IDLE_UP")->Save(L"animation\\player_idle_up.anim");
-	GetAnimator()->FindAnimation(L"IDLE_RIGHT")->Save(L"animation\\player_idle_right.anim");
-
-	GetAnimator()->FindAnimation(L"WALK_DOWN")->Save(L"animation\\player_walk_down.anim");
-	GetAnimator()->FindAnimation(L"WALK_LEFT")->Save(L"animation\\player_walk_left.anim");
-	GetAnimator()->FindAnimation(L"WALK_UP")->Save(L"animation\\player_walk_up.anim");
-	GetAnimator()->FindAnimation(L"WALK_RIGHT")->Save(L"animation\\player_walk_right.anim");
-	*/
-	//CreateGravity();
 
 	//다리 오브젝트 추가. 
 
@@ -198,7 +139,6 @@ void CPlayer::update()
 		if (m_fStepSoundDelay < 0.f) {
 
 			//0.35초마다 초기화하기. 
-			//CSoundMgr::GetInstance()->PlayWalkSound();
 			PlayWalkSound();
 			m_fStepSoundDelay = 0.3f;
 		}
@@ -268,10 +208,6 @@ void CPlayer::PushSceneWeapons()
 {
 	//씬 시작할 때, 즉 StartScene으로 갈 대 이 함수 불러주면 됨. 
 	for (auto weaponIter : m_listWeapon) {
-		//CreateObject((CObject*)weaponIter, GROUP_TYPE::WEAPON);
-		//AddObject
-		//weaponIter
-		//AddObject(pGround, GROUP_TYPE::GROUND);
 		CScene* curScene = CSceneMgr::GetInstance()->GetCurScene();
 		weaponIter->SetCurScene(curScene);
 		curScene->AddObject(weaponIter, GROUP_TYPE::WEAPON);
@@ -305,19 +241,15 @@ void CPlayer::update_move()
 
 	if (KEY_HOLD(KEY::W)) {
 		vPos.y -= 100.f * fDT;
-		//pRigid->AddForce(Vec2(0.f, -200.f));
 	}
 	if (KEY_HOLD(KEY::S)) {
 		vPos.y += 100.f * fDT;
-		//pRigid->AddForce(Vec2(0.f, 200.f));
 	}
 	if (KEY_HOLD(KEY::A)) {
 		vPos.x -= 100.f * fDT;
-		//pRigid->AddForce(Vec2(-200.f, 0.f));
 	}
 	if (KEY_HOLD(KEY::D)) {
 		vPos.x += 100.f * fDT;
-		//pRigid->AddForce(Vec2(200.f, 0.f));
 	}
 
 	float speedValue = 1.f + m_tPlayerInfo.m_fSpeed;
@@ -330,22 +262,18 @@ void CPlayer::update_move()
 	if (KEY_HOLD(KEY::W)) {
 		Vec2 moveVec = Vec2(pRigid->GetVelocity().x, -50.f) * speedValue;
 		pRigid->AddVelocity(moveVec);
-		//pRigid->AddVelocity(Vec2(pRigid->GetVelocity().x, -100.f));
 	}
 	if (KEY_HOLD(KEY::S)) {
 		Vec2 moveVec = Vec2(pRigid->GetVelocity().x, 50.f) * speedValue;
 		pRigid->AddVelocity(moveVec);
-		//pRigid->AddVelocity(Vec2(pRigid->GetVelocity().x, 100.f));
 	}
 	if (KEY_HOLD(KEY::A)) {
 		Vec2 moveVec = Vec2(-50.f, pRigid->GetVelocity().y) * speedValue;
 		pRigid->AddVelocity(moveVec);
-		//pRigid->AddVelocity(Vec2(-100.f, pRigid->GetVelocity().y));
 	}
 	if (KEY_HOLD(KEY::D)) {
 		Vec2 moveVec = Vec2(50.f, pRigid->GetVelocity().y) * speedValue;
 		pRigid->AddVelocity(moveVec);
-		//pRigid->AddVelocity(Vec2(100.f, pRigid->GetVelocity().y));
 	}
 
 	SetPos(vPos);
