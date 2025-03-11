@@ -72,11 +72,7 @@ CObject::CObject(const CObject& _origin)
 		m_pRigidBody->m_pOwner = this;
 	}
 
-	/*
-	if (_origin.m_pImage != nullptr) {
-		m_pImage = new CImage(*_origin.m_pImage);
-		m_pImage->m_pOwner = this;
-	}*/
+
 
 	if (_origin.m_pTextUI != nullptr) {
 		m_pTextUI = new CTextUI(*_origin.m_pTextUI);
@@ -182,21 +178,10 @@ void CObject::render(ID2D1HwndRenderTarget* _pRender)
 
 void CObject::component_render(HDC _dc)
 {
-	/*
-	if (m_pAnimator != nullptr) m_pAnimator->render(_dc);
-
-	if (m_pCollider != nullptr)	m_pCollider->render(_dc);
-	if (!m_pImages.empty())	m_pImage->render(_dc);
-	*/
 }
 
 void CObject::component_render(Gdiplus::Graphics* _pDGraphics)
 {
-	/*
-	if (m_pAnimator != nullptr) m_pAnimator->render(_pDGraphics);
-
-	if (m_pCollider != nullptr)	m_pCollider->render(_pDGraphics);
-	*/
 }
 
 void CObject::component_render(ID2D1HwndRenderTarget* _pRender)

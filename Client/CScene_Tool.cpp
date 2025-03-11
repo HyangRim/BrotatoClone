@@ -60,15 +60,6 @@ void CScene_Tool::Enter()
 	pPanelUI->AddChild(pBtnUI);
 	AddObject(pPanelUI, GROUP_TYPE::UI);
 	
-	/*
-	CUI* pClonePanel = pPanelUI->Clone();
-	pClonePanel->SetPos(pClonePanel->GetPos() + Vec2(-500.f, 0.f));
-
-	//이렇게 해주면 기능이야 같겠지만, 다른 포인터.
-	((CBtnUI*)pClonePanel->GetChildsUI()[0])->SetClickedCallBack(ChangeScene, 0, 0);
-	AddObject(pClonePanel, GROUP_TYPE::UI);
-
-	m_pUI = pClonePanel;*/
 	//Camera Look 지점.
 	CCamera::GetInstance()->SetLookAt(vResolution / 2.f);
 }

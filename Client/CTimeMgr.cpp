@@ -29,6 +29,9 @@ void CTimeMgr::init()
 	//초당 카운트 횟수(1000만)
 	QueryPerformanceFrequency(&m_llFrequency);
 	SetTimeScale(1.f);
+
+	SetWindowText(CCore::GetInstance()->GetMainHwnd(), L"Brotato");
+
 }
 
 void CTimeMgr::update()
@@ -44,6 +47,8 @@ void CTimeMgr::update()
 
 void CTimeMgr::render()
 {
+
+	return;
 	m_iCallCount++;
 	m_dAcc += m_dDT;	//DT 누적. 
 	if (m_dAcc >= 1.) {

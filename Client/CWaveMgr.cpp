@@ -56,8 +56,6 @@ void CWaveMgr::update()
 			else {
 				static_cast<CScene_Start*>(CSceneMgr::GetInstance()->GetCurScene())->CreateLevelUpShop();
 			}
-			//static_cast<CScene_Start*>(CSceneMgr::GetInstance()->GetCurScene())->CreateLevelUpShop();
-			//ChangeScene(SCENE_TYPE::SHOP);
 		}
 	}
 }
@@ -69,6 +67,7 @@ void CWaveMgr::WaveStart()
 	CMonFactory::SetDropItemRecog(250.f);
 	CMonFactory::SetDropItemSpeed(250.f);
 	m_fWaveSpawnTime = (2.f - (m_iWaveLevel * 0.07f)) + float_distribution(rng);
+	m_fWaveElapsed = 0.f;
 	m_iLevelUpCount = 0;
 	m_bLevelUpFlag = false;
 
@@ -79,6 +78,8 @@ void CWaveMgr::WaveClear()
 
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
 	m_bWaving = false;
+
+	m_fWaveElapsed = 0.f;
 
 	//==========================================================================
 	//========================웨이브 완료 문구 뜨기=============================
@@ -109,7 +110,7 @@ void CWaveMgr::WaveInit()
 {
 	m_iWaveLevel = 1;
 	m_fWaveDuration = 20.f;
-	m_fWaveElapsed = 0;
+	m_fWaveElapsed = 0.f;
 	m_bWaving = false;
 	m_fWaveSpawnTime = 1.f;
 	m_fWaveSpawnElapsed = 0.f;

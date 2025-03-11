@@ -161,17 +161,6 @@ void CCore::progress() {
 	}
 
 	// Draw 场. 
-
-
-	//m_DGraphics
-	//m_pGraphics->DrawImage(m_pMemTex->GetBitmap(), 0, 0, m_ptResolution.x, m_ptResolution.y);
-	//GDI(Legacy 规侥)
-	//BitBlt(m_hDC, 0, 0, m_ptResolution.x, m_ptResolution.y, m_pMemTex->GetDC(), 0, 0, SRCCOPY);
-	
-	//GDI+ 规侥
-	//m_pGraphics->DrawImage(m_buffer, 0, 0);
-
-
 	CTimeMgr::GetInstance()->render();
 
 
@@ -207,13 +196,6 @@ void CCore::ChangeWindowSize(Vec2 _vResolution, bool _bMenu)
 
 void CCore::Clear()
 {
-	//GDI+ 规侥
-	//m_pDGraphics->Clear(Color(255, 120, 120, 120));
-	
-	//GDI LEGACY规侥
-	//SelectGDI gdi(m_pMemTex->GetDC(), BRUSH_TYPE::BLACK);
-	//Rectangle(m_pMemTex->GetDC(), -1, -1, m_ptResolution.x + 1, m_ptResolution.y + 1);
-
 	//Direct2D规侥
 	ID2D1HwndRenderTarget* pRenderTarget = Direct2DMgr::GetInstance()->GetRenderTarget();
 	pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));

@@ -12,18 +12,6 @@
 //parent중심 기준 offset을 설정할것.
 
 
-/* 예제
-CObject* characterImage = new CSpriteUI;
-	characterImage->AddImage(image->GetBitmap());
-
-	Vec2 vPos = Vec2(35.f, 35.f) - (panel->GetScale() / 2.f);
-	characterImage->GetImage(0)->SetOffset(vPos);
-
-	characterImage->SetObjType(GROUP_TYPE::UI);
-	characterImage->SetPos(panel->GetPos());
-
-	Image가 포함된 객체의 위치를 부모로 지정하고 offset을 설정하면됨
-*/
 CImage::CImage()
 	: m_pOwner(nullptr)
 	, m_pBitmap(nullptr)

@@ -30,16 +30,7 @@ void CPanelUI::update()
 
 void CPanelUI::MouseOn()
 {
-	/*
-	if (m_bCanMove && IsLbtnDown()) {
-		Vec2 vDiff = MOUSE_POS - m_vDragStart;
 
-		Vec2 vCurPos = GetPos();
-		vCurPos += vDiff;
-		SetPos(vCurPos);
-
-		m_vDragStart = MOUSE_POS;
-	}*/
 }
 
 void CPanelUI::MouseLbtnDown()
@@ -81,11 +72,7 @@ void CPanelUI::render(ID2D1HwndRenderTarget* _pRender)
 	);
 
 	ID2D1SolidColorBrush* pBrush = nullptr;
-	/*
-	HRESULT hr = _pRender->CreateSolidColorBrush(
-		m_bMouseOn ? m_colorMouseOn : m_colorNormal,
-		&pBrush
-	);*/
+
 
 	HRESULT hr = _pRender->CreateSolidColorBrush(
 		m_bMouseOn

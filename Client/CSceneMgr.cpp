@@ -70,9 +70,6 @@ void CSceneMgr::init()
 	m_arrScene[(UINT)SCENE_TYPE::RUN_END]->SetName(L"Run End");
 	m_arrScene[(UINT)SCENE_TYPE::RUN_END]->SetSceneType(SCENE_TYPE::RUN_END);
 
-	//m_arrScene[(UINT)SCENE_TYPE::STAGE_01] = new CScene_Stage01;
-	//m_arrScene[(UINT)SCENE_TYPE::STAGE_02] = new CScene_Stage02;
-
 	//웨이브 세팅
 	CWaveMgr::GetInstance()->WaveInit();
 

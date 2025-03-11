@@ -79,17 +79,6 @@ public:
     void render_child(Gdiplus::Graphics* _pDGraphics);
     void render_child(ID2D1HwndRenderTarget* _pRender);
 
-private:
-    /*
-    void update_child();
-    void finalupdate_child();
-
-    
-    void render_child(HDC _dc);
-    void render_child(Gdiplus::Graphics* _pDGraphics);
-    void render_child(ID2D1HwndRenderTarget* _pRender);*/
-
-
    
 public:
     virtual void MouseOn();             //마우스가 UI위에 올라와 있을 때. 

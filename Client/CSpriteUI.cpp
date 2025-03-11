@@ -114,13 +114,6 @@ void CSpriteUI::render(ID2D1HwndRenderTarget* _pRender)
             m_fradiusY  // Y축 반지름 (radiusY)
         );
 
-        /**
-        ID2D1SolidColorBrush* pBrush = nullptr;
-        HRESULT hr = _pRender->CreateSolidColorBrush(
-            m_bLbtnDown ? m_colorBackGroundMouseOn : m_colorBackGroundNormal,  // 아니면 흰색
-            &pBrush
-        );*/
-
         // 내부 색상 브러시 생성
         ID2D1SolidColorBrush* pFillBrush = nullptr;
         HRESULT hrFill = _pRender->CreateSolidColorBrush(
