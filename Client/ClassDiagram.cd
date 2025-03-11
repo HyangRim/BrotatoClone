@@ -3,7 +3,7 @@
   <Class Name="CCore" Collapsed="true">
     <Position X="40.75" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ACACQAwIYCAAQgAASIAAAAgIAAEgAAIEAIAgDEBAQwA=</HashCode>
+      <HashCode>ACACQAAIICAAAAAAAIAAAAgAAAEAAAIEAIAACEBAQQA=</HashCode>
       <FileName>CCore.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -159,7 +159,7 @@
   <Class Name="CMonster" Collapsed="true">
     <Position X="29.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>FEAgAQAAIABAAAAIAAAAABAAQAEAAAAIAAAAAAIEAAA=</HashCode>
+      <HashCode>FEAgAQAAIABAAAAAAAAAABAAQAEAAAAIAAAAAAIEAAA=</HashCode>
       <FileName>CMonster.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -308,13 +308,6 @@
     <TypeIdentifier>
       <HashCode>EAAAAAIAAAAAAAAgAAAAAAAhAAAEAAIAIAAAAAAMAAA=</HashCode>
       <FileName>CScene_Tool.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="CScene_Test" Collapsed="true">
-    <Position X="11.25" Y="9" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAIgAAAAAAAAAAAAAAAAAAAABEAAAAIAgAIAAUAAA=</HashCode>
-      <FileName>CScene_Test.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CScene_Main" Collapsed="true">

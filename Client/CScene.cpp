@@ -95,7 +95,6 @@ void CScene::render(HDC _dc)
 			continue;
 		}
 
-
 		auto ObjVecIter = m_arrObj[typeIDX].begin();
 
 		for (; ObjVecIter != m_arrObj[typeIDX].end();) {
@@ -154,7 +153,6 @@ void CScene::render(ID2D1HwndRenderTarget* _pRender)
 
 void CScene::render_tile(HDC _dc)
 {
-
 	const vector<CObject*> vecTile = GetGroupObject(GROUP_TYPE::TILE);
 	//화면 안에 들어오는 애들의 범위를 잡아내어, 들어오는 애들만 렌더링 해준다. 
 	Vec2 vCamLook = CCamera::GetInstance()->GetLookAt();

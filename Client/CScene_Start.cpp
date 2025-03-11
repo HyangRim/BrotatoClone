@@ -457,7 +457,7 @@ void CScene_Start::Exit()
 	m_vecPauseObj.clear();
 	m_vecFailObj.clear();
 	m_vecOptionObjs.clear();
-
+	m_scrollContent.clear();
 }
 
 void CScene_Start::CreateForce()

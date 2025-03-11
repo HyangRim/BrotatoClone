@@ -1,14 +1,10 @@
 #pragma once
 
-
 #include "global.h"
 #include "CMonFactory.h"
 //전방선언하는 이유는 컴파일 속도에 영향을 주지 않기 위해. 
 class CObject;
 class CMonster;
-//class ID2D1Bitmap;
-
-
 
 class CScene
 {
@@ -84,7 +80,6 @@ public:
 	static void ChangePause(bool _bPause);
 	static bool GetPause() { return isPause; }
 	void AllDropItemRetrieve();
-
 
 public:
 	CScene();
