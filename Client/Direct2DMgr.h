@@ -15,43 +15,43 @@ class Direct2DMgr
 private:
 	ID2D1Factory* pD2DFactory;
 	IWICImagingFactory* pWICFactory;
-
 	IDWriteFactory* g_pDWriteFactory;
-	
 	ID2D1HwndRenderTarget* pRenderTarget;
 	ID2D1BitmapRenderTarget* pBitmapRenderTarget; // 백 버퍼용 멤버 변수 추가
 
 	// 여러 비트맵을 저장하기 위한 맵
-	map<wstring, ID2D1Bitmap*> bitmapMap;
+	unordered_map<wstring, ID2D1Bitmap*> bitmapMap;
 	// 쪼개진 비트맵 저장용 맵
-	map<wstring, vector<ID2D1Bitmap*>> splitBitmapMap;
-
-	CFontMgr* pFontMgr;
+	unordered_map<wstring, vector<ID2D1Bitmap*>> splitBitmapMap;
 
 public:
 	ID2D1HwndRenderTarget* GetRenderTarget() { return pRenderTarget; }
 
-
 public:
 	HRESULT init(HWND hwnd);									//초기화함수
 
-
+public:
 	HRESULT StoreCreateMap(ID2D1Bitmap* bitmap, const wstring& tag);
 	HRESULT LoadAndStoreBitmap(const wstring& filePath, const wstring& tag, bool split);
 	ID2D1Bitmap* GetStoredBitmap(const wstring& tag);
 	vector<ID2D1Bitmap*> GetSplitBitmaps(const wstring& tag);
 
+public:
 	void RenderAllBitmaps(const std::vector<std::pair<D2D1_RECT_F, std::wstring>>& bitmapsToRender);
 	void RenderBitmap(const D2D1_RECT_F& destRect, const wstring& tag);
 
+public:
 	HRESULT StoreBitmapsFromFolder(const std::wstring& folderPath, const std::wstring& tag);
 
+public:
 	void Cleanup();
 
+public:
 	void RenderText(const std::wstring& text, const D2D1_RECT_F& layoutRect, FONT_TYPE fontType, float fontSize, const D2D1_COLOR_F& color);
 	void RenderTextWithOutline(const std::wstring& text, const D2D1_RECT_F& layoutRect, FONT_TYPE fontType, float fontSize, const D2D1_COLOR_F& textColor, const D2D1_COLOR_F& outlineColor, float outlineThickness);
 	void RenderLeftTextWithOutline(const std::wstring& text, const D2D1_RECT_F& layoutRect, FONT_TYPE fontType, float fontSize, const D2D1_COLOR_F& textColor, const D2D1_COLOR_F& outlineColor, float outlineThickness);
 	void RenderRightTextWithOutline(const std::wstring& text, const D2D1_RECT_F& layoutRect, FONT_TYPE fontType, float fontSize, const D2D1_COLOR_F& textColor, const D2D1_COLOR_F& outlineColor, float outlineThickness);
+
 private:
 	HRESULT LoadBitmap(const wstring& filePath, ID2D1Bitmap** ppBitmap);
 	HRESULT SplitBitmap(ID2D1Bitmap* bitmap, const wstring& tag);

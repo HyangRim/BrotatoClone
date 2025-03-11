@@ -715,4 +715,7 @@
       <Filter>Engine\04. Object\Player</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
 </Project>

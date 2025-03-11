@@ -22,7 +22,6 @@ CTimeMgr::~CTimeMgr() {
 
 void CTimeMgr::init()
 {
-
 	//현재 카운트
 	QueryPerformanceCounter(&m_llPrevCount);
 	//초당 카운트가 고정되어 있는것도 아님. 
@@ -30,7 +29,6 @@ void CTimeMgr::init()
 	//초당 카운트 횟수(1000만)
 	QueryPerformanceFrequency(&m_llFrequency);
 	SetTimeScale(1.f);
-
 }
 
 void CTimeMgr::update()
@@ -42,14 +40,6 @@ void CTimeMgr::update()
 
 	//이전 카운트 값을 현재값으로 갱신(다음번에 계산을 위해서)
 	m_llPrevCount = m_llCurCount;
-
-	/*
-#ifdef _DEBUG
-	if (m_dDT > 1. / 60.f) {
-		m_dDT = (1. / 60.f);
-	}
-#endif // _DEBUG
-	*/
 }
 
 void CTimeMgr::render()
@@ -60,7 +50,6 @@ void CTimeMgr::render()
 		m_iFPS = m_iCallCount;
 		m_dAcc = 0.;
 		m_iCallCount = 0;
-
 
 		wchar_t szBuffer[255] = {};
 		swprintf_s(szBuffer, L"FPS : %d, DT : %f", m_iFPS, m_dDT);

@@ -17,7 +17,7 @@ CCamera::CCamera()
 	, m_fTime(0.5f)
 	, m_fSpeed(0.f)
 	, m_fAccTime(0.5f)
-	, m_pVeilTex(nullptr)
+	//, m_pVeilTex(nullptr)
 {
 }
 
@@ -31,7 +31,7 @@ CCamera::~CCamera() {
 void CCamera::init()
 {
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
-	m_pVeilTex = CResMgr::GetInstance()->CreateTexture(L"cameraVeil", (UINT)vResolution.x, (UINT)vResolution.y);
+	//m_pVeilTex = CResMgr::GetInstance()->CreateTexture(L"cameraVeil", (UINT)vResolution.x, (UINT)vResolution.y);
 
 	m_vMinBounds = Vec2(vResolution.x / 2.f, vResolution.y / 2.f);
 	m_vMaxBounds = Vec2(18.f * TILE_SIZE  - vResolution.x / 2.f, 18.f * TILE_SIZE - vResolution.y / 2.f);
@@ -71,6 +71,7 @@ void CCamera::update()
 
 void CCamera::render(HDC _dc)
 {
+	/*
 	if (m_listCamEffect.empty()) return;
 
 
@@ -113,10 +114,12 @@ void CCamera::render(HDC _dc)
 	if (effect.fDuration < effect.fCurTime) {
 		m_listCamEffect.pop_front();
 	}
+	*/
 }
 
 void CCamera::render(Gdiplus::Graphics* _pDGraphics)
 {
+	/*
 	if (m_listCamEffect.empty()) return;
 
 
@@ -173,6 +176,7 @@ void CCamera::render(Gdiplus::Graphics* _pDGraphics)
 	if (effect.fCurTime >= effect.fDuration) {
 		m_listCamEffect.pop_front();
 	}
+	*/
 }
 
 

@@ -8,20 +8,16 @@ class CCore {
 	SINGLE(CCore);
 
 private:
-	float m_scrollSpeed; // 스크롤 속도 (기본값: 30.0f)
+	float		m_scrollSpeed; // 스크롤 속도 (기본값: 30.0f)
 	HWND		m_hWnd;				//메인 윈도우 핸들. 
 	POINT		m_ptResolution;		//메인 윈도우 해상도
 
-	HDC			m_hDC;				//메인 윈도우에 Draw 할 DC
-
-
-
+	//HDC			m_hDC;				//메인 윈도우에 Draw 할 DC
 	CTexture*	m_pMemTex;			//백버퍼 텍스쳐. 
 
-
 	//자주 사용하는 GDI Object 펜
-	HBRUSH		m_arrBrush[(UINT)BRUSH_TYPE::END];
-	HPEN		m_arrPen[(UINT)PEN_TYPE::END];
+	//HBRUSH		m_arrBrush[(UINT)BRUSH_TYPE::END];
+	//HPEN		m_arrPen[(UINT)PEN_TYPE::END];
 
 	//메뉴바.
 	HMENU		m_hMenu;	//Tool Scene에서만 사용. 
@@ -32,18 +28,18 @@ private:
 	ULONG_PTR			gdiplusToken;
 	GdiplusStartupInput gdiplusStartupInput;
 
-	Gdiplus::Bitmap*	m_buffer;
+	//Gdiplus::Bitmap*	m_buffer;
 
 	//이중 그래픽 용도의 Graphics
 	//render함수에서는 여기다가 그림. 
-	Gdiplus::Graphics*	m_pDGraphics;
+	//Gdiplus::Graphics*	m_pDGraphics;
 
 	//본 그래픽 용도의 Graphics(m_pDGraphics에 있는 것을 옮김)
-	Gdiplus::Graphics*	m_pGraphics;
+	//Gdiplus::Graphics*	m_pGraphics;
 
 private:
 	void Clear();
-	void CreateBrushPen();
+	//void CreateBrushPen();
 public:
 	void SetScrollSpeed(float speed); // 스크롤 속도 설정
 	float GetScrollSpeed() const;    // 현재 스크롤 속도 가져오기
@@ -58,13 +54,13 @@ public:
 
 public:
 	HWND GetMainHwnd() { return m_hWnd; }
-	HDC GetMainDC() { return m_hDC; }
+	//HDC GetMainDC() { return m_hDC; }
 
-	Gdiplus::Graphics* GetDGraphics() { return m_pDGraphics; }
-	Gdiplus::Graphics* GetGraphics() { return m_pGraphics; }
+	//Gdiplus::Graphics* GetDGraphics() { return m_pDGraphics; }
+	//Gdiplus::Graphics* GetGraphics() { return m_pGraphics; }
 
 	POINT GetResolution() { return m_ptResolution; }
 
-	HBRUSH GetBrush(BRUSH_TYPE _eType) { return m_arrBrush[(UINT)_eType]; }
-	HPEN GetPen(PEN_TYPE _eType) { return m_arrPen[(UINT)_eType]; }
+	//HBRUSH GetBrush(BRUSH_TYPE _eType) { return m_arrBrush[(UINT)_eType]; }
+	//HPEN GetPen(PEN_TYPE _eType) { return m_arrPen[(UINT)_eType]; }
 };

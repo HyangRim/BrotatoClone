@@ -29,6 +29,9 @@ void SelectCharacter(DWORD_PTR lParam, DWORD_PTR wParam);
 void SelectWeapon(DWORD_PTR lParam, DWORD_PTR wParam);
 void ChangeScene(DWORD_PTR, DWORD_PTR);
 
+void InitializeGDIPlus(ULONG_PTR& token);
+void ShutdownGDIPlus(ULONG_PTR token);
+
 template<typename T>
 void Safe_Delete_Vec(vector<T>& _vec);
 

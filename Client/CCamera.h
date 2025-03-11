@@ -38,7 +38,7 @@ private:
 	float				m_fAccTime;			//누적 시간. 
 
 	list<tCamEffect>	m_listCamEffect;
-	CTexture* m_pVeilTex;			//카메라 가림막 텍스쳐(검은색으로)
+	//CTexture* m_pVeilTex;			//카메라 가림막 텍스쳐(검은색으로)
 
 public:
 	void SetLookAt(Vec2 _vLook) { 
@@ -46,7 +46,6 @@ public:
 		float fmoveDistance = (m_vLookAt - m_prevLookAt).Length();
 		m_fSpeed = fmoveDistance / m_fTime;
 		m_fAccTime = 0.f;
-	
 	}
 	void SetTarget(CObject* _pTarget) { m_pTargetObj = _pTarget; }
 
@@ -80,7 +79,6 @@ public:
 	}
 
 public:
-
 	void init();
 	void update();
 	void render(HDC _dc);

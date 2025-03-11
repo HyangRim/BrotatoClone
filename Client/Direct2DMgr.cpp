@@ -14,7 +14,6 @@ Direct2DMgr::~Direct2DMgr()
 
 HRESULT Direct2DMgr::init(HWND hwnd)
 {
-    
     HRESULT hr;
 
     // COM 라이브러리 초기화
@@ -31,7 +30,6 @@ HRESULT Direct2DMgr::init(HWND hwnd)
     GetClientRect(hwnd, &rc);
 
     D2D1_SIZE_U size = D2D1::SizeU(rc.right - rc.left, rc.bottom - rc.top);
-
     
     hr = pD2DFactory->CreateHwndRenderTarget(
         D2D1::RenderTargetProperties(),
@@ -40,7 +38,6 @@ HRESULT Direct2DMgr::init(HWND hwnd)
     );
     if (FAILED(hr)) return hr;
 
-    CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
     // WIC 팩토리 생성
     hr = CoCreateInstance(
         CLSID_WICImagingFactory,   // CLSID for WIC Imaging Factory
@@ -119,21 +116,6 @@ void Direct2DMgr::RenderBitmap(const D2D1_RECT_F& destRect, const std::wstring& 
         assert(nullptr);
     }
     pRenderTarget->DrawBitmap(searched_bitmap, destRect);
-
-    // 백 버퍼 내용을 메인 렌더 타겟으로 복사
-    /*
-    pRenderTarget->BeginDraw();
-    ID2D1Bitmap* backBufferBitmap = nullptr;
-    pBitmapRenderTarget->GetBitmap(&backBufferBitmap);
-    pRenderTarget->DrawBitmap(backBufferBitmap);
-    backBufferBitmap->Release();
-    
-
-    hr = pRenderTarget->EndDraw();
-    if (FAILED(hr)) {
-        MessageBox(nullptr, L"화면 렌더링 실패!", L"오류", MB_OK);
-    }
-    */
 }
 
 void Direct2DMgr::RenderAllBitmaps(const std::vector<std::pair<D2D1_RECT_F, std::wstring>>& bitmapsToRender) {
@@ -152,6 +134,7 @@ void Direct2DMgr::RenderAllBitmaps(const std::vector<std::pair<D2D1_RECT_F, std:
 }
 
 HRESULT Direct2DMgr::LoadBitmap(const std::wstring& filePath, ID2D1Bitmap** ppBitmap) {
+    
     // 파일 존재 여부 확인
     if (!pWICFactory) {
         MessageBox(nullptr, L"WIC 팩토리가 초기화되지 않았습니다!", L"오류", MB_OK);

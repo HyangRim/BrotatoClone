@@ -95,7 +95,6 @@ public:
 	const vector<Item*>& GetPassiveItems() { return m_vPassiveItems; }
 	size_t GetPassiveItemssize() { return m_vPassiveItems.size(); }
 	Item* GetBasicCharacter() { return m_basicCharacter; }
-
 	Item* GetItem(const wstring& _tag) { return m_sItems[_tag]; }
 
 public:

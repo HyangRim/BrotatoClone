@@ -1,7 +1,5 @@
 #include "pch.h"
 #include "CCore.h"
-
-
 #include "CObject.h"
 #include "CTimeMgr.h"
 #include "CkeyMgr.h"
@@ -23,30 +21,29 @@
 #include "Resource.h"
 #include "CFileMgr.h"
 
-
-
-//CCore* CCore::g_pInst = nullptr;
-
 CCore::CCore() 
-	: m_hWnd(0), m_ptResolution{}, m_hDC(0)
-	, m_arrBrush{}, m_arrPen{}
-	, m_pGraphics(nullptr), m_pDGraphics(nullptr)
+	: m_hWnd(0), m_ptResolution{}
+	//, m_hDC(0)
+	//, m_arrBrush{}, m_arrPen{}
+	//, m_pGraphics(nullptr)
+	//, m_pDGraphics(nullptr)
 {
 }
 
 
 CCore::~CCore() {
 	//m_hWnd에 엮여있던 m_hDC를 해제해준다. 
-	ReleaseDC(m_hWnd, m_hDC);
+	//ReleaseDC(m_hWnd, m_hDC);
 
+	/*
 	for (auto penIDX = 0; penIDX < (UINT)PEN_TYPE::END; penIDX++) {
 		DeleteObject(m_arrPen[penIDX]);
-	}
+	}*/
 
 	DestroyMenu(m_hMenu);
-	delete m_pGraphics;
-	delete m_pDGraphics;
-	delete m_buffer;
+	//delete m_pGraphics;
+	//delete m_pDGraphics;
+	//delete m_buffer;
 	Gdiplus::GdiplusShutdown(gdiplusToken);
 }
 
@@ -71,41 +68,36 @@ int CCore::init(HWND _hWnd, POINT _ptResolution) {
 	//메뉴바 생성. 
 	m_hMenu = LoadMenu(nullptr, MAKEINTRESOURCEW(IDC_CLIENT));
 	//어디다가 그려요? m_hWnd에다가 그려요. 
-	m_hDC = GetDC(m_hWnd);
-	m_pGraphics = new Gdiplus::Graphics(m_hDC);
+	//m_hDC = GetDC(m_hWnd);
+	//m_pGraphics = new Gdiplus::Graphics(m_hDC);
 
 	//이중 버퍼링 용도의 텍스쳐 한 장을 만든다. 
-	m_pMemTex = CResMgr::GetInstance()->CreateTexture(L"BackBuffer", (UINT)(m_ptResolution.x), (UINT)(m_ptResolution.y));
-	m_pDGraphics = new Gdiplus::Graphics(m_pMemTex->GetDC());
+	//m_pMemTex = CResMgr::GetInstance()->CreateTexture(L"BackBuffer", (UINT)(m_ptResolution.x), (UINT)(m_ptResolution.y));
+	//m_pDGraphics = new Gdiplus::Graphics(m_pMemTex->GetDC());
 	RECT psRect;
 	
 	GetClientRect(m_hWnd, &psRect);
-	m_buffer = new Bitmap(psRect.right - psRect.left, psRect.bottom - psRect.top);
+	//m_buffer = new Bitmap(psRect.right - psRect.left, psRect.bottom - psRect.top);
 
 	//m_pDGraphics는 메모리 비트맵. (임시로 그리는 곳.)
-	m_pDGraphics = new Gdiplus::Graphics(m_buffer);
+	//m_pDGraphics = new Gdiplus::Graphics(m_buffer);
 
 	//자주 사용 할 펜 및 브러쉬 생성. 
-	CreateBrushPen();
+	//CreateBrushPen();
 
-	//Manager initialize
+	//////////////////////////Manager initialize//////////////////////////////
 	CPathMgr::GetInstance()->init();
-
 	CTimeMgr::GetInstance()->init();
-
 	CkeyMgr::GetInstance()->init();
-
 	CSoundMgr::GetInstance()->init();
-
 	CCamera::GetInstance()->init();
 	Direct2DMgr::GetInstance()->init(m_hWnd);
 	CFileMgr::GetInstance()->init(CPathMgr::GetInstance()->GetContentPath());
 	CSceneMgr::GetInstance()->init();
-
-
 	CFontMgr::GetInstance()->init();
-	CharacterInfoMgr::GetInstance()->init();
+	
 	ItemMgr::GetInstance()->init();
+	//////////////////////////Manager initialize//////////////////////////////
 
 	return S_OK;
 }
@@ -224,21 +216,18 @@ void CCore::Clear()
 
 	//Direct2D방식
 	ID2D1HwndRenderTarget* pRenderTarget = Direct2DMgr::GetInstance()->GetRenderTarget();
-
 	pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
-	//pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF(0.5f, 0.5f, 0.5f, 1.0f)));
 }
 
+/*
 void CCore::CreateBrushPen()
 {
 	// Hollow Brush
 	m_arrBrush[(UINT)BRUSH_TYPE::HOLLOW] = (HBRUSH)GetStockObject(HOLLOW_BRUSH);
 	m_arrBrush[(UINT)BRUSH_TYPE::BLACK] = (HBRUSH)GetStockObject(BLACK_BRUSH);
 
-
 	//R,G,B Pen
 	m_arrPen[(UINT)PEN_TYPE::RED] = (HPEN)CreatePen(PS_SOLID, 1, RGB(255, 0, 0));
 	m_arrPen[(UINT)PEN_TYPE::GREEN] = (HPEN)CreatePen(PS_SOLID, 1, RGB(0, 255, 0));
 	m_arrPen[(UINT)PEN_TYPE::BLUE] = (HPEN)CreatePen(PS_SOLID, 1, RGB(0, 0, 255));
-
-}
+}*/

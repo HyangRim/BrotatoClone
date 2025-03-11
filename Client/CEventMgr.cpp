@@ -24,16 +24,6 @@ void CEventMgr::update()
 	//==================================================
 	//이전 프레임에서 등록해준 Dead Object들을 삭제한다.
 	//==================================================
-	////임시조치///
-	if (m_setDeadScheduled.size() > 0) {
-		wprintf(L"Delete Object: %zd\n", m_setDeadScheduled.size());
-	}
-
-	if(m_setDeadScheduled.size() > 0)
-	{
-		wprintf(L"Size : %zd\n", m_setDeadScheduled.size());
-	}
-
 	
 	for (auto deadObjectPtr  : m_setDeadScheduled) {
 		delete deadObjectPtr;
