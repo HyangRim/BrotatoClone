@@ -258,7 +258,7 @@ void CPlayer::update_move()
 		speedValue -= 1.f;
 		speedValue += m_tPlayerInfo.m_stCharacterInfo->m_fSpeed;
 	}
-
+	
 	if (KEY_HOLD(KEY::W)) {
 		Vec2 moveVec = Vec2(pRigid->GetVelocity().x, -50.f) * speedValue;
 		pRigid->AddVelocity(moveVec);
@@ -275,7 +275,7 @@ void CPlayer::update_move()
 		Vec2 moveVec = Vec2(50.f, pRigid->GetVelocity().y) * speedValue;
 		pRigid->AddVelocity(moveVec);
 	}
-
+	
 	SetPos(vPos);
 }
 

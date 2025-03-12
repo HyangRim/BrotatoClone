@@ -110,7 +110,6 @@ void CScene_Run_End::CreateMainPanel()
 	CreateItemInfoPanel(backPanel);
 }
 
-
 void CScene_Run_End::CreateInfoPanel(CPanelUI* _backPanel)
 {
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();

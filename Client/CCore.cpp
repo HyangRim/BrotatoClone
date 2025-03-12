@@ -192,8 +192,6 @@ void CCore::ChangeWindowSize(Vec2 _vResolution, bool _bMenu)
 	SetWindowPos(m_hWnd, nullptr, 100, 100, rt.right - rt.left, rt.bottom - rt.top, 0);
 }
 
-
-
 void CCore::Clear()
 {
 	//Direct2D¹æ½Ä
