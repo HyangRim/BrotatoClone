@@ -8,6 +8,9 @@
 #include "CObject.h"
 #include "CPanelUI.h"
 #include "CWeapon.h"
+#include "CPistol.h"
+#include "CKnife.h"
+#include "CSlingshot.h"
 #include "CTextUI.h"
 
 #include "Direct2DMgr.h"
@@ -700,9 +703,22 @@ void CScene_Shop::PurchaseItem(DWORD_PTR lParam, DWORD_PTR wParam)
 		int curWeaponCnt = (int)((CPlayer*)CSceneMgr::GetInstance()->GetPlayer())->GetWeaponCount();
 
 		if (curWeaponCnt == 6) return;
+		
 
-		CWeapon* selectedWeapon = new CWeapon;
-		selectedWeapon->SetInfo(selectedItem->m_tWeaponInfo);
+		//selectedItem.
+
+		CWeapon* selectedWeapon = nullptr;
+		if (itemTag == L"pistol") {
+			selectedWeapon = new CPistol;
+		}
+		else if (itemTag == L"knife") {
+			selectedWeapon = new CKnife;
+		}
+		else if (itemTag == L"slingshot") {
+			selectedWeapon = new CSlingshot;
+		}
+		//selectedWeapon->SetName(L"2");
+		//selectedWeapon->SetInfo(selectedItem->m_tWeaponInfo);
 		selectedWeapon->SetPlayer();
 		static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->AddWeapon(selectedWeapon);
 

@@ -12,6 +12,7 @@
 
 CPistol::CPistol()
 	: m_fCoolTime(0.f)
+	, m_ftempTime(0.15f)
 {
 	tWeaponInfo	tInfo = {};
 
@@ -24,6 +25,8 @@ CPistol::CPistol()
 	tInfo.m_fRecogRange = 600;
 	tInfo.m_iPenet = 1;
 	tInfo.m_iDMG = 12;
+
+	tInfo.m_fCooldown += float_distribution(rng);
 
 	SetInfo(tInfo);
 	SetScale(Vec2(40.f, 40.f));
@@ -43,11 +46,21 @@ void CPistol::update()
 	CWeapon::update();
 
 	m_fCoolTime += fDT;
+	m_ftempTime -= fDT;
+
+
+
 
 	//쿨타임 주기마다 AND 타겟이 있을 때 타겟을 향해 총을 쏜다. 
 	if (nullptr != GetTarget() && (Getinfo().m_fCooldown < m_fCoolTime)) {
 		Vec2 targetPos = GetTarget()->GetPos();
 		Vec2 direction = targetPos - GetPos();
+
+		if (m_ftempTime < 0.f) {
+			wprintf(L"%s CoolTime : %f\n", this->GetName(), m_fCoolTime);
+			wprintf(L"%f direct, %f recog\n", direction.Length(), Getinfo().m_fRecogRange);
+			m_ftempTime = 0.15f;
+		}
 
 		//또한 사거리 안에 있을 때. 
 		if (direction.Length() <= Getinfo().m_fRecogRange) {

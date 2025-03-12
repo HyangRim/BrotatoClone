@@ -176,9 +176,13 @@ bool CPlayer::AddWeapon(CWeapon* _pWeapon)
 	m_listWeapon.push_back(_pWeapon);
 
 	int weaponOffsetPosIdx = 0;
+	//wstring tempName;
 	// 무기 추가 되면서 Offset Pos 조정. 
 	for (auto weaponIter : m_listWeapon) {
 		weaponIter->SetWeaponOffset(weaponOffsetPos[weaponOffsetPosIdx]);
+		//tempName = std::to_wstring(weaponOffsetPosIdx);
+		//weaponIter->SetName(tempName);
+		
 		weaponOffsetPosIdx++;
 	}
 	//CreateObject((CObject*)_pWeapon, GROUP_TYPE::WEAPON);
@@ -207,6 +211,8 @@ bool CPlayer::DeleteWeapon(CWeapon* _pWeapon)
 void CPlayer::PushSceneWeapons()
 {
 	//씬 시작할 때, 즉 StartScene으로 갈 대 이 함수 불러주면 됨. 
+	//wprintf(L"Loaded PNG: %s\n", m_listWeapon.size());
+	wprintf(L"Push Item Number : %d\n", m_listWeapon.size());
 	for (auto weaponIter : m_listWeapon) {
 		CScene* curScene = CSceneMgr::GetInstance()->GetCurScene();
 		weaponIter->SetCurScene(curScene);

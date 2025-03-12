@@ -179,7 +179,7 @@ void CScene_Main::Enter()
 	pBtnTemp->SetIsRound(true, 10.f, 10.f);
 	pBtnTemp->SetColor(ColorNormalize(237, 237, 237), ColorNormalize(0, 0, 0));
 	pBtnTemp->SetClickedCallBack(ChangeScene, (DWORD_PTR)SCENE_TYPE::SELECT_CHARACTER, 0);
-	pBtnTemp->CreateTextUI(L"캐선", Vec2(-26.f, -17.f), Vec2(26.f, 17.f)
+	pBtnTemp->CreateTextUI(L"종료", Vec2(-26.f, -17.f), Vec2(26.f, 17.f)
 		, 20, D2D1::ColorF::White, true, 1.f, D2D1::ColorF::Black
 		, FONT_TYPE::KR
 		, TextUIMode::TEXT
@@ -188,6 +188,7 @@ void CScene_Main::Enter()
 	//////////////////////////임시 버튼///////////////////////////
 
 	//////////////////////////임시 버튼///////////////////////////
+	/*
 	CBtnUI* pBtnTemp2 = new CBtnUI;
 	pBtnTemp2->SetName(L"Temp2");
 	pBtnTemp2->SetObjType(GROUP_TYPE::UI);
@@ -202,6 +203,7 @@ void CScene_Main::Enter()
 		, TextUIMode::TEXT
 		, 0);
 	AddObject(pBtnTemp2, GROUP_TYPE::UI);
+	*/
 	//////////////////////////임시 버튼///////////////////////////
 
 	
