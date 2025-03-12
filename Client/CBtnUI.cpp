@@ -40,7 +40,7 @@ void CBtnUI::MouseOn()
 		return;
 	}
 	if (nullptr != m_pFuncMouseOn) {
-		printf("hi\n");
+		//printf("hi\n");
 		m_pFuncMouseOn(m_param1MouseOn, m_param2MouseOn);
 		// MouseOn 콜백 함수가 이미 호출되었으면 아무 작업도 하지 않음
 		m_bMouseOnCalled = true; // 호출 상태로 설정

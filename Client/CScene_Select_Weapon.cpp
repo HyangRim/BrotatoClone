@@ -474,6 +474,7 @@ void SelectWeapon(DWORD_PTR lParam, DWORD_PTR wParam)
 	else if (tag == L"slingshot") {
 		selectedWeapon = new CSlingshot;
 	}
+	//selectedWeapon->SetName(L"1");
 	//selectedWeapon->SetInfo(selectedItem->m_tWeaponInfo);
 	static_cast<CPlayer*>(CSceneMgr::GetInstance()->GetPlayer())->AddWeapon(selectedWeapon);
 

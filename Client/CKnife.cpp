@@ -58,7 +58,6 @@ void CKnife::update()
 			Vec2 targetPos = GetTarget()->GetPos();
 			Vec2 direction = targetPos - GetPos();
 			Vec2 thisPos = GetPos();
-			GetCollider()->SetActive(true);
 			//또한 사거리 안에 있을 때. 
 			if (direction.Length() <= Getinfo().m_fRecogRange) {
 				direction.Normalize();

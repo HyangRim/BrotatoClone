@@ -27,11 +27,10 @@ CWeapon::~CWeapon()
 
 void CWeapon::update()
 {
-	m_pTarget = SpecTarget();
 	//무기의 Pos가 플레이어 옆에 있도록 하는 update
 	Vec2 vPlayerPos = m_pPlayer->GetPos();
 	SetPos(vPlayerPos + m_vWeaponOffset);
-
+	m_pTarget = SpecTarget();
 }
 
 void CWeapon::render(Gdiplus::Graphics* _pDGraphics)
@@ -63,7 +62,7 @@ CObject* CWeapon::SpecTarget()
 		float Distance = (vPos - vMonPos).Length();
 
 		if (Distance < proximateDistance) {
-			Distance = proximateDistance;
+			proximateDistance = Distance;
 			pObj = MonObj;
 		}
 	}

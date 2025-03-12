@@ -114,7 +114,7 @@ void CSlingshot::ShotMissile(Vec2 _vDir)
 
 	pMissile->SetName(L"Missile_Player");
 	pMissile->SetPos(GetPos());
-	pMissile->SetScale(Vec2(5.f, 5.f));
+	pMissile->SetScale(Vec2(15.f, 15.f));
 	pMissile->SetDir(_vDir);
 	pMissile->SetBounce(1);
 

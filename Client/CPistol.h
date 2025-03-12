@@ -5,7 +5,7 @@ class CPistol :
 {
 private:
     float       m_fCoolTime;
-
+    float       m_ftempTime;
 
 public:
     virtual void ShotMissile(Vec2 _vDir);
