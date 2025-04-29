@@ -34,8 +34,7 @@ CScene::~CScene()
 		for (size_t objIDX = 0; objIDX < m_arrObj[typeIDX].size(); ++objIDX) {
 			//m_arrObj[그룹][물체] 삭제. 
 			delete m_arrObj[typeIDX][objIDX];
-		}
-		
+		}	
 		//씬이 사라지면, 그 씬의 벡터들도 다 사라짐. 
 		//STL의 RAII가 알아서 삭제하기 때문. 
 	}

@@ -43,11 +43,8 @@ void CScene_Main::Enter()
 {
 	ClearPlayer();
 
-
 	// Direct2DMgr 인스턴스 가져오기 (텍스쳐 관련)
 	Direct2DMgr* pD2DMgr = Direct2DMgr::GetInstance();
-
-
 
 	//사운드 관련 Instance 가져오기. 
 	//CSoundMgr::GetInstance()->AddSound(L"MainTitle", L"sound\\music\\main_title_bgm.mp3", true, true);
@@ -254,10 +251,8 @@ void CScene_Main::update()
 	Vec2 vResolution = CCore::GetInstance()->GetResolution();
 	Vec2 oriPos = vResolution / 2.f;
 
-
 	float angle = 2 * PI * m_fPanelMoveElapsed / m_fPanelMoveDuration;
 	float delta = m_fPanelMoveWave * sin(angle);
-
 
 	Vec2 backImagePos = m_tMainPanel.pTitleBack->GetPos();
 	Vec2 frontImagePos = m_tMainPanel.pTitlefront->GetPos();

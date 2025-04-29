@@ -98,8 +98,6 @@ void CObject::update()
 {
 	ShakeScale();
 
-	//finalupdate();
-
 	m_vPrevPos = m_vPos;
 }
 
@@ -149,8 +147,6 @@ void CObject::render(Gdiplus::Graphics* _pDGraphics)
 void CObject::render(ID2D1HwndRenderTarget* _pRender)
 {
 	//ÁøÂ¥ ÁÂÇ¥.
-
-	
 
 	if (GetImages().empty() && nullptr == GetAnimator()) {
 		Vec2 vRenderPos = CCamera::GetInstance()->GetRenderPos(m_vPos);
