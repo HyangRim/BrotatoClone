@@ -30,8 +30,8 @@ CScene::CScene()
 
 CScene::~CScene()
 {
-	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; typeIDX++) {
-		for (size_t objIDX = 0; objIDX < m_arrObj[typeIDX].size(); objIDX++) {
+	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; ++typeIDX) {
+		for (size_t objIDX = 0; objIDX < m_arrObj[typeIDX].size(); ++objIDX) {
 			//m_arrObj[그룹][물체] 삭제. 
 			delete m_arrObj[typeIDX][objIDX];
 		}
@@ -44,7 +44,7 @@ CScene::~CScene()
 void CScene::AllDropItemRetrieve()
 {
 	UINT typeIDX = (UINT)GROUP_TYPE::DROP_ITEM;
-	for (size_t objIDX = 0; objIDX < m_arrObj[typeIDX].size(); objIDX++) {
+	for (size_t objIDX = 0; objIDX < m_arrObj[typeIDX].size(); ++objIDX) {
 
 		CMonster* dropItem = static_cast<CMonster*>(m_arrObj[typeIDX][objIDX]);
 
@@ -57,8 +57,8 @@ void CScene::AllDropItemRetrieve()
 
 void CScene::start()
 {
-	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; typeIDX++) {
-		for (size_t objIDX = 0; objIDX < m_arrObj[typeIDX].size(); objIDX++) {
+	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; ++typeIDX) {
+		for (size_t objIDX = 0; objIDX < m_arrObj[typeIDX].size(); ++objIDX) {
 			m_arrObj[typeIDX][objIDX]->start();
 		}
 	}
@@ -66,8 +66,8 @@ void CScene::start()
 
 void CScene::update()
 {
-	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; typeIDX++) {
-		for (size_t objIDX = 0; objIDX < m_arrObj[typeIDX].size(); objIDX++) {
+	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; ++typeIDX) {
+		for (size_t objIDX = 0; objIDX < m_arrObj[typeIDX].size(); ++objIDX) {
 			if (!m_arrObj[typeIDX][objIDX]->IsDead()) {
 				m_arrObj[typeIDX][objIDX]->update();
 			}
@@ -78,8 +78,8 @@ void CScene::update()
 //충돌체가 플레이어 따라가게 함, 충돌 처리. 
 void CScene::finalupdate()
 {
-	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; typeIDX++) {
-		for (size_t objIDX = 0; objIDX < m_arrObj[typeIDX].size(); objIDX++) {
+	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; ++typeIDX) {
+		for (size_t objIDX = 0; objIDX < m_arrObj[typeIDX].size(); ++objIDX) {
 
 			//Final Update는 돌려줌. 내부적으로 Component들의 마무리 단계 업데이트(충돌처리나, 참조관계등)
 			m_arrObj[typeIDX][objIDX]->finalupdate();
@@ -89,7 +89,7 @@ void CScene::finalupdate()
 
 void CScene::render(HDC _dc)
 {
-	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; typeIDX++) {
+	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; ++typeIDX) {
 		if ((UINT)GROUP_TYPE::TILE == typeIDX) {
 			render_tile(_dc);
 			continue;
@@ -114,7 +114,7 @@ void CScene::render(HDC _dc)
 void CScene::render(Gdiplus::Graphics* _pDGraphics)
 {
 	
-	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; typeIDX++) {
+	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; ++typeIDX) {
 
 		auto ObjVecIter = m_arrObj[typeIDX].begin();
 
@@ -134,7 +134,7 @@ void CScene::render(Gdiplus::Graphics* _pDGraphics)
 
 void CScene::render(ID2D1HwndRenderTarget* _pRender)
 {
-	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; typeIDX++) {
+	for (UINT typeIDX = 0; typeIDX < (UINT)GROUP_TYPE::END; ++typeIDX) {
 		auto ObjVecIter = m_arrObj[typeIDX].begin();
 
 		for (; ObjVecIter != m_arrObj[typeIDX].end();) {
@@ -172,9 +172,9 @@ void CScene::render_tile(HDC _dc)
 	int iClientWidth = (int)vResolution.x / iTileSize + 1;
 	int iClientHeight = (int)vResolution.y / iTileSize + 1;
 
-	for (int iCurRow = iLTRow; iCurRow < (iLTRow + iClientHeight); iCurRow++) {
+	for (int iCurRow = iLTRow; iCurRow < (iLTRow + iClientHeight); ++iCurRow) {
 
-		for (int iCurcol = iLTCol; iCurcol < (iLTCol + iClientWidth); iCurcol++) {
+		for (int iCurcol = iLTCol; iCurcol < (iLTCol + iClientWidth); ++iCurcol) {
 			if (iCurcol < 0 || m_iTileX <= (UINT)iCurcol ||
 				iCurRow < 0 || m_iTileY <= (UINT)iCurRow) continue;
 
@@ -207,9 +207,9 @@ void CScene::render_tile(Gdiplus::Graphics* _pDGraphics)
 	int iClientWidth = (int)vResolution.x / iTileSize + 1;
 	int iClientHeight = (int)vResolution.y / iTileSize + 1;
 
-	for (int iCurRow = iLTRow; iCurRow < (iLTRow + iClientHeight); iCurRow++) {
+	for (int iCurRow = iLTRow; iCurRow < (iLTRow + iClientHeight); ++iCurRow) {
 
-		for (int iCurcol = iLTCol; iCurcol < (iLTCol + iClientWidth); iCurcol++) {
+		for (int iCurcol = iLTCol; iCurcol < (iLTCol + iClientWidth); ++iCurcol) {
 			
 			if (iCurcol < 0 || m_iTileX <= (UINT)iCurcol ||
 				iCurRow < 0 || m_iTileY <= (UINT)iCurRow) continue;
@@ -243,9 +243,9 @@ void CScene::render_tile(ID2D1HwndRenderTarget* _pRender)
 	int iClientWidth = (int)vResolution.x / iTileSize + 1;
 	int iClientHeight = (int)vResolution.y / iTileSize + 1;
 
-	for (int iCurRow = iLTRow; iCurRow < (iLTRow + iClientHeight); iCurRow++) {
+	for (int iCurRow = iLTRow; iCurRow < (iLTRow + iClientHeight); ++iCurRow) {
 
-		for (int iCurcol = iLTCol; iCurcol < (iLTCol + iClientWidth); iCurcol++) {
+		for (int iCurcol = iLTCol; iCurcol < (iLTCol + iClientWidth); ++iCurcol) {
 			if (iCurcol < 0 || m_iTileX <= (UINT)iCurcol ||
 				iCurRow < 0 || m_iTileY <= (UINT)iCurRow) continue;
 
@@ -276,7 +276,7 @@ void CScene::DeleteGroup(GROUP_TYPE _eGroup)
 
 void CScene::DeleteAll()
 {
-	for (UINT GroupIdx = 0; GroupIdx < (UINT)GROUP_TYPE::END; GroupIdx++) {
+	for (UINT GroupIdx = 0; GroupIdx < (UINT)GROUP_TYPE::END; ++GroupIdx) {
 		if (GroupIdx == (UINT)GROUP_TYPE::PLAYER)
 		{
 			m_arrObj[(UINT)GROUP_TYPE::PLAYER].clear();
@@ -299,8 +299,8 @@ void CScene::CreateTile(UINT _IXCount, UINT _IYCount)
 	//타일 생성
 	//CTexture* pTileTex = CResMgr::GetInstance()->LoadTexture(L"Tile", L"texture\\tera2.bmp");
 	CTexture* pTileTex = CResMgr::GetInstance()->LoadTexture(L"Tile Outline", L"texture\\result2.png");
-	for (UINT tileIDX = 0; tileIDX < _IYCount; tileIDX++) {
-		for (UINT tileJDX = 0; tileJDX < _IXCount; tileJDX++) {
+	for (UINT tileIDX = 0; tileIDX < _IYCount; ++tileIDX) {
+		for (UINT tileJDX = 0; tileJDX < _IXCount; ++tileJDX) {
 			CTile* pTile = new CTile();
 
 			pTile->SetPos(Vec2((float)(tileJDX * TILE_SIZE), (float)(tileIDX * TILE_SIZE)));
@@ -462,9 +462,9 @@ ID2D1Bitmap* CScene::CreateCompositeMapBitmap(const wstring &tag)
 	pBitmapRT->Clear(D2D1::ColorF(D2D1::ColorF::Black));
 
 	// 4. 그리드 순회: 각 타일의 서브 비트맵 인덱스 결정 후 합성
-	for (int tileY = 0; tileY < gridCount; tileY++)
+	for (int tileY = 0; tileY < gridCount; ++tileY)
 	{
-		for (int tileX = 0; tileX < gridCount; tileX++)
+		for (int tileX = 0; tileX < gridCount; ++tileX)
 		{
 			int tileIdx = 0;
 			int rest = 0;

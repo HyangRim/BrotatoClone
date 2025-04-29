@@ -133,7 +133,7 @@ void CWaveMgr::SpawnMob()
 	int mobSpawnNum = MobSpawnCount(rng);
 	
 
-	for (int mobIdx = 0; mobIdx < mobSpawnNum; mobIdx++) {
+	for (int mobIdx = 0; mobIdx < mobSpawnNum; ++mobIdx) {
 
 		//좌표 정해주기. 
 		float mx = static_cast<float>(MobSpawnPos(rng));

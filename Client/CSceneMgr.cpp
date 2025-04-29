@@ -23,7 +23,7 @@ CSceneMgr::CSceneMgr()
 }
 
 CSceneMgr::~CSceneMgr() {
-	for (UINT sceneIDX = 0; sceneIDX < (UINT)SCENE_TYPE::END; sceneIDX++) {
+	for (UINT sceneIDX = 0; sceneIDX < (UINT)SCENE_TYPE::END; ++sceneIDX) {
 
 		if (m_arrScene[sceneIDX] != nullptr) {
 			delete m_arrScene[sceneIDX];

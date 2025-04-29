@@ -196,7 +196,7 @@ bool CPlayer::DeleteWeapon(CWeapon* _pWeapon)
 	list<CWeapon*>::iterator targetWeaponIter;
 
 	//무기 리스트에서 동일한 포인터값을 찾는 이터레이터 찾기.
-	for (list<CWeapon*>::iterator weaponIter = m_listWeapon.begin(); weaponIter != m_listWeapon.end(); weaponIter++) {
+	for (list<CWeapon*>::iterator weaponIter = m_listWeapon.begin(); weaponIter != m_listWeapon.end(); ++weaponIter) {
 		if (*weaponIter == _pWeapon) {
 			//찾아서 그 이터레이터를 지우면서, 그 주소값 반환.
 			targetWeaponIter = m_listWeapon.erase(weaponIter);

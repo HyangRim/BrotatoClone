@@ -70,7 +70,7 @@ void CUIMgr::SetFocusedUI(CUI* _pUI)
 
 	vector<CObject*>::iterator CUIIter = vecUI.begin();
 	//왼쪽 버튼 TAP이 발생했다는 전제가 있는 UI들. 
-	for (; CUIIter != vecUI.end(); CUIIter++) {
+	for (; CUIIter != vecUI.end(); ++CUIIter) {
 		if (m_pFocusedUI == *CUIIter) {
 			break;
 		}
@@ -97,7 +97,7 @@ CUI* CUIMgr::GetFocusedUI()
 	vector<CObject*>::iterator targetIter = vecUI.end();
 	vector<CObject*>::iterator CUIIter = vecUI.begin();
 	//왼쪽 버튼 TAP이 발생했다는 전제가 있는 UI들. 
-	for (; CUIIter != vecUI.end(); CUIIter++) {
+	for (; CUIIter != vecUI.end(); ++CUIIter) {
 		if (((CUI*)*CUIIter)->IsMouseOn()) {
 			targetIter = CUIIter;
 		}

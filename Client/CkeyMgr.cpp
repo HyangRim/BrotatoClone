@@ -61,7 +61,7 @@ CkeyMgr::~CkeyMgr() {
 void CkeyMgr::init()
 {
 
-	for (int keyIDX = 0; keyIDX < (int)KEY::LAST; keyIDX++) {
+	for (int keyIDX = 0; keyIDX < (int)KEY::LAST; ++keyIDX) {
 		m_vecKey.push_back(tKeyInfo{ KEY_STATE::NONE, false });
 	}
 
@@ -85,7 +85,7 @@ void CkeyMgr::update() {
 	//윈도우 포커싱 중일 때, 키 이벤트 동작. 
 	if (hMainWnd == hWnd) {
 
-		for (int keyIDX = 0; keyIDX < (int)KEY::LAST; keyIDX++) {
+		for (int keyIDX = 0; keyIDX < (int)KEY::LAST; ++keyIDX) {
 			//키가 눌렸다면. 
 			if (GetAsyncKeyState(g_arrVK[keyIDX]) & 0x8000) {
 				if (m_vecKey[keyIDX].bPrevPush) {
@@ -120,7 +120,7 @@ void CkeyMgr::update() {
 	}
 	else {
 		//윈도우 포커싱 해제 상태
-		for (int keyIDX = 0; keyIDX < (int)KEY::LAST; keyIDX++) {
+		for (int keyIDX = 0; keyIDX < (int)KEY::LAST; ++keyIDX) {
 			m_vecKey[keyIDX].bPrevPush = false;
 			if (m_vecKey[keyIDX].eState == KEY_STATE::TAP || m_vecKey[keyIDX].eState == KEY_STATE::HOLD) {
 				m_vecKey[keyIDX].eState = KEY_STATE::AWAY;

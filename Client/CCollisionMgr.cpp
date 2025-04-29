@@ -51,12 +51,12 @@ void CCollisionMgr::CollisionGroupUpdate(GROUP_TYPE _eLeft, GROUP_TYPE _eRight)
 	unordered_map<ULONGLONG, bool>::iterator colliderMapIter;
 
 
-	for (auto leftIDX = 0; leftIDX < vecLeft.size(); leftIDX++) {
+	for (auto leftIDX = 0; leftIDX < vecLeft.size(); ++leftIDX) {
 
 		//충돌체를 보유하지 않는 경우 
 		if (nullptr == vecLeft[leftIDX]->GetCollider()) continue;
 
-		for (auto rightIDX = 0; rightIDX < vecRight.size(); rightIDX++) { 
+		for (auto rightIDX = 0; rightIDX < vecRight.size(); ++rightIDX) { 
 
 			//충돌체를 보유하지 않는 경우. or 자기 자신과의 충돌인 경우. 
 			if (nullptr == vecRight[rightIDX]->GetCollider() || vecLeft[leftIDX] == vecRight[rightIDX]) continue;

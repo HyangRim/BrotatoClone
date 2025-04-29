@@ -307,7 +307,7 @@ HRESULT Direct2DMgr::StoreBitmapsFromFolder(const wstring& folderPath, const wst
 {
     wstring header = CPathMgr::GetInstance()->GetContentPath();
     vector<ID2D1Bitmap*> splitBitmaps;
-    for (int i = 0; i < 64; i++)
+    for (int i = 0; i < 64; ++i)
     {
         wstring finalPath = header + folderPath + L"mapTile_" + std::to_wstring(i) + L".png";
         ID2D1Bitmap* newBitmap = nullptr;
